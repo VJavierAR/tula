@@ -6,12 +6,12 @@ from odoo.tools.float_utils import float_compare
 
 
 class pickingDesasignar(TransientModel):
-    _name='picking.desasignar'
-    _description='desasignar series'
-    pick_ids = fields.Many2many('stock.picking')
-    estado = fields.Many2one('detalle.move','Detalle')
-    cancel_backorder=fields.Boolean(default=True)
-    
+	_name='picking.desasignar'
+	_description='desasignar series'
+	pick_ids = fields.Many2many('stock.picking')
+	estado = fields.Many2one('detalle.move','Detalle')
+	cancel_backorder=fields.Boolean(default=True)
+
 	def confirm(self):
 		self.picking_id.move_ids_without_package.write({'estado':self.estado})
 		if(self.cancel_backorder):
