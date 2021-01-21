@@ -1,0 +1,883 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="view_picking_desasignar" model="ir.ui.view">
+    <field name="model">picking.desasignar</field>
+        <field name="arch" type="xml">
+            <form string="Desasignar Series">
+                <h1>Ingrese la solicitud a desasignar</h1>
+                <group>
+                    <field name='solicitud'/>
+                </group>
+
+                <footer>
+                    <button name="confirm" string="Confirmar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+</record>
+
+<record id="view_form_stock_return_inherit" model="ir.ui.view">
+    <field name="name">Stock Return Inherit</field>
+    <field name="model">stock.return.picking</field>
+    <field name="inherit_id" ref="stock.view_stock_return_picking_form"/>
+    <field name="arch" type="xml">
+          <xpath expr="//field[@name='location_id']" position="after">
+            <field name="almacen" string="Almacen"/></xpath>
+    </field>
+</record>
+
+
+
+
+<record id="view_clientes_reporte" model="ir.ui.view">
+        <field name="model">clientes.reporte</field>
+        <field name="arch" type="xml">
+            <form string="Ingreso de Equipos">
+                <group>
+                    <field name='clientes' widget='many2many_tags' domain="[['x_studio_activo_1','=',True],['type','!=','delivery']]"/>
+                </group>
+
+                <footer>
+                    <button name="reporte" string="Reporte" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+<record id="view_lot_retiro" model="ir.ui.view">
+        <field name="model">lot.retiro</field>
+        <field name="arch" type="xml">
+            <form string="Ingreso de Equipos">
+                <group>
+                    <field name='lineas'>
+                        <tree editable="bottom">
+                            <field name='serie' readonly='1'/>
+                            <field name="almacen" domain="[['x_studio_cliente','=',False]]"/>
+                            <field name="estado"  />
+                            <field name="contadorMono"  />
+                            <field name="contadorColor"  />
+                            <field name="nivelNegro" string="Nivel Negro" />
+                            <field name="nivelAmarillo" string="Nivel Amarillo" />
+                            <field name="nivelCian" string="Nivel Cian"  />
+                            <field name="nivelMagenta" string="Nivel Magenta"  />
+                        </tree>
+                    </field>
+                </group>
+
+                <footer>
+                    <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+            <record id="view_entrega_refaccion" model="ir.ui.view">
+        <field name="model">entrega.action</field>
+        <field name="arch" type="xml">
+            <form string="Entrega de refacciones">
+                <field name='tecnico'/>
+                <group>
+                    <field name='lines'>
+                        <tree editable="bottom">
+                            <field name='product_id' readonly='1'/>
+                            <field name='cantidadS' readonly='1'/>
+                            <field name='cantidadE'/>
+                        </tree>
+                    </field>
+                </group>
+
+                <footer>
+                    <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_lot_assign_accesorios" model="ir.ui.view">
+        <field name="model">lot.assign.accesorios</field>
+        <field name="arch" type="xml">
+            <form string="Asignación de accesorios">
+                <field name="domain" invisible="1"/>
+                <group>
+                <field name="lineas" string="Accesorios" options='{"no_create": True}'>
+                    <tree editable="bottom">
+                        <field name="lot_id" string="Serie" readonly="1"/>
+                        <field name="accesorios" string="Accesorios" widget="many2many_tags"/>
+                    </tree>
+                </field>
+                </group>
+                <footer>
+                    <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+
+    <record id="view_lot_serial_reporte" model="ir.ui.view">
+        <field name="model">lot.serial.reporte</field>
+        <field name="arch" type="xml">
+            <form string="Carga de guias">
+                <h1>Reporte de Base Instalada</h1>
+
+                <footer>
+                    <button name="reporte" string="Reporte" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+        <record id="view_helpdesk_guia_form" model="ir.ui.view">
+        <field name="model">ticket.guia.carga</field>
+        <field name="arch" type="xml">
+            <form string="Carga de guias">
+                <h1>Se agregaran las guias al los tickets</h1>
+                    <group>
+                        <field name="archivo" string="Archivo" required="1"/>
+                    </group>
+                <footer>
+                    <button name="carga" string="Cargar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+        <record id="view_agregar_concentrado_action_form" model="ir.ui.view">
+        <field name="model">stock.picking.mass.concentrado</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <h1>Se agregaran las ordenes en un concentrado</h1>
+                <footer>
+                    <button name="concentrar" string="Agregar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_concentrado" model="ir.actions.act_window">
+        <field name="name">Concentrado</field>
+        <field name="res_model">stock.picking.mass.concentrado</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+    </record>
+
+
+
+    <record id="view_reporte_creacion_ruta_action_form" model="ir.ui.view">
+        <field name="model">reporte.creacion.ruta</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <h1>Reporte de Expediciones Abiertas</h1>
+                <footer>
+                    <button name="reporte" string="Reporte" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+        <record id="view_helpdesk_detalle_ticket_action_form" model="ir.ui.view">
+        <field name="model">helpdesk.detalle.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Detalle del ticket">
+                <field name="idTicket" string="ticket" required="1"/>
+                <field name="ticket" string="ticket" readonly="1" invisible="1"/>
+                <group>
+                    <group>
+                        <field name="cliente" string="Cliente" attrs="{'invisible':[['ticket','=',False]]}"/>
+                        <field name="localidad" string="Localidad"  attrs="{'invisible':[['ticket','=',False]]}"/>
+                        <field name="estado" attrs="{'invisible':[['ticket','=',False]]}"/>
+                        <field name="area" attrs="{'invisible':[['ticket','=',False]]}"/>
+                    </group>
+                    <group>
+                        <field name="ejecutivo" attrs="{'invisible':[['ticket','=',False]]}"/>
+                        <field name="tecnico" attrs="{'invisible':[['ticket','=',False]]}"/>
+                        <field name="zona" attrs="{'invisible':[['ticket','=',False]]}"/>
+                        <field name="dias" attrs="{'invisible':[['ticket','=',False]]}"/>
+                    </group>
+                </group>
+                <notebook >
+                        <page string="Equipos" >
+                            <field name="series" attrs="{'invisible':[['ticket','=',False]]}" readonly="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="x_studio_modelo_equipo"/>
+                                    <field name="x_studio_color_bn"/>
+                                    <field name="x_studio_ultimalecturam"/>
+                                    <field name="x_studio_ultimalecturacolor"/>
+                                </tree>
+
+                            </field>
+                        </page>
+                        <page string="Orden">
+                            <field name="solicitud" attrs="{'invisible':[['ticket','=',False]]}"/>        
+                            <field name="pedido" string="Orden detalle" attrs="{'invisible':[['ticket','=',False]]}">
+                                    <tree string="Orden detalle">
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="product_uom_qty"/>
+                                    </tree>
+                            </field>
+                            <field name="backorders" string="backorders" attrs="{'invisible':[['ticket','=',False]]}">
+                                    <tree string="backorders">
+                                    <field name="origin" string="Orden" readonly="1"/>
+                                    <field name="scheduled_date" readonly="1"/>
+                                    <field name="x_studio_toneres" widget="html" string="productos" readonly="1"/>
+                                    <field name="estado" readonly="1"/>
+                                    </tree>
+                            </field>
+                        </page>
+                        <page string="diagnosticos" attrs="{'invisible':[['ticket','=',False]]}">
+                            <field name="historico" attrs="{'invisible':[['ticket','=',False]]}">
+                                <tree default_order="create_date desc">
+                                    <field name="create_date"/>
+                                    <field name="estadoTicket"/>
+                                    <field name="comentario" />
+                                    <field name="create_uid"/>
+                                    <field name="evidencia" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                <footer>
+                    <button string="Cerrar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_stock_warehousw_orderpoint_import_action_form" model="ir.ui.view">
+        <field name="model">stock.warehouse.orderpoint.import</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <h1>Estructura del archivo</h1>
+                <table class="table">
+                <thead>
+                  <tr>
+                    <th>Almacen</th>
+                    <th>Modelo</th>
+                    <th>No Parte</th>
+                    <th>Minimo</th>
+                    <th>Maximo</th>
+                  </tr>
+                </thead>
+                </table>
+                <group>
+                    <group>
+                    <field name="archivo" string="Archivo" required="1"/>
+                    </group>
+                <group>
+                </group>
+                </group>
+                <footer>
+                    <button name="importar" string="Importar o actualizar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_product_product_one_action_form" model="ir.ui.view">
+        <field name="model">product.product.one</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <group>
+                    <group>
+                    <field name="modelo" string="Modelo" required="1"/>
+                    <field name="noParte" string="No parte" required="1"/>
+                    <field name="descripcion" string="Descripción" required="1"/>
+                    </group>
+                <group>
+                    <field name="tipo" string="Tipo de Componente" required="1"/>
+                    <field name="existencia" string="Existencia"/>
+                    <field name="almacen" string="Almacen"/>
+                </group>
+                </group>
+                <footer>
+                    <button name="crear" string="Crear" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_purchase_order_action_form" model="ir.ui.view">
+        <field name="model">purchase.order.action</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <group>
+                    <group>
+                    <field name="fechaInicial" string="Fecha Inicial" required="1"/>
+                    <field name="fechaFinal" string="Fecha Final" required="1"/>
+                </group>
+                <group>
+                    <field name="tipo" string="Tipo"/>
+                    <field name="usuario" string="Usuario"/>
+                </group>
+                </group>
+                <footer>
+                    <button name="report" string="Reporte" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+        <record id="view_addcompatile_action_form" model="ir.ui.view">
+        <field name="model">add.compatible</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <group>
+                    <group>
+                    <field name="productoInicial" string="Producto" readonly="1"/>    
+                    </group>
+                    <group>
+                    <field name="productoCompatible" string="Compatible" />    
+                    </group>
+                </group>
+                <footer>
+                    <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+        <record id="view_quant_action_form" model="ir.ui.view">
+        <field name="model">quant.action</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <group>
+                    <group>
+                    <field name="producto" readonly="1"/>
+                    <field name="ubicacion"/>    
+                    </group>
+                    <group>
+                        <field name="comentario" required="1" /> 
+                    <field name="cantidad" />    
+                    </group>
+                </group>
+                <footer>
+                    <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_devolver_action_form" model="ir.ui.view">
+        <field name="model">devolver.action</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <group>
+                    <field name="tipo" string="Tipo"  required="1"/>
+                    <field name="fecha"  string="Fecha de nueva salida"  attrs="{'invisible':[['tipo','=','Total']],'required':[['tipo','!=','Total']]}"/>
+                    <field name="comentario" string="Comentario" required="1"/>
+                </group>
+                <footer>
+                    <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_product_action_form" model="ir.ui.view">
+        <field name="model">product.product.action</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <h1>Estructura del archivo</h1>
+                <table class="table">
+                <thead>
+                  <tr>
+                    <th>Modelo</th>
+                    <th>No Parte</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                    <th>Descripción</th>
+                    <th>Tipo de Producto</th>
+                  </tr>
+                </thead>
+                </table>
+                <group>
+                    <field name="archivo" string="Archivo" required="1"/>
+                    <field name="almacen" string="Almacen" domain="[['x_studio_cliente','=',False]]"/>
+                </group>
+                <footer>
+                    <button name="crear" string="Crear" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_stock_inventory_action_form" model="ir.ui.view">
+        <field name="model">stock.inventory.action</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+      
+                <h1>Estructura del archivo</h1>
+                <table class="table">
+                <thead>
+                  <tr>
+                    <th>Modelo</th>
+                    <th>No Parte</th>
+                    <th>Cantidad</th>
+                    <th>Ubicacion</th>
+                  </tr>
+                </thead>
+                </table>
+                <group>
+                    <field name="almacen" string="Almacen" editable="bottom" options="{'no_create_edit': True}" required="1" domain="[['x_studio_cliente','=',False]]"/>
+                    <field name="archivo" string="Archivo" required="1"/>
+                    <field name="comentario" string="Comentario" required="1"/>
+                </group>
+                <footer>
+                    <button name="importacion" string="Importar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_picking_purchase" model="ir.actions.act_window">
+        <field name="name">A Compras</field>
+        <field name="res_model">stock.pickings.compras</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+    </record>
+    <record id="view_stock_pickings_compras_form" model="ir.ui.view">
+        <field name="model">stock.pickings.compras</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected stock picking">
+                <h2 >Se Verificaran las Ordenes Selecionadas</h2>
+
+                <footer>
+                    <button name="confirmar" string="Apply" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_helpdesk_ticket_action_form" model="ir.ui.view">
+        <field name="model">helpdesk.ticket.action</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <group>
+                    <group>
+                    <field name="fechaauto"/>
+                    <field name="fechaInicial" string="Fecha Inicial" required="1"/>
+                    <field name="fechaFinal" string="Fecha Inicial" required="1"/>
+                </group>
+                <group>
+                    <field name="tipo" string="Tipo"/>
+                </group>
+                </group>
+                <footer>
+                    <button name="report" string="Reporte" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_sale_order_action_form" model="ir.ui.view">
+        <field name="model">sale.order.action</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected sale order">
+                <group>
+                    <group>
+                    <field name="fechaInicial" string="Fecha Inicial" required="1"/>
+                    <field name="fechaFinal" string="Fecha Final" required="1"/>
+                    </group>
+                    <group>
+                    <field name="tipo" string="Tipo de Solicitud" required="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="report" string="Reporte" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_stock_move_action_form" model="ir.ui.view">
+        <field name="model">stock.move.action</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected stock picking">
+                <group>
+                    <group>
+                    <field name="fechaInicial" string="Fecha Inicial" required="1"/>
+                    <field name="fechaFinal" string="Fecha Inicial" required="1"/>
+                    </group>
+                    <group>
+                    <field name="almacen" domain="[['x_studio_cliente','=',False]]"/>
+                    <field name="categoria"/>
+                    <field name="tipo" required="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="report" string="Reporte" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_stock_quant_action_form" model="ir.ui.view">
+        <field name="model">stock.quant.action</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected stock quant">
+                <group>
+                    <field name="regi" invisible="1"/>
+                    <field name="anterior"/>
+                    <field name="fecha" attrs="{'invisible':[['anterior','=',False]]}"/>
+                    <field name="archivo" attrs="{'invisible':[['regi','=',0]]}"/>
+                    <field name="almacen" widget="many2many_tags" domain="[['x_studio_cliente','=',False]]" attrs="{'invisible':[['anterior','!=',False]]}"/>
+                    <field name="categoria" attrs="{'invisible':[['anterior','!=',False]]}"/>
+                    <field name="tipo" domain="[['categ_id','=',13]]" attrs="{'invisible':[['categoria','!=',13],['anterior','!=',False]]}"/>
+                    <field name="estado" attrs="{'invisible':[['categoria','!=',13],['anterior','!=',False]]}"/>
+                </group>
+                <footer>
+                    <button name="report" string="Reporte" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_stock_picking_mass_action_form" model="ir.ui.view">
+        <field name="model">stock.picking.mass.action</field>
+        <field name="arch" type="xml">
+            <form string="Mass Action for the selected stock picking">
+                <group>
+                    <field name="check" invisible="1"/>
+                    <h2 attrs="{'invisible':[['check','!=',1]]}">Se Transferiran las Ordenes Selecionadas</h2>
+                    <field name="confirm" invisible="1"/>
+                    <field name="check_availability" invisible="1"/>
+                    <field name="transfer" invisible="1"/>
+                    <field name="picking_ids" invisible="1">
+                        <tree editable="bottom">
+                                <field name="id" invisible="1" readonly="1" attrs="{'invisible':[['picking_type_id','!=',29314]]}"/>
+                                <field name="picking_type_id" invisible="1"/>
+                                <field name="name" invisible="1" readonly="1" attrs="{'invisible':[['picking_type_id','!=',29314]]}"/>
+                                <!--<field name="x_studio_ticket" string="Ticket" readonly="1" attrs="{'invisible':[['picking_type_id','=',29314]]}"/>-->
+                                <field name="origin" string="Orden" readonly="1" attrs="{'invisible':[['picking_type_id','=',29314]]}"/>
+                                <field name="partner_id" readonly="1" attrs="{'invisible':[['picking_type_id','!=',29314]]}"/>
+                                <field name="scheduled_date" readonly="1" attrs="{'invisible':[['picking_type_id','!=',29314]]}"/>
+                                <field name="x_studio_toneres" widget="html" string="productos" readonly="1" attrs="{'invisible':[['picking_type_id','!=',29314]]}"/>
+                                <field name="x_studio_tecnico"  domain="['|',['job_id.name','=','TÉCNICO '],['job_id.name','=','SOFTWARE']]" attrs="{'invisible':[['picking_type_id','!=',29314]]}"/>
+                                <field name="estado"  readonly="1" attrs="{'invisible':[['picking_type_id','!=',29314]]}"/>
+                                <field name="date_done" readonly="1" attrs="{'invisible':[['picking_type_id','!=',29314]]}"/>
+                        </tree>
+                    </field>
+                    <field name="tecnicos" attrs="{'invisible':[['check','!=',1]]}">
+                        <tree editable="bottom">
+                                <field name="origin" string="Orden" readonly="1" />
+                                <field name="partner_id" readonly="1" />
+                                <field name="scheduled_date" readonly="1" />
+                                <field name="x_studio_toneres" widget="html" string="productos" readonly="1"/>
+                                <field name="tecnico" readonly="0"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="mass_action" string="Apply" type="object" class="oe_highlight"/>
+                    <button name="vales" string="Vale de Entrega" type="object" class="oe_highlight" attrs="{'invisible':[['check','not in',[1,2]]]}"/>
+                    <button name="etiquetas" string="Etiquetas" type="object" attrs="{'invisible':[['check','not in',[1,2]]]}" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Confirm Action -->
+    <!--<record id="action_confirm" model="ir.actions.act_window">
+        <field name="name">Mark as Todo</field>
+        <field name="res_model">stock.picking.mass.action</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+    </record>-->
+
+    <!-- Check Availability Action -->
+    <!--<record id="action_check_availability" model="ir.actions.act_window">
+        <field name="name">Check Availability</field>
+        <field name="res_model">stock.picking.mass.action</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'check_availability': 1}</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+    </record>-->
+
+    <!-- Transfer Action -->
+    <record id="action_transfer" model="ir.actions.act_window">
+        <field name="name">Transfer</field>
+        <field name="res_model">stock.picking.mass.action</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'check_availability': 1, 'transfer': 1,}</field>
+        <field name="binding_model_id" ref="stock.model_stock_picking" />
+    </record>
+
+    <record id="view_asignacion_equipo_action_form" model="ir.ui.view">
+        <field name="model">cambio.toner</field>
+        <field name="arch" type="xml">
+            <form string="Cambio">
+                <group>
+                    <notebook >
+                    <field name="tonerUorden" invisible="1"/>
+                        <page string="Equipos" >
+                            <field name="pro_ids" attrs="{'invisible':[['tonerUorden','=',False]]}" string="Lineas">
+                                <tree editable="bottom">
+                                <field name="producto1" readonly="1" string="Registro Original"/>
+                                <field name="tipo" invisible="1"/>
+                                <field name="categoria" invisible="1"/>
+                                <field name="producto2" string="Registro a Cambiar"  attrs="{'readonly':[['categoria','=',13]]}"/>
+                                <field name="almacen" domain="[['x_studio_cliente','=',False]]"/>
+                                <field name="existeciaAlmacen" readonly="1"/>                        
+                                <field name="estado"  attrs="{'readonly':[['categoria','!=',13]]}"/>
+                                <field name="serieOrigen" string="Serie" attrs="{'readonly':[['categoria','!=',13]]}"/>
+                                <field name="color"  attrs="{'readonly':[['categoria','!=',13]]}"/>
+                                <field name="contadorMono"  attrs="{'readonly':[['categoria','!=',13]]}"/>
+                                <field name="contadorColor"  attrs="{'readonly':[['categoria','!=',13]]}"/>
+                                <field name="nivelNegro" string="Nivel Negro" />
+                                <field name="nivelAmarillo" string="Nivel Amarillo" attrs="{'invisible':[['color','=','B/N']]}"/>
+                                <field name="nivelCian" string="Nivel Cian"  attrs="{'invisible':[['color','=','B/N']]}"/>
+                                <field name="nivelMagenta" string="Nivel Magenta"  attrs="{'invisible':[['color','=','B/N']]}"/>                          
+                                </tree>
+
+                            </field>
+                        </page>
+                        <page string="Toner">                    
+                            <field name="toner_ids" string="Toner">
+                                <tree editable="bottom">
+                                <field name="producto1" readonly="1" string="Registro Original"/>
+                                <field name="tipo" invisible="1"/>
+                                <field name="producto2" string="Registro a Cambiar" />
+                                <field name="almacen" domain="[['x_studio_cliente','=',False]]"/>
+                                <field name="existeciaAlmacen" readonly="1"/>                        
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Accesorios">
+                            <field name="accesorios_ids" string="Accesorios">
+                                <tree editable="bottom">
+                                <field name="producto1" readonly="1" string="Registro Original"/>
+                                <field name="tipo" invisible="1"/>
+                                <field name="producto2" string="Registro a Cambiar" />
+                                <field name="almacen" domain="[['x_studio_cliente','=',False]]"/>
+                                <field name="existeciaAlmacen" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </group>
+                <footer>
+                    <button name="otra" string="Apply" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_ingreso_almacen" model="ir.ui.view">
+        <field name="model">ingreso.almacen</field>
+        <field name="arch" type="xml">
+            <form string="Cambio">
+                <group>
+                    <field name="almacen" options="{'no_create_edit': True}"/>
+
+                        <field name="move_line" string="Productos" options="{'no_create_edit': True}">
+                                <tree editable="bottom" >
+                                <field name="producto" readonly="1" string="Producto"/>
+                                <field name="producto2" string="Producto editable"/>
+                                <field name="cantidad" />
+                                </tree>
+                            </field>
+                </group>
+                <footer>
+                    <button name="confirmar" string="Ingresar Productos" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_serie_ingreso" model="ir.ui.view">
+        <field name="model">serie.ingreso</field>
+        <field name="arch" type="xml">
+            <form string="Ingreso">
+                <group>
+                    <field name="almacen" options="{'no_create_edit': True}"/>
+
+                         <field name="lineas" string="Productos" options="{'no_create_edit': True}">
+                            <tree editable="bottom" options="{'no_create_edit': True}">
+                                <field name="producto" readonly="1" string="Producto"/>
+                                <field name="categoria" invisible="1" />
+                                <field name="serie_name"  attrs="{'readonly':[['categoria','!=',13]]}"/>
+                                <field name="serie"  context="{'default_product_id':producto}" invisible="1"/>
+                                <field name="cantidad" />
+                            </tree>
+                        </field>
+                        <field name="archivo"/>
+
+                </group>
+                <footer>
+                    <button name="confirmar" string="Apply" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_cambio_toner_action_form" model="ir.ui.view">
+        <field name="model">cambio.toner</field>
+        <field name="arch" type="xml">
+            <form string="Cambio">
+                <group>
+                    <notebook >
+                    <field name="tonerUorden" invisible="1"/>
+                        <page attrs="{'invisible':[['tonerUorden','=',True]]}">
+                            <field name="pro_ids" string="Toner">
+                                <tree editable="bottom">
+                                <field name="producto1" readonly="1" string="Registro Original"/>
+                                <field name="tipo" invisible="1"/>
+                                <field name="producto2" string="Registro a Cambiar"  />
+                                <field name="almacen" domain="[['x_studio_cliente','=',False]]"/>
+                                <field name="cantidad" string="Cantidad Solicitada" readonly="1"/>
+                                <field name="cantidad2" string="Cantidad Enviada"/>  
+                                <field name="compatibilidad" />   
+                                <field name="existeciaAlmacen" />                        
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </group>
+                <footer>
+                    <button name="otra" string="Apply" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+        <record id="view_guia_ticket" model="ir.ui.view">
+        <field name="model">guia.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Guia">
+                <group>
+                    <field name="guia">
+                    </field>
+                </group>
+                <footer>
+                    <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="view_comentario_ticket" model="ir.ui.view">
+        <field name="model">comentario.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Evidencia">
+                <group>
+                    <field name="comentario"/>
+                    <field name="ruta" invisible="1"/>
+                    <field name="evidencia" widget="many2many_binary" required="1" attrs="{'invisible': [['ruta', '=', False]]}"/>
+                </group>
+                <footer>
+                    <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_transferencia_interna" model="ir.ui.view">
+        <field name="model">transferencia.interna</field>
+        <field name="arch" type="xml">
+            <form string="Transferencia Interna">
+                <group>
+                    <field name="almacenPadre" required="1" domain="[['x_studio_cliente','=',False]]"/>
+                    <field name="almacenOrigen" attrs="{'invisible':[['almacenPadre','=',False]]}"/>
+                    <field name="ubicacion" invisible="1"/>
+                    <field name="almacenDestino" required="1" domain="[['x_studio_cliente','=',False]]"/>
+                    <field name="categoria" string="Tipo de Componentes"/>
+                    <field name="archivo" string="Archivo"/>
+                </group>
+                <notebook>
+                <page string="Productos">
+                    <field name="lines" attrs="{'invisible': [['categoria', '=', False]]}"  context="{'default_ubicacion': ubicacion,'default_categoria':categoria}">
+                        <tree editable="bottom">
+                            <field name="producto" domain="[['categ_id','=',categoria]]"/>
+                            <field name="categoria" invisible="1" />
+                            <field name="modelo"/>
+                            <field name="noParte"/>
+                            <field name="serie" editable="1" attrs="{'invisible': [['categoria', '!=', 13]]}"/>
+                            <field name="ubicacion" invisible="1"/>
+                            <field name="descripcion"/>
+                            <field name="disponible"/>
+                            <field name="cantidad"  attrs="{'invisible': [['categoria', '=', 13]]}"/>
+                        </tree>
+                    </field>
+                </page>
+            </notebook>
+                <footer>
+                    <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_picking_serie" model="ir.ui.view">
+        <field name="model">picking.serie</field>
+        <field name="arch" type="xml">
+            <form string="Serie">
+                <group>
+                        <field name="lines">
+                            <tree editable="bottom">
+                                <field name="producto" readonly="1"/>
+                                <field name="estado"/>
+                                <field name="serie"/>
+                                <field name="contadorMono"/>
+                                <field name="contadorColor"/>
+                            </tree>
+                        </field>
+                </group>
+                <footer>
+                    <button name="confirmar" string="Confirmar" type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>

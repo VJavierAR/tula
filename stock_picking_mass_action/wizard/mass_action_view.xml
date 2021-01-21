@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+<record id="view_picking_desasignar" model="ir.ui.view">
+    <field name="model">picking.desasignar</field>
+        <field name="arch" type="xml">
+            <form string="Desasignar Series">
+                <h1>Ingrese la solicitud a desasignar</h1>
+                <group>
+                    <field name='solicitud'/>
+                </group>
+
+                <footer>
+                    <button name="confirm" string="Confirmar" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+</record>
+
+
+</odoo>

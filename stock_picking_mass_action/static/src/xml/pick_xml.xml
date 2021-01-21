@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<template id="template" xml:space="preserve">
+	    <t t-extend="ListView.buttons">
+	        <t t-jquery="button.o_list_button_save" t-operation="before">
+	        	<button t-if="widget.modelName == 'stock.picking'" class="btn btn-primary oe_action_button" type="button" accesskey="f">Transferencia Interna</button>
+	            <button t-if="widget.modelName == 'stock.picking'" class="btn btn-primary oe_action_button_picking_unassigned" type="button" accesskey="f">Desasignar</button>
+	        	<button t-if="widget.modelName == 'stock.move.line'" class="btn btn-primary oe_action_button_move_line" name="1384" type="action" accesskey="g">Reporte de Movimientos</button>
+	        	<button t-if="widget.modelName == 'stock.quant'" class="btn btn-primary oe_action_button_stock_quant" type="button" accesskey="f">Reporte de Existencias</button>
+	        	<button t-if="widget.modelName == 'sale.order'" class="btn btn-primary oe_action_button_sale_report" type="button" accesskey="f">Reporte de Solicitudes</button>
+	        	<button t-if="widget.modelName == 'helpdesk.ticket'" class="btn btn-primary oe_action_button_ticket_report" type="button" accesskey="f">Reporte de Tickets</button>
+	        	<button t-if="widget.modelName == 'stock.inventory'" class="btn btn-primary oe_action_button_stock_inventory" type="button" accesskey="f">Importar Inventario</button>
+	        	<button t-if="widget.modelName == 'product.product'" class="btn btn-primary oe_action_button_product_product" type="button" accesskey="f">Alta de Referencias</button>
+	        	<button t-if="widget.modelName == 'product.product'" class="btn btn-primary oe_action_button_product_product_one" type="button" accesskey="f">Alta de Referencia</button>
+	        	<button t-if="widget.modelName == 'purchase.order'" class="btn btn-primary oe_action_button_purchase_order" type="button" accesskey="f">Reporte de compras</button>
+	        	<button t-if="widget.modelName == 'stock.warehouse.orderpoint'" class="btn btn-primary oe_action_button_stock_rule" type="button" accesskey="f">Importacion o Ajuste</button>
+
+	        <button t-if="widget.modelName == 'helpdesk.ticket'" class="btn btn-primary oe_action_button_helpdesk_detalle" type="button" accesskey="f">Detalle del ticket</button>
+	        <button t-if="widget.modelName == 'creacion.ruta'" class="btn btn-primary oe_action_button_creacion_ruta" type="button" accesskey="f">Reporte de Expediciones</button>
+	           <button t-if="widget.modelName == 'helpdesk.ticket'" class="btn btn-primary oe_action_button_helpdesk_guia" type="button" accesskey="f">Carga de guias</button>
+	          <button t-if="widget.modelName == 'stock.production.lot'" class="btn btn-primary oe_action_button_lot_serial" type="button" accesskey="f">Base Instalada</button>
+	         <button t-if="widget.modelName == 'res.partner'" class="btn btn-primary oe_action_button_res_partner" type="button" accesskey="f">Reporte de Clientes</button>
+
+
+	        </t>
+	    </t>
+	</template>
