@@ -5,9 +5,9 @@
     <field name="model">picking.desasignar</field>
         <field name="arch" type="xml">
             <form string="Desasignar Series">
-                <h1>Ingrese la solicitud a desasignar</h1>
+                <h1>Ingrese los motivos de la Cancelación</h1>
                 <group>
-                    <field name='solicitud'/>
+                    <field name='estado'/>
                 </group>
 
                 <footer>
