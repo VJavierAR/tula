@@ -19,8 +19,8 @@ class pickingDesasignar(TransientModel):
 
 
 
-class BckorderCancel():
-	_inherit='stock_backorder_confirmation'
+class BckorderCancel(TransientModel):
+	_inherit='stock.backorder.confirmation'
 
 	def process_cancel_backorder(self):
 		self._process(cancel_backorder=True)
