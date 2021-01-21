@@ -13,9 +13,10 @@ class pickingDesasignar(TransientModel):
 	cancel_backorder=fields.Boolean(default=True)
 
 	def confirm(self):
-		self.picking_id.move_ids_without_package.write({'estado':self.estado})
-		if(self.cancel_backorder):
-			self.picking_id.action_cancel()
+		for p in self.pick_ids:
+			p.move_ids_without_package.write({'estado':self.estado})
+			if(self.cancel_backorder):
+				p.action_cancel()
 
 
 
