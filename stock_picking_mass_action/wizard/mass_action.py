@@ -3,44 +3,7 @@ from odoo.models import TransientModel
 import datetime, time
 from odoo.exceptions import UserError,RedirectWarning
 from odoo.tools.float_utils import float_compare
-from PIL import Image, ImageEnhance, ImageFilter
-import pytesseract
-from pdf2image import convert_from_path, convert_from_bytes
-import os
-import re
-from PyPDF2 import PdfFileMerger, PdfFileReader,PdfFileWriter
-from io import BytesIO as StringIO
-import base64
-import datetime
-from odoo.tools.mimetypes import guess_mimetype
-import logging, ast
-from odoo.tools import config, DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, pycompat
-_logger = logging.getLogger(__name__)
 
-try:
-    import xlrd
-    try:
-        from xlrd import xlsx
-    except ImportError:
-        xlsx = None
-except ImportError:
-    xlrd = xlsx = None
-
-try:
-    from . import odf_ods_reader
-except ImportError:
-    odf_ods_reader = None
-
-FILE_TYPE_DICT = {
-    'text/csv': ('csv', True, None),
-    'application/vnd.ms-excel': ('xls', xlrd, 'xlrd'),
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ('xlsx', xlsx, 'xlrd >= 1.0.0'),
-    'application/vnd.oasis.opendocument.spreadsheet': ('ods', odf_ods_reader, 'odfpy')
-}
-EXTENSIONS = {
-    '.' + ext: handler
-    for mime, (ext, handler, req) in FILE_TYPE_DICT.items()
-}
 
 class pickingDesasignar(TransientModel):
     _name='picking.desasignar'
