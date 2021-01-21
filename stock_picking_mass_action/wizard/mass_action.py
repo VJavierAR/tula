@@ -25,7 +25,7 @@ class BckorderCancel(TransientModel):
 	def process_cancel_backorder(self):
 		self._process(cancel_backorder=True)
 		w=self.env['picking.desasignar'].create({'pick_ids':self.pick_ids,'cancel_backorder':False})
-		view=self.env.ref('stock.view_picking_desasignar')
+		view=self.env.ref('stock_picking_mass_action.view_picking_desasignar')
 		return {
 				'name': _('Motivos de Cancelacion'),
 				'type': 'ir.actions.act_window',

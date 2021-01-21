@@ -12,7 +12,7 @@ class StockPicking(Model):
     def cancelacion(self):
         #self.action_cancel()
         w=self.env['picking.desasignar'].create({'pick_ids':[(4,self.id)]})
-        view=self.env.ref('stock.view_picking_desasignar')
+        view=self.env.ref('stock_picking_mass_action.view_picking_desasignar')
         return {
                 'name': _('Motivos de Cancelacion'),
                 'type': 'ir.actions.act_window',
