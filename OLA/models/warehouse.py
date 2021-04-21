@@ -8,6 +8,6 @@ class almacen(models.Model):
 class stock(models.Model):
 	_inherit = 'stock.picking'
 
-	@api.multi
+	#@api.multi
 	def print_vale_de_entrega(self):
 		return self.env.ref("stock.report_deliveryslip").report_action(self)
