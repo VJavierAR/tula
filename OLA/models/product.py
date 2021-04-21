@@ -103,7 +103,7 @@ class productPr(models.Model):
 		# Only use the product.product heuristics if there is a search term and the domain
 		# does not specify a match on `product.template` IDs.
 		if not name or any(term[0] == 'id' for term in (args or [])):
-			return super(ProductTemplate, self)._name_search(name=name, args=args, operator=operator, limit=limit,
+			return super(productPr, self)._name_search(name=name, args=args, operator=operator, limit=limit,
 															 name_get_uid=name_get_uid)
 
 		Product = self.env['product.product']
