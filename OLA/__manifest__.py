@@ -15,6 +15,7 @@
         'product',
     ],
     'data': [
+        'security/access.csv',
         'views/stock_picking_view.xml',
         'views/product_template_view.xml'
     ],
