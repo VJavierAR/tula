@@ -99,7 +99,7 @@ class productPr(models.Model):
 			_logger.info("domain: " + str(domain))
 		return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
 		"""
-		_logger.info("name: " + str(name))
+		_logger.info("name: " + str(name)) 
 		# Only use the product.product heuristics if there is a search term and the domain
 		# does not specify a match on `product.template` IDs.
 		if not name or any(term[0] == 'id' for term in (args or [])):
