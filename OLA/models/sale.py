@@ -54,5 +54,5 @@ class productSuggested(models.Model):
 	rel_id=fields.Many2one('sale.order')
 
 	def add(self):
-		self.rel_id.order_line.write({(0, 0, {'product_id':self.product_sug.id })})
+		self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
 
