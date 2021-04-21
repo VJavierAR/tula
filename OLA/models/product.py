@@ -1,4 +1,6 @@
 from odoo import models, fields, api,_
+import logging, ast
+_logger = logging.getLogger(__name__)
 
 
 class product(models.Model):
@@ -14,6 +16,7 @@ class product(models.Model):
 	def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
 		args = args or []
 		domain = []
+		_logger.info("args: " + str(args))
 		if name:
 			domain['|', '|', '|',
 				   ('name', operator, name),
@@ -21,6 +24,7 @@ class product(models.Model):
 				   ('codigo_producto_cliente', operator, name),
 				   ('barcode', operator, name)
 			]
+			_logger.info("domain: " + str(domain))
 		return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
 		"""
 		# Only use the product.product heuristics if there is a search term and the domain
@@ -77,3 +81,18 @@ class product(models.Model):
 class productPr(models.Model):
 	_inherit = 'product.product'
 	sug_rel=fields.Many2many('product.product',relation='product_may_sug',column1='id', column2='id2')
+
+	@api.model
+	def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+		args = args or []
+		domain = []
+		_logger.info("args: " + str(args))
+		if name:
+			domain['|', '|', '|',
+				   ('name', operator, name),
+				   ('default_code', operator, name),
+				   ('codigo_producto_cliente', operator, name),
+				   ('barcode', operator, name)
+			]
+			_logger.info("domain: " + str(domain))
+		return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
