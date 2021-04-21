@@ -15,4 +15,4 @@ class stock(models.Model):
 			raise exceptions.UserError("No se puede validar la orden dado que el Cliente: "+self.cliente.name+' no cuenta con ubicaciones disponibles o no tiene ningun servicio contratado.')			
 		else:
 			self.en_proceso=True
-			return self.env.ref("stock.report_delivery_document").report_action(self)
+			return self.env.ref("stock.action_report_picking").report_action(self)
