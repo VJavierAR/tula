@@ -9,3 +9,7 @@ class product(models.Model):
 		store = True,
 		#track_visibility = 'onchange'
 	)
+
+class productPr(models.Model):
+	_inherit = 'product.product'
+	suggest=fields.Many2many('product.product')
