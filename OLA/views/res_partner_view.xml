@@ -1,9 +1,9 @@
 <odoo>
     <data>
-        <!--
+
         <record model="ir.ui.view" id="res_partner_form_view_update">
             <field name="name">res.partner.form.update</field>
-            <field name="model">product.template</field>
+            <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
 
@@ -13,6 +13,6 @@
 
             </field>
         </record>
-        -->
+
     </data>
 </odoo>
