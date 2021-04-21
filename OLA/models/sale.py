@@ -44,8 +44,8 @@ class sale(models.Model):
 			if total > limite_de_credito:
 				title = "Límite de crédito excedido."
 				message = """Se excedio el límite de crédito: \n
-								Límite de credito: $""" + str(self.addComa(limite_de_credito)) + """\n
-								Costo total: $""" + str(self.addComa(total)) + """
+								Límite de credito: $""" + str(limite_de_credito.addComa()) + """\n
+								Costo total: $""" + str(total.addComa()) + """
 						  """
 				return {
 					'value': {},
