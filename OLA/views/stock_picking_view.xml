@@ -9,7 +9,7 @@
                       decoration-info="state == 'draft'"
                       decoration-muted="state == 'cancel'"
                       decoration-danger="state not in ('cancel', 'done') and scheduled_date &lt; current_date"
-                      
+
                     >
                     <field name="name"/>
                     <field name="location_id" options="{'no_create': True}" string="From" groups="stock.group_stock_multi_locations" optional="show"/>
