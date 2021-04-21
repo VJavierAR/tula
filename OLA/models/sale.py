@@ -9,7 +9,7 @@ class sale(models.Model):
 	productos_sugeridos=fields.One2many('product.suggested','rel_id')
 
 	@api.onchange('order_line')
-	def funct():
+	def funct(self):
 		if(len(self.order_line)>0):
 			arreglo=[]
 			self.productos_sugeridos=[(5,0,0)]
