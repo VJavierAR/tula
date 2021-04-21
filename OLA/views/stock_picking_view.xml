@@ -1,21 +1,12 @@
 <odoo>
     <data>
-        <record model="ir.ui.view" id="stock.vpicktree">
+        <record id="stock.vpicktree" model="ir.ui.view">
             <field name="name">stock.picking.tree</field>
             <field name="model">stock.picking</field>
             <field name="arch" type="xml">
-                <tree string="Picking list"
-                      multi_edit="1"
-                      decoration-info="state == 'draft'"
-                      decoration-muted="state == 'cancel'"
-                      decoration-danger="state == 'confirmed'"
-                      decoration-warning="state == 'waiting'"
-                      decoration-succes="state == 'done'"
-
-                    >
-                    <!-- estados: draft, waiting, confirmed, assigned, done, cancel
-                    decoration-danger="state not in ('cancel', 'done') and scheduled_date &lt; current_date"
-                    -->
+                <tree string="Picking list" multi_edit="1"
+                      decoration-info="state == 'draft'" decoration-muted="state == 'cancel'"
+                      decoration-danger="state not in ('cancel', 'done') and scheduled_date &lt; current_date">
                     <field name="name"/>
                     <field name="location_id" options="{'no_create': True}" string="From" groups="stock.group_stock_multi_locations" optional="show"/>
                     <field name="location_dest_id" options="{'no_create': True}" string="To" groups="stock.group_stock_multi_locations" optional="show"/>
