@@ -29,13 +29,20 @@ class sale(models.Model):
 	@api.onchange('order_line')
 	def comprobar_limite_de_credito(self):
 		if self.order_line.ids:
-			_logger.debug("total: " + str(self.amount_total) + " limite de credito: " + str(self.partner_id.limite_credito))
-			if self.amount_total > self.partner_id.limite_credito:
+			total = self.amount_total
+			limite_de_credito = self.partner_id.limite_credito
+			_logger.debug("total: " + str(total) + " limite de credito: " + str(limite_de_credito))
+			if total > limite_de_credito:
+				title = "Límite de crédito excedido."
+				message = """Se excedio el límite de crédito: \n
+								Límite de credito: """ + str(limite_de_credito) + """\n
+								Costo total: """ + str(total) + """
+						  """
 				return {
 					'value': {},
 					'warning': {
-						'title': 'warning',
-						'message': 'Your message'
+						'title': title,
+						'message': message
 					}
 				}
 
