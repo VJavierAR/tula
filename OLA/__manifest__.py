@@ -10,6 +10,7 @@
     'license': 'AGPL-3',
     'category': 'Sale',
     'depends': [
+        'base',
         'stock',
         'sale',
         'product',
@@ -17,7 +18,8 @@
     'data': [
         'security/ir.model.access.csv',
         'views/stock_picking_view.xml',
-        'views/product_template_view.xml'
+        'views/product_template_view.xml',
+        'views/res_partner_view.xml'
     ],
     'installable': True,
     'application': True,
