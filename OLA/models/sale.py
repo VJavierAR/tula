@@ -30,19 +30,19 @@ class sale(models.Model):
 class saleOr(models.Model):
 	_inherit='sale.order.line'
 
-	@api.onchange('product_id')
-	def addSugges(self):
-		p=self.product_id.mapped('sug_rel.id')
-		arreglo=[]
-		_logger.info(str(p))
-		for pi in p:
-			pro=dict()
-			pro['product_rel']=self.product_id.id
-			pro['product_sug']=pi
-			pro['rel_id']=self.order_id.id
-			arreglo.append(pro)
-			_logger.info(str(pi))
-		self.order_id.productos_sugeridos.write(arreglo)
+	# @api.onchange('product_id')
+	# def addSugges(self):
+	# 	p=self.product_id.mapped('sug_rel.id')
+	# 	arreglo=[]
+	# 	_logger.info(str(p))
+	# 	for pi in p:
+	# 		pro=dict()
+	# 		pro['product_rel']=self.product_id.id
+	# 		pro['product_sug']=pi
+	# 		pro['rel_id']=self.order_id.id
+	# 		arreglo.append(pro)
+	# 		_logger.info(str(pi))
+	# 	self.order_id.productos_sugeridos.write(arreglo)
 
 
 class productSuggested(models.Model):
