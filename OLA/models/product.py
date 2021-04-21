@@ -12,4 +12,4 @@ class product(models.Model):
 
 class productPr(models.Model):
 	_inherit = 'product.product'
-	sug_rel=fields.Many2many('product.product')
+	sug_rel=fields.Many2many('product.product','product_may_sug')
