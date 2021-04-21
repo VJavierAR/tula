@@ -16,7 +16,7 @@ class sale(models.Model):
 			p=self.order_line.mapped('product_id.sug_rel.id')
 			for pii in self.order_line:
 				pro=dict()
-				pro['product_rel']=self.product_id.id
+				pro['product_rel']=pii.product_id.id
 				p=pii.mapped('product_id.sug_rel.id')
 				for pi in p:
 					pro['product_sug']=pi
