@@ -7,9 +7,9 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='type']" position="before">
-                    <field name="codigo_producto_cliente" />
+                    <!--<field name="codigo_producto_cliente" />-->
                 </xpath>
-                
+
             </field>
         </record>
     </data>
