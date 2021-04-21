@@ -12,4 +12,4 @@ class product(models.Model):
 
 class productPr(models.Model):
 	_inherit = 'product.product'
-	suggest=fields.Many2many('product.product')
+	sugerido=fields.Many2many('product.product')
