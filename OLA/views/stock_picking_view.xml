@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <record model="ir.ui.view" id="stock.vpicktree">
-            <field name="name">stock.picking.tree.edit</field>
+            <field name="name">stock.picking.tree</field>
             <field name="model">stock.picking</field>
             <field name="arch" type="xml">
                 <tree string="Picking list"
