@@ -12,7 +12,7 @@ class saleOr(models.Model):
 	def addSugges(self):
 		p=self.product_id.mapped('sug_rel.id')
 		for pi in p:
-			self.order_id.write({'productos_sugeridos':[(0,0,{'product_rel':self.product_id.id,'product_sug':pi})]})
+			self.order_id.productos_sugeridos=[(0,0,{'product_rel':self.product_id.id,'product_sug':pi})]
 
 
 class productSuggested(models.Model):
