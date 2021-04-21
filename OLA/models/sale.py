@@ -8,21 +8,22 @@ class sale(models.Model):
 	_inherit='sale.order'
 	productos_sugeridos=fields.One2many('product.suggested','rel_id')
 
-	# @api.onchange('order_line')
-	# def funct(self):
-	# 	if(len(self.order_line)>0):
-	# 		arreglo=[]
-	# 		self.productos_sugeridos=[(5,0,0)]
-	# 		p=self.order_line.mapped('product_id.sug_rel.id')
-	# 		for pii in self.order_line:
-	# 			pro={}
-	# 			pro['product_rel']=pii.product_id.id
-	# 			p=pii.mapped('product_id.sug_rel.id')
-	# 			for pi in p:
-	# 				pro['product_sug']=pi
-	# 				arreglo.append(pro)
-	# 		_logger.info(str(arreglo))
-	# 		self.productos_sugeridos=arreglo
+	@api.onchange('order_line')
+	def funct(self):
+		if(len(self.order_line)>0):
+			arreglo=[]
+			self.productos_sugeridos=[(5,0,0)]
+			p=self.order_line.mapped('product_id.sug_rel.id')
+			for pii in self.order_line:
+				pro={}
+				pro['product_rel']=pii.product_id.id
+				p=pii.mapped('product_id.sug_rel.id')
+				for pi in p:
+					pro['product_sug']=pi
+					pro['rel_id']=self.id
+					arreglo.append(pro)
+			_logger.info(str(arreglo))
+			self.productos_sugeridos=arreglo
 
 
 
