@@ -34,5 +34,16 @@
                 </tree>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="stock_picking_form_update">
+            <field name="name">stock.picking.form.update</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_cancel']" position="after">
+                    <button name="print_vale_de_entrega" type="object" string="Imprimir vale de entrega" class="oe_highlight"/>
+                </xpath>
+            </field>
+        </record>
+
     </data>
 </odoo>
