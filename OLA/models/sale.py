@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 
 class sale(models.Model):
 	_inherit='sale.order'
-	productos_sugeridos=fields.One2many('product.suggested','rel_id',readonly=True)
+	productos_sugeridos=fields.One2many('product.suggested','rel_id')
 
 	@api.onchange('order_line')
 	def funct(self):
