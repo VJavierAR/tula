@@ -26,6 +26,15 @@ class sale(models.Model):
 			_logger.info(str(arreglo))
 			#self.productos_sugeridos=arreglo
 
+	def addComa(snum):
+		"Adicionar comas como separadores de miles a n. n debe ser de tipo string"
+		s = snum;
+		i = s.index('.')  # Se busca la posición del punto decimal
+		while i > 3:
+			i = i - 3
+			s = s[:i] + ',' + s[i:]
+		return s
+
 	@api.onchange('order_line')
 	def comprobar_limite_de_credito(self):
 		if self.order_line.ids:
@@ -35,8 +44,8 @@ class sale(models.Model):
 			if total > limite_de_credito:
 				title = "Límite de crédito excedido."
 				message = """Se excedio el límite de crédito: \n
-								Límite de credito: """ + str(limite_de_credito) + """\n
-								Costo total: """ + str(total) + """
+								Límite de credito: $""" + str(self.addComa(limite_de_credito)) + """\n
+								Costo total: $""" + str(self.addComa(total)) + """
 						  """
 				return {
 					'value': {},
