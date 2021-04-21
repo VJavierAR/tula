@@ -54,7 +54,7 @@ class productSuggested(models.Model):
 	product_sug=fields.Many2one('product.product')
 	rel_id=fields.Many2one('sale.order')
 
-	@api.onchange('agregar')
+	#@api.onchange('agregar')
 	def add(self):
 		if(self.agregar):
 			self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
