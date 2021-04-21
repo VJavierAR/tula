@@ -84,20 +84,18 @@ class productPr(models.Model):
 
 	@api.model
 	def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-		"""
-		args = args or []
-		domain = []
-		_logger.info("args: " + str(args))
-		_logger.info("name: " + str(name))
-		if name:
-			domain['|', '|', '|',
-				   ('name', operator, name),
-				   ('default_code', operator, name),
-				   ('codigo_producto_cliente', operator, name),
-				   ('barcode', operator, name)
-			]
-			_logger.info("domain: " + str(domain))
-		return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+		@api.model
+		def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+			args = args or []
+			recs = self.browse()
+			if not recs:
+				recs = self.search(['|', '|', '|',
+									('name', operator, name),
+									('default_code', operator, name),
+									('codigo_producto_cliente', operator, name),
+									('barcode', operator, name)
+									] + args, limit=limit)
+			return recs.name_get()
 		"""
 		_logger.info("name: " + str(name)) 
 		# Only use the product.product heuristics if there is a search term and the domain
@@ -149,3 +147,4 @@ class productPr(models.Model):
 		return super(ProductTemplate, self)._name_search(
 			'', args=[('id', 'in', list(searched_ids))],
 			operator='ilike', limit=limit, name_get_uid=name_get_uid)
+		"""
