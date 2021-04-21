@@ -14,7 +14,7 @@
         'sale',
     ],
     'data': [
-        'views/stock_picking_view.xml'
+        #'views/stock_picking_view.xml'
     ],
     'installable': True,
     'application': True,
