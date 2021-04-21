@@ -12,7 +12,7 @@ class stock(models.Model):
 	#@api.multi
 	def print_vale_de_entrega(self):
 		if(self.en_proceso):
-			raise exceptions.UserError("No se puede validar la orden dado que el Cliente: "+self.cliente.name+' no cuenta con ubicaciones disponibles o no tiene ningun servicio contratado.')			
+			raise exceptions.UserError('Orden de surtido ya se encunetra en proceso')			
 		else:
 			self.en_proceso=True
 			return self.env.ref("stock.action_report_picking").report_action(self)
