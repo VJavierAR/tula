@@ -10,7 +10,7 @@ class saleOr(models.Model):
 
 	@api.onchange('product_id')
 	def addSugges(self):
-		p=self.product_id.mapped('suggest.id')
+		p=self.product_id.mapped('sug_rel.id')
 		for pi in p:
 			self.order_id.write({'product_rel':self.product_id.id,'product_sug':pi})
 
