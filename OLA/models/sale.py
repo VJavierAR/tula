@@ -49,14 +49,13 @@ class saleOr(models.Model):
 class productSuggested(models.Model):
 	_name='product.suggested'
 	_description='Productos sugeridos'
-	agregar=fields.Boolean()
+	agregar=fields.Boolean(compute='add')
 	product_rel=fields.Many2one('product.product')
 	product_sug=fields.Many2one('product.product')
 	rel_id=fields.Many2one('sale.order')
 
-	@api.onchange('agregar')
+	@api.depends('agregar')
 	def add(self):
-		for record in self:
-			if(record.agregar):
-				record.rel_id.order_line=[(0, 0, {'product_id':record.product_sug.id,'order_id':record.rel_id.id})]
+		if(self.agregar):
+			self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
 
