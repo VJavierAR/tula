@@ -14,10 +14,14 @@ class saleOr(models.Model):
 	@api.onchange('product_id')
 	def addSugges(self):
 		p=self.product_id.mapped('sug_rel.id')
+		arreglo=[]
 		_logger.info(str(p))
 		for pi in p:
+			pro['product_rel']=self.product_id.id
+			pro['product_sug']=pi
+			arreglo.append(pro)
 			_logger.info(str(pi))
-			self.order_id.productos_sugeridos=[{'product_rel':self.product_id.id,'product_sug':pi}]
+		self.order_id.productos_sugeridos=arreglo
 
 
 class productSuggested(models.Model):
