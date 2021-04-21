@@ -26,7 +26,7 @@ class sale(models.Model):
 			_logger.info(str(arreglo))
 			#self.productos_sugeridos=arreglo
 
-	@api.onchange('order.line')
+	@api.onchange('order_line')
 	def comprobar_limite_de_credito(self):
 		if self.order_line.ids:
 			_logger.debug("total: " + str(self.amount_total) + " limite de credito: " + str(self.partner_id.limite_credito))
