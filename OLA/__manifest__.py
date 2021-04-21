@@ -10,7 +10,11 @@
     'license': 'AGPL-3',
     'category': 'Sale',
     'depends': [
-        'stock','sale',
+        'stock',
+        'sale',
+    ],
+    'data': [
+        'views/stock_picking_view.xml'
     ],
     'installable': True,
     'application': True,
