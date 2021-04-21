@@ -22,7 +22,7 @@ class product(models.Model):
 		templates = self.browse([])
 		domain_no_variant = [('product_variant_ids', '=', False)]
 		while True:
-			domain = templates and [('product_tmpl_id', 'not in', templates.ids)('codigo_producto_cliente', operator, name)] or []
+			domain = templates and ['|', ('product_tmpl_id', 'not in', templates.ids), ('codigo_producto_cliente', operator, name)] or []
 			args = args if args is not None else []
 			products_ns = Product._name_search(name, args + domain, operator=operator, name_get_uid=name_get_uid)
 			products = Product.browse([x[0] for x in products_ns])
