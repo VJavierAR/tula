@@ -15,12 +15,13 @@ class sale(models.Model):
 			self.productos_sugeridos=[(5,0,0)]
 			p=self.order_line.mapped('product_id.sug_rel.id')
 			for pii in self.order_line:
-				pro=dict()
+				pro={}
 				pro['product_rel']=pii.product_id.id
 				p=pii.mapped('product_id.sug_rel.id')
 				for pi in p:
 					pro['product_sug']=pi
 					arreglo.append(pro)
+			_logger.info(str(arreglo))
 			self.productos_sugeridos=arreglo
 
 
