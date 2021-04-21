@@ -21,9 +21,10 @@ class sale(models.Model):
 				for pi in p:
 					pro['product_sug']=pi
 					pro['rel_id']=self.id
+					self.productos_sugeridos.write(pro)
 					arreglo.append(pro)
 			_logger.info(str(arreglo))
-			self.productos_sugeridos=arreglo
+			#self.productos_sugeridos=arreglo
 
 
 
