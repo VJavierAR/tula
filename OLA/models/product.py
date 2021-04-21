@@ -12,6 +12,17 @@ class product(models.Model):
 
 	@api.model
 	def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+		args = args or []
+		domain = []
+		if name:
+			domain['|', '|', '|',
+				   ('name', operator, name),
+				   ('default_code', operator, name),
+				   ('codigo_producto_cliente', operator, name),
+				   ('barcode', operator, name)
+			]
+		return self._search(domain + args, limit=limit, access_rights_uid=name_get_uid)
+		"""
 		# Only use the product.product heuristics if there is a search term and the domain
 		# does not specify a match on `product.template` IDs.
 		if not name or any(term[0] == 'id' for term in (args or [])):
@@ -22,14 +33,14 @@ class product(models.Model):
 		templates = self.browse([])
 		domain_no_variant = [('product_variant_ids', '=', False)]
 		while True:
-			domain = templates and ['|', ('product_tmpl_id', 'not in', templates.ids), ('codigo_producto_cliente', operator, name)] or []
+			domain = templates and [('product_tmpl_id', 'not in', templates.ids)] or []
 			args = args if args is not None else []
 			products_ns = Product._name_search(name, args + domain, operator=operator, name_get_uid=name_get_uid)
 			products = Product.browse([x[0] for x in products_ns])
 			new_templates = products.mapped('product_tmpl_id')
 			if new_templates & templates:
-				"""Product._name_search can bypass the domain we passed (search on supplier info).
-                   If this happens, an infinite loop will occur."""
+				#Product._name_search can bypass the domain we passed (search on supplier info).
+                #   If this happens, an infinite loop will occur.
 				break
 			templates |= new_templates
 			current_round_templates = self.browse([])
@@ -61,6 +72,7 @@ class product(models.Model):
 		return super(ProductTemplate, self)._name_search(
 			'', args=[('id', 'in', list(searched_ids))],
 			operator='ilike', limit=limit, name_get_uid=name_get_uid)
+		"""
 
 class productPr(models.Model):
 	_inherit = 'product.product'
