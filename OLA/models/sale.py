@@ -17,6 +17,7 @@ class saleOr(models.Model):
 		arreglo=[]
 		_logger.info(str(p))
 		for pi in p:
+			pro=dict()
 			pro['product_rel']=self.product_id.id
 			pro['product_sug']=pi
 			arreglo.append(pro)
