@@ -22,7 +22,7 @@ class saleOr(models.Model):
 			pro['product_sug']=pi
 			arreglo.append(pro)
 			_logger.info(str(pi))
-		self.order_id.productos_sugeridos=arreglo
+		self.order_id.productos_sugeridos.write(arreglo)
 
 
 class productSuggested(models.Model):
