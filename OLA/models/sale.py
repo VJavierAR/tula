@@ -1,5 +1,8 @@
 from odoo import models, fields, api,_
-
+import datetime, time
+from odoo import exceptions
+import logging, ast
+_logger = logging.getLogger(__name__)
 
 class sale(models.Model):
 	_inherit='sale.order'
@@ -11,8 +14,15 @@ class saleOr(models.Model):
 	@api.onchange('product_id')
 	def addSugges(self):
 		p=self.product_id.mapped('sug_rel.id')
+		arreglo=[]
+		_logger.info(str(p))
 		for pi in p:
-			self.order_id.productos_sugeridos.write({'product_rel':self.product_id.id,'product_sug':pi})
+			pro=dict()
+			pro['product_rel']=self.product_id.id
+			pro['product_sug']=pi
+			arreglo.append(pro)
+			_logger.info(str(pi))
+		self.order_id.productos_sugeridos=arreglo
 
 
 class productSuggested(models.Model):
