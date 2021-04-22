@@ -17,7 +17,7 @@ class sale(models.Model):
 			dat=self.env['product.product'].browse(data)
 			for d in dat:
 				_logger.info(d.id)
-				self.order_line.write({'product_id':d.id,'order_id':self.id,'product_uom_qty':1,'name':d.description,'preci_unit'd.lts_price})
+				self.order_line.write({'product_id':d.id,'order_id':self.id,'product_uom_qty':1,'name':d.description,'preci_unit':d.lts_price})
 
 
 
@@ -134,4 +134,3 @@ class productSuggested(models.Model):
 
 	def add(self):
 		self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
-		
