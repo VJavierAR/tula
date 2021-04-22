@@ -81,10 +81,10 @@ class sale(models.Model):
 				if total_con_facturas > limite_de_credito:
 					title = "Límite de crédito excedido."
 					message = """Se excedio el límite de crédito por facturas no pagadas y total del pedido de venta actual: \n
-													Límite de credito: $""" + str(limite_de_credito) + """\n
-													Costo total de pedido de venta actual: $""" + str(total) + """
-													Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """
-											  """
+									Límite de credito: $""" + str(limite_de_credito) + """\n
+									Costo total de pedido de venta actual: $""" + str(total) + """
+									Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """
+							  """
 					return {
 						'value': {},
 						'warning': {
