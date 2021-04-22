@@ -8,7 +8,6 @@ class sale(models.Model):
 	_inherit = 'sale.order'
 	productos_sugeridos = fields.One2many('product.suggested','rel_id')
 	arreglo = fields.Char(default='[]')
-	#order_line = fields.One2many(comodel_name = 'sale.order.line', inverse_name = 'order_id', compute = 'precio_minimo')
 
 	@api.onchange('arreglo')
 	def addsegesst(self):
@@ -40,9 +39,9 @@ class sale(models.Model):
 			if total > limite_de_credito:
 				title = title + "Límite de crédito excedido. | "
 				message = message + """Se excedio el límite de crédito: \n
-								Límite de credito: $""" + str(limite_de_credito) + """\n
-								Costo total: $""" + str(total) + """\n
-						  """
+				Límite de credito: $""" + str(limite_de_credito) + """\n
+				Costo total: $""" + str(total) + """\n
+				"""
 				genero_alertas = True
 
 			#Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
@@ -63,10 +62,11 @@ class sale(models.Model):
 				if total_con_facturas > limite_de_credito:
 					title = title + "Límite de crédito excedido. | "
 					message = message + """Se excedio el límite de crédito por facturas no pagadas y total del pedido de venta actual: \n
-									Límite de credito: $""" + str(limite_de_credito) + """\n
-									Costo total de pedido de venta actual: $""" + str(total) + """
-									Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
-							  """
+					Límite de credito: $""" + str(limite_de_credito) + """\n
+					Costo total de pedido de venta actual: $""" + str(total) + """
+					Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n\n
+					Facturas no pagadas: """ + str(facturas_no_pagadas.mapped('name')) + """\n
+					"""
 					genero_alertas = True
 
 			if genero_alertas:
@@ -77,9 +77,6 @@ class sale(models.Model):
 						'message': message
 					}
 				}
-
-
-
 
 
 class saleOr(models.Model):
@@ -112,32 +109,28 @@ class saleOr(models.Model):
 
 	@api.onchange('price_unit')
 	def precio_minimo(self):
-		_logger.info("precio_minimo")
 		genero_alertas = False
 
 		title = "Alertas: "
 		message = """Mensajes: \n"""
-		_logger.info("rec.product_id: " + str(self.product_id))
-		_logger.info("rec.product_id.id: " + str(self.product_id.id))
+
 		# Comprobar precio minimo
 		if self.price_unit and self.product_id.id:
-			_logger.info("linea.price_unit: " + str(self.price_unit))
 			if self.price_unit < self.x_studio_field_Ml1CB:
 				title = title + "Precio minímo de venta. | "
 				message = message + """El producto: """ + str(
 					self.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
 					self.price_unit) + """\nPrecio minímo: """ + str(self.x_studio_field_Ml1CB) + """\n"""
 				genero_alertas = True
-			# raise Warning('Estas rebasando tu precio minímo de venta')
+
 			elif self.price_subtotal < self.x_studio_field_Ml1CB:
 				title = title + "Precio minímo de venta. | "
 				message = message + """El producto: """ + str(
 					self.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
 					self.price_subtotal) + """\nPrecio minímo: """ + str(self.x_studio_field_Ml1CB) + """\n"""
 				genero_alertas = True
-		# raise Warning('Estas rebasando tu precio minímo de venta')
+
 		if genero_alertas:
-			_logger.info("Entrea a lanzar mensaje")
 			return {
 				# 'value': {},
 				'warning': {
