@@ -31,7 +31,7 @@ class sale(models.Model):
 		if self.order_line.ids:
 			total = self.amount_total
 			limite_de_credito = self.partner_id.limite_credito
-			_logger.debug("total: " + str(total) + " limite de credito: " + str(limite_de_credito))
+			_logger.info("total: " + str(total) + " limite de credito: " + str(limite_de_credito))
 
 			#Caso en que excede limite de credito la linea de pediodo de venta
 			if total > limite_de_credito:
@@ -56,8 +56,8 @@ class sale(models.Model):
 				 ["partner_id", "=", self.partner_id.id]
 				 ]
 			)
-			_logger.debug("facturas_no_pagadas: ")
-			_logger.debug(facturas_no_pagadas)
+			_logger.info("facturas_no_pagadas: ")
+			_logger.info(facturas_no_pagadas)
 			if facturas_no_pagadas:
 				total_de_facturas_no_pagadas = 0
 				for factura_no_pagada in facturas_no_pagadas:
