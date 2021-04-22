@@ -17,7 +17,7 @@ class sale(models.Model):
 			dat=self.env['product.product'].browse(data)
 			for d in dat:
 				_logger.info(d.id)
-				self.order_line.write({'product_id':d.id,'order_id':self.id,'product_uom_qty':1,'name':d.description,'preci_unit':d.lst_price})
+				self.order_line.write({'product_id':d.id,'order_id':self.id,'product_uom_qty':1,'name':d.description,'price_unit':d.lst_price})
 
 
 
