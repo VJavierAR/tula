@@ -134,3 +134,4 @@ class productSuggested(models.Model):
 
 	def add(self):
 		self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
+		
