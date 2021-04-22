@@ -84,6 +84,7 @@ class sale(models.Model):
 
 class saleOr(models.Model):
 	_inherit='sale.order.line'
+
 	@api.onchange('product_id')
 	def stock(self):
 		res={}
@@ -107,10 +108,6 @@ class saleOr(models.Model):
 	# 		_logger.info(str(pi))
 	# 	self.order_id.productos_sugeridos.write(arreglo)
 
-
-class sale_order_line(models.Model):
-	_inherit = 'sale.order.line'
-
 	x_studio_field_Ml1CB = fields.Float("Precio minímo", compute="precio_minimo")
 
 	@api.depends('price_unit')
@@ -132,14 +129,14 @@ class sale_order_line(models.Model):
 						rec.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
 						rec.price_unit) + """\nPrecio minímo: """ + str(rec.x_studio_field_Ml1CB) + """\n"""
 					genero_alertas = True
-					# raise Warning('Estas rebasando tu precio minímo de venta')
+				# raise Warning('Estas rebasando tu precio minímo de venta')
 				elif rec.price_subtotal < rec.x_studio_field_Ml1CB:
 					title = title + "Precio minímo de venta. | "
 					message = message + """El producto: """ + str(
 						rec.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
 						rec.price_subtotal) + """\nPrecio minímo: """ + str(rec.x_studio_field_Ml1CB) + """\n"""
 					genero_alertas = True
-					# raise Warning('Estas rebasando tu precio minímo de venta')
+			# raise Warning('Estas rebasando tu precio minímo de venta')
 			if genero_alertas:
 				_logger.info("Entrea a lanzar mensaje")
 				return {
