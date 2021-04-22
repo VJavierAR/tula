@@ -142,7 +142,7 @@ class sale_order_line(models.Model):
 			_logger.info("rec.product_id: " + str(rec.product_id))
 			_logger.info("rec.product_id.id: " + str(rec.product_id.id))
 			# Comprobar precio minimo
-			if rec.price_unit and rec.product_id:
+			if rec.price_unit and rec.product_id.id:
 				_logger.info("linea.price_unit: " + str(rec.price_unit))
 				if rec.price_unit < rec.x_studio_field_Ml1CB:
 					title = title + "Precio minímo de venta. | "
