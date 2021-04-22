@@ -7,6 +7,17 @@ _logger = logging.getLogger(__name__)
 class sale(models.Model):
 	_inherit='sale.order'
 	productos_sugeridos=fields.One2many('product.suggested','rel_id')
+	arreglo=fields.Char(default='[]')
+
+
+	@api.onchange('arreglo')
+	def addsegesst(self):
+		if(self.arreglo!='[]'):
+			data=eval(self.arreglo)
+			for d in data:
+				self.order_line=[(0, 0, {'product_id':d})]
+
+
 
 	@api.onchange('order_line')
 	def funct(self):
@@ -113,7 +124,9 @@ class productSuggested(models.Model):
 	product_rel=fields.Many2one('product.product')
 	product_sug=fields.Many2one('product.product')
 	rel_id=fields.Many2one('sale.order')
+	agregar=fields.Boolean()
 
+	@api.onchange('agregar')
 	def add(self):
-		self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
-
+		#self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
+		self.rel_id.arreglo=str([self.product_sug.id])
