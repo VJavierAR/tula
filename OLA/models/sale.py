@@ -49,6 +49,8 @@ class sale(models.Model):
 			limite_de_credito = self.partner_id.limite_credito
 			_logger.info("total: " + str(total) + " limite de credito: " + str(limite_de_credito))
 
+			genero_alertas = False
+
 			title = "Alertas: "
 			message = """Mensajes: \n"""
 
@@ -57,10 +59,12 @@ class sale(models.Model):
 				if linea.price_unit < linea.x_studio_field_Ml1CB:
 					title = title + "Precio minímo de venta. | "
 					message = message + """El producto: """ + str(linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\n"""
+					genero_alertas = True
 				# raise Warning('Estas rebasando tu precio minímo de venta')
 				elif linea.price_subtotal < linea.x_studio_field_Ml1CB:
 					title = title + "Precio minímo de venta. | "
 					message = message + """El producto: """ + str(linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\n"""
+					genero_alertas = True
 
 				# raise Warning('Estas rebasando tu precio minímo de venta')
 
@@ -71,6 +75,7 @@ class sale(models.Model):
 								Límite de credito: $""" + str(limite_de_credito) + """\n
 								Costo total: $""" + str(total) + """\n
 						  """
+				genero_alertas = True
 
 			#Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
 			facturas_no_pagadas = self.sudo().env['account.move'].search(
@@ -94,14 +99,16 @@ class sale(models.Model):
 									Costo total de pedido de venta actual: $""" + str(total) + """
 									Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
 							  """
+					genero_alertas = True
 
-			return {
-				'value': {},
-				'warning': {
-					'title': title,
-					'message': message
+			if genero_alertas:
+				return {
+					'value': {},
+					'warning': {
+						'title': title,
+						'message': message
+					}
 				}
-			}
 
 
 
