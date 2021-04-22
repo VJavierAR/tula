@@ -42,7 +42,7 @@ class sale(models.Model):
 			_logger.info(str(arreglo))
 			#self.productos_sugeridos=arreglo
 
-	@api.dependes('order_line.price_unit')
+	@api.depends('order_line.price_unit')
 	def precio_minimo(self):
 		genero_alertas = False
 
