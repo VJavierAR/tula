@@ -15,7 +15,8 @@ class sale(models.Model):
 		if(self.arreglo!='[]'):
 			data=eval(self.arreglo)
 			for d in data:
-				self.order_line=[(0, 0, {'product_id':d})]
+				_logger.info(d)
+				self.order_line=[(0, 0, {'product_id':d,'order_id':self.id})]
 
 
 
