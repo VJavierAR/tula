@@ -5,10 +5,10 @@ import logging, ast
 _logger = logging.getLogger(__name__)
 
 class sale(models.Model):
-	_inherit='sale.order'
-	productos_sugeridos=fields.One2many('product.suggested','rel_id')
-	arreglo=fields.Char(default='[]')
-
+	_inherit = 'sale.order'
+	productos_sugeridos = fields.One2many('product.suggested','rel_id')
+	arreglo = fields.Char(default='[]')
+	order_line = fields.One2many(comodel_name = 'sale.order.line', inverse_name = 'order_id', compute = 'precio_minimo')
 
 	@api.onchange('arreglo')
 	def addsegesst(self):
