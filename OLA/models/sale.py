@@ -9,7 +9,7 @@ class sale(models.Model):
 
 	productos_sugeridos = fields.One2many('product.suggested','rel_id')
 	arreglo = fields.Char(default='[]')
-	urgencia = fields.Selection(selection=[('Ninguna','Ninguna'), ('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia", default="Ninguna")
+	urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia")
 
 
 	@api.onchange('arreglo')
