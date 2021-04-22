@@ -58,12 +58,12 @@ class sale(models.Model):
 			for linea in self.order_line:
 				if linea.price_unit < linea.x_studio_field_Ml1CB:
 					title = title + "Precio minímo de venta. | "
-					message = message + """El producto: """ + str(linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\n"""
-					genero_alertas = True
+					message = message + """El producto: """ + str(linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(linea.price_unit) + """\nPrecio minímo: """ + str(linea.x_studio_field_Ml1CB) + """\n"""
+ 					genero_alertas = True
 				# raise Warning('Estas rebasando tu precio minímo de venta')
 				elif linea.price_subtotal < linea.x_studio_field_Ml1CB:
 					title = title + "Precio minímo de venta. | "
-					message = message + """El producto: """ + str(linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\n"""
+					message = message + """El producto: """ + str(linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(linea.price_subtotal) + """\nPrecio minímo: """ + str(linea.x_studio_field_Ml1CB) + """\n"""
 					genero_alertas = True
 
 				# raise Warning('Estas rebasando tu precio minímo de venta')
