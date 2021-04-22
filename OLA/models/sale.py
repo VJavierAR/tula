@@ -45,6 +45,8 @@ class sale(models.Model):
 	@api.depends('order_line.price_unit')
 	def precio_minimo(self):
 		for rec in self:
+			_logger.info("precio_minimo")
+			_logger.info("rec.order_line: " + str(rec.order_line))
 			genero_alertas = False
 
 			title = "Alertas: "
@@ -52,6 +54,7 @@ class sale(models.Model):
 
 			# Comprobar precio minimo
 			for linea in rec.order_line:
+				_logger.info("linea.price_unit: " + str(linea.price_unit))
 				if linea.price_unit < linea.x_studio_field_Ml1CB:
 					title = title + "Precio minímo de venta. | "
 					message = message + """El producto: """ + str(
