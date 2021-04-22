@@ -42,6 +42,40 @@ class sale(models.Model):
 			_logger.info(str(arreglo))
 			#self.productos_sugeridos=arreglo
 
+	@api.dependes('order_line.price_unit')
+	def precio_minimo(self):
+		genero_alertas = False
+
+		title = "Alertas: "
+		message = """Mensajes: \n"""
+
+		# Comprobar precio minimo
+		for linea in self.order_line:
+			if linea.price_unit < linea.x_studio_field_Ml1CB:
+				title = title + "Precio minímo de venta. | "
+				message = message + """El producto: """ + str(
+					linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
+					linea.price_unit) + """\nPrecio minímo: """ + str(linea.x_studio_field_Ml1CB) + """\n"""
+				genero_alertas = True
+				# raise Warning('Estas rebasando tu precio minímo de venta')
+			elif linea.price_subtotal < linea.x_studio_field_Ml1CB:
+				title = title + "Precio minímo de venta. | "
+				message = message + """El producto: """ + str(
+					linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
+					linea.price_subtotal) + """\nPrecio minímo: """ + str(linea.x_studio_field_Ml1CB) + """\n"""
+				genero_alertas = True
+				# raise Warning('Estas rebasando tu precio minímo de venta')
+		if genero_alertas:
+			return {
+				'value': {},
+				'warning': {
+					'title': title,
+					'message': message
+				}
+			}
+
+
+
 	@api.onchange('order_line')
 	def comprobar_limite_de_credito(self):
 		if len(self.order_line) > 0:
@@ -54,19 +88,7 @@ class sale(models.Model):
 			title = "Alertas: "
 			message = """Mensajes: \n"""
 
-			# Comprobar precio minimo
-			for linea in self.order_line:
-				if linea.price_unit < linea.x_studio_field_Ml1CB:
-					title = title + "Precio minímo de venta. | "
-					message = message + """El producto: """ + str(linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(linea.price_unit) + """\nPrecio minímo: """ + str(linea.x_studio_field_Ml1CB) + """\n"""
-					genero_alertas = True
-				# raise Warning('Estas rebasando tu precio minímo de venta')
-				elif linea.price_subtotal < linea.x_studio_field_Ml1CB:
-					title = title + "Precio minímo de venta. | "
-					message = message + """El producto: """ + str(linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(linea.price_subtotal) + """\nPrecio minímo: """ + str(linea.x_studio_field_Ml1CB) + """\n"""
-					genero_alertas = True
 
-				# raise Warning('Estas rebasando tu precio minímo de venta')
 
 			#Caso en que excede limite de credito la linea de pediodo de venta
 			if total > limite_de_credito:
