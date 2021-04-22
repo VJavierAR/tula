@@ -19,10 +19,10 @@ class sale(models.Model):
 				_logger.info(d.id)
 				self.order_line.write({'product_id':d.id,'order_id':self.id,'product_uom_qty':1,'name':d.description,'price_unit':d.lst_price})
 
-	@api.onchange('productos_sugeridos')
-	def agregar(self):
-		if(len(self.productos_sugeridos)>0):			
-			for p in self.productos_sugeridos:
+	# @api.onchange('productos_sugeridos')
+	# def agregar(self):
+	# 	if(len(self.productos_sugeridos)>0):			
+	# 		for p in self.productos_sugeridos:
 
 	@api.onchange('order_line')
 	def funct(self):
