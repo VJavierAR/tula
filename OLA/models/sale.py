@@ -26,7 +26,7 @@ class sale(models.Model):
 			_logger.info(str(arreglo))
 			#self.productos_sugeridos=arreglo
 
-	@api.depends('order_line')
+	@api.onchange('order_line')
 	def comprobar_limite_de_credito(self):
 		_logger.info("self._origin.order_line.ids: " + str(self._origin.order_line.ids))
 		_logger.info("self.order_line.ids: " + str(self.order_line.ids))
