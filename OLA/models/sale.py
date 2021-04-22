@@ -41,7 +41,7 @@ class sale(models.Model):
 				message = message + """Se excedio el límite de crédito: \n
 				Límite de credito: $""" + str(limite_de_credito) + """\n
 				Costo total: $""" + str(total) + """\n
-				"""
+				""".rstrip() + "\n\n"
 				genero_alertas = True
 
 			#Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
