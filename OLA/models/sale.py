@@ -130,7 +130,8 @@ class productSuggested(models.Model):
 
 	@api.onchange('agregar')
 	def add(self):
-		self.rel_id.arreglo=str([self.product_sug.id])
+		if(self.agregar):
+			self.rel_id.write({'arreglo':str([self.product_sug.id])})
 
 	def add1(self):
 		self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
