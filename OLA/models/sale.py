@@ -126,12 +126,12 @@ class productSuggested(models.Model):
 	product_rel=fields.Many2one('product.product')
 	product_sug=fields.Many2one('product.product')
 	rel_id=fields.Many2one('sale.order')
-	agregar=fields.Boolean(compute='add',readonly=False)
+	agregar=fields.Boolean()
 
-	@api.depends('agregar')
-	def add(self):
-		if(self.agregar):
-			self.rel_id.write({'arreglo':str([self.product_sug.id])})
+	# @api.depends('agregar')
+	# def add(self):
+	# 	if(self.agregar):
+	# 		self.rel_id.write({'arreglo':str([self.product_sug.id])})
 
 	def add1(self):
 		self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
