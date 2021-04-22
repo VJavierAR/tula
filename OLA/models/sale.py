@@ -141,7 +141,7 @@ class sale_order_line(models.Model):
 			message = """Mensajes: \n"""
 
 			# Comprobar precio minimo
-			if rec.price_unit:
+			if rec.price_unit and rec.product_id:
 				_logger.info("linea.price_unit: " + str(rec.price_unit))
 				if rec.price_unit < rec.x_studio_field_Ml1CB:
 					title = title + "Precio minímo de venta. | "
