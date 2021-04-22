@@ -53,21 +53,23 @@ class sale(models.Model):
 			message = """Mensajes: \n"""
 
 			# Comprobar precio minimo
-			if self.price_unit < self.x_studio_field_Ml1CB:
-				title = title + "Precio minímo de venta. | "
-				message = message + """Estas rebasando tu precio minímo de venta."""
-			# raise Warning('Estas rebasando tu precio minímo de venta')
-			elif self.price_subtotal < self.x_studio_field_Ml1CB:
-				title = title + "Precio minímo de venta. | "
-				message = message + """Estas rebasando tu precio minímo de venta."""
-			# raise Warning('Estas rebasando tu precio minímo de venta')
+			for linea in self.order_line:
+				if linea.price_unit < linea.x_studio_field_Ml1CB:
+					title = title + "Precio minímo de venta. | "
+					message = message + """El producto: """ + str(linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\n"""
+				# raise Warning('Estas rebasando tu precio minímo de venta')
+				elif linea.price_subtotal < linea.x_studio_field_Ml1CB:
+					title = title + "Precio minímo de venta. | "
+					message = message + """El producto: """ + str(linea.product_id.display_name) + """ esta rebasando su precio minímo de venta.\n"""
+
+				# raise Warning('Estas rebasando tu precio minímo de venta')
 
 			#Caso en que excede limite de credito la linea de pediodo de venta
 			if total > limite_de_credito:
 				title = title + "Límite de crédito excedido. | "
 				message = message + """Se excedio el límite de crédito: \n
 								Límite de credito: $""" + str(limite_de_credito) + """\n
-								Costo total: $""" + str(total) + """
+								Costo total: $""" + str(total) + """\n
 						  """
 
 			#Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
@@ -90,7 +92,7 @@ class sale(models.Model):
 					message = message + """Se excedio el límite de crédito por facturas no pagadas y total del pedido de venta actual: \n
 									Límite de credito: $""" + str(limite_de_credito) + """\n
 									Costo total de pedido de venta actual: $""" + str(total) + """
-									Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """
+									Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
 							  """
 
 			return {
