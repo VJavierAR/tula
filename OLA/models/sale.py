@@ -108,7 +108,7 @@ class saleOr(models.Model):
 	# 		_logger.info(str(pi))
 	# 	self.order_id.productos_sugeridos.write(arreglo)
 
-	#x_studio_field_Ml1CB = fields.Float("Precio minímo", related="standard_price", compute="precio_minimo")
+	x_studio_field_Ml1CB = fields.Float("Precio minímo", related="product_id.standard_price")
 
 	@api.onchange('price_unit')
 	def precio_minimo(self):
