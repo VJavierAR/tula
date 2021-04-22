@@ -12,6 +12,7 @@ class product(models.Model):
 		#track_visibility = 'onchange'
 	)
 
+
 	@api.model
 	def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
 		args = args or []
@@ -43,3 +44,8 @@ class productPr(models.Model):
 								('barcode', operator, name)
 								] + args, limit=limit)
 		return recs.name_get()
+
+class codigos(models.Model):
+	_name='product.codigos'
+	_description='Lista de codigos para los clientes'
+

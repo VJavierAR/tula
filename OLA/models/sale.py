@@ -49,20 +49,26 @@ class sale(models.Model):
 			limite_de_credito = self.partner_id.limite_credito
 			_logger.info("total: " + str(total) + " limite de credito: " + str(limite_de_credito))
 
+			title = "Alertas: "
+			message = """Mensajes: \n"""
+
+			# Comprobar precio minimo
+			if self.price_unit < self.x_studio_field_Ml1CB:
+				title = title + "Precio minímo de venta. | "
+				message = message + """Estas rebasando tu precio minímo de venta."""
+			# raise Warning('Estas rebasando tu precio minímo de venta')
+			elif self.price_subtotal < self.x_studio_field_Ml1CB:
+				title = title + "Precio minímo de venta. | "
+				message = message + """Estas rebasando tu precio minímo de venta."""
+			# raise Warning('Estas rebasando tu precio minímo de venta')
+
 			#Caso en que excede limite de credito la linea de pediodo de venta
 			if total > limite_de_credito:
-				title = "Límite de crédito excedido."
-				message = """Se excedio el límite de crédito: \n
+				title = title + "Límite de crédito excedido. | "
+				message = message + """Se excedio el límite de crédito: \n
 								Límite de credito: $""" + str(limite_de_credito) + """\n
 								Costo total: $""" + str(total) + """
 						  """
-				return {
-					'value': {},
-					'warning': {
-						'title': title,
-						'message': message
-					}
-				}
 
 			#Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
 			facturas_no_pagadas = self.sudo().env['account.move'].search(
@@ -80,19 +86,23 @@ class sale(models.Model):
 					total_de_facturas_no_pagadas = total_de_facturas_no_pagadas + factura_no_pagada.amount_total
 				total_con_facturas = total + total_de_facturas_no_pagadas
 				if total_con_facturas > limite_de_credito:
-					title = "Límite de crédito excedido."
-					message = """Se excedio el límite de crédito por facturas no pagadas y total del pedido de venta actual: \n
+					title = title + "Límite de crédito excedido. | "
+					message = message + """Se excedio el límite de crédito por facturas no pagadas y total del pedido de venta actual: \n
 									Límite de credito: $""" + str(limite_de_credito) + """\n
 									Costo total de pedido de venta actual: $""" + str(total) + """
 									Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """
 							  """
-					return {
-						'value': {},
-						'warning': {
-							'title': title,
-							'message': message
-						}
-					}
+
+			return {
+				'value': {},
+				'warning': {
+					'title': title,
+					'message': message
+				}
+			}
+
+
+
 
 
 class saleOr(models.Model):
