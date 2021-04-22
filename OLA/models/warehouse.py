@@ -1,5 +1,6 @@
 from odoo import models, fields, api,_
 from odoo import exceptions
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
 class almacen(models.Model):
 	_inherit='stock.warehouse'

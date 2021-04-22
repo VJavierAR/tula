@@ -19,7 +19,10 @@ class sale(models.Model):
 				_logger.info(d.id)
 				self.order_line.write({'product_id':d.id,'order_id':self.id,'product_uom_qty':1,'name':d.description,'price_unit':d.lst_price})
 
-
+	@api.onchange('productos_sugeridos')
+	def agregar(self):
+		if(len(self.productos_sugeridos)>0):			
+			for p in self.productos_sugeridos:
 
 	@api.onchange('order_line')
 	def funct(self):
@@ -127,11 +130,14 @@ class productSuggested(models.Model):
 	product_sug=fields.Many2one('product.product')
 	rel_id=fields.Many2one('sale.order')
 	agregar=fields.Boolean()
+	bandera=fields.Integer(default=0)
 
-	# @api.depends('agregar')
-	# def add(self):
-	# 	if(self.agregar):
-	# 		self.rel_id.write({'arreglo':str([self.product_sug.id])})
+	@api.depends('agregar')
+	def add(self):
+		if(self.agregar):
+			self.bandera=self.bandera+1
+
+			#self.rel_id.write({'arreglo':str([self.product_sug.id])})
 
 	def add1(self):
 		self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
