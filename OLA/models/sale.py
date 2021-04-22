@@ -16,7 +16,7 @@ class sale(models.Model):
 			data=eval(self.arreglo)
 			for d in data:
 				_logger.info(d)
-				self.order_line=[{'product_id':d,'order_id':self.id}]
+				self.order_line.write({'product_id':d,'order_id':self.id})
 
 
 
