@@ -139,7 +139,8 @@ class sale_order_line(models.Model):
 
 			title = "Alertas: "
 			message = """Mensajes: \n"""
-
+			_logger.info("rec.product_id: " + str(rec.product_id))
+			_logger.info("rec.product_id.id: " + str(rec.product_id.id))
 			# Comprobar precio minimo
 			if rec.price_unit and rec.product_id:
 				_logger.info("linea.price_unit: " + str(rec.price_unit))
@@ -149,15 +150,16 @@ class sale_order_line(models.Model):
 						rec.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
 						rec.price_unit) + """\nPrecio minímo: """ + str(rec.x_studio_field_Ml1CB) + """\n"""
 					genero_alertas = True
-				# raise Warning('Estas rebasando tu precio minímo de venta')
+					# raise Warning('Estas rebasando tu precio minímo de venta')
 				elif rec.price_subtotal < rec.x_studio_field_Ml1CB:
 					title = title + "Precio minímo de venta. | "
 					message = message + """El producto: """ + str(
 						rec.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
 						rec.price_subtotal) + """\nPrecio minímo: """ + str(rec.x_studio_field_Ml1CB) + """\n"""
 					genero_alertas = True
-			# raise Warning('Estas rebasando tu precio minímo de venta')
+					# raise Warning('Estas rebasando tu precio minímo de venta')
 			if genero_alertas:
+				_logger.info("Entrea a lanzar mensaje")
 				return {
 					# 'value': {},
 					'warning': {
