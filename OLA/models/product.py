@@ -29,6 +29,7 @@ class product(models.Model):
 class productPr(models.Model):
 	_inherit = 'product.product'
 	sug_rel=fields.Many2many('product.product',relation='product_may_sug',column1='id', column2='id2')
+	alt_rel=fields.Many2many('product.product',relation='product_alte_rel',column1='id', column2='id2')
 
 	@api.model
 	def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
