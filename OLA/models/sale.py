@@ -28,8 +28,8 @@ class sale(models.Model):
 
 	@api.onchange('order_line')
 	def comprobar_limite_de_credito(self):
-		_logger.info("self.order_line.ids: " + str(self.order_line.ids))
-		if self.order_line.ids:
+		_logger.info("self.order_line.ids: " + str(self._origin.order_line.ids))
+		if self._origin.order_line.ids:
 			total = self.amount_total
 			limite_de_credito = self.partner_id.limite_credito
 			_logger.info("total: " + str(total) + " limite de credito: " + str(limite_de_credito))
