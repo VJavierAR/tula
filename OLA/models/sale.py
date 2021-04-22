@@ -56,6 +56,8 @@ class sale(models.Model):
 				 ["partner_id", "=", self.partner_id.id]
 				 ]
 			)
+			_logger.debug("facturas_no_pagadas: ")
+			_logger.debug(facturas_no_pagadas)
 			if facturas_no_pagadas:
 				total_de_facturas_no_pagadas = 0
 				for factura_no_pagada in facturas_no_pagadas:
