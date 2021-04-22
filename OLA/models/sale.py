@@ -129,39 +129,42 @@ class saleOr(models.Model):
 class sale_order_line(models.Model):
 	_inherit = 'sale.order.line'
 
-	@api.onchange('price_unit')
+	x_studio_field_Ml1CB = fields.float("Precio minímo", compute="precio_minimo")
+
+	@api.depends('price_unit')
 	def precio_minimo(self):
-		_logger.info("precio_minimo")
-		genero_alertas = False
+		for rec in self:
+			_logger.info("precio_minimo")
+			genero_alertas = False
 
-		title = "Alertas: "
-		message = """Mensajes: \n"""
+			title = "Alertas: "
+			message = """Mensajes: \n"""
 
-		# Comprobar precio minimo
-		if self.price_unit:
-			_logger.info("linea.price_unit: " + str(self.price_unit))
-			if self.price_unit < self.x_studio_field_Ml1CB:
-				title = title + "Precio minímo de venta. | "
-				message = message + """El producto: """ + str(
-					self.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
-					self.price_unit) + """\nPrecio minímo: """ + str(self.x_studio_field_Ml1CB) + """\n"""
-				genero_alertas = True
+			# Comprobar precio minimo
+			if rec.price_unit:
+				_logger.info("linea.price_unit: " + str(rec.price_unit))
+				if rec.price_unit < rec.x_studio_field_Ml1CB:
+					title = title + "Precio minímo de venta. | "
+					message = message + """El producto: """ + str(
+						rec.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
+						rec.price_unit) + """\nPrecio minímo: """ + str(rec.x_studio_field_Ml1CB) + """\n"""
+					genero_alertas = True
+				# raise Warning('Estas rebasando tu precio minímo de venta')
+				elif rec.price_subtotal < rec.x_studio_field_Ml1CB:
+					title = title + "Precio minímo de venta. | "
+					message = message + """El producto: """ + str(
+						rec.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
+						rec.price_subtotal) + """\nPrecio minímo: """ + str(rec.x_studio_field_Ml1CB) + """\n"""
+					genero_alertas = True
 			# raise Warning('Estas rebasando tu precio minímo de venta')
-			elif self.price_subtotal < self.x_studio_field_Ml1CB:
-				title = title + "Precio minímo de venta. | "
-				message = message + """El producto: """ + str(
-					self.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
-					self.price_subtotal) + """\nPrecio minímo: """ + str(self.x_studio_field_Ml1CB) + """\n"""
-				genero_alertas = True
-		# raise Warning('Estas rebasando tu precio minímo de venta')
-		if genero_alertas:
-			return {
-				# 'value': {},
-				'warning': {
-					'title': title,
-					'message': message
+			if genero_alertas:
+				return {
+					# 'value': {},
+					'warning': {
+						'title': title,
+						'message': message
+					}
 				}
-			}
 
 class productSuggested(models.Model):
 	_name='product.suggested'
