@@ -129,7 +129,7 @@ class saleOr(models.Model):
 class sale_order_line(models.Model):
 	_inherit = 'sale.order.line'
 
-	x_studio_field_Ml1CB = fields.float("Precio minímo", compute="precio_minimo")
+	x_studio_field_Ml1CB = fields.Float("Precio minímo", compute="precio_minimo")
 
 	@api.depends('price_unit')
 	def precio_minimo(self):
