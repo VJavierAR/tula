@@ -6,8 +6,11 @@ _logger = logging.getLogger(__name__)
 
 class sale(models.Model):
 	_inherit = 'sale.order'
+
 	productos_sugeridos = fields.One2many('product.suggested','rel_id')
 	arreglo = fields.Char(default='[]')
+	urgencia = fields.Selection(selection=[('Ninguna','Ninguna'), ('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia", default="Ninguna")
+
 
 	@api.onchange('arreglo')
 	def addsegesst(self):
