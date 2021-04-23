@@ -19,9 +19,10 @@ odoo.define("refresher.pager", function(require) {
             });
 
             console.log("self.__parentedParent: ")
-            console.log(self.__parentedParent.)
+            console.log(self.__parentedParent)
             console.log("self.__parentedParent.viewType: ")
             console.log(self.__parentedParent.viewType)
+            //undefined
             setInterval(function() {
                 self._changeSelection(0);
             }, 10000, "JavaScript");
