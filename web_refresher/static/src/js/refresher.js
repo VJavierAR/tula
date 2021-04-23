@@ -27,10 +27,13 @@ odoo.define("refresher.pager", function(require) {
             if (self.__parentedParent.viewType == "list") {
                 inter = setInterval(function() {
                     self._changeSelection(0);
-                }, 5000, "JavaScript");
-            } else {
-                clearInterval(inter);
+                }, 10000, "JavaScript");
             }
+
+            $(".o_data_row").on("click", function() {
+                console.log("Di clikc en una fila")
+                clearInterval(inter);
+            });
 
             self.$el.prepend($button);
             return res;
