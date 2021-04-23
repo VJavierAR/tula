@@ -47,7 +47,7 @@ odoo.define("refresher.pager", function(require) {
     AbstractController.include({
         _onOpenRecord: function (event, params) {
             event.stopPropagation();
-            /*
+
             var record = this.model.get(event.data.id, {raw: true});
             var view_type = 'form'
             if (this.initialState.context.view_type) {
@@ -59,7 +59,7 @@ odoo.define("refresher.pager", function(require) {
                 mode: event.data.mode || 'readonly',
                 model: this.modelName,
             });
-            */
+
             console.log("Di clikc en una fila")
             clearInterval(inter);
 
