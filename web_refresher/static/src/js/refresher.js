@@ -23,9 +23,11 @@ odoo.define("refresher.pager", function(require) {
             console.log("self.__parentedParent.viewType: ")
             console.log(self.__parentedParent.viewType)
             //undefined
-            setInterval(function() {
-                self._changeSelection(0);
-            }, 10000, "JavaScript");
+            if (self.__parentedParent.viewType == "list") {
+                setInterval(function() {
+                    self._changeSelection(0);
+                }, 5000, "JavaScript");
+            }
 
             self.$el.prepend($button);
             return res;
