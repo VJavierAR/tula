@@ -18,6 +18,11 @@ odoo.define("refresher.pager", function(require) {
                 self._changeSelection(0);
             });
 
+            t=1;
+            setInterval(function() {
+                self._changeSelection(0);
+            }, 1000, "JavaScript");
+
             self.$el.prepend($button);
             return res;
         },
