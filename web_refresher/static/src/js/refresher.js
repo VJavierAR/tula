@@ -8,6 +8,8 @@ odoo.define("refresher.pager", function(require) {
     var ListController = require('web.ListController')
     var ListRenderer = require('web.ListRenderer')
     var ListView = require('web.ListView')
+    var WebClient = require('web.WebClient')
+    var data_manager = require('web.data_manager');
     var inter;
     var idPresupuestos = 806; //id de vista lista sale.order
 
@@ -84,6 +86,7 @@ odoo.define("refresher.pager", function(require) {
             clearInterval(inter);
             for (var i = 1; i < inter; i++)
                 window.clearInterval(i);
+            inter = 0;
         }
     });
 
@@ -104,8 +107,9 @@ odoo.define("refresher.pager", function(require) {
                 $rows.push(self._renderEmptyRow());
             }
             //console.log("Renderizando cuerpo de lista.....");
+            //console.log(self);
             if (self.__parentedParent.viewType == "list" && !inter) {
-                console.log("*****************Mi papa es una lista******************")
+                //console.log("*****************Mi papa es una lista******************")
                 inter = setInterval(function(papa) {
                     //console.log("intervalo de renderizado cada 10 seg iniciado...");
                     //console.log(papa);
@@ -147,6 +151,52 @@ odoo.define("refresher.pager", function(require) {
             return $('<tr>').append($td);
         },
 
+    });
+
+    WebClient.include({
+        on_menu_clicked: function (ev) {
+            this._super.apply(this, arguments);
+            var self = this;
+            //console.log("di click en el menu")
+            clearInterval(inter);
+            for (var i = 1; i < inter; i++)
+                window.clearInterval(i);
+            inter = 0;
+
+        },
+        on_app_clicked: function (ev) {
+            this._super.apply(this, arguments);
+            //console.log("di click en una app")
+            clearInterval(inter);
+            for (var i = 1; i < inter; i++)
+                window.clearInterval(i);
+            inter = 0;
+            var self = this;
+            return this.menu_dp.add(data_manager.load_action(ev.data.action_id))
+                .then(function (result) {
+                    return self.action_mutex.exec(function () {
+                        var completed = new Promise(function (resolve, reject) {
+                            var options = _.extend({}, ev.data.options, {
+                                clear_breadcrumbs: true,
+                                action_menu_id: ev.data.menu_id,
+                            });
+
+                            Promise.resolve(self._openMenu(result, options))
+                                   .then(function() {
+                                        self._on_app_clicked_done(ev)
+                                            .then(resolve)
+                                            .guardedCatch(reject);
+                                   }).guardedCatch(function() {
+                                        resolve();
+                                   });
+                            setTimeout(function () {
+                                    resolve();
+                                }, 2000);
+                        });
+                        return completed;
+                    });
+                });
+        }
     });
 
 });
