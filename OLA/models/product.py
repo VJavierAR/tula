@@ -12,6 +12,12 @@ class product(models.Model):
 		#track_visibility = 'onchange'
 	)
 
+	codigos_de_producto = fields.One2many(
+		comodel_name='product.codigos',
+		inverse_name='producto_id',
+		string='Códigos de producto'
+	)
+
 	@api.model
 	def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
 		args = args or []
@@ -31,11 +37,7 @@ class productPr(models.Model):
 	sug_rel=fields.Many2many('product.product',relation='product_may_sug',column1='id', column2='id2')
 	alt_rel=fields.Many2many('product.product',relation='product_alte_rel',column1='id', column2='id2')
 
-	codigos_de_producto = fields.One2many(
-		comodel_name='product.codigos',
-		inverse_name = 'producto_id',
-		string = 'Códigos de producto'
-	)
+
 
 	@api.model
 	def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
@@ -55,7 +57,7 @@ class codigos(models.Model):
 	_description='Lista de codigos para los clientes'
 
 	producto_id = fields.Many2one(
-		comodel_name = 'product.product',
+		comodel_name = 'product.template',
 		string = 'Producto relacionado'
 	)
 	cliente = fields.Many2one(
