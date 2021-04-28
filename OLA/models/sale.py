@@ -102,7 +102,7 @@ class sale(models.Model):
 	    result = super(sale, self).create(vals)
 	    _logger.info(self.env.user.company_id.auto_picking)
 	    _logger.info(self.env.user.company_id.name)
-	    if(self.env.user.company_id.auto_picking):
+	    if(self.company_id.auto_picking):
 	    	result.action_confirm()
 	    return result
 
