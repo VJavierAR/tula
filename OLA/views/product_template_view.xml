@@ -13,8 +13,10 @@
                 <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                     <page name="codigos_de_producto" string="Códigos de producto">
                         <field name="codigos_de_producto">
-                            <field name="cliente"/>
-                            <field name="codigo_producto"/>
+                            <tree>
+                                <field name="cliente"/>
+                                <field name="codigo_producto"/>
+                            </tree>
                         </field>
                     </page>
               </xpath>
