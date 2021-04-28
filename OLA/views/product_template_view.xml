@@ -10,10 +10,11 @@
                     <field name="codigo_producto_cliente" />
                 </xpath>
 
-                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                <xpath expr="//page[@name='general_information']" position="after">
                     <page name="codigos_de_producto" string="Códigos de producto">
                         <field name="codigos_de_producto">
                             <tree>
+                                <field name="id"/>
                                 <field name="cliente"/>
                                 <field name="codigo_producto"/>
                             </tree>

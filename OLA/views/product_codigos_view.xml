@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="product_codigos_tree_view">
+            <field name="name">product.codigos.tree.view</field>
+            <field name="model">product.codigos</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="id"/>
+                    <field name="cliente"/>
+                    <field name="codigo_producto"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="product_codigos_form_view">
+            <field name="name">product.codigos.form.view</field>
+            <field name="model">product.codigos</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="cliente"/>
+                        </group>
+                        <group>
+                            <field name="codigo_producto"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
