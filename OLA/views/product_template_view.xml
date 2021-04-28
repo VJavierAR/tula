@@ -13,7 +13,7 @@
                 <xpath expr="//page[@name='general_information']" position="after">
                     <page name="codigos_de_producto" string="Códigos de producto">
                         <field name="codigos_de_producto">
-                            <tree editable="bottom">
+                            <tree > <!-- editable='bottom' -->
                                 <field name="id"/>
                                 <field name="cliente"/>
                                 <field name="codigo_producto"/>
