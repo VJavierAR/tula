@@ -101,6 +101,7 @@ class sale(models.Model):
 	        vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
 	    result = super(sale, self).create(vals)
 	    _logger.info(self.env.user.company_id.auto_picking)
+	    _logger.info(self.env.user.company_id.name)
 	    if(self.env.user.company_id.auto_picking):
 	    	result.action_confirm()
 	    return result
