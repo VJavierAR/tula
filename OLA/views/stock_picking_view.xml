@@ -18,6 +18,9 @@
                 <xpath expr="//button[@name='action_cancel']" position="after">
                     <button name="print_vale_de_entrega" type="object" string="Imprimir vale de entrega" class="oe_highlight"/>
                 </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="urgencia"/>
+                </xpath>
             </field>
         </record>
 
