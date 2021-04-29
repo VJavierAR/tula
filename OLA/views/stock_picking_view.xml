@@ -7,7 +7,6 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='activity_exception_decoration']" position="after">
                     <field name="urgencia" options='{"bg_color": "lightblue: urgencia == \"Urgente\"; lightcoral: urgencia == \"Muy urgente\" "}' />
-                    <!-- options='{"bg_color": "red: sale_id.urgencia == \"Urgente\" "}' -->
                 </xpath>
             </field>
         </record>
