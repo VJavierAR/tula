@@ -9,3 +9,7 @@ class partner(models.Model):
     limite_credito = fields.Monetary(
         string = "Límite de crédito"
     )
+
+    limite_credito_sucursal = fields.Monetary(
+        string = "Límite de crédito de sucursal"
+    )

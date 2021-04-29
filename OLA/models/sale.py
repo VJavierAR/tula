@@ -47,6 +47,30 @@ class sale(models.Model):
 				""".rstrip() + "\n\n"
 				genero_alertas = True
 
+			#Caso en que excede limite de credito con la suma de las ventas activas.
+			sale_order_state_activos = ['draft', 'sent']
+			ventas_activas = self.sudo().env['sale.order'].search(
+				[
+					('partner_id', '=', self.partner_id.id),
+					('id', '!=', self._origin.id),
+					('state', 'in', sale_order_state_activos)
+				]
+			).mapped('amount_total')
+			_logger.info("ventas_activas.amount_total: " + str(ventas_activas))
+			if ventas_activas:
+				total_de_ventas_activas = 0
+				for venta in ventas_activas:
+					total_de_ventas_activas += venta
+				total_de_ventas_activas += total
+				_logger.info('total_de_ventas_activas: ' + str(total_de_ventas_activas))
+				if total_de_ventas_activas > limite_de_credito:
+					title = title + "Límite de crédito excedido en ventas. | "
+					message = message + """Se excedio el límite de crédito por total de todos los pedido de venta activos: \n
+					Límite de credito: $""" + str(limite_de_credito) + """\n
+					Costo total de todos los pedido de venta activos: $""" + str(total_de_ventas_activas) + """
+					""".rstrip() + "\n\n"
+					genero_alertas = True
+
 			#Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
 			facturas_no_pagadas = self.sudo().env['account.move'].search(
 				["&", "&",
