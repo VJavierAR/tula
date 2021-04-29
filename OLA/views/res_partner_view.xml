@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='vat']" position="after">
-                    <field name="limite_credito" invisible="[('company_type', '!=', 'company')]" />
-                    <field name="limite_credito_sucursal" invisible="[('type', '!=', 'delivery')]" />
+                    <field name="limite_credito" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
+                    <field name="limite_credito_sucursal" attrs="{'invisible': [('type', '!=', 'delivery')]}" />
                 </xpath>
 
             </field>
