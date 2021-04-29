@@ -15,7 +15,8 @@ class product(models.Model):
 	codigos_de_producto = fields.One2many(
 		comodel_name='product.codigos',
 		inverse_name='producto_id',
-		string='Códigos de producto'
+		string='Códigos de producto',
+		#context =dict([('default_producto_id', id)])
 	)
 
 	@api.model
@@ -26,14 +27,15 @@ class product(models.Model):
 			codigos_producto = self.env['product.codigos'].search([])
 			_logger.info("codigos_producto full: " + str(codigos_producto))
 			for c in codigos_producto:
-				_logger.info("codigos_producto.producto_id.name: " + str(c.producto_id.name) + " nmae: " + str(name))
-			codigos_producto = codigos_producto.filtered(lambda codigo: name.lower() in codigo.producto_id.name.lower())
+				_logger.info("codigos_producto.producto_id.name: " + str(c.codigo_producto) + " nmae: " + str(name))
+			codigos_producto = codigos_producto.filtered(lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('id')
 			_logger.info("codigos_producto after: " + str(codigos_producto))
-			recs = self.search(['|', '|', '|',
+			recs = self.search(['|', '|', '|', '|',
 								('name', operator, name),
 								('default_code', operator, name),
 								('codigo_producto_cliente', operator, name),
-								('barcode', operator, name)
+								('barcode', operator, name),
+								('id', 'in', codigos_producto)
 								] + args, limit=limit)
 		return recs.name_get()
 
@@ -53,14 +55,15 @@ class productPr(models.Model):
 			codigos_producto = self.env['product.codigos'].search([])
 			_logger.info("codigos_producto full: " + str(codigos_producto))
 			for c in codigos_producto:
-				_logger.info("codigos_producto.producto_id.name: " + str(c.producto_id.name) + " nmae: " + str(name))
-			codigos_producto = codigos_producto.filtered(lambda codigo: name.lower() in codigo.producto_id.name.lower())
+				_logger.info("codigos_producto.producto_id.name: " + str(c.codigo_producto) + " nmae: " + str(name))
+			codigos_producto = codigos_producto.filtered(lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('id')
 			_logger.info("codigos_producto after: " + str(codigos_producto))
-			recs = self.search(['|', '|', '|',
+			recs = self.search(['|', '|', '|', '|',
 								('name', operator, name),
 								('default_code', operator, name),
 								('codigo_producto_cliente', operator, name),
-								('barcode', operator, name)
+								('barcode', operator, name),
+								('id', 'in', codigos_producto)
 								] + args, limit=limit)
 		return recs.name_get()
 
@@ -75,7 +78,6 @@ class codigos(models.Model):
 	cliente = fields.Many2one(
 		comodel_name = 'res.partner',
 		string = 'Cliente',
-		domain = '',
 		track_visibility = 'onchange'
 	)
 
