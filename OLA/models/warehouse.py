@@ -1,6 +1,8 @@
 from odoo import models, fields, api,_
 from odoo import exceptions
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
+import logging, ast
+_logger = logging.getLogger(__name__)
 
 class almacen(models.Model):
 	_inherit='stock.warehouse'
@@ -11,6 +13,17 @@ class stock(models.Model):
     state = fields.Selection(selection_add=[('printed', 'Impreso')])
     user_print_id = fields.Many2one(comodel_name="res.users", string="Usuario que imprimió", tracking=True, copy=False, required=False)
     user_validate_id = fields.Many2one(comodel_name="res.users", string="Usuario que validó", tracking=True, copy=False, required=False)
+    urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia", compute="_compute_urgencia")
+
+    @api.depends("group_id")
+    def _compute_urgencia(self):
+        for rec in self:
+            _logger.info("rec.sale_id.urgencia: " + str(rec.sale_id.urgencia))
+            if rec.sale_id:
+                rec.urgencia = rec.sale_id.urgencia
+            else:
+                rec.urgencia = None
+
     
     def print_vale_de_entrega(self):
     	if(self.state=='printed'):

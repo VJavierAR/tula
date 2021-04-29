@@ -1,29 +1,14 @@
 <odoo>
     <data>
-        <record id="stock.vpicktree" model="ir.ui.view">
-            <field name="name">stock.picking.tree</field>
+        <record model="ir.ui.view" id="stock_picking_tree_update">
+            <field name="name">stock.picking.tree.update</field>
             <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
             <field name="arch" type="xml">
-                <tree string="Picking list" multi_edit="1"
-                      decoration-info="state == 'draft'" decoration-muted="state == 'cancel'"
-                      decoration-danger="state not in ('cancel', 'done') and scheduled_date &lt; current_date">
-                    <field name="name" options='{"bg_color": "red: sale_id.urgencia == \"Urgente\" "}'/>
-                    <field name="location_id" options="{'no_create': True}" string="From" groups="stock.group_stock_multi_locations" optional="show"/>
-                    <field name="location_dest_id" options="{'no_create': True}" string="To" groups="stock.group_stock_multi_locations" optional="show"/>
-                    <field name="partner_id" optional="show"/>
-                    <field name="user_id" optional="hide"/>
-                    <field name="date" invisible="1"/>
-                    <field name="scheduled_date" optional="show"/>
-                    <field name="origin" optional="show"/>
-                    <field name="sale_id" options='{"bg_color": "red: sale_id.urgencia == \"Urgente\" "}'/>
-                    <field name="group_id" invisible="1"/>
-                    <field name="backorder_id" optional="hide"/>
-                    <field name="state" optional="show"/>
-                    <field name="priority" optional="hide"/>
-                    <field name="picking_type_id" optional="hide"/>
-                    <field name="company_id" groups="base.group_multi_company" optional="show"/>
-                    <field name="activity_exception_decoration" widget="activity_exception"/>
-                </tree>
+                <xpath expr="//field[@name='activity_exception_decoration']" position="after">
+                    <field name="urgencia" options='{"bg_color": "lightblue: urgencia == \"Urgente\"; lightcoral: urgencia == \"Muy urgente\" "}' />
+                    <!-- options='{"bg_color": "red: sale_id.urgencia == \"Urgente\" "}' -->
+                </xpath>
             </field>
         </record>
 
