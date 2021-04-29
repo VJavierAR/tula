@@ -1,6 +1,5 @@
 <odoo>
     <data>
-        <!--
         <record model="ir.ui.view" id="stock_picking_tree_update">
             <field name="name">stock.picking.tree.update</field>
             <field name="model">stock.picking</field>
@@ -11,7 +10,6 @@
                 </xpath>
             </field>
         </record>
-        -->
         <record model="ir.ui.view" id="stock_picking_form_update">
             <field name="name">stock.picking.form.update</field>
             <field name="model">stock.picking</field>
