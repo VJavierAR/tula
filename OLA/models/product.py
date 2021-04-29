@@ -25,11 +25,7 @@ class product(models.Model):
 		recs = self.browse()
 		if not recs:
 			codigos_producto = self.env['product.codigos'].search([])
-			_logger.info("codigos_producto full: " + str(codigos_producto))
-			for c in codigos_producto:
-				_logger.info("codigos_producto.producto_id.name: " + str(c.codigo_producto) + " nmae: " + str(name))
-			codigos_producto = codigos_producto.filtered(lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('id')
-			_logger.info("codigos_producto after: " + str(codigos_producto))
+			codigos_producto = codigos_producto.filtered(lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
 			recs = self.search(['|', '|', '|', '|',
 								('name', operator, name),
 								('default_code', operator, name),
@@ -53,11 +49,7 @@ class productPr(models.Model):
 		recs = self.browse()
 		if not recs:
 			codigos_producto = self.env['product.codigos'].search([])
-			_logger.info("codigos_producto full: " + str(codigos_producto))
-			for c in codigos_producto:
-				_logger.info("codigos_producto.producto_id.name: " + str(c.codigo_producto) + " nmae: " + str(name))
-			codigos_producto = codigos_producto.filtered(lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('id')
-			_logger.info("codigos_producto after: " + str(codigos_producto))
+			codigos_producto = codigos_producto.filtered(lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
 			recs = self.search(['|', '|', '|', '|',
 								('name', operator, name),
 								('default_code', operator, name),
