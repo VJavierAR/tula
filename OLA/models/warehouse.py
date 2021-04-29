@@ -13,7 +13,7 @@ class stock(models.Model):
     state = fields.Selection(selection_add=[('printed', 'Impreso')])
     user_print_id = fields.Many2one(comodel_name="res.users", string="Usuario que imprimió", tracking=True, copy=False, required=False)
     user_validate_id = fields.Many2one(comodel_name="res.users", string="Usuario que validó", tracking=True, copy=False, required=False)
-    urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia", store=True, compute="_compute_urgencia")
+    urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia", compute="_compute_urgencia")
 
     @api.depends("group_id")
     def _compute_urgencia(self):
