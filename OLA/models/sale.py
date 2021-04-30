@@ -236,9 +236,9 @@ class sale(models.Model):
 		if(True not in check):
 			self.state='draft'
 			if(em.auto_picking):
-	    		self.action_confirm()
-        result = super(sale, self).write(vals)
-        return result
+				self.action_confirm()
+		result = super(sale, self).write(vals)
+		return result
 
 
 class saleOr(models.Model):
