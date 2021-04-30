@@ -15,7 +15,25 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
-                            <xpath expr="//button[@name='%(stock.action_report_delivery)d']" position="attributes">
+                <xpath expr="//button[@name='action_cancel']" position="after">
+                    <button name="print_vale_de_entrega" type="object" string="Imprimir vale de entrega" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="urgencia"/>
+                </xpath>
+            </field>
+        </record>
+
+
+            <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+<!--            <xpath expr="//field[@name='state']" position="attributes">-->
+<!--                <attribute name="statusbar_visible">draft,confirmed,partially_available,assigned,printed,done</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//button[@name='%(stock.action_report_delivery)d']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
             <xpath expr="//button[@name='do_print_picking']" position="attributes">
@@ -32,14 +50,8 @@
                 <field name="user_print_id" readonly="1"/>
                 <field name="user_validate_id" readonly="1"/>
             </xpath>
-                <xpath expr="//button[@name='action_cancel']" position="after">
-                    <button name="print_vale_de_entrega" type="object" string="Imprimir vale de entrega" class="oe_highlight"/>
-                </xpath>
-                <xpath expr="//field[@name='origin']" position="after">
-                    <field name="urgencia"/>
-                </xpath>
-            </field>
-        </record>
+        </field>
+    </record>
 
     </data>
 </odoo>
