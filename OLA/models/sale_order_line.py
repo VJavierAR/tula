@@ -42,6 +42,9 @@ class saleOr(models.Model):
 		d=self.env.user.max_discount
 		if(self.discount>d):
 			self.bloqueo=True
+		if(self.discount<=d):
+			self.bloqueo=False
+			
 		genero_alertas = False
 
 		title = "Alertas: "
