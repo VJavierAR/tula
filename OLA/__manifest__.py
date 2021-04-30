@@ -22,6 +22,7 @@
         'views/res_partner_view.xml',
         'views/sale_order_view.xml',
         'views/product_codigos_view.xml',
+        'views/sale_order_line_view.xml',
         'wizard/stock_picking_wizard_view.xml',
     ],
     'installable': True,
