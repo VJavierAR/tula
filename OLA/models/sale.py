@@ -238,7 +238,7 @@ class sale(models.Model):
 			self.state='draft'
 			if(em.auto_picking):
 				self.action_confirm()
-			if(em.auto_picking):
+			if(em.auto_picking==False):
 				result = super(sale, self).write(vals)
 		if(True in check):
 			self.state='auto'
