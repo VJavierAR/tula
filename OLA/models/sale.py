@@ -232,7 +232,7 @@ class sale(models.Model):
 	    return result
 	def write(self, vals):
 		check=self.mapped('order_line.bloqueo')
-		em=self.env['res.company'].browse(vals['company_id'])
+		em=self.company_id
 		if(True not in check):
 			self.state='draft'
 			if(em.auto_picking):
