@@ -230,6 +230,15 @@ class sale(models.Model):
 	    if(em.auto_picking):
 	    	result.action_confirm()
 	    return result
+	def write(self, vals):
+		check=self.mapped('order_line.bloqueo')
+		em=self.env['res.company'].browse(vals['company_id'])
+		if(True not in check):
+			self.state='draft'
+			if(em.auto_picking):
+	    		self.action_confirm()
+        result = super(sale, self).write(vals)
+        return result
 
 
 class saleOr(models.Model):
