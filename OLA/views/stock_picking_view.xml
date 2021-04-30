@@ -17,7 +17,7 @@
             <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="options">{"bg_color": "#77DBEB: state == \"printed\";"}</attribute>
             </xpath>
-            <xpath expr="//field[@name='schedule_date']" position="attributes">
+            <xpath expr="//field[@name='scheduled_date']" position="attributes">
                     <attribute name="options">{"bg_color": "#77DBEB: state == \"printed\";"}</attribute>
             </xpath>
             <xpath expr="//field[@name='origin']" position="attributes">
