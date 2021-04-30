@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_product_suggested,product.suggested,model_product_suggested,base.group_user,1,1,1,1
 access_product_codigos,product.codigos,model_product_codigos,,1,1,1,1
+access_product_section_user,product.section.user,model_product_section,base.group_user,1,1,1,1
+

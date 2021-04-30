@@ -10,7 +10,7 @@ class almacen(models.Model):
 
 class stock(models.Model):
     _inherit = 'stock.picking'
-        state = fields.Selection([
+    state = fields.Selection([
         ('draft', 'Draft'),
         ('waiting', 'Waiting Another Operation'),
         ('confirmed', 'Waiting'),
