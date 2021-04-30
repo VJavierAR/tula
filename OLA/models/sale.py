@@ -169,18 +169,18 @@ class saleOr(models.Model):
 
 		# Comprobar precio minimo
 		if self.price_unit and self.product_id.id:
-			if self.price_unit < self.x_studio_field_Ml1CB:
+			if self.price_unit < self.x_studio_precio_minimo:
 				title = title + "Precio minímo de venta. | "
 				message = message + """El producto: """ + str(
 					self.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
-					self.price_unit) + """\nPrecio minímo: """ + str(self.x_studio_field_Ml1CB) + """\n"""
+					self.price_unit) + """\nPrecio minímo: """ + str(self.x_studio_precio_minimo) + """\n"""
 				genero_alertas = True
 
-			elif self.price_subtotal < self.x_studio_field_Ml1CB:
+			elif self.price_subtotal < self.x_studio_precio_minimo:
 				title = title + "Precio minímo de venta. | "
 				message = message + """El producto: """ + str(
 					self.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
-					self.price_subtotal) + """\nPrecio minímo: """ + str(self.x_studio_field_Ml1CB) + """\n"""
+					self.price_subtotal) + """\nPrecio minímo: """ + str(self.x_studio_precio_minimo) + """\n"""
 				genero_alertas = True
 
 		if genero_alertas:
