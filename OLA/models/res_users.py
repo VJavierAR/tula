@@ -9,7 +9,7 @@ class ResUser(models.Model):
     second_users=fields.One2many('second.user','rel_user')
     user_pin = fields.Char(string='Pin de acceso', required=False)
     _sql_constraints = [('user_pin_uniq', 'unique (user_pin)', "El pin ya está asignado a otro usuario.")]
-    
+    max_discount=fields.Integer('Descuento maximo')
 class SecondUser(models.Model):
     _name='second.user'
     rel_user=fields.Many2one('res.user')
