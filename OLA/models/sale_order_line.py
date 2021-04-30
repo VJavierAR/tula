@@ -7,6 +7,11 @@ _logger = logging.getLogger(__name__)
 class saleOr(models.Model):
 	_inherit='sale.order.line'
 
+	bloqueo = fields.Boolean(
+		string = 'Bloqueo por límite de descuento',
+		default = False
+	)
+
 	@api.onchange('product_id')
 	def stock(self):
 		res={}
