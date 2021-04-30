@@ -10,6 +10,14 @@ class sale(models.Model):
 	productos_sugeridos = fields.One2many('product.suggested','rel_id')
 	arreglo = fields.Char(default='[]')
 	urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia")
+    state = fields.Selection([
+        ('draft', 'Quotation'),
+        ('sent', 'Quotation Sent'),
+        ('auto', 'Autorizar'),
+        ('sale', 'Sales Order'),
+        ('done', 'Locked'),
+        ('cancel', 'Cancelled'),
+        ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
 
     def action_confirm(self):
         if self._get_forbidden_state_confirm() & set(self.mapped('state')):
