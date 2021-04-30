@@ -56,61 +56,61 @@ class sale(models.Model):
 	# 	if(len(self.productos_sugeridos)>0):			
 	# 		for p in self.productos_sugeridos:
 
-		@api.onchange('order_line')
-		def comprobar_limite_de_credito(self):
-			if len(self.order_line) > 0 and self.partner_id:
-				total = self.amount_total
-				limite_de_credito = self.partner_id.limite_credito
-				limite_de_credito_sucursal = self.partner_shipping_id.limite_credito_sucursal
-				sucursal_nombre = self.partner_shipping_id.name
+	@api.onchange('order_line')
+	def comprobar_limite_de_credito(self):
+		if len(self.order_line) > 0 and self.partner_id:
+			total = self.amount_total
+			limite_de_credito = self.partner_id.limite_credito
+			limite_de_credito_sucursal = self.partner_shipping_id.limite_credito_sucursal
+			sucursal_nombre = self.partner_shipping_id.name
 
-				sale_order_state_activos = ['draft', 'sent']
-				genero_alertas = False
-				title = "Alertas: "
-				message = """Mensajes: \n"""
-				_logger.info("total: " + str(total) + " limite de credito: " + str(
-					limite_de_credito) + " limite de credito por sucursal: " + str(limite_de_credito_sucursal))
+			sale_order_state_activos = ['draft', 'sent']
+			genero_alertas = False
+			title = "Alertas: "
+			message = """Mensajes: \n"""
+			_logger.info("total: " + str(total) + " limite de credito: " + str(
+				limite_de_credito) + " limite de credito por sucursal: " + str(limite_de_credito_sucursal))
 
-				# Caso en que excede limite de credito la linea de pediodo de venta
-				if total > limite_de_credito:
-					title = title + "Límite de crédito excedido. | "
-					message = message + """Se excedio el límite de crédito: \n
+			# Caso en que excede limite de credito la linea de pediodo de venta
+			if total > limite_de_credito:
+				title = title + "Límite de crédito excedido. | "
+				message = message + """Se excedio el límite de crédito: \n
+					Límite de credito: $""" + str(limite_de_credito) + """\n
+					Costo total: $""" + str(total) + """\n
+					""".rstrip() + "\n\n"
+				genero_alertas = True
+
+			# Caso en que excede límite de crédito por sucursal la línea de pedido de venta
+			if total > limite_de_credito_sucursal:
+				title = title + "Límite de crédito de sucursal excedido. | "
+				message = message + """Se excedio el límite de crédito de la sucursal \"""" + sucursal_nombre + """\": \n
+					Límite de credito de sucursal: $""" + str(limite_de_credito_sucursal) + """\n
+					Costo total: $""" + str(total) + """\n
+					""".rstrip() + "\n\n"
+				genero_alertas = True
+
+			# Caso en que excede limite de credito con la suma de las ventas activas.
+			ventas_activas = self.sudo().env['sale.order'].search(
+				[
+					('partner_id', '=', self.partner_id.id),
+					('id', '!=', self._origin.id),
+					('state', 'in', sale_order_state_activos)
+				]
+			).mapped('amount_total')
+			_logger.info("ventas_activas.amount_total: " + str(ventas_activas))
+			if ventas_activas:
+				total_de_ventas_activas = 0
+				for venta in ventas_activas:
+					total_de_ventas_activas += venta
+				total_de_ventas_activas += total
+				_logger.info('total_de_ventas_activas: ' + str(total_de_ventas_activas))
+				if total_de_ventas_activas > limite_de_credito:
+					title = title + "Límite de crédito excedido en ventas. | "
+					message = message + """Se excedio el límite de crédito por total de todos los pedido de venta activos: \n
 						Límite de credito: $""" + str(limite_de_credito) + """\n
-						Costo total: $""" + str(total) + """\n
+						Costo total de todos los pedido de venta activos: $""" + str(total_de_ventas_activas) + """
 						""".rstrip() + "\n\n"
 					genero_alertas = True
-
-				# Caso en que excede límite de crédito por sucursal la línea de pedido de venta
-				if total > limite_de_credito_sucursal:
-					title = title + "Límite de crédito de sucursal excedido. | "
-					message = message + """Se excedio el límite de crédito de la sucursal \"""" + sucursal_nombre + """\": \n
-						Límite de credito de sucursal: $""" + str(limite_de_credito_sucursal) + """\n
-						Costo total: $""" + str(total) + """\n
-						""".rstrip() + "\n\n"
-					genero_alertas = True
-
-				# Caso en que excede limite de credito con la suma de las ventas activas.
-				ventas_activas = self.sudo().env['sale.order'].search(
-					[
-						('partner_id', '=', self.partner_id.id),
-						('id', '!=', self._origin.id),
-						('state', 'in', sale_order_state_activos)
-					]
-				).mapped('amount_total')
-				_logger.info("ventas_activas.amount_total: " + str(ventas_activas))
-				if ventas_activas:
-					total_de_ventas_activas = 0
-					for venta in ventas_activas:
-						total_de_ventas_activas += venta
-					total_de_ventas_activas += total
-					_logger.info('total_de_ventas_activas: ' + str(total_de_ventas_activas))
-					if total_de_ventas_activas > limite_de_credito:
-						title = title + "Límite de crédito excedido en ventas. | "
-						message = message + """Se excedio el límite de crédito por total de todos los pedido de venta activos: \n
-							Límite de credito: $""" + str(limite_de_credito) + """\n
-							Costo total de todos los pedido de venta activos: $""" + str(total_de_ventas_activas) + """
-							""".rstrip() + "\n\n"
-						genero_alertas = True
 
 				# Caso en que excede limite de credito por sucursal con la suma de las ventas activas.
 				ventas_activas_sucursal = self.sudo().env['sale.order'].search(
