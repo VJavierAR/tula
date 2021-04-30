@@ -6,7 +6,7 @@
             <field name="inherit_id" ref="stock.vpicktree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='activity_exception_decoration']" position="after">
-                    <field name="urgencia" />
+                    <field name="urgencia" options='{"bg_color": "khaki: urgencia == \"Urgente\"; lightcoral: urgencia == \"Muy urgente\"; #77DBEB: state == \"printed\"; "}' />
                 </xpath>
             <xpath expr="//field[@name='state']" position="attributes">
                     <attribute name="options">{"bg_color": "#77DBEB: state == \"printed\";"}</attribute>
@@ -26,9 +26,7 @@
             <xpath expr="//field[@name='company_id']" position="attributes">
                     <attribute name="options">{"bg_color": "#77DBEB: state == \"printed\";"}</attribute>
             </xpath>
-            <xpath expr="//field[@name='urgencia']" position="attributes">
-                    <attribute name="options">{"bg_color": "#77DBEB: state == \"printed\"; "khaki: urgencia == \"Urgente\"; lightcoral: urgencia == \"Muy urgente\""}</attribute>
-            </xpath>
+
 
             </field>
         </record>
