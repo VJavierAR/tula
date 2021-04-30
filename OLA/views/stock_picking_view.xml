@@ -8,6 +8,11 @@
                 <xpath expr="//field[@name='activity_exception_decoration']" position="after">
                     <field name="urgencia" options='{"bg_color": "khaki: urgencia == \"Urgente\"; lightcoral: urgencia == \"Muy urgente\" "}' />
                 </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="options">{"bg_color": "blue: state == \"printed\";"}</attribute>
+            </xpath>
+
+
             </field>
         </record>
         <record model="ir.ui.view" id="stock_picking_form_update">
