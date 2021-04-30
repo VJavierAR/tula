@@ -15,7 +15,6 @@ class SecondUser(models.Model):
     user=fields.Char('Mail')
     password=fields.Char('Password')
     
-    @api.model
     def create(self, vals):
         password=vals['password']
         result = hashlib.md5(password.encode('ascii'))
@@ -28,7 +27,6 @@ class SecondUser(models.Model):
         return result
 
 
-    @api.multi
     def write(self, vals):
         password=vals['password']
         result = hashlib.md5(password.encode('ascii'))
