@@ -10,6 +10,17 @@ class partner(models.Model):
         string = "Límite de crédito"
     )
 
+    correoFac = fields.Char(
+        string = "Correo Facturacion"
+    )
+    
+    correoCobranza = fields.Char(
+        string = "Correo Cobranza"
+    )
+    
+
+
+
     limite_credito_sucursal = fields.Monetary(
         string = "Límite de crédito de sucursal"
     )
