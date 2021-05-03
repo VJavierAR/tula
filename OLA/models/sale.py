@@ -67,6 +67,7 @@ class sale(models.Model):
 		if len(self.order_line) > 0 and self.partner_id.id:
 			total = self.amount_total
 			limite_de_credito = self.partner_id.limite_credito
+			limite_de_credito_conglomerado = self.partner_id.limite_credito_conglomerado
 
 			state_facturas_no_pagadas = ['draft', 'posted']
 
@@ -94,12 +95,24 @@ class sale(models.Model):
 				if total_con_facturas > limite_de_credito:
 					title = title + "Límite de crédito excedido. | "
 					message = message + """Se excedio el límite de crédito por facturas no pagadas y total del pedido de venta actual: \n
-										Límite de credito: $""" + str(limite_de_credito) + """\n
-										Costo total de pedido de venta actual: $""" + str(total) + """
-										Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n\n
-										Facturas no pagadas: """ + str(facturas_no_pagadas.mapped('name')) + """\n
-										""".rstrip() + "\n\n"
+					Límite de credito: $""" + str(limite_de_credito) + """\n
+					Costo total de pedido de venta actual: $""" + str(total) + """
+					Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
+					Suma total deuda: $""" + str(total_con_facturas) + """\n
+					Facturas no pagadas: """ + str(facturas_no_pagadas.mapped('name')) + """\n
+					""".rstrip() + "\n\n"
 					genero_alertas = True
+
+			#Caso en que excede el limite de credito de conglomerado las facturas no pagadas y la linea de pedido de venta
+			facturas_no_pagadas_companies = self.env['account.move'].sudo().search(
+				[
+					("invoice_payment_state", "=", "not_paid"),
+					("state", "in", state_facturas_no_pagadas),
+					("partner_id", "=", self.partner_id.id)
+				]
+			)
+			_logger.info("facturas_no_pagadas_companies: ")
+			_logger.info(facturas_no_pagadas_companies)
 
 			if genero_alertas:
 				return {
