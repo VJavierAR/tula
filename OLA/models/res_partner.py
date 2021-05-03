@@ -7,7 +7,8 @@ class partner(models.Model):
     _inherit = 'res.partner'
 
     limite_credito = fields.Monetary(
-        string = "Límite de crédito"
+        string = "Límite de crédito",
+        company_dependent = True
     )
 
     correoFac = fields.Char(
