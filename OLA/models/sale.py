@@ -7,17 +7,29 @@ _logger = logging.getLogger(__name__)
 class sale(models.Model):
 	_inherit = 'sale.order'
 
+	bloqueo_limite_credito = fields.Boolean(
+		string='Bloqueo por exceder límite de crédito',
+		default=False,
+		store=True
+	)
+	mensaje_limite_de_credito = fields.Text(
+		string='Mensaje al exceder límite de crédito',
+		store=True
+	)
+
 	productos_sugeridos = fields.One2many('product.suggested','rel_id')
 	arreglo = fields.Char(default='[]')
 	urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia")
-	state = fields.Selection([
-        ('draft', 'Quotation'),
-        ('sent', 'Quotation Sent'),
-        ('auto', 'Autorizar'),
-        ('sale', 'Sales Order'),
-        ('done', 'Locked'),
-        ('cancel', 'Cancelled'),
-        ], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
+	state = fields.Selection(
+		[
+			('draft', 'Quotation'),
+			('sent', 'Quotation Sent'),
+			('auto', 'Autorizar'),
+			('sale', 'Sales Order'),
+			('done', 'Locked'),
+			('cancel', 'Cancelled'),
+		], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
+
 
 	def action_confirm(self):
 		check=self.mapped('order_line.bloqueo')
@@ -133,8 +145,11 @@ class sale(models.Model):
 				""".rstrip() + "\n\n"
 				genero_alertas = True
 
+			message += "El pedido de venta actual solo podra ser validado por: "
+
 			if genero_alertas:
-				"""
+				self.bloqueo_limite_credito = True
+				self.mensaje_limite_de_credito = message
 				return {
 					# 'value': {},
 					'warning': {
@@ -142,27 +157,26 @@ class sale(models.Model):
 						'message': message
 					}
 				}
-				"""
-				view = self.env.ref('OLA.sale_order_alerta_limite_credito_view')
-				wiz = self.env['sale.order.alerta.limite.credito'].create(
-					{
-						'sale_id': self.id,
-						'mensaje': message
-					}
-				)
-				return {
-					'name': _(title),
-					'type': 'ir.actions.act_window',
-					'view_mode': 'form',
-					'res_model': 'sale.order.alerta.limite.credito',
-					'views': [(view.id, 'form')],
-					'view_id': view.id,
-					'target': 'new',
-					'res_id': wiz.id,
-					'context': self.env.context,
-				}
 
-
+	def autorizar_sale_limite_de_credito(self):
+		view = self.env.ref('OLA.sale_order_alerta_limite_credito_view')
+		wiz = self.env['sale.order.alerta.limite.credito'].create(
+			{
+				'sale_id': self.id,
+				'mensaje': self.mensaje_limite_de_credito
+			}
+		)
+		return {
+			'name': _('Autorizar excediendo límite de crédito'),
+			'type': 'ir.actions.act_window',
+			'view_mode': 'form',
+			'res_model': 'sale.order.alerta.limite.credito',
+			'views': [(view.id, 'form')],
+			'view_id': view.id,
+			'target': 'new',
+			'res_id': wiz.id,
+			'context': self.env.context,
+		}
 
 	#@api.onchange('order_line')
 	def comprobar_limite_de_credito(self):
