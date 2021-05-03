@@ -134,6 +134,7 @@ class sale(models.Model):
 				genero_alertas = True
 
 			if genero_alertas:
+				"""
 				return {
 					# 'value': {},
 					'warning': {
@@ -141,6 +142,26 @@ class sale(models.Model):
 						'message': message
 					}
 				}
+				"""
+				view = self.env.ref('sale_order_alerta_limite_credito_view')
+				wiz = self.env['sale.order.alerta.limite.credito'].create(
+					{
+						'sale_id': self.id,
+						'mensaje': message
+					}
+				)
+				return {
+					'name': _(title),
+					'type': 'ir.actions.act_window',
+					'view_mode': 'form',
+					'res_model': 'sale.order.alerta.limite.credito',
+					'views': [(view.id, 'form')],
+					'view_id': view.id,
+					'target': 'new',
+					'res_id': wiz.id,
+					'context': self.env.context,
+				}
+
 
 
 	#@api.onchange('order_line')
