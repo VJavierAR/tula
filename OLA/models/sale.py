@@ -17,11 +17,11 @@ class sale(models.Model):
 		store=True
 	)
 	limite_credito_actual = fields.Integer(
-		string='Límite de crédito actual de cliente',
+		string='Saldo disponible de límite de crédito',
 		compute='_compute_limite_credito_actual'
 	)
 	limite_credito_conglomerado_actual = fields.Integer(
-		string='Límite de crédito de conglomerado actual de cliente',
+		string='Saldo disponible de límite de céredito de conglomerado',
 		compute='_compute_limite_credito_conglomerado_actual'
 	)
 
