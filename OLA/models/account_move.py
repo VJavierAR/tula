@@ -14,7 +14,7 @@ class AccountMove(models.Model):
         compute='_compute_cambio_no_permitido'
     )
 
-    @api.onchange('invoice_payment_term_id', 'amount_total')
+    @api.onchange('invoice_payment_term_id', 'invoice_line_ids', 'amount_total')
     def cambio_no_permitido(self):
         termino_antes = self._origin.invoice_payment_term_id.name
         termino_despues = self.invoice_payment_term_id.name
@@ -48,7 +48,8 @@ class AccountMove(models.Model):
                 [
                     ("invoice_payment_state", "=", "not_paid"),
                     ("state", "in", state_facturas_no_pagadas),
-                    ("partner_id", "=", self.partner_id.id)
+                    ("partner_id", "=", self.partner_id.id),
+                    ("id", "!=", self.id)
                 ]
             )
             _logger.info("facturas_no_pagadas_limite_de_credito_unico: ")
@@ -58,8 +59,8 @@ class AccountMove(models.Model):
                 for factura_no_pagada in facturas_no_pagadas:
                     total_de_facturas_no_pagadas += factura_no_pagada.amount_total
 
-            #total_con_facturas = total + total_de_facturas_no_pagadas
-            total_con_facturas = total_de_facturas_no_pagadas
+            total_con_facturas = total + total_de_facturas_no_pagadas
+            #total_con_facturas = total_de_facturas_no_pagadas
             _logger.info(
                 "total_con_facturas: " + str(total_con_facturas) + " > limite_de_credito:" + str(limite_de_credito))
             if total_con_facturas > limite_de_credito:
@@ -76,7 +77,8 @@ class AccountMove(models.Model):
                 [
                     ("invoice_payment_state", "=", "not_paid"),
                     ("state", "in", state_facturas_no_pagadas),
-                    ("partner_id", "=", self.partner_id.id)
+                    ("partner_id", "=", self.partner_id.id),
+                    ("id", "!=", self.id)
                 ]
             )
             _logger.info("facturas_no_pagadas_companies: ")
@@ -86,8 +88,8 @@ class AccountMove(models.Model):
                 for factura_no_pagada in facturas_no_pagadas_companies:
                     total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total
 
-            #total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
-            total_con_facturas_companies = total_de_facturas_no_pagadas_companies
+            total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
+            #total_con_facturas_companies = total_de_facturas_no_pagadas_companies
             _logger.info(
                 "total_con_facturas: " + str(total_con_facturas_companies) + " > limite_de_credito conglomerado:" + str(
                     limite_de_credito_conglomerado))
