@@ -150,7 +150,10 @@ class sale(models.Model):
 					("name", "=", "Confirma pedido de venta que excede límite de crédito")
 				]
 			).mapped('users')
-			message += "El pedido de venta actual solo podra ser validado por: \n\n" + str(usuarios_con_permisos)
+			if usuarios_con_permisos:
+				message += "El pedido de venta actual solo podrá ser validado por los siguientes usuarios: \n\n" + str(usuarios_con_permisos.mapped('name'))
+			else:
+				message += "El pedido de venta actual solo podrá ser validado por los usuarios que se encuentrán en el grupo \"Confirma pedido de venta que excede límite de crédito.\""
 
 			if genero_alertas:
 				self.bloqueo_limite_credito = True
