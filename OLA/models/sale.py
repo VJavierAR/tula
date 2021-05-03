@@ -63,6 +63,53 @@ class sale(models.Model):
 
 
 	@api.onchange('order_line')
+	def comprobar_limite_de_credito_compañia_unica(self):
+		if len(self.order_line) > 0 and self.partner_id.id:
+			total = self.amount_total
+			limite_de_credito = self.partner_id.limite_credito
+
+			title = "Alertas: "
+			message = """Mensajes: \n"""
+
+			genero_alertas = False
+
+			# Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
+			facturas_no_pagadas = self.env['account.move'].search(
+				[
+					("invoice_payment_state", "=", "not_paid"),
+					("state", "=", "posted"),
+					("partner_id", "=", self.partner_id.id)
+				]
+			)
+			_logger.info("facturas_no_pagadas_limite_de_credito_unico: ")
+			_logger.info(facturas_no_pagadas)
+			if facturas_no_pagadas:
+				total_de_facturas_no_pagadas = 0
+				for factura_no_pagada in facturas_no_pagadas:
+					total_de_facturas_no_pagadas = total_de_facturas_no_pagadas + factura_no_pagada.amount_total
+				total_con_facturas = total + total_de_facturas_no_pagadas
+				_logger.info("total_con_facturas: " + str(total_con_facturas) + " > limite_de_credito:" + str(limite_de_credito))
+				if total_con_facturas > limite_de_credito:
+					title = title + "Límite de crédito excedido. | "
+					message = message + """Se excedio el límite de crédito por facturas no pagadas y total del pedido de venta actual: \n
+										Límite de credito: $""" + str(limite_de_credito) + """\n
+										Costo total de pedido de venta actual: $""" + str(total) + """
+										Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n\n
+										Facturas no pagadas: """ + str(facturas_no_pagadas.mapped('name')) + """\n
+										""".rstrip() + "\n\n"
+					genero_alertas = True
+
+			if genero_alertas:
+				return {
+					# 'value': {},
+					'warning': {
+						'title': title,
+						'message': message
+					}
+				}
+
+
+	#@api.onchange('order_line')
 	def comprobar_limite_de_credito(self):
 		check=self.mapped('order_line.bloqueo')
 		if(True not in check):
