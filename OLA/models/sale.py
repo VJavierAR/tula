@@ -89,7 +89,7 @@ class sale(models.Model):
 			total_de_facturas_no_pagadas = 0
 			if facturas_no_pagadas:
 				for factura_no_pagada in facturas_no_pagadas:
-					total_de_facturas_no_pagadas = total_de_facturas_no_pagadas + factura_no_pagada.amount_total
+					total_de_facturas_no_pagadas += factura_no_pagada.amount_total
 
 			total_con_facturas = total + total_de_facturas_no_pagadas
 			_logger.info("total_con_facturas: " + str(total_con_facturas) + " > limite_de_credito:" + str(limite_de_credito))
@@ -114,6 +114,24 @@ class sale(models.Model):
 			)
 			_logger.info("facturas_no_pagadas_companies: ")
 			_logger.info(facturas_no_pagadas_companies)
+			total_de_facturas_no_pagadas_companies = 0
+			if facturas_no_pagadas_companies:
+				for factura_no_pagada in facturas_no_pagadas_companies:
+					total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total
+
+			total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
+			_logger.info(
+				"total_con_facturas: " + str(total_con_facturas_companies) + " > limite_de_credito conglomerado:" + str(limite_de_credito_conglomerado))
+			if total_con_facturas_companies > limite_de_credito_conglomerado:
+				title = title + "Límite de crédito de conglomerado excedido. | "
+				message = message + """Se excedio el límite de crédito de conglomerado por facturas no pagadas y total del pedido de venta actual: \n
+				Límite de credito de conglomerado: $""" + str(limite_de_credito_conglomerado) + """\n
+				Costo total de pedido de venta actual: $""" + str(total) + """
+				Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas_companies) + """\n
+				Suma total: $""" + str(total_con_facturas_companies) + """\n
+				Facturas no pagadas: """ + str(facturas_no_pagadas_companies.mapped('name')) + """\n
+				""".rstrip() + "\n\n"
+				genero_alertas = True
 
 			if genero_alertas:
 				return {
