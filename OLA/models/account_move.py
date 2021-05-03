@@ -67,7 +67,9 @@ class AccountMove(models.Model):
                 title = title + "Límite de crédito excedido. | "
                 message = message + """Se excedio el límite de crédito por facturas no pagadas: \n
                 Límite de credito: $""" + str(limite_de_credito) + """\n
-                Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
+                Costo total de pedido de venta actual: $""" + str(total) + """\n
+				Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
+				Suma total: $""" + str(total_con_facturas) + """\n
                 Facturas no pagadas: """ + str(facturas_no_pagadas.mapped('name')) + """\n
                 """.rstrip() + "\n\n"
                 genero_alertas = True
@@ -97,7 +99,9 @@ class AccountMove(models.Model):
                 title = title + "Límite de crédito de conglomerado excedido. | "
                 message = message + """Se excedio el límite de crédito de conglomerado por facturas no pagadas: \n
                 Límite de credito de conglomerado: $""" + str(limite_de_credito_conglomerado) + """\n
+                Costo total de pedido de venta actual: $""" + str(total) + """\n
                 Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas_companies) + """\n
+                Suma total: $""" + str(total_con_facturas_companies) + """\n
                 Facturas no pagadas: """ + str(facturas_no_pagadas_companies.mapped('name')) + """\n
                 """.rstrip() + "\n\n"
                 genero_alertas = True
