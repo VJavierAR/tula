@@ -145,7 +145,12 @@ class sale(models.Model):
 				""".rstrip() + "\n\n"
 				genero_alertas = True
 
-			message += "El pedido de venta actual solo podra ser validado por: "
+			usuarios_con_permisos = self.env['res.groups'].sudo().search(
+				[
+					("name", "=", "Confirma pedido de venta que excede límite de crédito")
+				]
+			).mapped('users')
+			message += "El pedido de venta actual solo podra ser validado por: \n\n" + str(usuarios_con_permisos)
 
 			if genero_alertas:
 				self.bloqueo_limite_credito = True
