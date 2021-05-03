@@ -16,6 +16,15 @@ class sale(models.Model):
 		string='Mensaje al exceder límite de crédito',
 		store=True
 	)
+	limite_credito_actual = fields.Integer(
+		string='Límite de crédito actual de cliente',
+		compute='_compute_limite_credito_actual'
+	)
+	limite_credito_conglomerado_actual = fields.Integer(
+		string='Límite de crédito de conglomerado actual de cliente',
+		compute='_compute_limite_credito_conglomerado_actual'
+	)
+
 
 	productos_sugeridos = fields.One2many('product.suggested','rel_id')
 	arreglo = fields.Char(default='[]')
@@ -73,6 +82,43 @@ class sale(models.Model):
 			if(sug.agregar==True and sug.bandera==1):
 				self.order_line=[(0, 0, {'product_id':sug.product_sug.id})]
 
+	@api.depends('partner_id')
+	def _compute_limite_credito_actual(self):
+		for rec in self:
+			if rec.partner_id.id:
+				limite_de_credito = rec.partner_id.limite_credito
+				state_facturas_no_pagadas = ['draft', 'posted']
+				facturas_no_pagadas = rec.env['account.move'].search(
+					[
+						("invoice_payment_state", "=", "not_paid"),
+						("state", "in", state_facturas_no_pagadas),
+						("partner_id", "=", rec.partner_id.id)
+					]
+				)
+				total_de_facturas_no_pagadas = 0
+				if facturas_no_pagadas:
+					for factura_no_pagada in facturas_no_pagadas:
+						total_de_facturas_no_pagadas += factura_no_pagada.amount_total
+				rec['limite_credito_actual'] = limite_de_credito - total_de_facturas_no_pagadas
+
+	@api.depends('partner_id')
+	def _compute_limite_credito_conglomerado_actual(self):
+		for rec in self:
+			if rec.partner_id.id:
+				limite_de_credito_conglomerado = rec.partner_id.limite_credito_conglomerado
+				state_facturas_no_pagadas = ['draft', 'posted']
+				facturas_no_pagadas = rec.env['account.move'].sudo().search(
+					[
+						("invoice_payment_state", "=", "not_paid"),
+						("state", "in", state_facturas_no_pagadas),
+						("partner_id", "=", rec.partner_id.id)
+					]
+				)
+				total_de_facturas_no_pagadas = 0
+				if facturas_no_pagadas:
+					for factura_no_pagada in facturas_no_pagadas:
+						total_de_facturas_no_pagadas += factura_no_pagada.amount_total
+				rec['limite_credito_conglomerado_actual'] = limite_de_credito_conglomerado - total_de_facturas_no_pagadas
 
 	@api.onchange('order_line')
 	def comprobar_limite_de_credito_company_unica(self):
