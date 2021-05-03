@@ -49,7 +49,7 @@ class AccountMove(models.Model):
                     ("invoice_payment_state", "=", "not_paid"),
                     ("state", "in", state_facturas_no_pagadas),
                     ("partner_id", "=", self.partner_id.id),
-                    ("id", "!=", self.id)
+                    ("id", "!=", self._origi.id)
                 ]
             )
             _logger.info("facturas_no_pagadas_limite_de_credito_unico: ")
@@ -78,7 +78,7 @@ class AccountMove(models.Model):
                     ("invoice_payment_state", "=", "not_paid"),
                     ("state", "in", state_facturas_no_pagadas),
                     ("partner_id", "=", self.partner_id.id),
-                    ("id", "!=", self.id)
+                    ("id", "!=", self._origi.id)
                 ]
             )
             _logger.info("facturas_no_pagadas_companies: ")
