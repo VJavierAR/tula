@@ -68,6 +68,8 @@ class sale(models.Model):
 			total = self.amount_total
 			limite_de_credito = self.partner_id.limite_credito
 
+			state_facturas_no_pagadas = ['draft', 'posted']
+
 			title = "Alertas: "
 			message = """Mensajes: \n"""
 
@@ -77,7 +79,7 @@ class sale(models.Model):
 			facturas_no_pagadas = self.env['account.move'].search(
 				[
 					("invoice_payment_state", "=", "not_paid"),
-					("state", "=", "posted"),
+					("state", "in", state_facturas_no_pagadas),
 					("partner_id", "=", self.partner_id.id)
 				]
 			)
