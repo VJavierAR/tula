@@ -6,9 +6,16 @@ _logger = logging.getLogger(__name__)
 class partner(models.Model):
     _inherit = 'res.partner'
 
-    limite_credito = fields.Monetary(
-        string = "Límite de crédito",
-        company_dependent = True
+    limite_credito = fields.Integer(
+        string="Límite de crédito",
+        company_dependent=True,
+        check_company=True
+    )
+
+    limite_credito_conglomerado = fields.Integer(
+        string="Límite de crédito conglomerado",
+        company_dependent=False,
+        check_company=False
     )
 
     correoFac = fields.Char(
