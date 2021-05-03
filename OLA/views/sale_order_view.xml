@@ -9,8 +9,10 @@
 
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="urgencia" />
-                    <field name="bloqueo_limite_credito" invisible="0" />
-                    <field name="mensaje_limite_de_credito" invisible="0" />
+                    <field name="bloqueo_limite_credito" invisible="1" />
+                    <field name="mensaje_limite_de_credito" invisible="1" />
+                    <field name="limite_credito_actual" />
+                    <field name="limite_credito_conglomerado_actual" />
                 </xpath>
 
                 <xpath expr="//button[@name='action_confirm']" position="attributes">
