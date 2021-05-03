@@ -122,7 +122,8 @@ class sale(models.Model):
 
 	@api.onchange('order_line')
 	def comprobar_limite_de_credito_company_unica(self):
-		if len(self.order_line) > 0 and self.partner_id.id:
+		pago_de_contado_id = 1
+		if len(self.order_line) > 0 and self.partner_id.id and self.payment_term_id != pago_de_contado_id:
 			total = self.amount_total
 			limite_de_credito = self.partner_id.limite_credito
 			limite_de_credito_conglomerado = self.partner_id.limite_credito_conglomerado
