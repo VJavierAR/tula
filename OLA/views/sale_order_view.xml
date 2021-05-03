@@ -18,7 +18,7 @@
                 </xpath>
 
                 <xpath expr="//button[@name='action_confirm']" position="after">
-                    <button string="Confirmar excediendo límite de crédito" name="autorizar_sale_limite_de_credito" type="object" class="btn-primary" />
+                    <button string="Confirmar excediendo límite de crédito" name="autorizar_sale_limite_de_credito" type="object" class="btn-primary" attrs="{'invisible': ['|', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', False)]}" />
                 </xpath>
 
             </field>
