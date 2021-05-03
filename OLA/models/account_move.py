@@ -68,8 +68,8 @@ class AccountMove(models.Model):
                 message = message + """Se excedio el límite de crédito por facturas no pagadas: \n
                 Límite de credito: $""" + str(limite_de_credito) + """\n
                 Costo total de pedido de venta actual: $""" + str(total) + """\n
-				Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
-				Suma total: $""" + str(total_con_facturas) + """\n
+                Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
+                Suma total: $""" + str(total_con_facturas) + """\n
                 Facturas no pagadas: """ + str(facturas_no_pagadas.mapped('name')) + """\n
                 """.rstrip() + "\n\n"
                 genero_alertas = True
