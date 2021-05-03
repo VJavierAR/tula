@@ -63,7 +63,7 @@ class sale(models.Model):
 
 
 	@api.onchange('order_line')
-	def comprobar_limite_de_credito_compañia_unica(self):
+	def comprobar_limite_de_credito_company_unica(self):
 		if len(self.order_line) > 0 and self.partner_id.id:
 			total = self.amount_total
 			limite_de_credito = self.partner_id.limite_credito
@@ -143,7 +143,7 @@ class sale(models.Model):
 					}
 				}
 				"""
-				view = self.env.ref('sale_order_alerta_limite_credito_view')
+				view = self.env.ref('OLA.sale_order_alerta_limite_credito_view')
 				wiz = self.env['sale.order.alerta.limite.credito'].create(
 					{
 						'sale_id': self.id,
