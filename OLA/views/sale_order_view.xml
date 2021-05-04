@@ -30,11 +30,13 @@
                 </xpath>
 
                 <xpath expr="//button[@name='action_confirm']" position="attributes">
-                    <attribute name="invisible">['|', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', True)]</attribute>
+                    <!--<attribute name="invisible">['|', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', True)]</attribute>-->
+                    <attribute name="invisible">[('bloqueo_limite_credito', '=', True)]</attribute>
                 </xpath>
 
                 <xpath expr="//form[1]/header[1]/button[@name='action_confirm'][2]" position="attributes">
-                    <attribute name="invisible">['|', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', True)]</attribute>
+                    <!--<attribute name="invisible">['|', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', True)]</attribute>-->
+                    <attribute name="invisible">[('bloqueo_limite_credito', '=', True)]</attribute>
                 </xpath>
 
                 <xpath expr="//button[@name='action_confirm']" position="after">
