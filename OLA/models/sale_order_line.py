@@ -1,6 +1,7 @@
 from odoo import models, fields, api,_
 import datetime, time
 from odoo import exceptions
+from odoo.exceptions import AccessDenied
 import logging, ast
 _logger = logging.getLogger(__name__)
 
@@ -67,6 +68,9 @@ class saleOr(models.Model):
 				genero_alertas = True
 
 		if genero_alertas:
+			raise AccessDenied(
+				_("message"))
+			"""
 			return {
 				# 'value': {},
 				'warning': {
@@ -74,3 +78,4 @@ class saleOr(models.Model):
 					'message': message
 				}
 			}
+			"""
