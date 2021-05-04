@@ -24,7 +24,7 @@ class partner(models.Model):
         string = "Número de deposito"
     )
     
-    numeroUnico = fields.Char(
+    numeroUnico = fields.Boolean(
         string = "Número Unico"
     )
     
