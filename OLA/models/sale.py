@@ -65,6 +65,10 @@ class sale(models.Model):
 			self.with_context(context)._action_confirm()
 			if self.env.user.has_group('sale.group_auto_done_setting'):
 				self.action_done()
+			if(self.company_id.auto_picking):
+				for pi in self.picking_ids:
+					if(pi._check_backorder()==False):
+						pi.action_done()
 			return True
 
 	@api.onchange('arreglo')
@@ -433,11 +437,6 @@ class sale(models.Model):
 	        vals['partner_shipping_id'] = vals.setdefault('partner_shipping_id', addr['delivery'])
 	        vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
 	    result = super(sale, self).create(vals)
-	    _logger.info(vals['company_id'])
-	    em=self.env['res.company'].browse(vals['company_id'])
-	    _logger.info(em.auto_picking)
-	    if(em.auto_picking):
-	    	result.action_confirm()
 	    return result
 
 	# def write(self, vals):
