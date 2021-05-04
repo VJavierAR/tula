@@ -6,21 +6,8 @@ _logger = logging.getLogger(__name__)
 class partner(models.Model):
     _inherit = 'res.partner'
 
-    limite_credito = fields.Integer(
-        string="Límite de crédito",
-        company_dependent=True,
-        check_company=True
-    )
-
-    limite_credito_conglomerado = fields.Integer(
-        string="Límite de crédito conglomerado",
-        company_dependent=False,
-        check_company=False
-    )
-
-    plazo_de_pago = fields.Many2one(
-        comodel_name = 'account.payment.term',
-        string = 'Plazo de pago'
+    limite_credito = fields.Monetary(
+        string = "Límite de crédito"
     )
 
     correoFac = fields.Char(
@@ -33,6 +20,16 @@ class partner(models.Model):
     
 
 
+    numeroDeposito = fields.Char(
+        string = "Número de deposito"
+    )
+    
+    numeroUnico = fields.Char(
+        string = "Número Unico"
+    )
+    
+
+    #${object.partner_id.correoFac},${object.partner_id.email},${object.partner_id.child_ids[0].email}
 
     limite_credito_sucursal = fields.Monetary(
         string = "Límite de crédito de sucursal"
