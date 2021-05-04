@@ -25,6 +25,43 @@ class sale(models.Model):
 		string='Saldo disponible de límite de céredito de conglomerado',
 		compute='_compute_limite_credito_conglomerado_actual'
 	)
+	partner_id = fields.Many2one(
+		comodel_name='res.partner',
+		ondelete='restrict',
+		string='Cliente',
+		store=True,
+		copy=True,
+		required=False,
+		track_visibility='onchange'
+	)
+	partner_invoice_id = fields.Many2one(
+		comodel_name='res.partner',
+		ondelete='restrict',
+		string='Dirección de factura',
+		store=True,
+		copy=True,
+		required=False,
+		#track_visibility='onchange'
+	)
+	partner_shipping_id = fields.Many2one(
+		comodel_name='res.partner',
+		ondelete='restrict',
+		string='Dirección de entrega',
+		store=True,
+		copy=True,
+		required=False,
+		#track_visibility='onchange'
+	)
+	pricelist_id = fields.Many2one(
+		comodel_name='product.pricelist',
+		ondelete='restrict',
+		string='Tarifa',
+		store=True,
+		copy=True,
+		required=False,
+		#track_visibility='onchange'
+	)
+
 
 
 	productos_sugeridos = fields.One2many('product.suggested','rel_id')
