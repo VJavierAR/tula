@@ -114,7 +114,7 @@ odoo.define("refresher.pager", function(require) {
                     //console.log("intervalo de renderizado cada 10 seg iniciado...");
                     //console.log(papa);
                     papa.pager._changeSelection(0);
-                }, 10000, self.__parentedParent);
+                }, 5000, self.__parentedParent);
             }
             if (self.__parentedParent.viewType == "form") {
                 //console.log("*****************Mi papa es un formulario******************")
