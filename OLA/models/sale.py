@@ -74,7 +74,7 @@ class sale(models.Model):
 					no_quantities_done = all(float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in pi.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
 					no_reserved_quantities = all(float_is_zero(move_line.product_qty, precision_rounding=move_line.product_uom_id.rounding) for move_line in pi.move_line_ids)
 					pi.action_assign()
-					#_logger.info(pi._check_backorder() )
+					_logger.info(pi._check_backorder())
 					#if(pi._check_backorder()==False):
 					pi.action_done()
 			return True
