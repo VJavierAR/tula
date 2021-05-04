@@ -132,7 +132,6 @@ class sale(models.Model):
 
 			title = "Alertas: "
 			message = """Mensajes: \n"""
-
 			genero_alertas = False
 
 			# Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
@@ -177,6 +176,10 @@ class sale(models.Model):
 			if facturas_no_pagadas_companies:
 				for factura_no_pagada in facturas_no_pagadas_companies:
 					total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total
+					fecha_de_creacion = factura_no_pagada.create_date
+					_logger.info("fecha_de_creacion: " + str(fecha_de_creacion))
+					
+
 
 			total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
 			_logger.info(
@@ -198,9 +201,20 @@ class sale(models.Model):
 				]
 			).mapped('users')
 			if usuarios_con_permisos:
-				message += "El pedido de venta actual solo podrá ser validado por los siguientes usuarios: \n\n" + str(usuarios_con_permisos.mapped('name'))
+				message += "El pedido de venta actual solo podrá ser validado por los siguientes usuarios: \n\n" + str(usuarios_con_permisos.mapped('name')) + " ".rstrip() + "\n\n"
 			else:
-				message += "El pedido de venta actual solo podrá ser validado por los usuarios que se encuentrán en el grupo \"Confirma pedido de venta que excede límite de crédito.\""
+				message += "El pedido de venta actual solo podrá ser validado por los usuarios que se encuentrán en el grupo \"Confirma pedido de venta que excede límite de crédito.\"".rstrip() + "\n\n"
+
+			# Caso en que el plazo de pago excede el plazo de pago del cliente
+			plazo_de_pago_cliente = self.partner_id.plazo_de_pago.line_ids.mapped('days')[-1]
+			plazo_de_pago_sale = self.payment_term_id.line_ids.mapped('days')[-1]
+			_logger.info("plazo_de_pago_cliente: " + str(plazo_de_pago_cliente) + " plazo_de_pago_sale: " +str(plazo_de_pago_sale))
+			if plazo_de_pago_sale > plazo_de_pago_cliente:
+				title = title + "Plazo de pago excedido. | "
+				message = message + """Se excedio el plazo de pago del cliente: \n
+				Plazo de pago de pedido de venta: """ + str(plazo_de_pago_sale) + """\n
+				Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """ """.rstrip() + "\n\n"
+				genero_alertas = True
 
 			if genero_alertas:
 				self.bloqueo_limite_credito = True
