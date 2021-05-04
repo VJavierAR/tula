@@ -65,8 +65,10 @@ class sale(models.Model):
 			self.with_context(context)._action_confirm()
 			if self.env.user.has_group('sale.group_auto_done_setting'):
 				self.action_done()
+			_logger.info(self.company_id.auto_picking)
 			if(self.company_id.auto_picking):
 				for pi in self.picking_ids:
+					_logger.info(pi._check_backorder())
 					if(pi._check_backorder()==False):
 						pi.action_done()
 			return True
