@@ -120,7 +120,7 @@ class sale(models.Model):
 						total_de_facturas_no_pagadas += factura_no_pagada.amount_total
 				rec['limite_credito_conglomerado_actual'] = limite_de_credito_conglomerado - total_de_facturas_no_pagadas
 
-	@api.onchange('order_line')
+	@api.onchange('order_line', 'payment_term_id')
 	def comprobar_limite_de_credito_company_unica(self):
 		pago_de_contado_id = 1
 		if len(self.order_line) > 0 and self.partner_id.id and self.payment_term_id.id != pago_de_contado_id:
@@ -133,6 +133,11 @@ class sale(models.Model):
 			title = "Alertas: "
 			message = """Mensajes: \n"""
 			genero_alertas = False
+
+			title_restriccion_dias_factura = ""
+			message_factura = ""
+			genero_alertas_facturas = False
+
 
 			# Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
 			facturas_no_pagadas = self.env['account.move'].search(
@@ -172,14 +177,25 @@ class sale(models.Model):
 			)
 			_logger.info("facturas_no_pagadas_companies: ")
 			_logger.info(facturas_no_pagadas_companies)
+			plazo_de_pago_cliente = self.partner_id.plazo_de_pago.line_ids.mapped('days')[-1]
 			total_de_facturas_no_pagadas_companies = 0
 			if facturas_no_pagadas_companies:
+				title_restriccion_dias_factura = "Plazo de pago excedido en facturas. | "
+				message_factura += """Existe una o más facturas no pagadas con un mayor número de días al plazo de pago del cliente:""".rstrip() + "\n"
 				for factura_no_pagada in facturas_no_pagadas_companies:
 					total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total
-					fecha_de_creacion = factura_no_pagada.create_date
-					_logger.info("fecha_de_creacion: " + str(fecha_de_creacion))
-					
-					
+					fecha_de_creacion = str(factura_no_pagada.create_date).split(' ')[0]
+					converted_date = datetime.datetime.strptime(fecha_de_creacion, '%Y-%m-%d').date()
+					fecha_actual = datetime.date.today()
+					dias_transcuridos = (fecha_actual - converted_date).days
+					_logger.info("fecha_de_creacion: " + str(converted_date) + " fecha_actual: " + str(fecha_actual) + " dias_transcuridos: " + str(dias_transcuridos))
+					if dias_transcuridos > plazo_de_pago_cliente:
+						message_factura += """Factura no pagada: """ + str(factura_no_pagada.name) + """\n
+						Fecha de creación de factura no pagada: """ + str(converted_date) + """\n
+						Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """\n
+						Días de transcurridos de factura no pagada: """ + str(dias_transcuridos) + """\n """
+						genero_alertas_facturas = True
+				message_factura = message_factura + "".rstrip() + "\n"
 
 			total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
 			_logger.info(
@@ -214,6 +230,12 @@ class sale(models.Model):
 				message = message + """Se excedio el plazo de pago del cliente: \n
 				Plazo de pago de pedido de venta: """ + str(plazo_de_pago_sale) + """\n
 				Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """ """.rstrip() + "\n\n"
+				genero_alertas = True
+
+			# Caso en que genero alerta por facturas que exceden el plazo de pago
+			if genero_alertas_facturas:
+				title += title_restriccion_dias_factura
+				message += message_factura
 				genero_alertas = True
 
 			if genero_alertas:
