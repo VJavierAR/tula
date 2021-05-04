@@ -69,7 +69,7 @@ class saleOr(models.Model):
 
 		if genero_alertas:
 			raise AccessDenied(
-				_("message"))
+				_(message))
 			"""
 			return {
 				# 'value': {},
