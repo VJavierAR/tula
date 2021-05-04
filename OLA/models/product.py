@@ -3,6 +3,7 @@ import logging, ast
 _logger = logging.getLogger(__name__)
 
 codigo_buscado = ""
+codigos_buscados_lista = []
 
 class product(models.Model):
 	_inherit = 'product.template'
@@ -21,15 +22,16 @@ class product(models.Model):
 		#context =dict([('default_producto_id', id)])
 	)
 
-
-
 	@api.model
 	def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+		global codigos_buscados_lista
+		# codigos_buscados_lista = []
 		args = args or []
 		recs = self.browse()
 		if not recs:
 			codigos_producto = self.env['product.codigos'].search([])
-			codigos_producto = codigos_producto.filtered(lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
+			codigos_producto = codigos_producto.filtered(
+				lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
 			recs = self.search(['|', '|', '|', '|',
 								('name', operator, name),
 								('default_code', operator, name),
@@ -37,6 +39,16 @@ class product(models.Model):
 								('barcode', operator, name),
 								('id', 'in', codigos_producto)
 								] + args, limit=limit)
+			global codigo_buscado
+			codigo_buscado = name.lower()
+			for rec in recs:
+				if codigo_buscado:
+					codigos_buscados_lista.append(
+						{
+							'id_producto': rec.id,
+							'codigo_buscado': codigo_buscado
+						}
+					)
 
 		return recs.name_get(name.lower())
 
@@ -47,7 +59,15 @@ class product(models.Model):
 			codigo = producto.default_code
 			nombre = producto.name
 
-			_logger.info("codigo_cliente: " + str(codigo_cliente))
+			global codigos_buscados_lista
+			_logger.info("1: codigo_cliente: " + str(codigo_cliente) + " codigo_buscado global: " + str(codigo_buscado) +
+						 " codigos_buscados_lista: " + str(codigos_buscados_lista))
+			if not codigo_cliente and codigos_buscados_lista:
+				for codigo in codigos_buscados_lista:
+					if codigo['id_producto'] == producto.id:
+						codigo_cliente = codigo['codigo_buscado']
+			elif not codigo_cliente and codigo_buscado:
+				codigo_cliente = codigo_buscado
 			if codigo_cliente:
 				productos_lista.append(
 					[
@@ -162,6 +182,8 @@ class productPr(models.Model):
 
 	@api.model
 	def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+		global codigos_buscados_lista
+		#codigos_buscados_lista = []
 		args = args or []
 		recs = self.browse()
 		if not recs:
@@ -175,6 +197,16 @@ class productPr(models.Model):
 								('barcode', operator, name),
 								('id', 'in', codigos_producto)
 								] + args, limit=limit)
+			global codigo_buscado
+			codigo_buscado = name.lower()
+			for rec in recs:
+				if codigo_buscado:
+					codigos_buscados_lista.append(
+						{
+							'id_producto': rec.id,
+							'codigo_buscado': codigo_buscado
+						}
+					)
 
 		return recs.name_get(name.lower())
 
@@ -184,8 +216,12 @@ class productPr(models.Model):
 			_logger.info("self: " + str(self) + " producto: " + str(producto))
 			codigo = producto.default_code
 			nombre = producto.name
-
-			_logger.info("codigo_cliente: " + str(codigo_cliente))
+			global codigo_buscado
+			global codigos_buscados_lista
+			_logger.info("2: codigo_cliente: " + str(codigo_cliente) + " codigo_buscado global: " + str(codigo_buscado) +
+						 " codigos_buscados_lista: " + str(codigos_buscados_lista))
+			if not codigo_cliente and codigo_buscado:
+				codigo_cliente = codigo_buscado
 			if codigo_cliente:
 				productos_lista.append(
 					[
