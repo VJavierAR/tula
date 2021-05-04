@@ -497,7 +497,17 @@ class saleOr(models.Model):
 
 	@api.onchange('product_id')
 	def stock(self):
+		arreglo=[]
+		p=self.product_id.mapped('sug_rel.id')
 		res={}
+		for pi in p:
+			pro=dict()
+			pro['product_rel']=self.product_id.id
+			pro['product_sug']=pi
+			pro['rel_id']=self.order_id.id
+			arreglo.append(pro)
+		self.order_id.productos_sugeridos.write(arreglo)
+		_logger.info(str(p))
 		if(self.product_id.qty_available<=0):
 			pa=self.product_id.mapped('alt_rel.id')
 			po=self.env['product.product'].browse(pa)
@@ -506,19 +516,19 @@ class saleOr(models.Model):
 				res['domain']={'product_id':[['id','in',po1.mapped('id')]]}
 				return res
 
-	@api.onchange('product_id')
-	def addSugges(self):
-		p=self.product_id.mapped('sug_rel.id')
-		arreglo=[]
-		_logger.info(str(p))
-		for pi in p:
-			pro=dict()
-			pro['product_rel']=self.product_id.id
-			pro['product_sug']=pi
-			pro['rel_id']=self.order_id.id
-			arreglo.append(pro)
-			_logger.info(str(pi))
-		self.order_id.productos_sugeridos.write(arreglo)
+	# @api.onchange('product_id')
+	# def addSugges(self):
+	# 	p=self.product_id.mapped('sug_rel.id')
+	# 	arreglo=[]
+	# 	_logger.info(str(p))
+	# 	for pi in p:
+	# 		pro=dict()
+	# 		pro['product_rel']=self.product_id.id
+	# 		pro['product_sug']=pi
+	# 		pro['rel_id']=self.order_id.id
+	# 		arreglo.append(pro)
+	# 		_logger.info(str(pi))
+	# 	self.order_id.productos_sugeridos.write(arreglo)
 
 	x_studio_field_Ml1CB = fields.Float("Precio minímo", related="product_id.standard_price")
 
