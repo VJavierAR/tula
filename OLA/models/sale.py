@@ -40,8 +40,7 @@ class sale(models.Model):
 			('cancel', 'Cancelled'),
 		], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
 
-
-	def action_confirm(self):
+	def conf(self):
 		check=self.mapped('order_line.bloqueo')
 		if(True in check):
 			self.write({'state':'auto'})
@@ -66,12 +65,16 @@ class sale(models.Model):
 			self.with_context(context)._action_confirm()
 			if self.env.user.has_group('sale.group_auto_done_setting'):
 				self.action_done()
-			_logger.info(self.company_id.auto_picking)
-			_logger.info(self.picking_ids.mapped('state'))
-			if(self.company_id.auto_picking):
-				for pi in self.picking_ids:
-					if(pi.state not in ('cancel','done')):
-						pi.button_validate()
+			return True
+			
+	def action_confirm(self):
+		self.conf()
+		_logger.info(self.company_id.auto_picking)
+		_logger.info(self.picking_ids.mapped('state'))
+		if(self.company_id.auto_picking):
+			for pi in self.picking_ids:
+				if(pi.state not in ('cancel','done')):
+					pi.button_validate()
 						# pi.action_assign()
 						# quantity_todo = {}
 						# quantity_done = {}
@@ -100,7 +103,7 @@ class sale(models.Model):
 					#_logger.info(pi._check_backorder())
 					##if(pi._check_backorder()==False):
 						
-			return True
+			
 
 	@api.onchange('arreglo')
 	def addsegesst(self):
