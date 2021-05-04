@@ -179,7 +179,7 @@ class sale(models.Model):
 					fecha_de_creacion = factura_no_pagada.create_date
 					_logger.info("fecha_de_creacion: " + str(fecha_de_creacion))
 					
-
+					
 
 			total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
 			_logger.info(
