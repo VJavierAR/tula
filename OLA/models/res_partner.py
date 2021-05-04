@@ -47,3 +47,32 @@ class partner(models.Model):
     limite_credito_sucursal = fields.Monetary(
         string = "Límite de crédito de sucursal"
     )
+
+class Pago(models.Model):
+    _inherit = 'account.payment'
+    
+    
+    descripcion = fields.Char(
+        string = "Descripción"
+    )
+    
+    
+    deposito = fields.Char(
+        string = "Deposito"
+    )
+    
+        
+    @api.onchange('partner_id')
+    def asocia(self):        
+        if self.partner_id.numeroUnico:
+           self.deposito= self.partner_id.numeroDeposito
+    
+    
+    @api.onchange('deposito')
+    def cehckDepositi(self):
+        
+        if not self.partner_id.numeroUnico and self.deposito :           
+           depo=self.env['account.payment'] .search([('deposito','=',self.deposito)])
+           if len(depo)>0:
+              self.deposito=False
+              return {'value':{},'warning':{'title':'warning','message':'Valor ya ocupado'}}
