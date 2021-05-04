@@ -71,24 +71,25 @@ class sale(models.Model):
 			if(self.company_id.auto_picking):
 				for pi in self.picking_ids:
 					if(pi.state not in ('cancel','done')):
-						pi.action_assign()
-						quantity_todo = {}
-						quantity_done = {}
-						for move in pi.mapped('move_lines').filtered(lambda m: m.state != "cancel"):
-						    quantity_todo.setdefault(move.product_id.id, 0)
-						    quantity_done.setdefault(move.product_id.id, 0)
-						    quantity_todo[move.product_id.id] += move.product_uom_qty
-						    quantity_done[move.product_id.id] += move.quantity_done
-						for ops in pi.mapped('move_line_ids').filtered(lambda x: x.package_id and not x.product_id and not x.move_id):
-						    for quant in ops.package_id.quant_ids:
-						        quantity_done.setdefault(quant.product_id.id, 0)
-						        quantity_done[quant.product_id.id] += quant.qty
-						for pack in pi.mapped('move_line_ids').filtered(lambda x: x.product_id and not x.move_id):
-						    quantity_done.setdefault(pack.product_id.id, 0)
-						    quantity_done[pack.product_id.id] += pack.product_uom_id._compute_quantity(pack.qty_done, pack.product_id.uom_id)
-						prec = self.env["decimal.precision"].precision_get("Product Unit of Measure")
-						if(any(float_compare(quantity_done[x], quantity_todo.get(x, 0), precision_digits=prec,) == -1 for x in quantity_done)==False):
-							pi.action_done()
+						pi.button_confirm()
+						# pi.action_assign()
+						# quantity_todo = {}
+						# quantity_done = {}
+						# for move in pi.mapped('move_lines').filtered(lambda m: m.state != "cancel"):
+						#     quantity_todo.setdefault(move.product_id.id, 0)
+						#     quantity_done.setdefault(move.product_id.id, 0)
+						#     quantity_todo[move.product_id.id] += move.product_uom_qty
+						#     quantity_done[move.product_id.id] += move.quantity_done
+						# for ops in pi.mapped('move_line_ids').filtered(lambda x: x.package_id and not x.product_id and not x.move_id):
+						#     for quant in ops.package_id.quant_ids:
+						#         quantity_done.setdefault(quant.product_id.id, 0)
+						#         quantity_done[quant.product_id.id] += quant.qty
+						# for pack in pi.mapped('move_line_ids').filtered(lambda x: x.product_id and not x.move_id):
+						#     quantity_done.setdefault(pack.product_id.id, 0)
+						#     quantity_done[pack.product_id.id] += pack.product_uom_id._compute_quantity(pack.qty_done, pack.product_id.uom_id)
+						# prec = self.env["decimal.precision"].precision_get("Product Unit of Measure")
+						# if(any(float_compare(quantity_done[x], quantity_todo.get(x, 0), precision_digits=prec,) == -1 for x in quantity_done)==False):
+						# 	pi.action_done()
 					#ctx = dict(pi.env.context)
 					#ctx.pop('default_immediate_transfer', None)
 					#pi = pi.with_context(ctx)
