@@ -505,8 +505,9 @@ class saleOr(models.Model):
 			pro['product_rel']=self.product_id.id
 			pro['product_sug']=pi
 			pro['rel_id']=self.order_id.id
-			arreglo.append(pro)
-		self.order_id.productos_sugeridos.write(arreglo)
+			self.order_id.productos_sugeridos=[(0, 0, pro)]
+			#arreglo.append(pro)
+		#self.order_id.productos_sugeridos.write(arreglo)
 		_logger.info(str(p))
 		if(self.product_id.qty_available<=0):
 			pa=self.product_id.mapped('alt_rel.id')
