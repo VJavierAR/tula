@@ -68,6 +68,7 @@ class sale(models.Model):
 			_logger.info(self.company_id.auto_picking)
 			if(self.company_id.auto_picking):
 				for pi in self.picking_ids:
+					pi.action_assign()
 					_logger.info(pi._check_backorder() )
 					if(pi._check_backorder()==False):
 						pi.action_done()
