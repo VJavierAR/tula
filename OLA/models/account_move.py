@@ -36,7 +36,7 @@ class AccountMove(models.Model):
             limite_de_credito = self.partner_id.limite_credito
             limite_de_credito_conglomerado = self.partner_id.limite_credito_conglomerado
 
-            state_facturas_no_pagadas = ['draft', 'posted']
+            state_facturas_no_pagadas = ['posted']
 
             title = "Alertas: "
             message = """Mensajes: \n"""
