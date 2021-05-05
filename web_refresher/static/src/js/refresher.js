@@ -11,7 +11,11 @@ odoo.define("refresher.pager", function(require) {
     var WebClient = require('web.WebClient')
     var data_manager = require('web.data_manager');
     var inter;
+    var isPaused = false;
     var idPresupuestos = 806; //id de vista lista sale.order
+    var idPedidosAFacturar = 585 //Clientes.facturas
+    var idTransferencias = 1794 //id vista lista stock.picking
+    var idsVistasPermitidas = [idTransferencias, idPedidosAFacturar]
 
     // Allowed decoration on the list's rows: bold, italic and bootstrap semantics classes
     var DECORATIONS = [
@@ -35,8 +39,24 @@ odoo.define("refresher.pager", function(require) {
                 css: {"margin-right": "8px"},
                 "aria-label": "Refresh",
             });
+            var $button_play = $("<span>", {
+                class: "fa fa-play btn btn-icon o_pager_play",
+                css: {"margin-right": "8px"},
+                "aria-label": "Play",
+            });
+            var $button_pause = $("<span>", {
+                class: "fa fa-pause btn btn-icon o_pager_pause",
+                css: {"margin-right": "8px"},
+                "aria-label": "Pause",
+            });
             $button.on("click", function() {
                 self._changeSelection(0);
+            });
+            $button_play.on("click", function() {
+                self._playInterval();
+            });
+            $button_pause.on("click", function() {
+                self._pauseInterval();
             });
 
             //console.log("self.__parentedParent: ")
@@ -53,7 +73,17 @@ odoo.define("refresher.pager", function(require) {
             */
 
             self.$el.prepend($button);
+            self.$el.prepend($button_play);
+            self.$el.prepend($button_pause);
             return res;
+        },
+        _playInterval: function() {
+            //console.log("continuando....")
+            isPaused = false;
+        },
+        _pauseInterval: function() {
+            //console.log("pausando....")
+            isPaused = true;
         },
     });
 
@@ -108,12 +138,14 @@ odoo.define("refresher.pager", function(require) {
             }
             //console.log("Renderizando cuerpo de lista.....");
             //console.log(self);
-            if (self.__parentedParent.viewType == "list" && !inter) {
-                //console.log("*****************Mi papa es una lista******************")
+            if (self.__parentedParent.viewType == "list" && idsVistasPermitidas.includes(self.__parentedParent.viewId) && !inter) {
+                //console.log("*****************Mi papa es una lista y esta dentro de las vistas permitidas******************")
                 inter = setInterval(function(papa) {
-                    //console.log("intervalo de renderizado cada 10 seg iniciado...");
-                    //console.log(papa);
-                    papa.pager._changeSelection(0);
+                    if (!isPaused) {
+                        //console.log("intervalo de renderizado cada 10 seg iniciado...");
+                        //console.log(papa);
+                        papa.pager._changeSelection(0);
+                    }
                 }, 5000, self.__parentedParent);
             }
             if (self.__parentedParent.viewType == "form") {
