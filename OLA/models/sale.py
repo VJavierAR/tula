@@ -218,7 +218,6 @@ class sale(models.Model):
 			message_factura = ""
 			genero_alertas_facturas = False
 
-
 			# Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
 			facturas_no_pagadas = self.env['account.move'].search(
 				[
@@ -235,19 +234,20 @@ class sale(models.Model):
 					total_de_facturas_no_pagadas += factura_no_pagada.amount_total
 
 			total_con_facturas = total + total_de_facturas_no_pagadas
-			_logger.info("total_con_facturas: " + str(total_con_facturas) + " > limite_de_credito:" + str(limite_de_credito))
+			_logger.info(
+				"total_con_facturas: " + str(total_con_facturas) + " > limite_de_credito:" + str(limite_de_credito))
 			if total_con_facturas > limite_de_credito:
 				title = title + "Límite de crédito excedido. | "
 				message = message + """Se excedio el límite de crédito por facturas no pagadas y total del pedido de venta actual: \n
-				Límite de credito: $""" + str(limite_de_credito) + """\n
-				Costo total de pedido de venta actual: $""" + str(total) + """\n
-				Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
-				Suma total: $""" + str(total_con_facturas) + """\n
-				Facturas no pagadas: """ + str(facturas_no_pagadas.mapped('name')) + """\n
-				""".rstrip() + "\n\n"
+					Límite de credito: $""" + str(limite_de_credito) + """\n
+					Costo total de pedido de venta actual: $""" + str(total) + """\n
+					Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
+					Suma total: $""" + str(total_con_facturas) + """\n
+					Facturas no pagadas: """ + str(facturas_no_pagadas.mapped('name')) + """\n
+					""".rstrip() + "\n\n"
 				genero_alertas = True
 
-			#Caso en que excede el limite de credito de conglomerado las facturas no pagadas y la linea de pedido de venta
+			# Caso en que excede el limite de credito de conglomerado las facturas no pagadas y la linea de pedido de venta
 			facturas_no_pagadas_companies = self.env['account.move'].sudo().search(
 				[
 					("invoice_payment_state", "=", "not_paid"),
@@ -257,8 +257,9 @@ class sale(models.Model):
 			)
 			_logger.info("facturas_no_pagadas_companies: ")
 			_logger.info(facturas_no_pagadas_companies)
-			plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[-1] + colchon_de_credito
-			#plazo_de_pago_cliente = self.partner_id.property_payment_id.line_ids.mapped('days')[-1]
+			plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[
+										-1] + colchon_de_credito
+			# plazo_de_pago_cliente = self.partner_id.property_payment_id.line_ids.mapped('days')[-1]
 			total_de_facturas_no_pagadas_companies = 0
 			if facturas_no_pagadas_companies:
 				title_restriccion_dias_factura = "Plazo de pago excedido en facturas. | "
@@ -269,27 +270,29 @@ class sale(models.Model):
 					converted_date = datetime.datetime.strptime(fecha_de_creacion, '%Y-%m-%d').date()
 					fecha_actual = datetime.date.today()
 					dias_transcuridos = (fecha_actual - converted_date).days
-					_logger.info("fecha_de_creacion: " + str(converted_date) + " fecha_actual: " + str(fecha_actual) + " dias_transcuridos: " + str(dias_transcuridos))
+					_logger.info("fecha_de_creacion: " + str(converted_date) + " fecha_actual: " + str(
+						fecha_actual) + " dias_transcuridos: " + str(dias_transcuridos))
 					if dias_transcuridos > plazo_de_pago_cliente:
 						message_factura += """Factura no pagada: """ + str(factura_no_pagada.name) + """\n
-						Fecha de creación de factura no pagada: """ + str(converted_date) + """\n
-						Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """\n
-						Días de transcurridos de factura no pagada: """ + str(dias_transcuridos) + """\n """
+							Fecha de creación de factura no pagada: """ + str(converted_date) + """\n
+							Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """\n
+							Días de transcurridos de factura no pagada: """ + str(dias_transcuridos) + """\n """
 						genero_alertas_facturas = True
 				message_factura = message_factura + "".rstrip() + "\n"
 
 			total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
 			_logger.info(
-				"total_con_facturas: " + str(total_con_facturas_companies) + " > limite_de_credito conglomerado:" + str(limite_de_credito_conglomerado))
+				"total_con_facturas: " + str(total_con_facturas_companies) + " > limite_de_credito conglomerado:" + str(
+					limite_de_credito_conglomerado))
 			if total_con_facturas_companies > limite_de_credito_conglomerado:
 				title = title + "Límite de crédito de conglomerado excedido. | "
 				message = message + """Se excedio el límite de crédito de conglomerado por facturas no pagadas y total del pedido de venta actual: \n
-				Límite de credito de conglomerado: $""" + str(limite_de_credito_conglomerado) + """\n
-				Costo total de pedido de venta actual: $""" + str(total) + """\n
-				Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas_companies) + """\n
-				Suma total: $""" + str(total_con_facturas_companies) + """\n
-				Facturas no pagadas: """ + str(facturas_no_pagadas_companies.mapped('name')) + """\n
-				""".rstrip() + "\n\n"
+					Límite de credito de conglomerado: $""" + str(limite_de_credito_conglomerado) + """\n
+					Costo total de pedido de venta actual: $""" + str(total) + """\n
+					Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas_companies) + """\n
+					Suma total: $""" + str(total_con_facturas_companies) + """\n
+					Facturas no pagadas: """ + str(facturas_no_pagadas_companies.mapped('name')) + """\n
+					""".rstrip() + "\n\n"
 				genero_alertas = True
 
 			usuarios_con_permisos = self.env['res.groups'].sudo().search(
@@ -298,19 +301,21 @@ class sale(models.Model):
 				]
 			).mapped('users')
 			if usuarios_con_permisos:
-				message += "El pedido de venta actual solo podrá ser validado por los siguientes usuarios: \n\n" + str(usuarios_con_permisos.mapped('name')) + " ".rstrip() + "\n\n"
+				message += "El pedido de venta actual solo podrá ser validado por los siguientes usuarios: \n\n" + str(
+					usuarios_con_permisos.mapped('name')) + " ".rstrip() + "\n\n"
 			else:
 				message += "El pedido de venta actual solo podrá ser validado por los usuarios que se encuentrán en el grupo \"Confirma pedido de venta que excede límite de crédito.\"".rstrip() + "\n\n"
 
 			# Caso en que el plazo de pago excede el plazo de pago del cliente
 			plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[-1]
 			plazo_de_pago_sale = self.payment_term_id.line_ids.mapped('days')[-1]
-			_logger.info("plazo_de_pago_cliente: " + str(plazo_de_pago_cliente) + " plazo_de_pago_sale: " +str(plazo_de_pago_sale))
+			_logger.info("plazo_de_pago_cliente: " + str(plazo_de_pago_cliente) + " plazo_de_pago_sale: " + str(
+				plazo_de_pago_sale))
 			if plazo_de_pago_sale > plazo_de_pago_cliente:
 				title = title + "Plazo de pago excedido. | "
 				message = message + """Se excedio el plazo de pago del cliente: \n
-				Plazo de pago de pedido de venta: """ + str(plazo_de_pago_sale) + """\n
-				Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """ """.rstrip() + "\n\n"
+					Plazo de pago de pedido de venta: """ + str(plazo_de_pago_sale) + """\n
+					Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """ """.rstrip() + "\n\n"
 				genero_alertas = True
 
 			# Caso en que genero alerta por facturas que exceden el plazo de pago
@@ -318,6 +323,37 @@ class sale(models.Model):
 				title += title_restriccion_dias_factura
 				message += message_factura
 				genero_alertas = True
+
+			if genero_alertas:
+				self.bloqueo_limite_credito = True
+				self.mensaje_limite_de_credito = message
+				return {
+					# 'value': {},
+					'warning': {
+						'title': title,
+						'message': message
+					}
+				}
+		elif self.partner_id.id and self.payment_term_id.id and self.payment_term_id.id != pago_de_contado_id:
+			title = "Alertas: "
+			message = """Mensajes: \n"""
+			genero_alertas = False
+
+			# Caso en que el plazo de pago excede el plazo de pago del cliente
+			plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[-1]
+			plazo_de_pago_sale = self.payment_term_id.line_ids.mapped('days')[-1]
+			_logger.info("plazo_de_pago_cliente: " + str(plazo_de_pago_cliente) + " plazo_de_pago_sale: " + str(
+				plazo_de_pago_sale))
+			if plazo_de_pago_sale > plazo_de_pago_cliente:
+				title = title + "Plazo de pago excedido. | "
+				message = message + """Se excedio el plazo de pago del cliente: \n
+								Plazo de pago de pedido de venta: """ + str(plazo_de_pago_sale) + """\n
+								Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """ """.rstrip() + "\n\n"
+				genero_alertas = True
+			else:
+				self.bloqueo_limite_credito = False
+				self.mensaje_limite_de_credito = ""
+				genero_alertas = False
 
 			if genero_alertas:
 				self.bloqueo_limite_credito = True
