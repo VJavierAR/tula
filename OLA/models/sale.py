@@ -394,7 +394,8 @@ class sale(models.Model):
 					pro['product_rel']=p.product_id.id
 					pro['product_sug']=pss
 					arr.append(pro)
-			self.productos_sugeridos=arr
+					self.productos_sugeridos=[(0, 0, pro)]
+			#self.productos_sugeridos=arr
 
 class saleOr(models.Model):
 	_inherit='sale.order.line'
