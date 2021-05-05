@@ -154,7 +154,7 @@ class sale(models.Model):
 		for sug in self.productos_sugeridos:
 			if(sug.agregar==True):
 				if(sug.product_sug.id not in self.order_line.mapped('product_id.id')):
-					self.order_line=[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':1,'name':d.description,'price_unit':d.lst_price})]
+					self.order_line=[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price})]
 
 	@api.depends('partner_id')
 	def _compute_limite_credito_actual(self):
