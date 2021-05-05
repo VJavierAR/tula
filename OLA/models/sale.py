@@ -200,6 +200,7 @@ class sale(models.Model):
 			else:
 				rec['limite_credito_conglomerado_actual'] = 0
 
+
 	@api.onchange('order_line', 'payment_term_id')
 	def comprobar_limite_de_credito_company_unica(self):
 		pago_de_contado_id = 1
