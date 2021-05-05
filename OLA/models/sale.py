@@ -146,7 +146,7 @@ class sale(models.Model):
 				if(sug.product_sug.id not in self.order_line.mapped('product_id.id')):
 					pro=dict()
 					pro['product_id']=sug.product_sug.id
-					pro['order_id']=self.id
+					#pro['order_id']=self.id
 					pro['product_uom_qty']=sug.product_sug.uom_id.id
 					pro['name']=sug.product_sug.description
 					pro['price_unit']=sug.product_sug.lst_price
