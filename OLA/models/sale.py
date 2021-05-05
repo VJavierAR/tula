@@ -386,6 +386,7 @@ class sale(models.Model):
 	def test(self):
 		l=len(self.order_line)
 		if(l>0):
+			self.productos_sugeridos=[(5,0,0)]
 			arr=[]
 			for p in self.order_line:
 				pro={}
