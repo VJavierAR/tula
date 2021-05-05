@@ -393,7 +393,8 @@ class sale(models.Model):
 				for pss in ps:
 					pro['product_rel']=p.product_id.id
 					pro['product_sug']=pss
-					arr.append(pro)
+					#arr.append(pro)
+					_logger.info(str(pro))
 					self.productos_sugeridos=[(0, 0, pro)]
 			#self.productos_sugeridos=arr
 
