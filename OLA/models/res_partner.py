@@ -18,11 +18,6 @@ class partner(models.Model):
         check_company=False
     )
 
-    plazo_de_pago = fields.Many2one(
-        comodel_name='account.payment.term',
-        string='Plazo de pago'
-    )
-
     correoFac = fields.Char(
         string = "Correo Facturacion"
     )
