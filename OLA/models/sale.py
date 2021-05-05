@@ -140,20 +140,21 @@ class sale(models.Model):
 						
 			
 
-	@api.onchange('arreglo')
-	def addsegesst(self):
-		if(self.arreglo!='[]'):
-			data=eval(self.arreglo)
-			dat=self.env['product.product'].browse(data)
-			for d in dat:
-				_logger.info(d.id)
-				self.order_line.write({'product_id':d.id,'order_id':self.id,'product_uom_qty':1,'name':d.description,'price_unit':d.lst_price})
+	# @api.onchange('arreglo')
+	# def addsegesst(self):
+	# 	if(self.arreglo!='[]'):
+	# 		data=eval(self.arreglo)
+	# 		dat=self.env['product.product'].browse(data)
+	# 		for d in dat:
+	# 			_logger.info(d.id)
+	# 			self.order_line.write({'product_id':d.id,'order_id':self.id,'product_uom_qty':1,'name':d.description,'price_unit':d.lst_price})
 
 	@api.onchange('productos_sugeridos')
 	def agregar(self):
 		for sug in self.productos_sugeridos:
-			if(sug.agregar==True and sug.bandera==1):
-				self.order_line=[(0, 0, {'product_id':sug.product_sug.id})]
+			if(sug.agregar==True):
+				if(sug.product_sug.id not in self.order_line.mapped('product_id.id')):
+					self.order_line=[(0, 0, {'product_id':sug.product_sug.id})]
 
 	@api.depends('partner_id')
 	def _compute_limite_credito_actual(self):
