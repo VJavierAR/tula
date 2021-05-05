@@ -85,7 +85,7 @@ class Lineas(models.Model):
         depo=self.env['product.template'] .search([('name','=',producto)])
         
         for cal in depo:   
-            ft='<tr><td>'+cal.company_id.name+'</td><td>'+str(cal.qty_available)+'</td></tr>'+ft
+            ft='<tr><td>'+str(cal.company_id.name)+'</td><td>'+str(cal.qty_available)+'</td></tr>'+ft
          #self.cal=y
         tabla=cabecera+ft+'</table>'
         
