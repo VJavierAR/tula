@@ -8,14 +8,34 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='vat']" position="after">
-                    <field name="limite_credito" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
-                    <field name="limite_credito_conglomerado" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
-                    <field name="colchon_credito" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
+                    <field name="limite_credito" attrs="{'invisible': [('company_type', '!=', 'company')], 'readonly': 1}" />
+                    <field name="limite_credito_conglomerado" attrs="{'invisible': [('company_type', '!=', 'company')], 'readonly': 1}" />
+                    <field name="colchon_credito" attrs="{'invisible': [('company_type', '!=', 'company')], 'readonly': 1}" />
                     <!--<field name="limite_credito_sucursal" attrs="{'invisible': [('type', '!=', 'delivery')]}" />-->
                     <field name="correoCobranza"/>
                     <field name="correoFac"/>
                     <field name="numeroDeposito"  />
                     <field name="numeroUnico"  />
+                </xpath>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_partner_form_view_update_acceses_groups">
+            <field name="name">res.partner.form.update.acceses.groups</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="OLA.res_partner_form_view_update"/>
+            <field name="groups_id" eval="[(6, 0, [ref('OLA.group_confirm_sale_excede_limite_credito')])]" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='limite_credito']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='limite_credito_conglomerado']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='colchon_credito']" position="attributes">
+                    <attribute name="readonly">0</attribute>
                 </xpath>
 
             </field>
