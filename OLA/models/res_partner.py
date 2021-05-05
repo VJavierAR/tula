@@ -85,7 +85,7 @@ class Ventaa(models.Model):
     def busca(self):
         pro=self.product_id.name
         cabecera='<table><tr><th>Compañia</th><th>Cantidad</th></tr>'
-        depo=self.env['product.template'].search([('name','=',pro)])
+        depo=self.env['product.template'].sudo().search([('name','=',pro)])
         ft=''
         for cal in depo:
 	        ft='<tr><td>'+str(cal.company_id.name)+'</td><td>'+str(cal.qty_available)+'</td></tr>'+ft
