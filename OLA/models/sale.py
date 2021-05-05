@@ -109,7 +109,8 @@ class sale(models.Model):
 		if(self.company_id.auto_picking):
 			for pi in self.picking_ids:
 				if(pi.state not in ('cancel','done')):
-					return pi.button_validate()
+					pi.action_done()
+					#return pi.button_validate()
 						# pi.action_assign()
 						# quantity_todo = {}
 						# quantity_done = {}
