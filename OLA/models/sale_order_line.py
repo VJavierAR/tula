@@ -34,7 +34,7 @@ class saleOr(models.Model):
 			if codigos_por_cliente.ids:
 				for codigo in codigos_por_cliente:
 					if codigo.cliente.id == cliente.id:
-						codigo_final = "[" + codigo.codigo_producto + "] " + producto.name
+						codigo_final = "[" + str(codigo.codigo_producto) + "] " + str(producto.name)
 						break
 		self.name = codigo_final
 		#self.order_line =
