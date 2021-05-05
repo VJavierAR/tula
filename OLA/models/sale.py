@@ -144,8 +144,8 @@ class sale(models.Model):
 		for sug in self.productos_sugeridos:
 			if(sug.agregar==True):
 				if(sug.product_sug.id not in self.order_line.mapped('product_id.id')):
-					self.order_line=[{'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price}]
-					#self.order_line=[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price})]
+					#self.order_line=[{'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price}]
+					self.order_line=[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price})]
 
 	@api.depends('partner_id')
 	def _compute_limite_credito_actual(self):
@@ -386,7 +386,7 @@ class sale(models.Model):
 				pro={}
 				ps=p.product_id.mapped('sug_rel.id')
 				for pss in ps:
-					if(ps not in m):
+					if(pss not in m):
 						pro['product_rel']=p.product_id.id
 						pro['product_sug']=pss
 						self.productos_sugeridos=[(0, 0, pro)]
