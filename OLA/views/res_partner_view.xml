@@ -17,6 +17,9 @@
                     <field name="numeroDeposito"  />
                     <field name="numeroUnico"  />
                 </xpath>
+                <xpath expr="//field[@name='property_payment_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
 
             </field>
         </record>
@@ -35,6 +38,9 @@
                     <attribute name="readonly">0</attribute>
                 </xpath>
                 <xpath expr="//field[@name='colchon_credito']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='property_payment_id']" position="attributes">
                     <attribute name="readonly">0</attribute>
                 </xpath>
 
