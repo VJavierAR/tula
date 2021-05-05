@@ -50,8 +50,9 @@ class product(models.Model):
 						}
 					)
 
-		return recs.name_get(name.lower())
+		return recs.name_get()
 
+	"""
 	def name_get(self, codigo_cliente=None):
 		productos_lista = []
 		for producto in self:
@@ -91,7 +92,7 @@ class product(models.Model):
 					]
 				)
 		return productos_lista
-
+	"""
 
 	"""
 	def name_get(self):
@@ -207,8 +208,9 @@ class productPr(models.Model):
 						}
 					)
 
-		return recs.name_get(name.lower())
+		return recs.name_get()
 
+	"""
 	def name_get(self, codigo_cliente=None):
 		productos_lista = []
 		for producto in self:
@@ -244,7 +246,7 @@ class productPr(models.Model):
 					]
 				)
 		return productos_lista
-
+	"""
 class codigos(models.Model):
 	_name='product.codigos'
 	_description='Lista de codigos para los clientes'
