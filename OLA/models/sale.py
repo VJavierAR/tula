@@ -350,7 +350,7 @@ class sale(models.Model):
 								Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """ """.rstrip() + "\n\n"
 				genero_alertas = True
 			else:
-				self.bloqueo_limite_credito = True
+				self.bloqueo_limite_credito = False
 				self.mensaje_limite_de_credito = ""
 				genero_alertas = False
 
