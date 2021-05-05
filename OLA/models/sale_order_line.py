@@ -14,6 +14,44 @@ class saleOr(models.Model):
 	)
 	existencias = fields.Char()
 
+	@api.onchange("product_id")
+	def product_id_change(self):
+		res = super(saleOr, self).product_id_change()
+		if not self.product_id:  # pragma: no cover
+			return res
+		if not self.order_partner_id:
+			return res
+		if not self.product_id.codigos_de_producto:
+			return res
+		if not self.order_id.partner_id:
+			return res
+		producto = self.product_id
+		cliente = self.order_id.partner_id
+		codigos_por_cliente = self.product_id.codigos_de_producto
+		codigo_final = "[" + producto.default_code + "] " + producto.name
+
+		for codigo in codigos_por_cliente:
+			if codigo.cliente.id == cliente.id:
+				codigo_final = "[" + codigo.codigo_producto + "] " + producto.name
+				break
+		self.name = codigo_final
+		return res
+		"""
+		if (
+				self.user_has_groups(
+					"sale_order_line_description."
+					"group_use_product_description_per_so_line"
+				)
+				and self.product_id.description_sale
+		):
+			product = self.product_id
+			if self.order_id.partner_id:
+				product = product.with_context(lang=self.order_id.partner_id.lang, )
+			self.name = product.description_sale
+		return res
+		"""
+
+	
 	@api.onchange('product_id')
 	def buscaProductos(self):                                        
 	    ft=''
