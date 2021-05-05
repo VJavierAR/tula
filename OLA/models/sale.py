@@ -349,6 +349,10 @@ class sale(models.Model):
 								Plazo de pago de pedido de venta: """ + str(plazo_de_pago_sale) + """\n
 								Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """ """.rstrip() + "\n\n"
 				genero_alertas = True
+			else:
+				self.bloqueo_limite_credito = True
+				self.mensaje_limite_de_credito = ""
+				genero_alertas = False
 
 			if genero_alertas:
 				self.bloqueo_limite_credito = True
