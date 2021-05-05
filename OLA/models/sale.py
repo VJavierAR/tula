@@ -77,8 +77,11 @@ class sale(models.Model):
 
 	def conf(self):
 		check=self.mapped('order_line.bloqueo')
+		if(self.env.user.has_group('"group_confirm_sale_excede_limite_credito')):
+			self.order_line.write({'bloqueo':False})
+			self.conf()
 		if(True in check):
-			self.write({'state':'auto'})
+				self.write({'state':'auto'})
 		if(True not in check):
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
 				raise UserError(_(
