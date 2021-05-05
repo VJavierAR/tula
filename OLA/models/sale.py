@@ -76,13 +76,13 @@ class sale(models.Model):
 		], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
 
 	def conf(self):
-		check=self.mapped('order_line.bloqueo')
-		U=self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
-		m=self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
+		check = self.mapped('order_line.bloqueo')
+		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
+		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
 		# if(self.env.user.id in U):
 		# 	self.order_line.write({'bloqueo':False})
 		# 	self.conf()
-		if(True in check):
+		if True in check:
 			self.write({'state':'auto'})
 			template_id2=self.env['mail.template'].search([('id','=',41)], limit=1)
 			mail=template_id2.generate_email(self.id)
@@ -91,7 +91,7 @@ class sale(models.Model):
 				dest=dest+str(mi)+','
 			mail['email_to']=dest
 			self.env['mail.mail'].create(mail).send()
-		if(True not in check or self.env.user.id in U):
+		if True not in check or self.env.user.id in U:
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
 				raise UserError(_(
 			        'It is not allowed to confirm an order in the following states: %s'
@@ -118,9 +118,9 @@ class sale(models.Model):
 		self.conf()
 		_logger.info(self.company_id.auto_picking)
 		_logger.info(self.picking_ids.mapped('state'))
-		if(self.company_id.auto_picking):
+		if self.company_id.auto_picking:
 			for pi in self.picking_ids:
-				if(pi.state not in ('cancel','done')):
+				if pi.state not in ('cancel', 'done'):
 					pi.action_done()
 					#return pi.button_validate()
 						# pi.action_assign()
