@@ -163,7 +163,7 @@ class sale(models.Model):
 		for rec in self:
 			if rec.partner_id.id:
 				limite_de_credito = rec.partner_id.limite_credito
-				state_facturas_no_pagadas = ['draft', 'posted']
+				state_facturas_no_pagadas = ['posted']
 				facturas_no_pagadas = rec.env['account.move'].search(
 					[
 						("invoice_payment_state", "=", "not_paid"),
@@ -184,7 +184,7 @@ class sale(models.Model):
 		for rec in self:
 			if rec.partner_id.id:
 				limite_de_credito_conglomerado = rec.partner_id.limite_credito_conglomerado
-				state_facturas_no_pagadas = ['draft', 'posted']
+				state_facturas_no_pagadas = ['posted']
 				facturas_no_pagadas = rec.env['account.move'].sudo().search(
 					[
 						("invoice_payment_state", "=", "not_paid"),
