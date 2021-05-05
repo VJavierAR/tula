@@ -400,7 +400,7 @@ class saleOr(models.Model):
 				pro['rel_id']=self.order_id.id
 				self.order_id.productos_sugeridos=[(0, 0, pro)]
 				arreglo.append(pro)
-			self.order_id.arreglo2.write(str(arreglo))
+			self.order_id.write({'arreglo2':str(arreglo)})
 			#self.order_id.productos_sugeridos.write(arreglo)
 			_logger.info(str(p))
 			if(self.product_id.qty_available<=0):
