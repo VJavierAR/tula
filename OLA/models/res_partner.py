@@ -78,16 +78,16 @@ class Pago(models.Model):
               self.deposito=False
               return {'value':{},'warning':{'title':'warning','message':'Valor ya ocupado'}}
                      
-class Ventaa(models.Model):
-    _inherit='sale.order.line'
+# class Ventaa(models.Model):
+#     _inherit='sale.order.line'
     
-    @api.onchange('product_id')
-    def busca(self):
-        pro=self.product_id.name
-        cabecera='<table><tr><th>Compañia</th><th>Cantidad</th></tr>'
-        depo=self.env['product.template'].sudo().search([('name','=',pro)])
-        ft=''
-        for cal in depo:
-	        ft='<tr><td>'+str(cal.company_id.name)+'</td><td>'+str(cal.qty_available)+'</td></tr>'+ft
-        tabla=cabecera+ft+'</table>'    
-        self.existencias=    str(tabla)  
+#     @api.onchange('product_id')
+#     def busca(self):
+#         pro=self.product_id.name
+#         cabecera='<table><tr><th>Compañia</th><th>Cantidad</th></tr>'
+#         depo=self.env['product.template'].sudo().search([('name','=',pro)])
+#         ft=''
+#         for cal in depo:
+# 	        ft='<tr><td>'+str(cal.company_id.name)+'</td><td>'+str(cal.qty_available)+'</td></tr>'+ft
+#         tabla=cabecera+ft+'</table>'    
+#         self.existencias=    str(tabla)  
