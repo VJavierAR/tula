@@ -78,11 +78,19 @@ class sale(models.Model):
 	def conf(self):
 		check=self.mapped('order_line.bloqueo')
 		U=self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
+		m=self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
 		if(self.env.user.id in U):
 			self.order_line.write({'bloqueo':False})
 			self.conf()
 		if(True in check):
-				self.write({'state':'auto'})
+			self.write({'state':'auto'})
+			template_id2=self.env['mail.template'].search([('id','=',41)], limit=1)
+			mail=template_id2.generate_email(self.id)
+			dest=''
+			for mi in m:
+				dest=dest+str(mi)+','
+			mail.write({'email_to':dest})
+			self.env['mail.mail'].create(mail).send()
 		if(True not in check):
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
 				raise UserError(_(
