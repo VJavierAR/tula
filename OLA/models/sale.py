@@ -77,7 +77,8 @@ class sale(models.Model):
 
 	def conf(self):
 		check=self.mapped('order_line.bloqueo')
-		if(self.env.user.has_group('group_confirm_sale_excede_limite_credito')):
+		U=self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users')
+		if(self.env.user.id in U):
 			self.order_line.write({'bloqueo':False})
 			self.conf()
 		if(True in check):
