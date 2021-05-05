@@ -20,8 +20,6 @@
               </group>
             </page>
             </xpath>
-            <!--Chic-->
-            
 
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="urgencia" />
