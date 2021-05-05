@@ -20,22 +20,24 @@ class saleOr(models.Model):
 		res = super(saleOr, self).product_id_change()
 		if not self.product_id:  # pragma: no cover
 			return res
-		if not self.order_partner_id:
-			return res
-		if not self.product_id.codigos_de_producto:
-			return res
-		if not self.order_id.partner_id:
-			return res
+		##if not self.order_partner_id:
+		##	return res
+		##if not self.product_id.codigos_de_producto:
+		##	return res
+		##if not self.order_id.partner_id:
+		##	return res
 		producto = self.product_id
-		cliente = self.order_id.partner_id
-		codigos_por_cliente = self.product_id.codigos_de_producto
 		codigo_final = "[" + producto.default_code + "] " + producto.name
-
-		for codigo in codigos_por_cliente:
-			if codigo.cliente.id == cliente.id:
-				codigo_final = "[" + codigo.codigo_producto + "] " + producto.name
-				break
+		cliente = self.order_id.partner_id
+		if cliente.id:
+			codigos_por_cliente = self.product_id.codigos_de_producto
+			if codigos_por_cliente.ids:
+				for codigo in codigos_por_cliente:
+					if codigo.cliente.id == cliente.id:
+						codigo_final = "[" + codigo.codigo_producto + "] " + producto.name
+						break
 		self.name = codigo_final
+		#self.order_line =
 		return res
 
 		"""
