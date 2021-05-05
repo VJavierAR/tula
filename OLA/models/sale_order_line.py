@@ -56,7 +56,7 @@ class saleOr(models.Model):
 		"""
 
 
-	@api.onchange('product_id')
+	#@api.onchange('product_id')
 	def buscaProductos(self):                                        
 	    ft=''
 	    cabecera='<table><tr><th>Compañia</th><th>Cantidad</th></tr>'
