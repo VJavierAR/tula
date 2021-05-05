@@ -89,7 +89,7 @@ class sale(models.Model):
 			dest=''
 			for mi in m:
 				dest=dest+str(mi)+','
-			mail.write({'email_to':dest})
+			mail['email_to']=dest
 			self.env['mail.mail'].create(mail).send()
 		if(True not in check):
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
