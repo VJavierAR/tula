@@ -409,19 +409,19 @@ class sale(models.Model):
 	    result = super(sale, self).create(vals)
 	    return result
 
-	# def write(self, vals):
-	# 	check=self.mapped('order_line.bloqueo')
-	# 	em=self.company_id
-	# 	if(True not in check):
-	# 		self.state='draft'
-	# 		if(em.auto_picking):
-	# 			self.action_confirm()
-	# 		if(em.auto_picking==False):
-	# 			result = super(sale, self).write(vals)
-	# 	if(True in check):
-	# 		self.state='auto'
-	# 		result = super(sale, self).write(vals)
-	# 	return result
+	def write(self, vals):
+		check=self.mapped('order_line.bloqueo')
+		em=self.company_id
+		if(True not in check):
+			self.state='draft'
+			#if(em.auto_picking):
+			#	self.action_confirm()
+			#if(em.auto_picking==False):
+			#	result = super(sale, self).write(vals)
+		if(True in check):
+			self.state='auto'
+			result = super(sale, self).write(vals)
+		return result
 	@api.onchange('order_line')
 	def test(self):
 		l=len(self.order_line)
