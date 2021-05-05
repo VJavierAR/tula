@@ -144,7 +144,7 @@ class sale(models.Model):
 		for sug in self.productos_sugeridos:
 			if(sug.agregar==True):
 				if(sug.product_sug.id not in self.order_line.mapped('product_id.id')):
-					pro=dic()
+					pro=dict()
 					pro['product_id']=sug.product_sug.id
 					self.order_line=[(0, 0,pro)]
 					#self.order_line=[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id})]
