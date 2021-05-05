@@ -46,7 +46,7 @@
                             name="autorizar_sale_limite_de_credito"
                             type="object"
                             class="btn-primary"
-                            attrs="{'invisible': ['|', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', False)]}"
+                            attrs="{'invisible': [('bloqueo_limite_credito', '=', False)]}"
                             groups="OLA.group_confirm_sale_excede_limite_credito"
                             />
                 </xpath>
