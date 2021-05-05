@@ -485,12 +485,12 @@ class productSuggested(models.Model):
 	agregar=fields.Boolean()
 	bandera=fields.Integer(default=0)
 
-	@api.depends('agregar')
-	def add(self):
-		if(self.agregar):
-			self.bandera=self.bandera+1
+	# @api.depends('agregar')
+	# def add(self):
+	# 	if(self.agregar):
+	# 		self.bandera=self.bandera+1
 
-			#self.rel_id.write({'arreglo':str([self.product_sug.id])})
+	# 		#self.rel_id.write({'arreglo':str([self.product_sug.id])})
 
-	def add1(self):
-		self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
+	# def add1(self):
+	# 	self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]
