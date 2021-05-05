@@ -208,7 +208,7 @@ class sale(models.Model):
 			limite_de_credito_conglomerado = self.partner_id.limite_credito_conglomerado
 
 			state_facturas_no_pagadas = ['posted']
-
+			colchon_de_credito = self.partner_id.colchon_credito
 			title = "Alertas: "
 			message = """Mensajes: \n"""
 			genero_alertas = False
@@ -256,7 +256,8 @@ class sale(models.Model):
 			)
 			_logger.info("facturas_no_pagadas_companies: ")
 			_logger.info(facturas_no_pagadas_companies)
-			plazo_de_pago_cliente = self.partner_id.property_payment_id.line_ids.mapped('days')[-1]
+			plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[-1] + colchon_de_credito
+			#plazo_de_pago_cliente = self.partner_id.property_payment_id.line_ids.mapped('days')[-1]
 			total_de_facturas_no_pagadas_companies = 0
 			if facturas_no_pagadas_companies:
 				title_restriccion_dias_factura = "Plazo de pago excedido en facturas. | "
@@ -301,7 +302,7 @@ class sale(models.Model):
 				message += "El pedido de venta actual solo podrá ser validado por los usuarios que se encuentrán en el grupo \"Confirma pedido de venta que excede límite de crédito.\"".rstrip() + "\n\n"
 
 			# Caso en que el plazo de pago excede el plazo de pago del cliente
-			plazo_de_pago_cliente = self.partner_id.property_payment_id.line_ids.mapped('days')[-1]
+			plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[-1]
 			plazo_de_pago_sale = self.payment_term_id.line_ids.mapped('days')[-1]
 			_logger.info("plazo_de_pago_cliente: " + str(plazo_de_pago_cliente) + " plazo_de_pago_sale: " +str(plazo_de_pago_sale))
 			if plazo_de_pago_sale > plazo_de_pago_cliente:
