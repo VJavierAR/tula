@@ -79,9 +79,9 @@ class sale(models.Model):
 		check=self.mapped('order_line.bloqueo')
 		U=self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
 		m=self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
-		if(self.env.user.id in U):
-			self.order_line.write({'bloqueo':False})
-			self.conf()
+		# if(self.env.user.id in U):
+		# 	self.order_line.write({'bloqueo':False})
+		# 	self.conf()
 		if(True in check):
 			self.write({'state':'auto'})
 			template_id2=self.env['mail.template'].search([('id','=',41)], limit=1)
@@ -91,7 +91,7 @@ class sale(models.Model):
 				dest=dest+str(mi)+','
 			mail['email_to']=dest
 			self.env['mail.mail'].create(mail).send()
-		if(True not in check):
+		if(True not in check or self.env.user.id in U):
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
 				raise UserError(_(
 			        'It is not allowed to confirm an order in the following states: %s'
