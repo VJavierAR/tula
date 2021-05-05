@@ -72,10 +72,9 @@ class product(models.Model):
 				productos_lista.append(
 					[
 						producto.id,
-						'[%s] [%s] - %s' %
+						'[%s] %s' %
 						(
 							codigo_cliente,
-							codigo,
 							nombre
 						)
 					]
@@ -84,7 +83,7 @@ class product(models.Model):
 				productos_lista.append(
 					[
 						producto.id,
-						'[%s] - %s' %
+						'[%s] %s' %
 						(
 							codigo,
 							nombre
@@ -226,10 +225,9 @@ class productPr(models.Model):
 				productos_lista.append(
 					[
 						producto.id,
-						'[%s] [%s] - %s' %
+						'[%s] %s' %
 						(
 							codigo_cliente,
-							codigo,
 							nombre
 						)
 					]
@@ -238,7 +236,7 @@ class productPr(models.Model):
 				productos_lista.append(
 					[
 						producto.id,
-						'[%s] - %s' %
+						'[%s] %s' %
 						(
 							codigo,
 							nombre
