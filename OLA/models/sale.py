@@ -427,14 +427,14 @@ class sale(models.Model):
 		check=self.mapped('order_line.bloqueo')
 		em=self.company_id
 		if(True not in check):
-			self.state='draft'
+			vals['state']='draft'
 			#if(em.auto_picking):
 			#	self.action_confirm()
 			#if(em.auto_picking==False):
 			#	result = super(sale, self).write(vals)
 		if(True in check):
-			self.state='auto'
-			result = super(sale, self).write(vals)
+			vals['state']='auto'
+		result = super(sale, self).write(vals)
 		return result
 	@api.onchange('order_line')
 	def test(self):
