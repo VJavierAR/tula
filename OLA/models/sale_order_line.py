@@ -12,6 +12,16 @@ class saleOr(models.Model):
 		string = 'Bloqueo por límite de descuento',
 		default = False
 	)
+    existencias = fields.Char()
+    
+    @api.onchange('product_id')
+    def buscaProductos(self):                                        
+        ft=''
+        cabecera='<table><tr><th>Compañia</th><th>Cantidad</th></tr>'
+        for cal in self.product_id.stock_quant_ids.filtered(lambda x:x.company_id.id!=False and x.quantity>=0):   
+            ft='<tr><td>'+str(cal.company_id.name)+'</td><td>'+str(cal.quantity)+'</td></tr>'+ft
+        tabla=cabecera+ft+'</table>'
+        self.existencias=str(tabla)
 
 	# @api.onchange('product_id')
 	# def stock(self):

@@ -71,23 +71,7 @@ class Pago(models.Model):
            if len(depo)>0:
               self.deposito=False
               return {'value':{},'warning':{'title':'warning','message':'Valor ya ocupado'}}
-              
-class Lineas(models.Model):
-    _inherit = 'sale.order.line'            
+                     
             
-    existencias = fields.Char()
-    
-    @api.onchange('product_id')
-    def buscaProductos(self):                                        
-        ft=''
-        cabecera='<table><tr><th>Compañia</th><th>Cantidad</th></tr>'
-        producto=self.product_id.name
-        depo=self.env['product.template'] .search([('name','=',producto)])
-        
-        for cal in self.product_id.stock_quant_ids.filtered(lambda x:x.company_id.id!=False and x.quantity>=0):   
-            ft='<tr><td>'+str(cal.company_id.name)+'</td><td>'+str(cal.quantity)+'</td></tr>'+ft
-         #self.cal=y
-        tabla=cabecera+ft+'</table>'
-        
-        self.existencias=str(tabla)
+
     
