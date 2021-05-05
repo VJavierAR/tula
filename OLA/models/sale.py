@@ -382,7 +382,19 @@ class sale(models.Model):
 	# 		self.state='auto'
 	# 		result = super(sale, self).write(vals)
 	# 	return result
-
+	@api.onchange('order_line')
+	def test(self):
+		l=len(self.order_line)
+		if(l>0):
+			arr=[]
+			for p in self.order_line:
+				pro={}
+				ps=p.product_id.mapped('sug_rel.id')
+				for pss in ps:
+					pro['product_rel']=p.product_id.id
+					pro['product_sug']=pss
+					arr.append(pro)
+			self.productos_sugeridos=arr
 
 class saleOr(models.Model):
 	_inherit='sale.order.line'
