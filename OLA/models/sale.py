@@ -149,7 +149,7 @@ class sale(models.Model):
 						pro={'product_id':orl.product_id.id,'order_id':self.id,'product_uom_qty':orl.product_uom_qty,'name':orl.name,'price_unit':orl.price_unit}
 						arr.append(pro)
 					arr.append({'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price})
-					self.order_line=arr
+					self.write({'order_line':arr})
 					#self.order_line=[{'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price}]
 					#self.write({'order_line':[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price})]})
 
