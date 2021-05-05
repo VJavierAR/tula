@@ -12,15 +12,12 @@
                     <field name="limite_credito_conglomerado" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
                     <field name="colchon_credito" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
                     <!--<field name="limite_credito_sucursal" attrs="{'invisible': [('type', '!=', 'delivery')]}" />-->
-                </xpath>
-
-                <xpath expr="//field[@name='vat']" position="after">
                     <field name="correoCobranza"/>
                     <field name="correoFac"/>
                     <field name="numeroDeposito"  />
                     <field name="numeroUnico"  />
                 </xpath>
-                
+
             </field>
         </record>
 
