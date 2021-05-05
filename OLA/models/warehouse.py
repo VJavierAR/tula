@@ -6,7 +6,7 @@ _logger = logging.getLogger(__name__)
 
 class almacen(models.Model):
 	_inherit='stock.warehouse'
-	code = fields.Char('Short Name', required=True, help="Short name used to identify your warehouse")
+	code = fields.Char('Short Name', required=True, size=20,help="Short name used to identify your warehouse")
 
 class stock(models.Model):
     _inherit = 'stock.picking'

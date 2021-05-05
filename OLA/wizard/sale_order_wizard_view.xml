@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sale_order_alerta_limite_credito_view" model="ir.ui.view">
+        <field name="model">sale.order.alerta.limite.credito</field>
+        <field name="arch" type="xml">
+            <form string="Alerta">
+
+                <field name="mensaje" readonly='1'/>
+
+                <footer>
+                    <button string="Confirmar" name="confirmar_sale" type="object" class="btn-primary" />
+                    <button special="cancel" string="Cerrar"  class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+        </record>
+
+    </data>
+</odoo>
