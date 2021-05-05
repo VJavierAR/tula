@@ -17,6 +17,12 @@ class partner(models.Model):
         company_dependent=False,
         check_company=False
     )
+    colchon_credito = fields.Integer(
+        string="Colchon",
+        default=0,
+        company_dependent=False,
+        check_company=False
+    )
 
     correoFac = fields.Char(
         string = "Correo Facturacion"
