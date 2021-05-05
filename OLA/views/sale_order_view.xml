@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="sale_order_form_view_update">
+            <field name="name">sale.order.form.view.update</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+            <page name="studio_page_zJf9T" string="Productos Sugeridos">
+              <group name="studio_group_zJf9T">
+                <field name="productos_sugeridos">
+                  <tree string="Productos sugeridos" editable="bottom">
+                    <!--<button name="add1" type="object" icon="fa-shopping-cart" string="Add" class="oe_link"/>-->
+                    <field name="agregar" attrs="{}"/>
+                    <field name="product_sug" string="Product Sugerido" />
+                    <field name="product_rel" string="Producto Asociado"/>
+                  </tree>
+                </field>
+              </group>
+            </page>
+            </xpath>
+
+                <xpath expr="//field[@name='validity_date']" position="before">
+                    <field name="urgencia" />
+                    <field name="bloqueo_limite_credito" invisible="1" />
+                    <field name="mensaje_limite_de_credito" invisible="1" />
+                    <field name="limite_credito_actual" />
+                    <field name="limite_credito_conglomerado_actual" />
+                </xpath>
+
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                    <!--<attribute name="invisible">['|', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', True)]</attribute>-->
+                    <attribute name="invisible">[('bloqueo_limite_credito', '=', True)]</attribute>
+                </xpath>
+
+                <xpath expr="//form[1]/header[1]/button[@name='action_confirm'][2]" position="attributes">
+                    <!--<attribute name="invisible">['|', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', True)]</attribute>-->
+                    <attribute name="invisible">[('bloqueo_limite_credito', '=', True)]</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='action_confirm']" position="after">
+                    <button string="Confirmar excediendo límite de crédito"
+                            name="autorizar_sale_limite_de_credito"
+                            type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': ['|', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', False)]}"
+                            groups="OLA.group_confirm_sale_excede_limite_credito"
+                            />
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

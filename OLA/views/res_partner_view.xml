@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="res_partner_form_view_update">
+            <field name="name">res.partner.form.update</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="limite_credito" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
+                    <field name="limite_credito_conglomerado" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
+                    <field name="plazo_de_pago" attrs="{'invisible': [('company_type', '!=', 'company')]}" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}" />
+                    <!--<field name="limite_credito_sucursal" attrs="{'invisible': [('type', '!=', 'delivery')]}" />-->
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

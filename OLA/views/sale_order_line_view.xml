@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_order_line_tree_update">
+            <field name="name">view.order.line.tree.update</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='price_subtotal']" position="after">
+                    <field name="bloqueo" />
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>
