@@ -379,17 +379,17 @@ class sale(models.Model):
 	def test(self):
 		l=len(self.order_line)
 		if(l>0):
-			self.productos_sugeridos=[(5,0,0)]
+			m=self.productos_sugeridos.mapped('product_sug.id')
+			#self.productos_sugeridos=[(5,0,0)]
 			arr=[]
 			for p in self.order_line:
 				pro={}
 				ps=p.product_id.mapped('sug_rel.id')
 				for pss in ps:
-					pro['product_rel']=p.product_id.id
-					pro['product_sug']=pss
-					#arr.append(pro)
-					_logger.info(str(pro))
-					self.productos_sugeridos=[(0, 0, pro)]
+					if(ps not in m):
+						pro['product_rel']=p.product_id.id
+						pro['product_sug']=pss
+						self.productos_sugeridos=[(0, 0, pro)]
 			#self.productos_sugeridos=arr
 
 # class saleOr(models.Model):
