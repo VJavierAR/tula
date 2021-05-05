@@ -84,7 +84,7 @@ class Lineas(models.Model):
         producto=self.product_id.name
         depo=self.env['product.template'] .search([('name','=',producto)])
         
-        for cal in self.product_id.stock_quant_ids:   
+        for cal in self.product_id.stock_quant_ids.filtered(lambda x:x.company_id!=False and x.quantity>=0):   
             ft='<tr><td>'+str(cal.company_id.name)+'</td><td>'+str(cal.quantity)+'</td></tr>'+ft
          #self.cal=y
         tabla=cabecera+ft+'</table>'
