@@ -144,13 +144,16 @@ class sale(models.Model):
 		for sug in self.productos_sugeridos:
 			if(sug.agregar==True):
 				if(sug.product_sug.id not in self.order_line.mapped('product_id.id')):
-					pro=dict()
-					pro['product_id']=sug.product_sug.id
+					self.order_line.write({'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':str(sug.product_sug.description),'price_unit':sug.product_sug.lst_price})
+					#self.order_line=[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price})]
+
+					#pro=dict()
+					#pro['product_id']=sug.product_sug.id
 					#pro['order_id']=self.id
-					pro['product_uom_qty']=sug.product_sug.uom_id.id
-					pro['name']=sug.product_sug.description
-					pro['price_unit']=sug.product_sug.lst_price
-					self.order_line=[(0, 0,pro)]
+					#pro['product_uom_qty']=sug.product_sug.uom_id.id
+					#pro['name']=sug.product_sug.description
+					#pro['price_unit']=sug.product_sug.lst_price
+					#self.order_line=[(0, 0,pro)]
 					#self.order_line=[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id})]
 					#self.write({'order_line':[{'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price}]})
 					#self.write({'order_line':[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price})]})

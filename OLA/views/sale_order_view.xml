@@ -20,6 +20,81 @@
               </group>
             </page>
             </xpath>
+            <!--Chic-->
+              <xpath expr="//field[@name='partner_id']" position="attributes">
+    <attribute name="attrs">{"readonly": 0, "required": 0}</attribute>
+  </xpath>
+  <xpath expr="//field[@name='partner_invoice_id']" position="attributes">
+    <attribute name="attrs">{"readonly": [["state","not in",["draft","sent","sale"]]], "required": [["state","=","sale"]]}</attribute>
+  </xpath>
+  <xpath expr="//field[@name='partner_shipping_id']" position="attributes">
+    <attribute name="attrs">{"readonly": [["state","not in",["draft","sent","sale"]]], "required": [["state","=","sale"]]}</attribute>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='date_order']" position="attributes">
+    <attribute name="attrs">{"invisible": [["state","in",["draft","sent"]]], "readonly": [["state","not in",["draft","sent"]]], "required": [["state","in","sale"]]}</attribute>
+  </xpath>
+  <xpath expr="//field[@name='pricelist_id']" position="attributes">
+    <attribute name="attrs">{"readonly": [["state","not in",["draft","sent"]]], "required": [["state","=","sale"]]}</attribute>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='currency_id']" position="attributes">
+    <attribute name="attrs">{"required": [["state","=","sale"]]}</attribute>
+  </xpath>
+  <xpath expr="//field[@name='payment_term_id']" position="after">
+    <field name="x_studio_motivo_de_perdida_de_la_orden" string="Motivo de perdida de la orden"/>
+    <field name="arreglo2"/>
+    <field name="arreglo" force_save="True" attrs="{}" readonly="1" invisible="1"/>
+  </xpath>
+  <xpath expr="//field[@name='order_line']" position="attributes">
+    <attribute name="attrs">{}</attribute>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom_qty']" position="attributes">
+    <attribute name="string">Cantidad solicitada</attribute>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom_qty']" position="after">
+    <field name="existencias" widget="html"/>
+  </xpath>
+  <xpath expr="//field[@name='qty_available_today']" position="attributes">
+    <attribute name="attrs">{}</attribute>
+    <attribute name="string">Cantidad disponible </attribute>
+  </xpath>
+  <xpath expr="//field[@name='scheduled_date']" position="attributes">
+    <attribute name="attrs">{}</attribute>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='warehouse_id']" position="attributes">
+    <attribute name="attrs">{}</attribute>
+  </xpath>
+  <xpath expr="//widget[@name='qty_at_date_widget']" position="after">
+    <field name="x_value1_id" string="Estado del producto"/>
+    <field name="x_studio_motivo_de_perdida" string="Motivo de perdida"/>
+    <field name="x_tiempo_total"/>
+    <field name="x_studio_field_JvgvZ" attrs="{}" invisible="1"/>
+    <field name="x_value7_id" attrs="{}" invisible="1"/>
+    <field name="x_value6_id" attrs="{}" invisible="1"/>
+    <field name="x_value2_id" string="Cantidad perdida" attrs="{}" invisible="1"/>
+    <field name="x_studio_tiempo_de_entrega_del_proveedor" string="Tiempo de entrega del proveedor" attrs="{}" invisible="1"/>
+    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='customer_lead']" position="move"/>
+    <field name="x_value3_id" attrs="{}" invisible="1"/>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='price_unit']" position="after">
+    <field name="x_studio_precio_mnimo" string="Precio mínimo"/>
+    <field name="x_studio_field_Ml1CB" string="Coste" attrs="{}" invisible="1"/>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='discount']" position="after">
+    <field name="x_precio_con_descuento"/>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='price_subtotal']" position="after">
+    <field name="bloqueo"/>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='company_id']" position="attributes">
+    <attribute name="attrs">{}</attribute>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='customer_lead']" position="attributes">
+    <attribute name="attrs">{"readonly": [["parent.state","not in",["draft","sent"]]]}</attribute>
+    <attribute name="string">Tiempo de entrega al cliente</attribute>
+  </xpath>
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
+    <field name="order_partner_id"/>
+  </xpath>
 
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="urgencia" />
