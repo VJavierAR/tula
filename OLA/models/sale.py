@@ -389,26 +389,27 @@ class saleOr(models.Model):
 
 	@api.onchange('product_id')
 	def stock(self):
-		arreglo=[]
-		p=self.product_id.mapped('sug_rel.id')
-		res={}
-		for pi in p:
-			pro=dict()
-			pro['product_rel']=self.product_id.id
-			pro['product_sug']=pi
-			pro['rel_id']=self.order_id.id
-			self.order_id.productos_sugeridos=[(0, 0, pro)]
-			arreglo.append(pro)
-		self.order_id.arreglo2.write(str(arreglo))
-		#self.order_id.productos_sugeridos.write(arreglo)
-		_logger.info(str(p))
-		if(self.product_id.qty_available<=0):
-			pa=self.product_id.mapped('alt_rel.id')
-			po=self.env['product.product'].browse(pa)
-			po1=po.filtered(lambda x:x.qty_available>0)
-			if(po1.mapped('id')!=[]):
-				res['domain']={'product_id':[['id','in',po1.mapped('id')]]}
-				return res
+		if(self.product_id):
+			arreglo=[]
+			p=self.product_id.mapped('sug_rel.id')
+			res={}
+			for pi in p:
+				pro=dict()
+				pro['product_rel']=self.product_id.id
+				pro['product_sug']=pi
+				pro['rel_id']=self.order_id.id
+				self.order_id.productos_sugeridos=[(0, 0, pro)]
+				arreglo.append(pro)
+			self.order_id.arreglo2.write(str(arreglo))
+			#self.order_id.productos_sugeridos.write(arreglo)
+			_logger.info(str(p))
+			if(self.product_id.qty_available<=0):
+				pa=self.product_id.mapped('alt_rel.id')
+				po=self.env['product.product'].browse(pa)
+				po1=po.filtered(lambda x:x.qty_available>0)
+				if(po1.mapped('id')!=[]):
+					res['domain']={'product_id':[['id','in',po1.mapped('id')]]}
+					return res
 
 	# @api.onchange('product_id')
 	# def addSugges(self):
