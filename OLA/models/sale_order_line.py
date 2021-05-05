@@ -65,6 +65,7 @@ class saleOr(models.Model):
 	    tabla=cabecera+ft+'</table>'
 	    self.existencias=str(tabla)
 
+
 	@api.onchange('product_id')
 	def stock(self):
 		res={}
