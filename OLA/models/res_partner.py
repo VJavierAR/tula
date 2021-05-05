@@ -71,3 +71,23 @@ class Pago(models.Model):
            if len(depo)>0:
               self.deposito=False
               return {'value':{},'warning':{'title':'warning','message':'Valor ya ocupado'}}
+              
+class Lineas(models.Model):
+    _inherit = 'sale.order.line'            
+            
+    existencias = fields.Char()
+    
+    @api.onchange('product_id')
+    def buscaProductos(self):                                        
+        ft=''
+        cabecera='<table><tr><th>Compañia</th><th>Cantidad</th></tr>'
+        producto=self.product_id.name
+        depo=self.env['product.template'] .search([('name','=',producto)])
+        
+        for cal in depo:   
+            ft='<tr><td>'+cal.company_id.name+'</td><td>'+str(cal.qty_available)+'</td></tr>'+ft
+         #self.cal=y
+        tabla=cabecera+ft+'</table>'
+        
+        self.existencias=str(tabla)
+    
