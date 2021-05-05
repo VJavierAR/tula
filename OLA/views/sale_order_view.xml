@@ -51,6 +51,11 @@
                             />
                 </xpath>
 
+                <xpath expr="//field[@name='order_line']" position="attributes">
+                    <!--<attribute name="attrs">{'invisible': ['|', ('state', 'not in', ['sent']), ('bloqueo_limite_credito', '=', True)] }</attribute>-->
+                    <attribute name="context">{'default_order_partner_id': partner_id}</attribute>
+                </xpath>
+
             </field>
         </record>
     </data>
