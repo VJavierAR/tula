@@ -138,19 +138,9 @@ class sale(models.Model):
 					#_logger.info(pi._check_backorder())
 					##if(pi._check_backorder()==False):
 						
-			
-
-	# @api.onchange('arreglo')
-	# def addsegesst(self):
-	# 	if(self.arreglo!='[]'):
-	# 		data=eval(self.arreglo)
-	# 		dat=self.env['product.product'].browse(data)
-	# 		for d in dat:
-	# 			_logger.info(d.id)
-	# 			self.order_line.write({'product_id':d.id,'order_id':self.id,'product_uom_qty':1,'name':d.description,'price_unit':d.lst_price})
 
 	@api.onchange('productos_sugeridos')
-	def agregar(self):
+	def agregarci(self):
 		for sug in self.productos_sugeridos:
 			if(sug.agregar==True):
 				if(sug.product_sug.id not in self.order_line.mapped('product_id.id')):
@@ -484,7 +474,7 @@ class productSuggested(models.Model):
 	product_sug=fields.Many2one('product.product')
 	rel_id=fields.Many2one('sale.order')
 	agregar=fields.Boolean()
-	bandera=fields.Integer(default=0)
+	#bandera=fields.Integer(default=0)
 
 	# @api.depends('agregar')
 	# def add(self):
