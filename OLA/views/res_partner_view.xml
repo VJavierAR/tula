@@ -10,6 +10,7 @@
                 <xpath expr="//field[@name='vat']" position="after">
                     <field name="limite_credito" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
                     <field name="limite_credito_conglomerado" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
+                    <field name="colchon_credito" attrs="{'invisible': [('company_type', '!=', 'company')]}" />
                     <!--<field name="limite_credito_sucursal" attrs="{'invisible': [('type', '!=', 'delivery')]}" />-->
                 </xpath>
 
