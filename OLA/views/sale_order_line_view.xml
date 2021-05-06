@@ -5,10 +5,58 @@
             <field name="model">sale.order.line</field>
             <field name="inherit_id" ref="sale.view_order_line_tree"/>
             <field name="arch" type="xml">
-
+                  <xpath expr="//field[@name='order_partner_id']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//tree[1]/field[@name='name']" position="attributes">
+                    <attribute name="string">Producto</attribute>
+                  </xpath>
+                  <xpath expr="//tree[1]/field[@name='name']" position="after">
+                    <field name="price_unit"/>
+                  </xpath>
+                  <xpath expr="//field[@name='salesman_id']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="string">Cantidad solicitada</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='qty_delivered']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='qty_delivered']" position="after">
+                    <field name="x_value2_id" string="Cantidad perdida" attrs="{}"/>
+                    <field name="discount" attrs="{}" invisible="1"/>
+                    <field name="x_precio_con_descuento" attrs="{}" invisible="1"/>
+                    <field name="x_value1_id" string="Estado del producto" attrs="{}" invisible="1"/>
+                    <field name="x_studio_motivo_de_perdida"/>
+                    <field name="x_studio_motivo_de_perdida_de_la_orden" string="Motivo de perdida de la orden"/>
+                    <field name="x_value6_id" string="Estado de la orden" attrs="{}" invisible="1"/>
+                  </xpath>
+                  <xpath expr="//field[@name='qty_invoiced']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='qty_to_invoice']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='product_uom']" position="after">
+                    <field name="x_value3_id" attrs="{}" sum="Sum of Monto perdido"/>
+                  </xpath>
+                  <xpath expr="//field[@name='route_id']" position="after">
+                    <field name="x_value4_id" sum="Sum of Venta total" attrs="{}"/>
+                  </xpath>
+                  <xpath expr="//field[@name='price_subtotal']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                  </xpath>
                 <xpath expr="//field[@name='price_subtotal']" position="after">
                     <field name="bloqueo" />
                 </xpath>
+
+
             </field>
         </record>
 
