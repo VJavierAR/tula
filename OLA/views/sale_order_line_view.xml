@@ -12,5 +12,44 @@
             </field>
         </record>
 
+
+<record model="ir.ui.view" id="view_sale_team_update">
+<field name="name">view.sale.team.update</field>
+<field name="model">crm.team</field>
+<field name="inherit_id" ref="sales_team.crm_team_view_form"/>
+<field name="arch" type="xml">        
+  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='members']/field[@name='member_ids']/kanban[1]" position="after">
+    <form string="Users">
+      <sheet name="studio_sheet_8efd83">
+        <field name="id" invisible="1"/>
+        <div class="alert alert-info text-center mb-3" attrs="{'invisible': [('id', '&gt;', 0)]}" role="alert" name="studio_div_f0b453">
+                            You are inviting a new user.
+                        </div>
+        <field name="image_1920" widget="image" class="oe_avatar" options="{&quot;zoom&quot;: true, &quot;preview_image&quot;: &quot;image_128&quot;}"/>
+        <div class="oe_title" name="studio_div_01ace7">
+          <label for="name" class="oe_edit_only"/>
+          <h1>
+            <field name="name" required="1"/>
+          </h1>
+          <field name="email" invisible="1"/>
+          <label for="login" class="oe_edit_only" string="Email Address"/>
+          <h2>
+            <field name="login" placeholder="email@yourcompany.com"/>
+          </h2>
+          <label for="company_id" class="oe_edit_only" groups="base.group_multi_company"/>
+          <field name="company_id" context="{'user_preference': 0}" groups="base.group_multi_company"/>
+        </div>
+        <group name="studio_group_4f584d">
+          <label for="groups_id" string="Access Rights" attrs="{'invisible': [('id', '&gt;', 0)]}" groups="base.group_no_one"/>
+          <div attrs="{'invisible': [('id', '&gt;', 0)]}" groups="base.group_no_one" name="studio_div_cfc735">
+            <field name="groups_id" readonly="1" widget="many2many_tags" options="{'color_field': 'color'}" style="display: inline;"/> You will be able to define additional access rights by editing the newly created user under the Settings / Users menu.
+                            </div>
+          <field name="phone" widget="phone"/>
+          <field name="mobile" widget="phone"/>
+          <field name="max_discount" widget="many2one_reference"/>
+        </group>
+      </sheet>
+    </form>
+  </xpath>
     </data>
 </odoo>
