@@ -21,7 +21,7 @@ class AccountMove(models.Model):
             termino_antes = self._origin.invoice_payment_term_id.name
             termino_despues = self.invoice_payment_term_id.name
 
-            _logger.info("termino_antes: " + str(termino_antes) + " termino_despues: " + str(termino_despues))
+            #_logger.info("termino_antes: " + str(termino_antes) + " termino_despues: " + str(termino_despues))
 
             id_usuario_login = self._uid
 
@@ -30,7 +30,7 @@ class AccountMove(models.Model):
                     ("name", "=", "Confirma pedido de venta que excede límite de crédito")
                 ]
             ).mapped('users').mapped('id')
-            _logger.info("usuarios_con_permisos: " + str(usuarios_con_permisos))
+            #_logger.info("usuarios_con_permisos: " + str(usuarios_con_permisos))
             if not id_usuario_login in usuarios_con_permisos:
                 raise AccessDenied(_("No tiene los permisos para realizar el cambio de \"terminos de pago\" o \"precios de productos\"."))
             else:
@@ -54,8 +54,8 @@ class AccountMove(models.Model):
                         ("id", "!=", self._origin.id)
                     ]
                 )
-                _logger.info("facturas_no_pagadas_limite_de_credito_unico: ")
-                _logger.info(facturas_no_pagadas)
+                #_logger.info("facturas_no_pagadas_limite_de_credito_unico: ")
+                #_logger.info(facturas_no_pagadas)
                 total_de_facturas_no_pagadas = 0
                 if facturas_no_pagadas:
                     for factura_no_pagada in facturas_no_pagadas:
@@ -63,8 +63,8 @@ class AccountMove(models.Model):
 
                 total_con_facturas = total + total_de_facturas_no_pagadas
                 #total_con_facturas = total_de_facturas_no_pagadas
-                _logger.info(
-                    "total_con_facturas: " + str(total_con_facturas) + " > limite_de_credito:" + str(limite_de_credito))
+                #_logger.info(
+                #    "total_con_facturas: " + str(total_con_facturas) + " > limite_de_credito:" + str(limite_de_credito))
                 if total_con_facturas > limite_de_credito:
                     title = title + "Límite de crédito excedido. | "
                     message = message + """Se excedio el límite de crédito por facturas no pagadas: \n
@@ -85,8 +85,8 @@ class AccountMove(models.Model):
                         ("id", "!=", self._origin.id)
                     ]
                 )
-                _logger.info("facturas_no_pagadas_companies: ")
-                _logger.info(facturas_no_pagadas_companies)
+                #_logger.info("facturas_no_pagadas_companies: ")
+                #_logger.info(facturas_no_pagadas_companies)
                 total_de_facturas_no_pagadas_companies = 0
                 if facturas_no_pagadas_companies:
                     for factura_no_pagada in facturas_no_pagadas_companies:
@@ -94,9 +94,9 @@ class AccountMove(models.Model):
 
                 total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
                 #total_con_facturas_companies = total_de_facturas_no_pagadas_companies
-                _logger.info(
-                    "total_con_facturas: " + str(total_con_facturas_companies) + " > limite_de_credito conglomerado:" + str(
-                        limite_de_credito_conglomerado))
+                #_logger.info(
+                #    "total_con_facturas: " + str(total_con_facturas_companies) + " > limite_de_credito conglomerado:" + str(
+                #        limite_de_credito_conglomerado))
                 if total_con_facturas_companies > limite_de_credito_conglomerado:
                     title = title + "Límite de crédito de conglomerado excedido. | "
                     message = message + """Se excedio el límite de crédito de conglomerado por facturas no pagadas: \n
