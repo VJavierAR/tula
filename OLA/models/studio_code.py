@@ -5,8 +5,28 @@ from odoo.exceptions import AccessDenied
 import logging, ast
 _logger = logging.getLogger(__name__)
 
+class StockMove(models.Model):
+	_inherit='stock.move'
+
+	sale_line_id_new = fields.Many2one(
+		comodel_name='sale.order.line',
+		#ondelete='restrict',
+		string='New many2one',
+		store=True,
+		#copy=True,
+		#required=False,
+		#track_visibility='onchange'
+	)
+
 class SaleOrderLine(models.Model):
 	_inherit='sale.order.line'
+
+	x_studio_field_HNW2r = fields.One2many(
+		comodel_name='stock.move',
+		inverse_name='sale_line_id_new',
+		string='New UnoAMuchos',
+		store=True
+	)
 
 	x_studio_field_7lzG1 = fields.Many2one(
 		comodel_name='stock.inventory',
@@ -68,15 +88,6 @@ class SaleOrderLine(models.Model):
 		#track_visibility='onchange'
 	)
 	
-	"""
-	x_studio_field_HNW2r = fields.One2many(
-		comodel_name='stock.move',
-		inverse_name='sale_line_id',
-		string='New UnoAMuchos',
-		store=True
-	)
-	"""
-
 	x_studio_field_fAMfd = fields.Many2many(
 		comodel_name='stock.warehouse',
 		relation ='x_sale_order_line_stock_warehouse_rel',
@@ -126,3 +137,5 @@ class SaleOrder(models.Model):
 		#required=False,
 		#track_visibility='onchange'
 	)
+
+
