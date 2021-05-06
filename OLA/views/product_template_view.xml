@@ -30,18 +30,22 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//page[@name='inventory']" position="after">
-                    <page name="producto_sug" string="Productos Sugeridos">
-                        <field name="sug_rel">
-                            <tree editable='bottom'> <!-- editable='bottom' -->
-                                <field name="id"/>
-                                <field name="name"/>
-                                <field name="default_code"/>
-                            </tree>
-                        </field>
-                    </page>
+              <xpath expr="//field[@name='company_id']" position="after">
+                <field name="x_studio_utilidad_"/>
+                <field name="x_studio_precio_mnimo"/>
               </xpath>
-
+              <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                <page name="studio_page_uOIKV" string="Sugerido">
+                  <group name="studio_group_uOIKV">
+                    <field name="sug_rel" string="Sugerencias"/>
+                  </group>
+                </page>
+                <page name="studio_page_YXR7V" string="Alternativo">
+                  <group name="studio_group_YXR7V">
+                    <field name="alt_rel" string="Alternativas"/>
+                  </group>
+                </page>
+              </xpath>
             </field>
         </record>
 
