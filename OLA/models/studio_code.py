@@ -143,17 +143,6 @@ class SaleOrderLine(models.Model):
 		store=True
 	)
 
-	x_value6_id = fields.Char(
-		string='Cancelado',
-		compute='_computex_value6_id'
-	)
-
-	@api.depends('state')
-	def _computex_value6_id(self):
-		for rec in self:
-			if  rec.state == "cancel":
-				rec.x_value6_id = 'Pedido cancelado'
-
 	x_value1_id = fields.Char(
 		string='valor1',
 		#compute="_compute_x_value1_id"
