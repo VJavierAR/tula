@@ -32,7 +32,7 @@ class AccountMove(models.Model):
             ).mapped('users').mapped('id')
             _logger.info("usuarios_con_permisos: " + str(usuarios_con_permisos))
             if not id_usuario_login in usuarios_con_permisos:
-                raise AccessDenied(_("No tiene los permisos para realizar el cambio de \"terminos de pago\" o \"precios de productos\"."))
+                raise AccessDenied(_("No tiene los permisos para realizar el cambio de terminos de pago o precios de productos."))
             else:
                 total = self.amount_total
                 limite_de_credito = self.partner_id.limite_credito
