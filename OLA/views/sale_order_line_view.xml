@@ -116,7 +116,7 @@
     parent="sale.menu_sale_report"
     groups="sales_team.group_sale_manager" action='precio_descuento_action'/>
 
-<menuitem name="Historial de precios de compra"
+<menuitem id="menu_historico" name="Historial de precios de compra"
             parent="purchase.menu_purchase_root"
             groups="group_purchase_manager,group_purchase_user" sequence="5" action='historial_precios'/>
 
