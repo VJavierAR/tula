@@ -49,11 +49,11 @@ class stock(models.Model):
     		self.user_print_id=self.env.user.id
     		return self.env.ref("stock.action_report_picking").report_action(self)
 
+    """
     def button_validate(self):
         self.ensure_one()
         if not self.move_lines and not self.move_line_ids:
-            pass
-            #raise UserError(_('Please add some items to move.'))
+            raise UserError(_('Please add some items to move.'))
 
         # Clean-up the context key at validation to avoid forcing the creation of immediate
         # transfers.
@@ -129,3 +129,4 @@ class stock(models.Model):
         self.action_done()
         self.user_validate_id=self.env.user.id
         return
+    """
