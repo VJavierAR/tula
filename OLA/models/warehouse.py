@@ -52,7 +52,8 @@ class stock(models.Model):
     def button_validate(self):
         self.ensure_one()
         if not self.move_lines and not self.move_line_ids:
-            raise UserError(_('Please add some items to move.'))
+            pass
+            #raise UserError(_('Please add some items to move.'))
 
         # Clean-up the context key at validation to avoid forcing the creation of immediate
         # transfers.
