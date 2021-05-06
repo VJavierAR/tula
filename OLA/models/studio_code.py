@@ -170,11 +170,15 @@ class SaleOrderLine(models.Model):
 				record.x_value1_id = 'No hay stock'
 
 	x_studio_motivo_de_perdida_de_la_orden = fields.Selection(
+		selection=[('1','1')],
 		string = 'Motivo de perdida de la orden',
 		readonly=True
 	)
 
-	x_studio_motivo_de_perdida = fields.Selection(string='Motivo de perdida',[('No hay stock', 'No hay stock'),('Tiempo de espera', 'Tiempo de espera'),('Costo elevado', 'Costo elevado'),])
+	x_studio_motivo_de_perdida = fields.Selection(
+		selection=[('No hay stock', 'No hay stock'),('Tiempo de espera', 'Tiempo de espera'),('Costo elevado', 'Costo elevado')],
+		string='Motivo de perdida'
+	)
 
 	x_value7_id = fields.Integer(string='Cantidad disponible por sucursal')
 
