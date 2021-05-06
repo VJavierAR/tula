@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, models, api,_
-from odoo.exceptions import UserError
-from odoo import exceptions
-from odoo.exceptions import AccessDenied
+from odoo.exceptions import UserError,AccessDenied,RedirectWarning
 import logging, ast
 _logger = logging.getLogger(__name__)
 
