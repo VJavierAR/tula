@@ -77,19 +77,6 @@ class saleOr(models.Model):
 				res['domain']={'product_id':[['id','in',po1.mapped('id')]]}
 				return res
 
-	# def addSugges(self):
-	# 	p=self.product_id.mapped('sug_rel.id')
-	# 	arreglo=[]
-	# 	_logger.info(str(p))
-	# 	for pi in p:
-	# 		pro=dict()
-	# 		pro['product_rel']=self.product_id.id
-	# 		pro['product_sug']=pi
-	# 		pro['rel_id']=self.order_id.id
-	# 		arreglo.append(pro)
-	# 		_logger.info(str(pi))
-	# 	self.order_id.productos_sugeridos.write(arreglo)
-
 	x_studio_field_Ml1CB = fields.Float("Precio minímo", related="product_id.standard_price")
 
 	@api.onchange('price_unit', 'discount')

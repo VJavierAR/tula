@@ -79,9 +79,6 @@ class sale(models.Model):
 		check = self.mapped('order_line.bloqueo')
 		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
 		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
-		# if(self.env.user.id in U):
-		# 	self.order_line.write({'bloqueo':False})
-		# 	self.conf()
 		if True in check:
 			self.write({'state':'auto'})
 			template_id2=self.env['mail.template'].search([('id','=',41)], limit=1)
@@ -122,34 +119,7 @@ class sale(models.Model):
 			for pi in self.picking_ids:
 				if pi.state not in ('cancel', 'done'):
 					pi.action_done()
-					#return pi.button_validate()
-						# pi.action_assign()
-						# quantity_todo = {}
-						# quantity_done = {}
-						# for move in pi.mapped('move_lines').filtered(lambda m: m.state != "cancel"):
-						#     quantity_todo.setdefault(move.product_id.id, 0)
-						#     quantity_done.setdefault(move.product_id.id, 0)
-						#     quantity_todo[move.product_id.id] += move.product_uom_qty
-						#     quantity_done[move.product_id.id] += move.quantity_done
-						# for ops in pi.mapped('move_line_ids').filtered(lambda x: x.package_id and not x.product_id and not x.move_id):
-						#     for quant in ops.package_id.quant_ids:
-						#         quantity_done.setdefault(quant.product_id.id, 0)
-						#         quantity_done[quant.product_id.id] += quant.qty
-						# for pack in pi.mapped('move_line_ids').filtered(lambda x: x.product_id and not x.move_id):
-						#     quantity_done.setdefault(pack.product_id.id, 0)
-						#     quantity_done[pack.product_id.id] += pack.product_uom_id._compute_quantity(pack.qty_done, pack.product_id.uom_id)
-						# prec = self.env["decimal.precision"].precision_get("Product Unit of Measure")
-						# if(any(float_compare(quantity_done[x], quantity_todo.get(x, 0), precision_digits=prec,) == -1 for x in quantity_done)==False):
-						# 	pi.action_done()
-					#ctx = dict(pi.env.context)
-					#ctx.pop('default_immediate_transfer', None)
-					#pi = pi.with_context(ctx)
-					#precision_digits = self.env['decimal.precision'].precision_get('Product Unit of Measure')
-					#no_quantities_done = all(float_is_zero(move_line.qty_done, precision_digits=precision_digits) for move_line in pi.move_line_ids.filtered(lambda m: m.state not in ('done', 'cancel')))
-					#no_reserved_quantities = all(float_is_zero(move_line.product_qty, precision_rounding=move_line.product_uom_id.rounding) for move_line in pi.move_line_ids)
-					
-					#_logger.info(pi._check_backorder())
-					##if(pi._check_backorder()==False):
+
 						
 
 	@api.onchange('productos_sugeridos')
@@ -166,9 +136,6 @@ class sale(models.Model):
 					self.order_line=[(0, 0,pro)]
 					for o in self.order_line:
 						o.buscaProductos()
-					#self.order_line=[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id})]
-					#self.write({'order_line':[{'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price}]})
-					#self.write({'order_line':[(0, 0, {'product_id':sug.product_sug.id,'order_id':self.id,'product_uom_qty':sug.product_sug.uom_id.id,'name':sug.product_sug.description,'price_unit':sug.product_sug.lst_price})]})
 
 	@api.depends('partner_id')
 	def _compute_limite_credito_actual(self):
@@ -242,16 +209,12 @@ class sale(models.Model):
 					("partner_id", "=", self.partner_id.id)
 				]
 			)
-			#_logger.info("facturas_no_pagadas_limite_de_credito_unico: ")
-			#_logger.info(facturas_no_pagadas)
 			total_de_facturas_no_pagadas = 0
 			if facturas_no_pagadas:
 				for factura_no_pagada in facturas_no_pagadas:
 					total_de_facturas_no_pagadas += factura_no_pagada.amount_total
 
 			total_con_facturas = total + total_de_facturas_no_pagadas
-			#_logger.info(
-			#	"total_con_facturas: " + str(total_con_facturas) + " > limite_de_credito:" + str(limite_de_credito))
 			if total_con_facturas > limite_de_credito:
 				title = title + "Límite de crédito excedido. | "
 				message = message + """Se excedio el límite de crédito por facturas no pagadas y total del pedido de venta actual: \n
@@ -273,8 +236,7 @@ class sale(models.Model):
 					("partner_id", "=", self.partner_id.id)
 				]
 			)
-			#_logger.info("facturas_no_pagadas_companies: ")
-			#_logger.info(facturas_no_pagadas_companies)
+
 			plazo_de_pago_cliente = 0
 			if self.partner_id.property_payment_term_id.line_ids.mapped('days'):
 				plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[
@@ -301,9 +263,6 @@ class sale(models.Model):
 				message_factura = message_factura + "".rstrip() + "\n"
 
 			total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
-			#_logger.info(
-			#	"total_con_facturas: " + str(total_con_facturas_companies) + " > limite_de_credito conglomerado:" + str(
-			#		limite_de_credito_conglomerado))
 			if total_con_facturas_companies > limite_de_credito_conglomerado:
 				title = title + "Límite de crédito de conglomerado excedido. | "
 				message = message + """Se excedio el límite de crédito de conglomerado por facturas no pagadas y total del pedido de venta actual: \n
@@ -334,8 +293,6 @@ class sale(models.Model):
 				plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[
 											-1] + colchon_de_credito
 			plazo_de_pago_sale = self.payment_term_id.line_ids.mapped('days')[-1]
-			#_logger.info("plazo_de_pago_cliente: " + str(plazo_de_pago_cliente) + " plazo_de_pago_sale: " + str(
-			#	plazo_de_pago_sale))
 			if plazo_de_pago_sale > plazo_de_pago_cliente:
 				title = title + "Plazo de pago excedido. | "
 				message = message + """Se excedio el plazo de pago del cliente: \n
@@ -463,82 +420,6 @@ class sale(models.Model):
 						pro['product_rel']=p.product_id.id
 						pro['product_sug']=pss
 						self.productos_sugeridos=[(0, 0, pro)]
-			#self.productos_sugeridos=arr
-
-# class saleOr(models.Model):
-# 	_inherit='sale.order.line'
-
-# 	@api.onchange('product_id')
-# 	def stock(self):
-# 		if(self.product_id):
-# 			arreglo=[]
-# 			p=self.product_id.mapped('sug_rel.id')
-# 			res={}
-# 			for pi in p:
-# 				pro=dict()
-# 				pro['product_rel']=self.product_id.id
-# 				pro['product_sug']=pi
-# 				pro['rel_id']=self.order_id.id
-# 				#self.order_id.productos_sugeridos=[(0, 0, pro)]
-# 				arreglo.append(pro)
-# 			self.order_id.arreglo2=str(arreglo)
-# 			#self.order_id.productos_sugeridos.write(arreglo)
-# 			_logger.info(str(p))
-# 			if(self.product_id.qty_available<=0):
-# 				pa=self.product_id.mapped('alt_rel.id')
-# 				po=self.env['product.product'].browse(pa)
-# 				po1=po.filtered(lambda x:x.qty_available>0)
-# 				if(po1.mapped('id')!=[]):
-# 					res['domain']={'product_id':[['id','in',po1.mapped('id')]]}
-# 					return res
-
-	# @api.onchange('product_id')
-	# def addSugges(self):
-	# 	p=self.product_id.mapped('sug_rel.id')
-	# 	arreglo=[]
-	# 	_logger.info(str(p))
-	# 	for pi in p:
-	# 		pro=dict()
-	# 		pro['product_rel']=self.product_id.id
-	# 		pro['product_sug']=pi
-	# 		pro['rel_id']=self.order_id.id
-	# 		arreglo.append(pro)
-	# 		_logger.info(str(pi))
-	# 	self.order_id.productos_sugeridos.write(arreglo)
-
-	# x_studio_field_Ml1CB = fields.Float("Precio minímo", related="product_id.standard_price")
-
-	# @api.onchange('price_unit', 'discount')
-	# def precio_minimo(self):
-	# 	genero_alertas = False
-
-	# 	title = "Alertas: "
-	# 	message = """Mensajes: \n"""
-
-	# 	# Comprobar precio minimo
-	# 	if self.price_unit and self.product_id.id:
-	# 		if self.price_unit < self.x_studio_precio_mnimo:
-	# 			title = title + "Precio minímo de venta. | "
-	# 			message = message + """El producto: """ + str(
-	# 				self.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
-	# 				self.price_unit) + """\nPrecio minímo: """ + str(self.x_studio_precio_mnimo) + """\n"""
-	# 			genero_alertas = True
-
-	# 		elif self.price_subtotal < self.x_studio_precio_mnimo:
-	# 			title = title + "Precio minímo de venta. | "
-	# 			message = message + """El producto: """ + str(
-	# 				self.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
-	# 				self.price_subtotal) + """\nPrecio minímo: """ + str(self.x_studio_precio_mnimo) + """\n"""
-	# 			genero_alertas = True
-
-	# 	if genero_alertas:
-	# 		return {
-	# 			# 'value': {},
-	# 			'warning': {
-	# 				'title': title,
-	# 				'message': message
-	# 			}
-	# 		}
 
 class productSuggested(models.Model):
 	_name='product.suggested'
@@ -547,14 +428,3 @@ class productSuggested(models.Model):
 	product_sug=fields.Many2one('product.product')
 	rel_id=fields.Many2one('sale.order')
 	agregar=fields.Boolean()
-	#bandera=fields.Integer(default=0)
-
-	# @api.depends('agregar')
-	# def add(self):
-	# 	if(self.agregar):
-	# 		self.bandera=self.bandera+1
-
-	# 		#self.rel_id.write({'arreglo':str([self.product_sug.id])})
-
-	# def add1(self):
-	# 	self.rel_id.order_line=[(0, 0, {'product_id':self.product_sug.id,'order_id':self.rel_id.id})]

@@ -82,18 +82,6 @@
     </tree>
     </field>
 </record>
-<!--<record model="ir.actions.server" id="vehiculos.action_server">
-  <field name="name">vehiculos server</field>
-  <field name="model_id" ref="model_vehiculos_vehiculos"/>
-  <field name="state">code</field>
-  <field name="code">
-    action = {
-      "type": "ir.actions.act_window",
-      "view_mode": "tree,form",
-      "res_model": self._name,
-    }
-  </field>
-</record>-->
 
 <record model="ir.actions.act_window" id="ventas_perdidas_action">
   <field name="name">Ventas perdidas</field>
