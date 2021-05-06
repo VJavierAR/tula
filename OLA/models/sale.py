@@ -398,9 +398,9 @@ class sale(models.Model):
 	    return result
 
 	def write(self, vals):
-		check=self.mapped('order_line.bloqueo')
-		em=self.company_id
-		if(True not in check):
+		check = self.mapped('order_line.bloqueo')
+		em = self.company_id
+		if True in check:
 			vals['state']='draft'
 		result = super(sale, self).write(vals)
 		return result
