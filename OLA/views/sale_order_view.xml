@@ -23,7 +23,7 @@
                 <!--
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="x_studio_motivo_de_perdida_de_la_orden"/>
-                    <!--<field name="x_studio_motivo_de_perdida"/>
+                    <field name="x_studio_motivo_de_perdida"/>
                 </xpath>
                 -->
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
