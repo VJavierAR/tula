@@ -42,6 +42,7 @@ class stock(models.Model):
 
     
     def print_vale_de_entrega(self):
+        self.ensure_one()
     	if(self.state=='printed'):
     		raise exceptions.UserError('Orden de surtido ya se encunetra en proceso')			
     	else:
