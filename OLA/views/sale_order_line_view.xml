@@ -121,6 +121,31 @@
             groups="purchase.group_purchase_manager,group_purchase_user" sequence="5" action='historial_precios'/>
 
             
-
+        <record model="ir.ui.view" id="view_purchase_order_line_tree_update">
+            <field name="name">view.purchase.order.line.tree.update</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_id']" position="before">
+                  <xpath expr="//field[@name='date_planned']" position="move"/>
+                </xpath>
+                <xpath expr="//tree[1]/field[@name='name']" position="attributes">
+                  <attribute name="attrs">{}</attribute>
+                  <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_qty']" position="after">
+                  <xpath expr="//field[@name='price_unit']" position="move"/>
+                  <field name="price_tax" attrs="{}" invisible="1"/>
+                  <field name="x_studio_field_2ZpSa" string="Precio de compra antes de costes de envío" attrs="{}" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='product_uom']" position="attributes">
+                  <attribute name="attrs">{}</attribute>
+                  <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='price_unit']" position="attributes">
+                  <attribute name="string">Precio de compra antes de costes de envío</attribute>
+                </xpath>
+            </field>
+          </record>
     </data>
 </odoo>
