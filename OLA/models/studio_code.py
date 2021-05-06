@@ -180,20 +180,20 @@ class SaleOrderLine(models.Model):
 
 	x_value2_id = fields.Integer(string='cantidad perdida')
 
-   	@api.onchange('product_uom_qty', 'qty_delivered')
+	@api.onchange('product_uom_qty', 'qty_delivered')
 	def resta(self):
 		self.x_value2_id = self.product_uom_qty - self.qty_delivered
 
 	x_tiempo_total = fields.Integer(string='Tiempo de entrega')
 
-    @api.onchange('x_studio_tiempo_de_entrega_del_proveedor', 'qty_available_today', 'customer_lead')
-    def minimos(self):
-    	if self.qty_available_today == 0:
-    		self.x_tiempo_total = self.customer_lead + self.x_studio_tiempo_de_entrega_del_proveedor
-    	elif self.qty_available_today >= self.product_uom_qty:
-    		self.x_tiempo_total = self.customer_lead
-    	else:
-    		self.x_tiempo_total = self.customer_lead + self.x_studio_tiempo_de_entrega_del_proveedor
+	@api.onchange('x_studio_tiempo_de_entrega_del_proveedor', 'qty_available_today', 'customer_lead')
+	def minimos(self):
+		if self.qty_available_today == 0:
+			self.x_tiempo_total = self.customer_lead + self.x_studio_tiempo_de_entrega_del_proveedor
+		elif self.qty_available_today >= self.product_uom_qty:
+			self.x_tiempo_total = self.customer_lead
+		else:
+			self.x_tiempo_total = self.customer_lead + self.x_studio_tiempo_de_entrega_del_proveedor
 
 
 	x_studio_tiempo_de_entrega_del_proveedor = fields.Integer(
@@ -261,38 +261,8 @@ class SaleOrder(models.Model):
 
 	x_studio_motivo_de_perdida_de_la_orden = fields.Selection(
 		selection=[('Falta de seguimiento', 'Falta de seguimiento'), ('Productos incompletos', 'Productos incompletos'),('Orden perdida', 'Orden perdida')],
-   		string = 'Motivo de perdida de la orden',
-   		readonly=True
-   	)
+		string = 'Motivo de perdida de la orden',
+		readonly=True
+	)
 
 
-
-
-
-
-	
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-    
-    
-
-
-
-
-    
-
-
-
-    
