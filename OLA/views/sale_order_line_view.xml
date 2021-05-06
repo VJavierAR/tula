@@ -95,33 +95,26 @@
   </field>
 </record>-->
 
-<record model="ir.actions.server" id="ventas_perdidas_action">
-  <field name="name">Ventas perdidas</field>
-  <field name="model_id" ref="model_sale_order_line"/>
-  <field name="state">code</field>
-  <field name="code">
-    action = {
-      "type": "ir.actions.act_window",
-      "view_mode": "tree,form",
-      "res_model": self._name,
-    }
-  </field>
+<record model="ir.actions.act_window" id="orden__salida_action_window">
+    <field name="name">Orden de Salida</field>
+    <field name="res_model">stock.picking.surtir</field>
+    <field name="view_mode">tree,form</field>
 </record>
 
-<record model="ir.actions.server" id="precio_descuento_action">
+
+
+<record model="ir.actions.act_window" id="ventas_perdidas_action">
+  <field name="name">Ventas perdidas</field>
+  <field name="res_model">sale.order.line</field>
+  <field name="view_mode">tree,form</field>
+</record>
+
+<record model="ir.actions.act_window" id="precio_descuento_action">
   <field name="name">Precios con descuento</field>
-  <field name="model_id" ref="model_sale_order_line"/>
-  <field name="state">code</field>
-  <field name="code">
-    action = {
-      "type": "ir.actions.act_window",
-      "view_mode": "tree,form",
-      "res_model": self._name,
-    }
-  </field>
+  <field name="res_model">sale.order.line</field>
   <!--<field name="view_ids" eval="[(5, 0, 0),
     (0, 0, {'view_mode': 'tree', 'view_id': ref('view_sale_order_line_tree2')})]"/>-->
-  <!--<field name="view_id" ref="view_sale_order_line_tree2"/>--> 
+  <field name="view_id" ref="view_sale_order_line_tree2"/>
 </record>
 
 
