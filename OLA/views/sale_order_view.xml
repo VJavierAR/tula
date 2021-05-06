@@ -6,42 +6,44 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-            <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
-            <page name="studio_page_zJf9T" string="Productos Sugeridos">
-              <group name="studio_group_zJf9T">
-                <field name="productos_sugeridos">
-                  <tree string="Productos sugeridos" editable="bottom">
-                    <!--<button name="add1" type="object" icon="fa-shopping-cart" string="Add" class="oe_link"/>-->
-                    <field name="agregar" attrs="{}"/>
-                    <field name="product_sug" string="Product Sugerido" />
-                    <field name="product_rel" string="Producto Asociado"/>
-                  </tree>
-                </field>
-              </group>
-            </page>
-            </xpath>
-  <xpath expr="//field[@name='payment_term_id']" position="after">
-    <field name="x_studio_motivo_de_perdida_de_la_orden"/>
-    <!--<field name="x_studio_motivo_de_perdida"/>-->
-  </xpath>
-  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
-    <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom_qty']" position="move"/>
-    <field name="x_value1_id" string="Estado del producto"/>
-  </xpath>
-  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
-    <field name="existencias" widget="html" width="250px"/>
-  </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                    <page name="studio_page_zJf9T" string="Productos Sugeridos">
+                      <group name="studio_group_zJf9T">
+                        <field name="productos_sugeridos">
+                          <tree string="Productos sugeridos" editable="bottom">
+                            <!--<button name="add1" type="object" icon="fa-shopping-cart" string="Add" class="oe_link"/>-->
+                            <field name="agregar" attrs="{}"/>
+                            <field name="product_sug" string="Product Sugerido" />
+                            <field name="product_rel" string="Producto Asociado"/>
+                          </tree>
+                        </field>
+                      </group>
+                    </page>
+                </xpath>
+                <!--
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="x_studio_motivo_de_perdida_de_la_orden"/>
+                    <!--<field name="x_studio_motivo_de_perdida"/>
+                </xpath>
+                -->
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom_qty']" position="move"/>
+                    <field name="x_value1_id" string="Estado del producto"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
+                    <field name="existencias" widget="html" width="250px"/>
+                </xpath>
 
-  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom']" position="after">
-    <field name="x_tiempo_total"/>
-    <field name="x_studio_precio_mnimo"/>
-  </xpath>
-  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='discount']" position="after">
-    <field name="x_precio_con_descuento"/>
-  </xpath>
-  <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='company_id']" position="after">
-    <field name="bloqueo"/>
-  </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom']" position="after">
+                    <field name="x_tiempo_total"/>
+                    <field name="x_studio_precio_mnimo"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='discount']" position="after">
+                    <field name="x_precio_con_descuento"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='company_id']" position="after">
+                    <field name="bloqueo"/>
+                </xpath>
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="urgencia" />
                     <field name="bloqueo_limite_credito" invisible="1" />
