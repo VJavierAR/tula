@@ -25,5 +25,25 @@
 
             </field>
         </record>
+        <record model="ir.ui.view" id="product_product_update_form_view">
+            <field name="name">product.product.form.update</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='inventory']" position="after">
+                    <page name="producto_sug" string="Productos Sugeridos">
+                        <field name="sug_rel">
+                            <tree editable='bottom'> <!-- editable='bottom' -->
+                                <field name="id"/>
+                                <field name="name"/>
+                                <field name="default_code"/>
+                            </tree>
+                        </field>
+                    </page>
+              </xpath>
+
+            </field>
+        </record>
+
     </data>
 </odoo>
