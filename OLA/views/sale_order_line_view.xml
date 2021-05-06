@@ -118,7 +118,7 @@
 
 <menuitem id="menu_historico" name="Historial de precios de compra"
             parent="purchase.menu_purchase_root"
-            groups="group_purchase_manager,group_purchase_user" sequence="5" action='historial_precios'/>
+            groups="purchase.group_purchase_manager,group_purchase_user" sequence="5" action='historial_precios'/>
 
             
 
