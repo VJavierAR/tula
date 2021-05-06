@@ -156,10 +156,10 @@ class SaleOrderLine(models.Model):
 
 	x_value1_id = fields.Char(
 		string='valor1',
-		compute="_compute_x_value1_id"
+		#compute="_compute_x_value1_id"
 	)
 
-	@api.depends('qty_available_today', 'product_uom_qty')
+	@api.onchange('qty_available_today', 'product_uom_qty')
 	def _compute_x_value1_id(self):
 		for record in self:
 			if record.qty_available_today >= 1 and record.product_uom_qty > record.qty_available_today:
