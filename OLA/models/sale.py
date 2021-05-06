@@ -445,14 +445,9 @@ class sale(models.Model):
 		em=self.company_id
 		if(True not in check):
 			vals['state']='draft'
-			#if(em.auto_picking):
-			#	self.action_confirm()
-			#if(em.auto_picking==False):
-			#	result = super(sale, self).write(vals)
-		if(True in check):
-			vals['state']='auto'
 		result = super(sale, self).write(vals)
 		return result
+		
 	@api.onchange('order_line')
 	def test(self):
 		l=len(self.order_line)
