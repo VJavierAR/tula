@@ -217,22 +217,22 @@ class SaleOrderLine(models.Model):
 
 	x_studio_field_gj0dW = fields.Boolean(
 		string='New Campo relacionado',
-		related='warehouse_id.lot_stock_id.quant_ids.on_hand'
+		#related='warehouse_id.lot_stock_id.quant_ids.on_hand'
 	)
 
 	x_studio_field_c1fDg = fields.Boolean(
 		string='New Campo relacionado',
-		related='warehouse_id.view_location_id.quant_ids.on_hand'
+		#related='warehouse_id.view_location_id.quant_ids.on_hand'
 	)
 
 	x_studio_field_TiwJ0 = fields.Boolean(
 		string='New Campo relacionado',
-		related='warehouse_id.lot_stock_id.child_ids.quant_ids.on_hand'
+		#related='warehouse_id.lot_stock_id.child_ids.quant_ids.on_hand'
 	)
 
 	x_studio_field_JtVY2 = fields.Boolean(
 		string='New Campo relacionado',
-		related='warehouse_id.lot_stock_id.quant_ids.on_hand'
+		#related='warehouse_id.lot_stock_id.quant_ids.on_hand'
 	)
 
 	x_studio_precio_mnimo = fields.Float(
