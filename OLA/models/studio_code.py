@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 class ProductProduct(models.Model):
 	_inherit='product.product'
 
-	x_preciominimo = fields.Double(
+	x_preciominimo = fields.Float(
 		string='Precio mínimo',
 		compute='_compute_x_preciominimo'
 	)
@@ -21,12 +21,12 @@ class ProductProduct(models.Model):
 class ProductTemplate(models.Model):
 	_inherit='product.template'
 
-	x_studio_precio_mnimo = fields.Double(
+	x_studio_precio_mnimo = fields.Float(
 		string='Precio mínimo',
 		related='product_variant_id.x_preciominimo'
 	)
 
-	x_studio_utilidad_ = fields.Double(
+	x_studio_utilidad_ = fields.Float(
 		string='Utilidad (%)',
 		store=True
 	)
@@ -235,7 +235,7 @@ class SaleOrderLine(models.Model):
 		related='warehouse_id.lot_stock_id.quant_ids.on_hand'
 	)
 
-	x_studio_precio_mnimo = fields.Double(
+	x_studio_precio_mnimo = fields.Float(
 		string='Precio mínimo',
 		related='product_id.x_studio_precio_mnimo'
 	)
