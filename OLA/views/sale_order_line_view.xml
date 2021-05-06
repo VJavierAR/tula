@@ -99,6 +99,7 @@
   <field name="name">Ventas perdidas</field>
   <field name="res_model">sale.order.line</field>
   <field name="view_mode">tree,form</field>
+  <field name="view_id" ref="sale.view_order_line_tree"/>
 </record>
 
 <record model="ir.actions.act_window" id="precio_descuento_action">
