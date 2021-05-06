@@ -119,7 +119,7 @@
       "res_model": self._name,
     }
   </field>
-  <field name="view_id" ref="view_sale_order_line_tree2"/> 
+  <!--<field name="view_id" ref="view_sale_order_line_tree2"/>--> 
 </record>
 
 
