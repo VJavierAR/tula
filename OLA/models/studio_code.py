@@ -16,7 +16,7 @@ class ProductProduct(models.Model):
 	@api.depends('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
 		for r in self:
-        	r.x_preciominimo = (r.standard_price * r.x_studio_utilidad_ / 100) + r.standard_price
+			r.x_preciominimo = (r.standard_price * r.x_studio_utilidad_ / 100) + r.standard_price
 
 class ProductTemplate(models.Model):
 	_inherit='product.template'
