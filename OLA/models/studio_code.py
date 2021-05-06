@@ -169,21 +169,22 @@ class SaleOrderLine(models.Model):
 			else:
 				record.x_value1_id = 'No hay stock'
 
-   	x_studio_motivo_de_perdida_de_la_orden = fields.Selection(
-   		string = 'Motivo de perdida de la orden',
-   		readonly=True
-   	)
+	x_studio_motivo_de_perdida_de_la_orden = fields.Selection(
+		string = 'Motivo de perdida de la orden',
+		readonly=True
+	)
 
-   	x_studio_motivo_de_perdida=fields.Selection(string='Motivo de perdida',[('No hay stock', 'No hay stock'),('Tiempo de espera', 'Tiempo de espera'),('Costo elevado', 'Costo elevado'),])
+	x_studio_motivo_de_perdida = fields.Selection(string='Motivo de perdida',[('No hay stock', 'No hay stock'),('Tiempo de espera', 'Tiempo de espera'),('Costo elevado', 'Costo elevado'),])
 
-   	x_value7_id=fields.Integer(string='Cantidad disponible por sucursal')
+	x_value7_id = fields.Integer(string='Cantidad disponible por sucursal')
 
-   	x_value2_id=fields.Integer(string='cantidad perdida')
+	x_value2_id = fields.Integer(string='cantidad perdida')
+
    	@api.onchange('product_uom_qty', 'qty_delivered')
 	def resta(self):
 		self.x_value2_id = self.product_uom_qty - self.qty_delivered
 
-    x_tiempo_total=fields.Integer(string='Tiempo de entrega')
+	x_tiempo_total = fields.Integer(string='Tiempo de entrega')
 
     @api.onchange('x_studio_tiempo_de_entrega_del_proveedor', 'qty_available_today', 'customer_lead')
     def minimos(self):
@@ -195,45 +196,45 @@ class SaleOrderLine(models.Model):
     		self.x_tiempo_total = self.customer_lead + self.x_studio_tiempo_de_entrega_del_proveedor
 
 
-    x_studio_tiempo_de_entrega_del_proveedor = fields.Integer(
-    	string='Tiempo de entrega del proveedor',
-    	related='product_id.seller_ids.delay'
-    )
+	x_studio_tiempo_de_entrega_del_proveedor = fields.Integer(
+		string='Tiempo de entrega del proveedor',
+		related='product_id.seller_ids.delay'
+	)
 
-    x_studio_field_qSqYi = fields.Boolean(
-    	string='New Campo relacionado',
-    	related='x_studio_field_U1p5V.lot_stock_id.quant_ids.on_hand'
-    )
+	x_studio_field_qSqYi = fields.Boolean(
+		string='New Campo relacionado',
+		related='x_studio_field_U1p5V.lot_stock_id.quant_ids.on_hand'
+	)
 
-    x_studio_field_qSqYi = fields.Boolean(
-    	string='New Campo relacionado',
-    	related='x_studio_field_U1p5V.lot_stock_id.quant_ids.on_hand'
-    )
+	x_studio_field_qSqYi = fields.Boolean(
+		string='New Campo relacionado',
+		related='x_studio_field_U1p5V.lot_stock_id.quant_ids.on_hand'
+	)
 
-    x_studio_field_gj0dW = fields.Boolean(
-    	string='New Campo relacionado',
-    	related='warehouse_id.lot_stock_id.quant_ids.on_hand'
-    )
+	x_studio_field_gj0dW = fields.Boolean(
+		string='New Campo relacionado',
+		related='warehouse_id.lot_stock_id.quant_ids.on_hand'
+	)
 
-    x_studio_field_c1fDg = fields.Boolean(
-    	string='New Campo relacionado',
-    	related='warehouse_id.view_location_id.quant_ids.on_hand'
-    )
+	x_studio_field_c1fDg = fields.Boolean(
+		string='New Campo relacionado',
+		related='warehouse_id.view_location_id.quant_ids.on_hand'
+	)
 
-    x_studio_field_TiwJ0 = fields.Boolean(
-    	string='New Campo relacionado',
-    	related='warehouse_id.lot_stock_id.child_ids.quant_ids.on_hand'
-    )
+	x_studio_field_TiwJ0 = fields.Boolean(
+		string='New Campo relacionado',
+		related='warehouse_id.lot_stock_id.child_ids.quant_ids.on_hand'
+	)
 
-    x_studio_field_JtVY2 = fields.Boolean(
-    	string='New Campo relacionado',
-    	related='warehouse_id.lot_stock_id.quant_ids.on_hand'
-    )
+	x_studio_field_JtVY2 = fields.Boolean(
+		string='New Campo relacionado',
+		related='warehouse_id.lot_stock_id.quant_ids.on_hand'
+	)
 
-    x_studio_precio_mnimo = fields.Double(
-    	string='Precio mínimo',
-    	related='product_id.x_studio_precio_mnimo'
-    )
+	x_studio_precio_mnimo = fields.Double(
+		string='Precio mínimo',
+		related='product_id.x_studio_precio_mnimo'
+	)
 
 class SaleOrder(models.Model):
 	_inherit='sale.order'
