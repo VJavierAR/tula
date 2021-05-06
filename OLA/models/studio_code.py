@@ -68,12 +68,14 @@ class SaleOrderLine(models.Model):
 		#track_visibility='onchange'
 	)
 	
+	"""
 	x_studio_field_HNW2r = fields.One2many(
 		comodel_name='stock.move',
 		inverse_name='sale_line_id',
 		string='New UnoAMuchos',
 		store=True
 	)
+	"""
 
 class SaleOrder(models.Model):
 	_inherit='sale.order'
