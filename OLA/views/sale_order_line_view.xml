@@ -60,5 +60,31 @@
             </field>
         </record>
 
+
+<record model="ir.ui.view" id="view_sale_order_line_tree2">
+    <field name="name">view.order.line.tree</field>
+    <field name="model">sale.order.line</field>
+    <field name="arch" type="xml">
+        <tree string="Sales Order Lines" create="false">
+    <field name="order_id" invisible='1'/>
+    <field name="order_partner_id" invisible='1'/>
+    <field name="name" string='Producto'/>
+    <field name="salesman_id" invisible='1'/>
+    <field name="product_uom_qty" string="Cantidad"/>
+    <field name="x_studio_field_Ml1CB" attrs="{}" invisible="1"/>
+    <field name="x_studio_precio_mnimo" string="Precio mínimo"/>
+    <field name="price_unit"/>
+    <field name="discount"/>
+    <field name="x_precio_con_descuento"/>
+    <field name="qty_delivered" invisible='1'/>
+    <field name="qty_invoiced" invisible='1'/>
+    <field name="qty_to_invoice" invisible='1'/>
+    <field name="product_uom" invisible='1' string="Unit of Measure" groups="uom.group_uom"/>
+    <field name="price_subtotal" sum="Total" widget="monetary"/>
+    </tree>
+    </field>
+</record>
+            
+
     </data>
 </odoo>
