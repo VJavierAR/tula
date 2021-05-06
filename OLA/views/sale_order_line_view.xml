@@ -44,8 +44,6 @@
                   </xpath>
                   <xpath expr="//field[@name='product_uom']" position="after">
                     <field name="x_value3_id" attrs="{}" sum="Sum of Monto perdido"/>
-                  </xpath>
-                  <xpath expr="//field[@name='route_id']" position="after">
                     <field name="x_value4_id" sum="Sum of Venta total" attrs="{}"/>
                   </xpath>
                   <xpath expr="//field[@name='price_subtotal']" position="attributes">
