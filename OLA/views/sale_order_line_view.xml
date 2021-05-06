@@ -95,14 +95,6 @@
   </field>
 </record>-->
 
-<record model="ir.actions.act_window" id="orden__salida_action_window">
-    <field name="name">Orden de Salida</field>
-    <field name="res_model">stock.picking.surtir</field>
-    <field name="view_mode">tree,form</field>
-</record>
-
-
-
 <record model="ir.actions.act_window" id="ventas_perdidas_action">
   <field name="name">Ventas perdidas</field>
   <field name="res_model">sale.order.line</field>
