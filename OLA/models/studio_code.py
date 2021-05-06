@@ -77,6 +77,33 @@ class SaleOrderLine(models.Model):
 	)
 	"""
 
+	x_studio_field_fAMfd = fields.Many2many(
+		comodel_name='stock.warehouse',
+		relation ='x_sale_order_line_stock_warehouse_rel',
+		column1='sale_order_line_id',
+		column2='stock_warehouse_id',
+		string='Almacén',
+		store=True
+	)
+
+	x_studio_field_hBl4n = fields.Many2many(
+		comodel_name='res.company',
+		relation ='x_res_company_sale_order_line_rel',
+		column1='sale_order_line_id',
+		column2='res_company_id',
+		string='Compañías',
+		store=True
+	)
+
+	x_studio_field_iF4QS  = fields.Many2many(
+		comodel_name='stock.warehouse',
+		relation ='x_sale_order_line_stock_warehouse_rel_1',
+		column1='sale_order_line_id',
+		column2='stock_warehouse_id',
+		string='Almacén',
+		store=True
+	)
+
 class SaleOrder(models.Model):
 	_inherit='sale.order'
 
