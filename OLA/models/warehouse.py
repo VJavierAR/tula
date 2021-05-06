@@ -43,12 +43,12 @@ class stock(models.Model):
     
     def print_vale_de_entrega(self):
         self.ensure_one()
-    	if(self.state=='printed'):
-    		raise exceptions.UserError('Orden de surtido ya se encunetra en proceso')			
-    	else:
-    		self.state='printed'
-    		self.user_print_id=self.env.user.id
-    		return self.env.ref("stock.action_report_picking").report_action(self)
+        if(self.state=='printed'):
+            raise exceptions.UserError('Orden de surtido ya se encunetra en proceso')			
+        else:
+            self.state='printed'
+            self.user_print_id=self.env.user.id
+            return self.env.ref("stock.action_report_picking").report_action(self)
 
     """
     def button_validate(self):
