@@ -113,11 +113,9 @@ class sale(models.Model):
 
 	def action_confirm(self):
 		self.conf()
-		_logger.info(self.company_id.auto_picking)
-		_logger.info(self.picking_ids.mapped('state'))
 		if self.company_id.auto_picking:
 			for pi in self.picking_ids:
-				if pi.state not in ('cancel', 'done'):
+				if pi.state not in ('cancel', 'done','confirmed','waiting'):
 					pi.action_confirm()
 					pi.move_lines._action_assign()
 					pi.action_assign()
@@ -126,6 +124,8 @@ class sale(models.Model):
 					#pi.move_lines._action_done()
 					return pi.button_validate()
 					#pi._autoconfirm_picking()
+				if pi.state in ('waiting','confirmed'):
+					return {'warning': {'title': 'Sin stock','message': 'No hay stock'}}
 
 
 						

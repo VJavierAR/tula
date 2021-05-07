@@ -93,22 +93,21 @@ class stock(models.Model):
         if sms_confirmation:
             return sms_confirmation
 
-        _logger.info(self._check_backorder())
-
         if no_quantities_done:
             view = self.env.ref('stock.view_immediate_transfer')
             wiz = self.env['stock.immediate.transfer'].create({'pick_ids': [(4, self.id)]})
-            return {
-                'name': _('Immediate Transfer?'),
-                'type': 'ir.actions.act_window',
-                'view_mode': 'form',
-                'res_model': 'stock.immediate.transfer',
-                'views': [(view.id, 'form')],
-                'view_id': view.id,
-                'target': 'new',
-                'res_id': wiz.id,
-                'context': self.env.context,
-            }
+            wiz.process()
+            # return {
+            #     'name': _('Immediate Transfer?'),
+            #     'type': 'ir.actions.act_window',
+            #     'view_mode': 'form',
+            #     'res_model': 'stock.immediate.transfer',
+            #     'views': [(view.id, 'form')],
+            #     'view_id': view.id,
+            #     'target': 'new',
+            #     'res_id': wiz.id,
+            #     'context': self.env.context,
+            # }
 
         if self._get_overprocessed_stock_moves() and not self._context.get('skip_overprocessed_check'):
             view = self.env.ref('stock.view_overprocessed_transfer')
