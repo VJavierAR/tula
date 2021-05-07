@@ -1,7 +1,7 @@
 from odoo import models, fields, api,_
 import datetime, time
-from odoo import exceptions
 import logging, ast
+from odoo.exceptions import UserError,AccessDenied,RedirectWarnings
 _logger = logging.getLogger(__name__)
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
@@ -120,7 +120,7 @@ class sale(models.Model):
 				if pi.state not in ('cancel', 'done'):
 					pi.action_assign()
 					pi.action_done()
-					pi.button_confirm()
+					pi.button_validate()
 
 						
 
