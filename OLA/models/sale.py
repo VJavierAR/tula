@@ -194,8 +194,7 @@ class sale(models.Model):
 	@api.onchange('order_line', 'payment_term_id')
 	def comprobar_limite_de_credito_company_unica(self):
 		pago_de_contado_id = 1
-		
-		if len(self.order_line) > 0 and self.partner_id.id and self.payment_term_id.id and self.payment_term_id.id != pago_de_contado_id:
+		if len(self.order_line) > 0 and self.partner_id.id and self.payment_term_id.id != pago_de_contado_id:
 			total = self.amount_total
 			limite_de_credito = self.partner_id.limite_credito
 			limite_de_credito_conglomerado = self.partner_id.limite_credito_conglomerado
@@ -212,6 +211,8 @@ class sale(models.Model):
 			title_restriccion_dias_factura = ""
 			message_factura = ""
 			genero_alertas_facturas = False
+
+			# Caso en que tiene limite de credito 0
 
 			# Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
 			facturas_no_pagadas = self.env['account.move'].search(
