@@ -229,6 +229,52 @@ class SaleOrderLine(models.Model):
 		related='product_id.x_studio_precio_mnimo'
 	)
 
+	x_precio_con_descuento = fields.Float(
+		string='Precio con descuento',
+		readonly=True,
+		store=True,
+		compute="_compute_x_precio_con_descuento"
+	)
+
+	@api.depends("price_subtotal", "product_uom_qty")
+	def _compute_x_precio_con_descuento(self):
+		for record in self:
+			record.x_precio_con_descuento = record.price_subtotal / record.product_uom_qty
+		
+
+	x_studio_field_2ZpSa = fields.Float(
+		string='Precio de compra antes de costes de envío',
+		readonly=True,
+		related='product_id.standard_price'
+	)
+
+	x_value3_id = fields.Float(
+		string="Monto perdido",
+		readonly=True,
+		store=True,
+		compute="_compute_x_value3_id"
+	)
+
+	@api.depends("x_value2_id", "price_unit")
+	def _compute_x_value3_id(self):
+		for record in self:
+			record.x_value3_id = record.x_value2_id * record.price_unit
+
+
+	x_value4_id = fields.Float(
+		string="Venta total",
+		readonly=True,
+		store=True,
+		compute="_compute_x_value4_id"
+	)
+
+
+	@api.depends("qty_delivered", "price_unit")
+	def _compute_x_value4_id(self):
+		for record in self:
+			record.x_value4_id = record.qty_delivered * record.price_unit
+
+
 class SaleOrder(models.Model):
 	_inherit='sale.order'
 
@@ -257,5 +303,13 @@ class SaleOrder(models.Model):
 		string = 'Motivo de perdida de la orden',
 		readonly=True
 	)
+
+	"""
+	x_studio_field_QXqCU = fields.Float(
+		string='New Campo relacionado',
+		readonly=True,
+		related='product_id.quantity_svl'
+	)
+	"""
 
 
