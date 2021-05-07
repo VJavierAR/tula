@@ -240,13 +240,6 @@ class SaleOrderLine(models.Model):
 	def _compute_x_precio_con_descuento(self):
 		for record in self:
 			record.x_precio_con_descuento = record.price_subtotal / record.product_uom_qty
-		
-
-	x_studio_field_2ZpSa = fields.Float(
-		string='Precio de compra antes de costes de envío',
-		readonly=True,
-		related='product_id.standard_price'
-	)
 
 	x_value3_id = fields.Float(
 		string="Monto perdido",
@@ -303,7 +296,6 @@ class SaleOrder(models.Model):
 		string = 'Motivo de perdida de la orden',
 		readonly=True
 	)
-
 	"""
 	x_studio_field_QXqCU = fields.Float(
 		string='New Campo relacionado',
@@ -311,5 +303,11 @@ class SaleOrder(models.Model):
 		related='product_id.quantity_svl'
 	)
 	"""
+class PurachaseOrderLine(models.Model):
+	_inherit = 'purachase.order.line'
 
-
+	x_studio_field_2ZpSa = fields.Float(
+		string='Precio de compra antes de costes de envío',
+		readonly=True,
+		related='product_id.standard_price'
+	)
