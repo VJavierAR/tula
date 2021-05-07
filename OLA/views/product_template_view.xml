@@ -9,73 +9,73 @@
                 <xpath expr="//field[@name='type']" position="before">
                     <field name="codigo_producto_cliente" />
                 </xpath>
-<xpath expr="//page[@name='general_information']" position="after">
-    <page name="codigos_de_producto" string="Códigos de producto">
-        <field name="id" invisible="1"/>
-        <field name="codigos_de_producto">
-            <tree editable='bottom'> <!-- editable='bottom' -->
-                <field name="id"/>
-                <field name="cliente"/>
-                <field name="codigo_producto"/>
-            </tree>
-        </field>
-    </page>
-</xpath>
-  <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]/page[@name='general_information']/group[1]/group[@name='group_standard_price']/field[@name='company_id']" position="after">
-    <field name="x_studio_utilidad_" string="Utilidad (%)"/>
-    <field name="x_studio_precio_mnimo" string="Precio mínimo"/>
-  </xpath>
-<xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]" position="inside">
-    <page name="studio_page_O1xN0" string="Sugeridos">
-      <group name="studio_group_O1xN0">
-        <field name="sug_rel">
-          <tree string="Product Variants" multi_edit="1" duplicate="false" decoration-danger="type == 'product' and virtual_available&lt;0" decoration-info="type != 'product' or virtual_available&gt;=0" editable="bottom">
-            <field name="default_code" optional="show" readonly="1"/>
-            <field name="barcode" optional="hide" readonly="1"/>
-            <field name="name" readonly="1"/>
-            <field name="product_template_attribute_value_ids" widget="many2many_tags" groups="product.group_product_variant" readonly="1"/>
-            <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
-            <field name="lst_price" optional="show" string="Sales Price"/>
-            <field name="standard_price" optional="show" readonly="1" string="Precio mínimo de venta"/>
-            <field name="categ_id" optional="hide"/>
-            <field name="type" optional="hide" readonly="1"/>
-            <field name="price" invisible="not context.get('pricelist',False)"/>
-            <field name="qty_available" attrs="{'invisible':[('type', '!=', 'product')]}" optional="show"/>
-            <field name="virtual_available" attrs="{'invisible':[('type', '!=', 'product')]}" string="Forecasted Quantity" optional="show"/>
-            <field name="uom_id" options="{'no_open': True, 'no_create': True}" groups="uom.group_uom" optional="show" readonly="1"/>
-            <field name="product_tmpl_id" invisible="1" readonly="1"/>
-            <field name="active" invisible="1"/>
-          </tree>
-        </field>
-      </group>
-    </page>
-    <page name="studio_page_UEvgh" string="Alternativos">
-      <group name="studio_group_UEvgh">
-        <field name="alt_rel">
-          <tree string="Product Variants" multi_edit="1" duplicate="false" decoration-danger="type == 'product' and virtual_available&lt;0" decoration-info="type != 'product' or virtual_available&gt;=0" editable="bottom">
-            <field name="default_code" optional="show" readonly="1"/>
-            <field name="barcode" optional="hide" readonly="1"/>
-            <field name="name" readonly="1"/>
-            <field name="product_template_attribute_value_ids" widget="many2many_tags" groups="product.group_product_variant" readonly="1"/>
-            <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
-            <field name="lst_price" optional="show" string="Sales Price"/>
-            <field name="standard_price" optional="show" readonly="1" string="Precio mínimo de venta"/>
-            <field name="categ_id" optional="hide"/>
-            <field name="type" optional="hide" readonly="1"/>
-            <field name="price" invisible="not context.get('pricelist',False)"/>
-            <field name="qty_available" attrs="{'invisible':[('type', '!=', 'product')]}" optional="show"/>
-            <field name="virtual_available" attrs="{'invisible':[('type', '!=', 'product')]}" string="Forecasted Quantity" optional="show"/>
-            <field name="uom_id" options="{'no_open': True, 'no_create': True}" groups="uom.group_uom" optional="show" readonly="1"/>
-            <field name="product_tmpl_id" invisible="1" readonly="1"/>
-            <field name="active" invisible="1"/>
-          </tree>
-        </field>
-      </group>
-    </page>
-</xpath>
+                <xpath expr="//page[@name='general_information']" position="after">
+                    <page name="codigos_de_producto" string="Códigos de producto">
+                        <field name="id" invisible="1"/>
+                        <field name="codigos_de_producto">
+                            <tree editable='bottom'> <!-- editable='bottom' -->
+                                <field name="id"/>
+                                <field name="cliente"/>
+                                <field name="codigo_producto"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="x_studio_utilidad_" string="Utilidad (%)"/>
+                    <field name="x_studio_precio_mnimo" string="Precio mínimo"/>
+                </xpath>
+                <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]" position="inside">
+                    <page name="studio_page_O1xN0" string="Sugeridos">
+                      <group name="studio_group_O1xN0">
+                        <field name="sug_rel">
+                          <tree string="Product Variants" multi_edit="1" duplicate="false" decoration-danger="type == 'product' and virtual_available&lt;0" decoration-info="type != 'product' or virtual_available&gt;=0" editable="bottom">
+                            <field name="default_code" optional="show" readonly="1"/>
+                            <field name="barcode" optional="hide" readonly="1"/>
+                            <field name="name" readonly="1"/>
+                            <field name="product_template_attribute_value_ids" widget="many2many_tags" groups="product.group_product_variant" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
+                            <field name="lst_price" optional="show" string="Sales Price"/>
+                            <field name="standard_price" optional="show" readonly="1" string="Precio mínimo de venta"/>
+                            <field name="categ_id" optional="hide"/>
+                            <field name="type" optional="hide" readonly="1"/>
+                            <field name="price" invisible="not context.get('pricelist',False)"/>
+                            <field name="qty_available" attrs="{'invisible':[('type', '!=', 'product')]}" optional="show"/>
+                            <field name="virtual_available" attrs="{'invisible':[('type', '!=', 'product')]}" string="Forecasted Quantity" optional="show"/>
+                            <field name="uom_id" options="{'no_open': True, 'no_create': True}" groups="uom.group_uom" optional="show" readonly="1"/>
+                            <field name="product_tmpl_id" invisible="1" readonly="1"/>
+                            <field name="active" invisible="1"/>
+                          </tree>
+                        </field>
+                      </group>
+                    </page>
+                    <page name="studio_page_UEvgh" string="Alternativos">
+                      <group name="studio_group_UEvgh">
+                        <field name="alt_rel">
+                          <tree string="Product Variants" multi_edit="1" duplicate="false" decoration-danger="type == 'product' and virtual_available&lt;0" decoration-info="type != 'product' or virtual_available&gt;=0" editable="bottom">
+                            <field name="default_code" optional="show" readonly="1"/>
+                            <field name="barcode" optional="hide" readonly="1"/>
+                            <field name="name" readonly="1"/>
+                            <field name="product_template_attribute_value_ids" widget="many2many_tags" groups="product.group_product_variant" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
+                            <field name="lst_price" optional="show" string="Sales Price"/>
+                            <field name="standard_price" optional="show" readonly="1" string="Precio mínimo de venta"/>
+                            <field name="categ_id" optional="hide"/>
+                            <field name="type" optional="hide" readonly="1"/>
+                            <field name="price" invisible="not context.get('pricelist',False)"/>
+                            <field name="qty_available" attrs="{'invisible':[('type', '!=', 'product')]}" optional="show"/>
+                            <field name="virtual_available" attrs="{'invisible':[('type', '!=', 'product')]}" string="Forecasted Quantity" optional="show"/>
+                            <field name="uom_id" options="{'no_open': True, 'no_create': True}" groups="uom.group_uom" optional="show" readonly="1"/>
+                            <field name="product_tmpl_id" invisible="1" readonly="1"/>
+                            <field name="active" invisible="1"/>
+                          </tree>
+                        </field>
+                      </group>
+                    </page>
+                </xpath>
 
- </field>
-</record>        
+            </field>
+        </record>
         <record model="ir.ui.view" id="product_product_update_form_view">
             <field name="name">product.product.form.update</field>
             <field name="model">product.product</field>
@@ -99,5 +99,7 @@
               </xpath>
             </field>
         </record>
+
+
     </data>
 </odoo>
