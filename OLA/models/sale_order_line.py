@@ -12,7 +12,10 @@ class saleOr(models.Model):
 		string = 'Bloqueo por límite de descuento',
 		default = False
 	)
-	existencias = fields.Char()
+	existencias = fields.Char(
+		string="Existencias",
+		store=True
+	)
 
 
 	@api.onchange("product_id")
