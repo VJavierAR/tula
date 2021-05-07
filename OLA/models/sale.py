@@ -1,7 +1,7 @@
 from odoo import models, fields, api,_
 import datetime, time
 import logging, ast
-from odoo.exceptions import UserError,AccessDenied
+from odoo.exceptions import UserError,AccessDenied,Warning
 _logger = logging.getLogger(__name__)
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
@@ -127,7 +127,7 @@ class sale(models.Model):
 					return pi.button_validate()
 					#pi._autoconfirm_picking()
 				if pi.state in ('waiting','confirmed'):
-					raise UserError(_('No hay stock para el pedido'))
+					raise Warning(_('No hay stock para el pedido'))
 					#_logger.info(self.picking_ids.mapped('move_line_ids.state'))
 					#return {'warning': {'title': 'Sin stock','message': 'No hay stock'}}
 
