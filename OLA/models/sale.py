@@ -121,7 +121,7 @@ class sale(models.Model):
 					pi.action_assign()
 					_logger.info(self.picking_ids.mapped('move_line_ids.state'))
 					pi.action_done()
-					pi.button_validate()
+					return pi.button_validate()
 					pi._autoconfirm_picking()
 
 
