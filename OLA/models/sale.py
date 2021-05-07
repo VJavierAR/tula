@@ -127,8 +127,9 @@ class sale(models.Model):
 					return pi.button_validate()
 					#pi._autoconfirm_picking()
 				if pi.state in ('waiting','confirmed'):
-					_logger.info(self.picking_ids.mapped('move_line_ids.state'))
-					return {'warning': {'title': 'Sin stock','message': 'No hay stock'}}
+					raise UserError(_('No hay stock para el pedido'))
+					#_logger.info(self.picking_ids.mapped('move_line_ids.state'))
+					#return {'warning': {'title': 'Sin stock','message': 'No hay stock'}}
 
 
 						
