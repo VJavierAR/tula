@@ -81,7 +81,7 @@ class sale(models.Model):
 		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
 		if True in check:
 			self.write({'state':'auto'})
-			template_id2=self.env.ref('notify_descuento_email_template')
+			template_id2=self.env.ref('OLA.notify_descuento_email_template')
 			#template_id2=self.env['mail.template'].search([('id','=',41)], limit=1)
 			mail=template_id2.generate_email(self.id)
 			#dest=''
