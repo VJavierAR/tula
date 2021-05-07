@@ -322,19 +322,31 @@ class sale(models.Model):
 				message += "El pedido de venta actual solo podrá ser validado por los usuarios que se encuentrán en el grupo \"Confirma pedido de venta que excede límite de crédito.\"".rstrip() + "\n\n"
 
 			# Caso en que el plazo de pago excede el plazo de pago del cliente
-			plazo_de_pago_cliente = 0
+			plazo_de_pago_cliente = -1
 			if self.partner_id.property_payment_term_id.id and self.partner_id.property_payment_term_id.line_ids.mapped('days'):
 				plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[
 											-1] + colchon_de_credito
-			plazo_de_pago_sale = self.payment_term_id.line_ids.mapped('days')[-1]
-			if plazo_de_pago_sale > plazo_de_pago_cliente:
-				title = title + "Plazo de pago excedido. | "
-				message = message + """Se excedio el plazo de pago del cliente: \n
-						Plazo de pago de pedido de venta: """ + str(plazo_de_pago_sale) + """\n
-						Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """ """.rstrip() + "\n\n"
+			plazo_de_pago_sale = -1
+			if self.payment_term_id.id and self.payment_term_id.line_ids.mapped('days'):
+				plazo_de_pago_sale = self.payment_term_id.line_ids.mapped('days')[-1]
+			if plazo_de_pago_sale == -1 or plazo_de_pago_cliente == -1:
+				title = title + "Plazo de pago no definido. | "
+				message = message + """No se definio un plazo de pago:"""
+				if plazo_de_pago_sale == -1:
+					message += """\nPlazo de pago de pedido de venta: No definido"""
+				if plazo_de_pago_cliente == -1:
+					message += """\nPlazo de pago de cliente: No definido"""
+				message = message + " ".rstrip() + "\n\n"
 				genero_alerta_plazo = True
 			else:
-				genero_alerta_plazo = False
+				if plazo_de_pago_sale > plazo_de_pago_cliente:
+					title = title + "Plazo de pago excedido. | "
+					message = message + """Se excedio el plazo de pago del cliente: \n
+							Plazo de pago de pedido de venta: """ + str(plazo_de_pago_sale) + """\n
+							Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """ """.rstrip() + "\n\n"
+					genero_alerta_plazo = True
+				else:
+					genero_alerta_plazo = False
 
 			# Caso en que genero alerta por facturas que exceden el plazo de pago
 			if genero_alertas_facturas:
