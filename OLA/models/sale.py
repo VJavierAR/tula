@@ -118,9 +118,11 @@ class sale(models.Model):
 		if self.company_id.auto_picking:
 			for pi in self.picking_ids:
 				if pi.state not in ('cancel', 'done'):
+					pi.action_confirm()
+					pi.move_lines._action_assign()
 					pi.action_assign()
 					#_logger.info(self.picking_ids.mapped('move_line_ids.state'))
-					pi.move_lines._action_assign()
+					#pi.move_lines._action_assign()
 					#pi.move_lines._action_done()
 					return pi.button_validate()
 					#pi._autoconfirm_picking()
