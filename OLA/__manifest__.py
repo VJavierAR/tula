@@ -26,6 +26,7 @@
         'views/sale_order_line_view.xml',
         'wizard/stock_picking_wizard_view.xml',
         'wizard/sale_order_wizard_view.xml',
+        'views/templates.xml',
     ],
     'installable': True,
     'application': True,
