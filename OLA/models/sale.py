@@ -115,21 +115,24 @@ class sale(models.Model):
 	def action_confirm(self):
 		self.conf()
 		if self.company_id.auto_picking:
-			_logger.info(self.picking_ids.mapped('state'))
-			for pi in self.picking_ids:
-				if pi.state == 'assigned':
-					pi.action_confirm()
-					pi.move_lines._action_assign()
-					pi.action_assign()
-					_logger.info(self.picking_ids.mapped('move_line_ids.state'))
-					#pi.move_lines._action_assign()
-					#pi.move_lines._action_done()
-					return pi.button_validate()
+			sta=self.picking_ids.mapped('state')
+			if('waiting' in sta or 'confirmed' in sta):
+				return {'warning': {'title': _('Sin stock'),'message': _('No hay stock')}}
+			else:
+				for pi in self.picking_ids:
+					if pi.state == 'assigned':
+						pi.action_confirm()
+						pi.move_lines._action_assign()
+						pi.action_assign()
+						_logger.info(self.picking_ids.mapped('move_line_ids.state'))
+						#pi.move_lines._action_assign()
+						#pi.move_lines._action_done()
+						return pi.button_validate()
 					#pi._autoconfirm_picking()
-				if pi.state in ('waiting','confirmed'):
+				#if pi.state in ('waiting','confirmed'):
 					#raise Warning(_('No hay stock para el pedido'))
 					#_logger.info(self.picking_ids.mapped('move_line_ids.state'))
-					return {'warning': {'title': _('Sin stock'),'message': _('No hay stock')}}
+
 
 
 						
