@@ -87,7 +87,7 @@ class sale(models.Model):
 			#dest=''
 			#for mi in m:
 			#	dest=dest+str(mi)+','
-			mail['email_to']=str(m).replace('[').replace(']')
+			mail['email_to']=str(m).replace('[','').replace(']','')
 			self.env['mail.mail'].create(mail).send()
 		if True not in check or self.env.user.id in U:
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
