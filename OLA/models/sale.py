@@ -81,13 +81,14 @@ class sale(models.Model):
 		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
 		if True in check:
 			self.write({'state':'auto'})
+			template_id2=self.ref('notify_descuento_email_template')
 			#template_id2=self.env['mail.template'].search([('id','=',41)], limit=1)
-			#mail=template_id2.generate_email(self.id)
+			mail=template_id2.generate_email(self.id)
 			#dest=''
 			#for mi in m:
 			#	dest=dest+str(mi)+','
-			#mail['email_to']=dest
-			#self.env['mail.mail'].create(mail).send()
+			mail['email_to']=str(m).replace('[').replace(']')
+			self.env['mail.mail'].create(mail).send()
 		if True not in check or self.env.user.id in U:
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
 				raise UserError(_(
@@ -114,6 +115,7 @@ class sale(models.Model):
 	def action_confirm(self):
 		self.conf()
 		if self.company_id.auto_picking:
+			_logger.info(self.picking_ids.mapped('state'))
 			for pi in self.picking_ids:
 				if pi.state == 'assigned':
 					pi.action_confirm()
