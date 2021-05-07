@@ -129,7 +129,8 @@ class sale(models.Model):
 						#pi.move_lines._action_done()
 						return pi.button_validate()
 					#pi._autoconfirm_picking()
-				#if pi.state in ('waiting','confirmed'):
+					if pi.state in ('waiting','confirmed'):
+						return pi.button_validate()
 					#raise Warning(_('No hay stock para el pedido'))
 					#_logger.info(self.picking_ids.mapped('move_line_ids.state'))
 
