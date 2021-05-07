@@ -200,7 +200,7 @@ class sale(models.Model):
 	def comprobar_limite_de_credito_company_unica(self):
 		pago_de_contado_id = 1
 
-		if not self.payment_term_id.id and self.limite_credito_actual == 0:
+		if self.partner_id.id and not self.payment_term_id.id and self.limite_credito_actual == 0:
 			title = "Alertas: "
 			message = """Mensajes: \n"""
 			genero_alertas = False
