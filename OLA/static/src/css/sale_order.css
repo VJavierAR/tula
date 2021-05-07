@@ -11,7 +11,7 @@
 
 
 .slae_line_edit [data-name="existencias"] {
-    width: 220px !important;
+    width: 500px !important;
 }
 .slae_line_edit [data-name="product_id"] {
     width: 300px !important;
