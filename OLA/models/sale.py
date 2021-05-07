@@ -272,7 +272,7 @@ class sale(models.Model):
 			)
 
 			plazo_de_pago_cliente = 0
-			if self.partner_id.property_payment_term_id.line_ids.mapped('days'):
+			if self.partner_id.property_payment_term_id.id and self.partner_id.property_payment_term_id.line_ids.mapped('days'):
 				plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[
 										-1] + colchon_de_credito
 			# plazo_de_pago_cliente = self.partner_id.property_payment_id.line_ids.mapped('days')[-1]
@@ -323,7 +323,7 @@ class sale(models.Model):
 
 			# Caso en que el plazo de pago excede el plazo de pago del cliente
 			plazo_de_pago_cliente = 0
-			if self.partner_id.property_payment_term_id.line_ids.mapped('days'):
+			if self.partner_id.property_payment_term_id.id and self.partner_id.property_payment_term_id.line_ids.mapped('days'):
 				plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[
 											-1] + colchon_de_credito
 			plazo_de_pago_sale = self.payment_term_id.line_ids.mapped('days')[-1]
