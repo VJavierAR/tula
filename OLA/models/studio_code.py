@@ -304,10 +304,12 @@ class SaleOrder(models.Model):
 		readonly=True
 	)
 
+	"""
 	x_studio_field_QXqCU = fields.Float(
 		string='New Campo relacionado',
 		readonly=True,
 		related='product_id.quantity_svl'
 	)
+	"""
 
 
