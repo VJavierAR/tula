@@ -304,7 +304,7 @@ class SaleOrder(models.Model):
 	)
 	"""
 class PurachaseOrderLine(models.Model):
-	_inherit = 'purachase.order.line'
+	_inherit = 'purchase.order.line'
 
 	x_studio_field_2ZpSa = fields.Float(
 		string='Precio de compra antes de costes de envío',
