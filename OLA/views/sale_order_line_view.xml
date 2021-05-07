@@ -82,42 +82,42 @@
             </field>
         </record>
 
-<record model="ir.actions.act_window" id="historial_precios">
-  <field name="name">Historial de precios de compra</field>
-  <field name="res_model">purchase.order.line</field>
-  <field name="view_mode">tree,form</field>
-</record>
+        <record model="ir.actions.act_window" id="historial_precios">
+            <field name="name">Historial de precios de compra</field>
+            <field name="res_model">purchase.order.line</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 
 
-<record model="ir.actions.act_window" id="ventas_perdidas_action">
-  <field name="name">Ventas perdidas</field>
-  <field name="res_model">sale.order.line</field>
-  <field name="view_mode">tree,form</field>
-  <field name="view_id" ref="sale.view_order_line_tree"/>
-</record>
+        <record model="ir.actions.act_window" id="ventas_perdidas_action">
+            <field name="name">Ventas perdidas</field>
+            <field name="res_model">sale.order.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="sale.view_order_line_tree"/>
+        </record>
 
-<record model="ir.actions.act_window" id="precio_descuento_action">
-  <field name="name">Precios con descuento</field>
-  <field name="res_model">sale.order.line</field>
-  <!--<field name="view_ids" eval="[(5, 0, 0),
-    (0, 0, {'view_mode': 'tree', 'view_id': ref('view_sale_order_line_tree2')})]"/>-->
-  <field name="view_id" ref="view_sale_order_line_tree2"/>
-</record>
+        <record model="ir.actions.act_window" id="precio_descuento_action">
+            <field name="name">Precios con descuento</field>
+            <field name="res_model">sale.order.line</field>
+            <!--<field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_sale_order_line_tree2')})]"/>-->
+            <field name="view_id" ref="view_sale_order_line_tree2"/>
+        </record>
 
 
-<menuitem id="menu_sale_report_ventas_perdidas"
-    name="Ventas Perdidas"
-    parent="sale.menu_sale_report"
-    groups="sales_team.group_sale_manager" action='ventas_perdidas_action'/>
+        <menuitem id="menu_sale_report_ventas_perdidas"
+            name="Ventas Perdidas"
+            parent="sale.menu_sale_report"
+            groups="sales_team.group_sale_manager" action='ventas_perdidas_action'/>
 
-<menuitem id="menu_sale_report_precios_con_descuento"
-    name="Precios con descuento y precios minimos"
-    parent="sale.menu_sale_report"
-    groups="sales_team.group_sale_manager" action='precio_descuento_action'/>
+        <menuitem id="menu_sale_report_precios_con_descuento"
+            name="Precios con descuento y precios minimos"
+            parent="sale.menu_sale_report"
+            groups="sales_team.group_sale_manager" action='precio_descuento_action'/>
 
-<menuitem id="menu_historico" name="Historial de precios de compra"
-            parent="purchase.menu_purchase_root"
-            groups="purchase.group_purchase_manager,purchase.group_purchase_user" sequence="5" action='historial_precios'/>
+        <menuitem id="menu_historico" name="Historial de precios de compra"
+                    parent="purchase.menu_purchase_root"
+                    groups="purchase.group_purchase_manager,purchase.group_purchase_user" sequence="5" action='historial_precios'/>
 
             
         <record model="ir.ui.view" id="view_purchase_order_line_tree_update">
@@ -135,7 +135,7 @@
                 <xpath expr="//field[@name='product_qty']" position="after">
                   <xpath expr="//field[@name='price_unit']" position="move"/>
                   <field name="price_tax" attrs="{}" invisible="1"/>
-                  <field name="x_studio_field_2ZpSa" string="Precio de compra antes de costes de envío" attrs="{}" invisible="1"/>
+                  <!--<field name="x_studio_field_2ZpSa" string="Precio de compra antes de costes de envío" attrs="{}" invisible="1"/>-->
                 </xpath>
                 <xpath expr="//field[@name='product_uom']" position="attributes">
                   <attribute name="attrs">{}</attribute>
