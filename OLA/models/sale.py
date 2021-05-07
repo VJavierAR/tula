@@ -195,6 +195,28 @@ class sale(models.Model):
 	def comprobar_limite_de_credito_company_unica(self):
 		pago_de_contado_id = 1
 
+		if not self.payment_term_id.id and self.limite_credito_actual == 0:
+			title = "Alertas: "
+			message = """Mensajes: \n"""
+			genero_alertas = False
+
+			title = title + "Límite de crédito excedido. | "
+			message = message + """Se excedio el límite de crédito del cliente: \n
+					Límite de crédito: """ + str(self.limite_credito_actual) + """\n
+					Plazo de pago de pedido de venta: No definido """.rstrip() + "\n\n"
+			genero_alertas = True
+
+			if genero_alertas:
+				self.bloqueo_limite_credito = True
+				self.mensaje_limite_de_credito = message
+				return {
+					# 'value': {},
+					'warning': {
+						'title': title,
+						'message': message
+					}
+				}
+
 		if len(self.order_line) > 0 and self.partner_id.id and self.payment_term_id.id != pago_de_contado_id:
 			total = self.amount_total
 			limite_de_credito = self.partner_id.limite_credito
@@ -368,30 +390,6 @@ class sale(models.Model):
 		elif self.payment_term_id.id and self.payment_term_id.id == pago_de_contado_id:
 			self.bloqueo_limite_credito = False
 			self.mensaje_limite_de_credito = ""
-
-		elif not self.payment_term_id.id and self.limite_credito_actual == 0:
-			title = "Alertas: "
-			message = """Mensajes: \n"""
-			genero_alertas = False
-
-			title = title + "Límite de crédito excedido. | "
-			message = message + """Se excedio el límite de crédito del cliente: \n
-			Límite de crédito: """ + str(self.limite_credito_actual) + """\n
-			Plazo de pago de pedido de venta: No definido """.rstrip() + "\n\n"
-			genero_alertas = True
-
-			if genero_alertas:
-				self.bloqueo_limite_credito = True
-				self.mensaje_limite_de_credito = message
-				return {
-					# 'value': {},
-					'warning': {
-						'title': title,
-						'message': message
-					}
-				}
-
-
 
 	def autorizar_sale_limite_de_credito(self):
 		view = self.env.ref('OLA.sale_order_alerta_limite_credito_view')
