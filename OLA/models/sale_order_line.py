@@ -60,14 +60,13 @@ class saleOr(models.Model):
 
 
 	@api.onchange('product_id')
-	def buscaProductos(self):                                        
-	    ft=''
-	    cabecera='<table><tr><th>Compañia</th><th>Bodega</th><th>Cantidad</th></tr>'
-	    for cal in self.product_id.sudo().stock_quant_ids.filtered(lambda x:x.company_id.id!=False and x.quantity>=0 and x.location_id.usage=='internal'):
-
-	        ft='<tr><td>'+str(cal.company_id.name)+'</td><td>'+str(cal.location_id.display_name)+'</td><td>'+str(cal.quantity)+'</td></tr>'+ft
-	    tabla=cabecera+ft+'</table>'
-	    self.existencias=str(tabla)
+	def buscaProductos(self):
+		ft = ''
+		cabecera = '<table><tr><th>Bodega</th><th>Cantidad</th></tr>'
+		for cal in self.product_id.sudo().stock_quant_ids.filtered(lambda x:x.company_id.id!=False and x.quantity>=0 and x.location_id.usage=='internal'):
+			ft = '<tr><td>'+str(cal.location_id.display_name)+'</td><td>'+str(cal.quantity)+'</td></tr>'+ft
+		tabla = cabecera+ft+'</table>'
+		self.existencias = str(tabla)
 
 
 	@api.onchange('product_id')
