@@ -1,7 +1,7 @@
 from odoo import models, fields, api,_
 import datetime, time
 import logging, ast
-from odoo.exceptions import UserError,AccessDenied,RedirectWarnings
+from odoo.exceptions import UserError,AccessDenied
 _logger = logging.getLogger(__name__)
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 
