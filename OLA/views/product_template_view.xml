@@ -20,12 +20,6 @@
                             </tree>
                         </field>
                     </page>
-                </xpath>
-                <xpath expr="//field[@name='company_id']" position="after">
-                    <field name="x_studio_utilidad_" string="Utilidad (%)"/>
-                    <field name="x_studio_precio_mnimo" string="Precio mínimo"/>
-                </xpath>
-                <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]" position="inside">
                     <page name="studio_page_O1xN0" string="Sugeridos">
                       <group name="studio_group_O1xN0">
                         <field name="sug_rel">
@@ -72,6 +66,10 @@
                         </field>
                       </group>
                     </page>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="x_studio_utilidad_" string="Utilidad (%)"/>
+                    <field name="x_studio_precio_mnimo" string="Precio mínimo"/>
                 </xpath>
 
             </field>
