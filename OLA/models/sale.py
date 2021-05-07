@@ -121,6 +121,8 @@ class sale(models.Model):
 					pi.action_assign()
 					pi.action_done()
 					pi.button_validate()
+					pi._autoconfirm_picking()
+
 
 						
 
