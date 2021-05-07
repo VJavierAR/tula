@@ -238,7 +238,7 @@
                     <field name="x_precio_con_descuento"/>
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='company_id']" position="after">
-                    <field name="bloqueo"/>
+                    <field name="bloqueo" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="urgencia" />
