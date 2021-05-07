@@ -189,6 +189,7 @@ class sale(models.Model):
 	@api.onchange('order_line', 'payment_term_id')
 	def comprobar_limite_de_credito_company_unica(self):
 		pago_de_contado_id = 1
+		
 		if len(self.order_line) > 0 and self.partner_id.id and self.payment_term_id.id and self.payment_term_id.id != pago_de_contado_id:
 			total = self.amount_total
 			limite_de_credito = self.partner_id.limite_credito
@@ -359,6 +360,9 @@ class sale(models.Model):
 						'message': message
 					}
 				}
+		elif self.payment_term_id.id == pago_de_contado_id:
+			self.bloqueo_limite_credito = False
+			self.mensaje_limite_de_credito = ""
 
 	def autorizar_sale_limite_de_credito(self):
 		view = self.env.ref('OLA.sale_order_alerta_limite_credito_view')
