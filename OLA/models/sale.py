@@ -115,7 +115,7 @@ class sale(models.Model):
 		self.conf()
 		if self.company_id.auto_picking:
 			for pi in self.picking_ids:
-				if pi.state not in ('cancel', 'done','confirmed','waiting'):
+				if pi.state == 'assigned':
 					pi.action_confirm()
 					pi.move_lines._action_assign()
 					pi.action_assign()
