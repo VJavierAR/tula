@@ -120,7 +120,7 @@ class sale(models.Model):
 				if pi.state not in ('cancel', 'done'):
 					pi.action_assign()
 					_logger.info(self.picking_ids.mapped('move_line_ids.state'))
-					pi.action_done()
+					pi.move_line_ids._action_done()
 					return pi.button_validate()
 					pi._autoconfirm_picking()
 
