@@ -118,7 +118,9 @@ class sale(models.Model):
 		if self.company_id.auto_picking:
 			for pi in self.picking_ids:
 				if pi.state not in ('cancel', 'done'):
+					pi.action_assign()
 					pi.action_done()
+					pi.button_confirm()
 
 						
 
