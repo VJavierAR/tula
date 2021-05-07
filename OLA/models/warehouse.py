@@ -93,6 +93,8 @@ class stock(models.Model):
         if sms_confirmation:
             return sms_confirmation
 
+        _logger.info(self._check_backorder())
+
         if no_quantities_done:
             view = self.env.ref('stock.view_immediate_transfer')
             wiz = self.env['stock.immediate.transfer'].create({'pick_ids': [(4, self.id)]})
