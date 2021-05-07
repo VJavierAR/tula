@@ -119,12 +119,13 @@ class sale(models.Model):
 					pi.action_confirm()
 					pi.move_lines._action_assign()
 					pi.action_assign()
-					#_logger.info(self.picking_ids.mapped('move_line_ids.state'))
+					_logger.info(self.picking_ids.mapped('move_line_ids.state'))
 					#pi.move_lines._action_assign()
 					#pi.move_lines._action_done()
 					return pi.button_validate()
 					#pi._autoconfirm_picking()
 				if pi.state in ('waiting','confirmed'):
+					_logger.info(self.picking_ids.mapped('move_line_ids.state'))
 					return {'warning': {'title': 'Sin stock','message': 'No hay stock'}}
 
 
