@@ -29,7 +29,7 @@
                     <field name="x_value2_id" string="Cantidad perdida" attrs="{}"/>
                     <field name="discount" attrs="{}" invisible="1"/>
                     <field name="x_precio_con_descuento" attrs="{}" invisible="1"/>
-                    <field name="x_value1_id" string="Estado del producto" attrs="{}" invisible="1"/>
+                    <field name="x_value1_id" string="Estado del producto" attrs="{}" invisible="1" />
                     <field name="x_studio_motivo_de_perdida"/>
                     <field name="x_studio_motivo_de_perdida_de_la_orden" string="Motivo de perdida de la orden"/>
                   </xpath>
@@ -69,10 +69,10 @@
                     <field name="salesman_id" invisible='1'/>
                     <field name="product_uom_qty" string="Cantidad"/>
                     <field name="x_studio_field_Ml1CB" attrs="{}" invisible="1"/>
-                    <field name="x_studio_precio_mnimo" string="Precio mínimo"/>
+                    <field name="x_studio_precio_mnimo" string="Precio mínimo" optional="show"/>
                     <field name="price_unit"/>
                     <field name="discount"/>
-                    <field name="x_precio_con_descuento"/>
+                    <field name="x_precio_con_descuento" optional="show"/>
                     <field name="qty_delivered" invisible='1'/>
                     <field name="qty_invoiced" invisible='1'/>
                     <field name="qty_to_invoice" invisible='1'/>

@@ -224,18 +224,18 @@
                 -->
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom_qty']" position="move"/>
-                    <field name="x_value1_id" string="Estado del producto"/>
+                    <field name="x_value1_id" string="Estado del producto" optional="show"/>
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
-                    <field name="existencias" readonly="1" widget="html" />
+                    <field name="existencias" readonly="1" widget="html" optional="show" />
                 </xpath>
 
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom']" position="after">
-                    <field name="x_tiempo_total"/>
-                    <field name="x_studio_precio_mnimo"/>
+                    <field name="x_tiempo_total" optional="show"/>
+                    <field name="x_studio_precio_mnimo" optional="show"/>
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='discount']" position="after">
-                    <field name="x_precio_con_descuento"/>
+                    <field name="x_precio_con_descuento" optional="show"/>
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='company_id']" position="after">
                     <field name="bloqueo" invisible="1"/>
