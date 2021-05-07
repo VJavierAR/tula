@@ -7,6 +7,8 @@ codigos_buscados_lista = []
 
 class product(models.Model):
 	_inherit = 'product.template'
+	sug_rel=fields.Many2many('product.product',relation='product_templ_may_sug',column1='id', column2='id2')
+	alt_rel=fields.Many2many('product.product',relation='product_templ_alte_rel',column1='id', column2='id2')
 	#_rec_name = "name" #despliega e display_name en las busquedas de campos many2one
 
 	codigo_producto_cliente = fields.Text(

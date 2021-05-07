@@ -424,7 +424,9 @@ class sale(models.Model):
 	def test(self):
 		l=len(self.order_line)
 		if(l>0):
-			m=self.productos_sugeridos.mapped('product_sug.id')
+			j=self.product_tmpl_id.productos_sugeridos.mapped('product_sug.id')
+			k=self.productos_sugeridos.mapped('product_sug.id')
+			m=j+k
 			#self.productos_sugeridos=[(5,0,0)]
 			arr=[]
 			for p in self.order_line:
