@@ -20,7 +20,13 @@
             </tree>
         </field>
     </page>
-<page name="studio_page_O1xN0" string="Sugeridos">
+</xpath>
+  <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]/page[@name='general_information']/group[1]/group[@name='group_standard_price']/field[@name='company_id']" position="after">
+    <field name="x_studio_utilidad_" string="Utilidad (%)"/>
+    <field name="x_studio_precio_mnimo" string="Precio mínimo"/>
+  </xpath>
+<xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]" position="inside">
+    <page name="studio_page_O1xN0" string="Sugeridos">
       <group name="studio_group_O1xN0">
         <field name="sug_rel">
           <tree string="Product Variants" multi_edit="1" duplicate="false" decoration-danger="type == 'product' and virtual_available&lt;0" decoration-info="type != 'product' or virtual_available&gt;=0" editable="bottom">
@@ -67,10 +73,7 @@
       </group>
     </page>
 </xpath>
-  <xpath expr="//form[@name='Product Template']/sheet[1]/notebook[1]/page[@name='general_information']/group[1]/group[@name='group_standard_price']/field[@name='company_id']" position="after">
-    <field name="x_studio_utilidad_" string="Utilidad (%)"/>
-    <field name="x_studio_precio_mnimo" string="Precio mínimo"/>
-  </xpath>
+
  </field>
 </record>        
         <record model="ir.ui.view" id="product_product_update_form_view">
