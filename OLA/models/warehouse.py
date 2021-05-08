@@ -41,7 +41,7 @@ class stock(models.Model):
 
     
     def print_vale_de_entrega(self):
-        view=self.env.ref('stock_picking_print_wizard_form')
+        view=self.env.ref('OLA.stock_picking_print_wizard_form')
         wiz=self.env['stock.picking.print'].create({'picking':self.id})
         return {
         'name': _('Impresion'),
@@ -150,7 +150,7 @@ class stock(models.Model):
         self.user_validate_id=self.env.user.id
         return
     def valida(self):
-        view=self.env.ref('stock_picking_validate_wizard_form')
+        view=self.env.ref('OLA.stock_picking_validate_wizard_form')
         wiz=self.env['stock.picking.validate'].create({'picking':self.id})
         return {
         'name': _('Validacion'),
