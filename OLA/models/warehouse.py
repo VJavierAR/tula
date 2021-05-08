@@ -34,8 +34,7 @@ class stock(models.Model):
     @api.depends("group_id")
     def _compute_urgencia(self):
         for rec in self:
-            #_logger.info("rec.sale_id.urgencia: " + str(rec.sale_id.urgencia))
-            if rec.sale_id:
+            if rec.sale_id.id:
                 rec.urgencia = rec.sale_id.urgencia
             else:
                 rec.urgencia = None
