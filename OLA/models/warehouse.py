@@ -42,12 +42,19 @@ class stock(models.Model):
 
     
     def print_vale_de_entrega(self):
-    	if(self.state=='printed'):
-    		raise exceptions.UserError('Orden de surtido ya se encunetra en proceso')			
-    	else:
-    		self.state='printed'
-    		self.user_print_id=self.env.user.id
-    		return self.env.ref("stock.action_report_picking").report_action(self)
+        view=self.env.ref('stock_picking_print_wizard_form')
+        wiz=self.env['stock.picking.print'].create({'picking':self.id})
+        return {
+        'name': _('Impresion'),
+        'type': 'ir.actions.act_window',
+        'view_mode': 'form',
+        'res_model': 'stock.picking.print',
+        'views': [(view.id, 'form')],
+        'view_id': view.id,
+        'target': 'new',
+        'res_id': wiz.id,
+        'context': self.env.context,}
+
 
     def button_validate(self):
         self.ensure_one()
