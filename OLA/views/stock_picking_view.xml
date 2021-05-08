@@ -46,9 +46,12 @@
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="urgencia"/>
                 </xpath>
+                <xpath expr="//button[@name='%(action_report_delivery)d']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath> 
             </field>
         </record>
-        
+
         <record id="stock.view_picking_internal_search" model="ir.ui.view">
             <field name="name">stock.picking.internal.search</field>
             <field name="model">stock.picking</field>
