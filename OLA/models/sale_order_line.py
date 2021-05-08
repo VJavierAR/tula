@@ -73,7 +73,7 @@ class saleOr(models.Model):
 	def stock(self):
 		res={}
 		if(self.product_id.qty_available<=0):
-			pa=self.product_id.mapped('alt_rel.id')
+			pa=self.product_id.mapped('alt_rel.id') + self.product_id.product_tmpl_id.mapped('alt_rel.id')
 			po=self.env['product.product'].browse(pa)
 			po1=po.filtered(lambda x:x.qty_available>0)
 			if(po1.mapped('id')!=[]):
