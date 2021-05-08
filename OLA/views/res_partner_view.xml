@@ -59,6 +59,18 @@
     </field>
 </record>
 
+<record model="ir.ui.view" id="res_users_form_view_update">
+    <field name="name">res.users.form.update</field>
+    <field name="model">res.users</field>
+    <field name="inherit_id" ref="base.view_users_form"/>
+    <field name="arch" type="xml">
+  <xpath expr="//form[1]/sheet[1]/div[not(@name)][2]/group[1]/field[@name='partner_id']" position="after">
+    <field name="user_pin"/>
+  </xpath>
+</field>
+</record>
+
+
 
     </data>
 </odoo>
