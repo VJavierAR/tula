@@ -13,6 +13,8 @@ class StockPickingPrint(models.TransientModel):
         if self.env.user.id == user_id.id:
             if self.picking.state != 'done':
                 self.picking.state = 'printed'
+                if self.picking.state == 'assigned':
+                    self.picking.show_validate=True
             self.picking.user_print_id = self.env.user.id
             return self.picking.do_print_picking()
         else:
