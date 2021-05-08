@@ -28,7 +28,9 @@ class ProductTemplate(models.Model):
 
 	x_studio_utilidad_ = fields.Float(
 		string='Utilidad (%)',
-		store=True
+		store=True,
+		company_dependent=True,
+		check_company=True
 	)
 
 
