@@ -37,6 +37,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='button_validate']" position="attributes">
                     <attribute name="name">valida</attribute>
+                    <attribute name="attrs">{'invisible': [('state', 'in', ('waiting','confirmed','done'))]}</attribute>
                 </xpath>
                 <xpath expr="//button[@name='do_print_picking']" position="attributes">
                     <attribute name="name">print_vale_de_entrega</attribute>
