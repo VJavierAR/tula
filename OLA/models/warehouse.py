@@ -3,7 +3,7 @@ from odoo.exceptions import UserError,AccessDenied,RedirectWarning
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 import logging, ast
 _logger = logging.getLogger(__name__)
-
+import time
 class almacen(models.Model):
     _inherit='stock.warehouse'
     code = fields.Char('Short Name', required=True, size=20,help="Short name used to identify your warehouse")
