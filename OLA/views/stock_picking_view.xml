@@ -35,9 +35,12 @@
             <field name="model">stock.picking</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//button[@name='action_cancel']" position="after">
-                    <button name="print_vale_de_entrega" type="object" string="Imprimir vale de entrega" class="oe_highlight"/>
+                <xpath expr="//button[@name='button_validate']" position="attributes">
+                    <attribute name="name">valida</attribute>
                 </xpath>
+                <xpath expr="//button[@string='Print']" position="attributes">
+                    <attribute name="name">print_vale_de_entrega</attribute>
+                </xpath> 
                 <xpath expr="//field[@name='origin']" position="after">
                     <field name="urgencia"/>
                 </xpath>

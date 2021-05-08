@@ -28,7 +28,7 @@ class StockPickingValidate(models.TransientModel):
     def button_validate(self):
         user_id = self.env['res.users'].search([('user_pin', '=', self.user_pin)], limit=1)
         if self.env.user.id == user_id.id:
-            self.picking.button_validate()
+            self.picking.button_validate(True)
             self.picking.user_validate_id = self.env.user.id
             # picking.message_post(body=("Validación realizada."))
             return {'type': 'ir.actions.act_window_close'}
