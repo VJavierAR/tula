@@ -38,7 +38,7 @@
                 <xpath expr="//button[@name='button_validate']" position="attributes">
                     <attribute name="name">valida</attribute>
                 </xpath>
-                <xpath expr="//button[@string='Print']" position="attributes">
+                <xpath expr="//button[@name='do_print_picking']" position="attributes">
                     <attribute name="name">print_vale_de_entrega</attribute>
                 </xpath> 
                 <xpath expr="//field[@name='origin']" position="after">
