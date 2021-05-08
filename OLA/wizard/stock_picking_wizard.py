@@ -6,7 +6,7 @@ from odoo.exceptions import UserError
 class StockPickingPrint(models.TransientModel):
     _name = 'stock.picking.print'
 
-    user_pin = fields.Char(string='Pin de usuario', required=True)
+    user_pin = fields.Char(string='Pin de usuario')
     picking = fields.Many2one('stock.picking')
     def button_print(self):
         user_id = self.env['res.users'].search([('user_pin', '=', self.user_pin)], limit=1)
@@ -22,7 +22,7 @@ class StockPickingPrint(models.TransientModel):
 class StockPickingValidate(models.TransientModel):
     _name = 'stock.picking.validate'
 
-    user_pin = fields.Char(string='Pin de usuario', required=True)
+    user_pin = fields.Char(string='Pin de usuario')
     picking = fields.Many2one('stock.picking')
     
     def button_validate(self):

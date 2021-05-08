@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form string="Imprimir">
                     <group>
-                        <field name="user_pin" password="False"/>
+                        <field name="user_pin" password="False" required='1'/>
                     </group>
                     <footer>
                         <button string="Imprimir" name="button_print" type="object" class="send_and_print btn-primary"/>
@@ -33,7 +33,7 @@
             <field name="arch" type="xml">
                 <form string="Validar">
                     <group>
-                        <field name="user_pin" password="False"/>
+                        <field name="user_pin" password="False" required='1'/>
                     </group>
                     <footer>
                         <button string="Validar" name="button_validate" type="object" class="send_and_print btn-primary"/>
