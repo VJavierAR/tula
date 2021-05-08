@@ -5,8 +5,8 @@ import logging, ast
 _logger = logging.getLogger(__name__)
 
 class almacen(models.Model):
-	_inherit='stock.warehouse'
-	code = fields.Char('Short Name', required=True, size=20,help="Short name used to identify your warehouse")
+    _inherit='stock.warehouse'
+    code = fields.Char('Short Name', required=True, size=20,help="Short name used to identify your warehouse")
 
 class stock(models.Model):
     _inherit = 'stock.picking'
@@ -55,7 +55,7 @@ class stock(models.Model):
         'context': self.env.context,}
 
 
-    def button_validate(self):
+    def button_validate(self,bandera=False):
         self.ensure_one()
         if not self.move_lines and not self.move_line_ids:
             raise UserError(_('Please add some items to move.'))
@@ -99,7 +99,7 @@ class stock(models.Model):
         if sms_confirmation:
             return sms_confirmation
 
-        if no_quantities_done:
+        if no_quantities_done and bandera==False:
             view = self.env.ref('stock.view_immediate_transfer')
             wiz = self.env['stock.immediate.transfer'].create({'pick_ids': [(4, self.id)]})
             wiz.process()
@@ -114,6 +114,20 @@ class stock(models.Model):
             #     'res_id': wiz.id,
             #     'context': self.env.context,
             # }
+        if no_quantities_done and bandera:
+            view = self.env.ref('stock.view_immediate_transfer')
+            wiz = self.env['stock.immediate.transfer'].create({'pick_ids': [(4, self.id)]})
+            return {
+                'name': _('Immediate Transfer?'),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'stock.immediate.transfer',
+                'views': [(view.id, 'form')],
+                'view_id': view.id,
+                'target': 'new',
+                'res_id': wiz.id,
+                'context': self.env.context,
+            }
 
         if self._get_overprocessed_stock_moves() and not self._context.get('skip_overprocessed_check'):
             view = self.env.ref('stock.view_overprocessed_transfer')
@@ -135,3 +149,16 @@ class stock(models.Model):
         self.action_done()
         self.user_validate_id=self.env.user.id
         return
+    def valida(self):
+        view=self.env.ref('stock_picking_validate_wizard_form')
+        wiz=self.env['stock.picking.validate'].create({'picking':self.id})
+        return {
+        'name': _('Validacion'),
+        'type': 'ir.actions.act_window',
+        'view_mode': 'form',
+        'res_model': 'stock.picking.validate',
+        'views': [(view.id, 'form')],
+        'view_id': view.id,
+        'target': 'new',
+        'res_id': wiz.id,
+        'context': self.env.context,}
