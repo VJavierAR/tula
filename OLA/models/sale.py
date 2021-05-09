@@ -294,9 +294,9 @@ class sale(models.Model):
 							fecha_actual) + " dias_transcuridos: " + str(dias_transcuridos))
 						if dias_transcuridos > plazo_de_pago_cliente:
 							message_factura += """Factura no pagada: """ + str(factura_no_pagada.name) + """\n
-									Fecha de creación de factura no pagada: """ + str(converted_date) + """\n
-									Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """\n
-									Días de transcurridos de factura no pagada: """ + str(dias_transcuridos) + """\n """
+							Fecha de vencimiento de factura: """ + str(converted_date) + """\n
+							Plazo de pago de cliente más colchón: """ + str(plazo_de_pago_cliente) + """\n
+							Días de transcurridos de factura no pagada: """ + str(dias_transcuridos) + """\n """
 							genero_alertas_facturas = True
 				message_factura = message_factura + "".rstrip() + "\n"
 
