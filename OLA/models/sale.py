@@ -285,8 +285,8 @@ class sale(models.Model):
 				message_factura += """Existe una o más facturas no pagadas con un mayor número de días al plazo de pago del cliente:""".rstrip() + "\n"
 				for factura_no_pagada in facturas_no_pagadas_companies:
 					total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total
-					if factura_no_pagada.invoice_date:
-						fecha_de_creacion = str(factura_no_pagada.invoice_date).split(' ')[0]
+					if factura_no_pagada.invoice_date_due:
+						fecha_de_creacion = str(factura_no_pagada.invoice_date_due).split(' ')[0]
 						converted_date = datetime.datetime.strptime(fecha_de_creacion, '%Y-%m-%d').date()
 						fecha_actual = datetime.date.today()
 						dias_transcuridos = (fecha_actual - converted_date).days
