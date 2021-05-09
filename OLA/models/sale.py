@@ -279,25 +279,25 @@ class sale(models.Model):
 			if self.partner_id.property_payment_term_id.id and self.partner_id.property_payment_term_id.line_ids.mapped('days'):
 				plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[
 										-1] + colchon_de_credito
-			# plazo_de_pago_cliente = self.partner_id.property_payment_id.line_ids.mapped('days')[-1]
 			total_de_facturas_no_pagadas_companies = 0
 			if facturas_no_pagadas_companies:
 				title_restriccion_dias_factura = "Plazo de pago excedido en facturas. | "
 				message_factura += """Existe una o más facturas no pagadas con un mayor número de días al plazo de pago del cliente:""".rstrip() + "\n"
 				for factura_no_pagada in facturas_no_pagadas_companies:
 					total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total
-					fecha_de_creacion = str(factura_no_pagada.create_date).split(' ')[0]
-					converted_date = datetime.datetime.strptime(fecha_de_creacion, '%Y-%m-%d').date()
-					fecha_actual = datetime.date.today()
-					dias_transcuridos = (fecha_actual - converted_date).days
-					#_logger.info("fecha_de_creacion: " + str(converted_date) + " fecha_actual: " + str(
-					#	fecha_actual) + " dias_transcuridos: " + str(dias_transcuridos))
-					if dias_transcuridos > plazo_de_pago_cliente:
-						message_factura += """Factura no pagada: """ + str(factura_no_pagada.name) + """\n
-								Fecha de creación de factura no pagada: """ + str(converted_date) + """\n
-								Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """\n
-								Días de transcurridos de factura no pagada: """ + str(dias_transcuridos) + """\n """
-						genero_alertas_facturas = True
+					if factura_no_pagada.invoice_date:
+						fecha_de_creacion = str(factura_no_pagada.invoice_date).split(' ')[0]
+						converted_date = datetime.datetime.strptime(fecha_de_creacion, '%Y-%m-%d').date()
+						fecha_actual = datetime.date.today()
+						dias_transcuridos = (fecha_actual - converted_date).days
+						_logger.info("fecha_de_creacion (invoice_date): " + str(converted_date) + " fecha_actual: " + str(
+							fecha_actual) + " dias_transcuridos: " + str(dias_transcuridos))
+						if dias_transcuridos > plazo_de_pago_cliente:
+							message_factura += """Factura no pagada: """ + str(factura_no_pagada.name) + """\n
+									Fecha de creación de factura no pagada: """ + str(converted_date) + """\n
+									Plazo de pago de cliente: """ + str(plazo_de_pago_cliente) + """\n
+									Días de transcurridos de factura no pagada: """ + str(dias_transcuridos) + """\n """
+							genero_alertas_facturas = True
 				message_factura = message_factura + "".rstrip() + "\n"
 
 			total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
