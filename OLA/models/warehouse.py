@@ -151,18 +151,21 @@ class stock(models.Model):
         self.user_validate_id=self.env.user.id
         return
     def valida(self):
-        view=self.env.ref('OLA.stock_picking_validate_wizard_form')
-        wiz=self.env['stock.picking.validate'].create({'picking':self.id})
-        return {
-        'name': _('Validacion'),
-        'type': 'ir.actions.act_window',
-        'view_mode': 'form',
-        'res_model': 'stock.picking.validate',
-        'views': [(view.id, 'form')],
-        'view_id': view.id,
-        'target': 'new',
-        'res_id': wiz.id,
-        'context': self.env.context,}
+        if(self.location_id.usage=='supplier'):
+            return self.button_validate(True)
+        else:
+            view=self.env.ref('OLA.stock_picking_validate_wizard_form')
+            wiz=self.env['stock.picking.validate'].create({'picking':self.id})
+            return {
+            'name': _('Validacion'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'stock.picking.validate',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'res_id': wiz.id,
+            'context': self.env.context,}
 class PickingType(models.Model):
     _inherit='stock.picking.type'
     def _compute_picking_count(self):
