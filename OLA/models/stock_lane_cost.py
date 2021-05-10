@@ -71,7 +71,6 @@ class StockLadeCost(models.Model):
                         elif line.split_method == 'test':
 
                         else:
-                        	value=1
                             value = (line.price_unit / total_line)
 
                         if digits:
