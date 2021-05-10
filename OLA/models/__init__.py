@@ -7,4 +7,4 @@ from . import res_users
 from . import sale_order_line
 from . import account_move
 from . import studio_code
-from . import stock_lane_cost
+#from . import stock_lane_cost
