@@ -79,6 +79,7 @@ class sale(models.Model):
 		check = self.mapped('order_line.bloqueo')
 		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
 		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
+		na=self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.name')
 		if True in check:
 			self.write({'state':'auto'})
 			template_id2=self.env.ref('OLA.notify_descuento_email_template')
@@ -89,6 +90,7 @@ class sale(models.Model):
 			#	dest=dest+str(mi)+','
 			mail['email_to']=str(m).replace('[','').replace(']','')
 			self.env['mail.mail'].create(mail).send()
+			raise UserError(_('Se esta excediendo el descueto permitido se envio una alerta a los usuarios'+str(na)+'.'))
 		if True not in check or self.env.user.id in U:
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
 				raise UserError(_(
