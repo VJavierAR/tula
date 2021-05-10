@@ -195,6 +195,10 @@ class sale(models.Model):
 
 	@api.onchange('order_line', 'payment_term_id')
 	def comprobar_limite_de_credito_company_unica(self):
+		simbolo_moneda = "₡"
+		if self.company_id.id:
+			simbolo_moneda = str(self.company_id.currency_id.symbol)
+		_logger.info("simbolo_moneda: " + simbolo_moneda)
 		pago_de_contado_id = 1
 		if self.partner_id.id and not self.payment_term_id.id and self.limite_credito_actual == 0:
 			title = "Alertas: "
@@ -253,10 +257,10 @@ class sale(models.Model):
 			if total_con_facturas > limite_de_credito:
 				title = title + "Límite de crédito excedido. | "
 				message = message + """Se excedio el límite de crédito por facturas no pagadas y total del pedido de venta actual: \n
-						Límite de credito: $""" + str(limite_de_credito) + """\n
-						Costo total de pedido de venta actual: $""" + str(total) + """\n
-						Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas) + """\n
-						Suma total: $""" + str(total_con_facturas) + """\n
+						Límite de credito: """ + simbolo_moneda + str(limite_de_credito) + """\n
+						Costo total de pedido de venta actual: """ + simbolo_moneda + str(total) + """\n
+						Costo total en facturas no pagadas: """ + simbolo_moneda + str(total_de_facturas_no_pagadas) + """\n
+						Suma total: """ + simbolo_moneda + str(total_con_facturas) + """\n
 						Facturas no pagadas: """ + str(facturas_no_pagadas.mapped('name')) + """\n
 						""".rstrip() + "\n\n"
 				genero_alerta_limite = True
@@ -301,10 +305,10 @@ class sale(models.Model):
 			if total_con_facturas_companies > limite_de_credito_conglomerado:
 				title = title + "Límite de crédito de conglomerado excedido. | "
 				message = message + """Se excedio el límite de crédito de conglomerado por facturas no pagadas y total del pedido de venta actual: \n
-						Límite de credito de conglomerado: $""" + str(limite_de_credito_conglomerado) + """\n
-						Costo total de pedido de venta actual: $""" + str(total) + """\n
-						Costo total en facturas no pagadas: $""" + str(total_de_facturas_no_pagadas_companies) + """\n
-						Suma total: $""" + str(total_con_facturas_companies) + """\n
+						Límite de credito de conglomerado: """ + simbolo_moneda + str(limite_de_credito_conglomerado) + """\n
+						Costo total de pedido de venta actual: """ + simbolo_moneda + str(total) + """\n
+						Costo total en facturas no pagadas: """ + simbolo_moneda + str(total_de_facturas_no_pagadas_companies) + """\n
+						Suma total: """ + simbolo_moneda + str(total_con_facturas_companies) + """\n
 						Facturas no pagadas: """ + str(facturas_no_pagadas_companies.mapped('name')) + """\n
 						""".rstrip() + "\n\n"
 				genero_alerta_limite_conglomerado = True
