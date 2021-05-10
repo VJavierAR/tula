@@ -151,13 +151,13 @@ class SaleOrderLine(models.Model):
 
 	@api.onchange('qty_available_today', 'product_uom_qty')
 	def _compute_x_value1_id(self):
-		for record in self:
-			if record.qty_available_today >= 1 and record.product_uom_qty > record.qty_available_today:
-				record.x_value1_id = 'No hay suficiente stock'
-			elif record.qty_available_today >= 1 and record.product_uom_qty <= record.qty_available_today:
-				record.x_value1_id = 'Si hay stock'
-			else:
-				record.x_value1_id = 'No hay stock'
+		#for record in self:
+		if self.qty_available_today >= 1 and self.product_uom_qty > self.qty_available_today:
+			self.x_value1_id = 'No hay suficiente stock'
+		elif self.qty_available_today >= 1 and self.product_uom_qty <= self.qty_available_today:
+			self.x_value1_id = 'Si hay stock'
+		else:
+			self.x_value1_id = 'No hay stock'
 
 	x_studio_motivo_de_perdida_de_la_orden = fields.Selection(
 		selection=[('1','1')],
@@ -234,7 +234,7 @@ class SaleOrderLine(models.Model):
 		string='Precio con descuento',
 		readonly=True,
 		store=True,
-		compute="_compute_x_precio_con_descuento"
+		#compute="_compute_x_precio_con_descuento"
 	)
 
 	@api.onchange("price_subtotal", "product_uom_qty")
@@ -246,7 +246,7 @@ class SaleOrderLine(models.Model):
 		string="Monto perdido",
 		readonly=True,
 		store=True,
-		compute="_compute_x_value3_id"
+		#compute="_compute_x_value3_id"
 	)
 
 	@api.onchange("x_value2_id", "price_unit")
@@ -259,7 +259,7 @@ class SaleOrderLine(models.Model):
 		string="Venta total",
 		readonly=True,
 		store=True,
-		compute="_compute_x_value4_id"
+		#compute="_compute_x_value4_id"
 	)
 
 
