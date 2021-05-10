@@ -175,14 +175,14 @@ class SaleOrderLine(models.Model):
 
 	x_value2_id = fields.Integer(string='cantidad perdida')
 
-	@api.onchange('product_uom_qty', 'qty_delivered')
+	@api.onchange('product_uom_qty', 'qty_delivered', 'product_id')
 	def resta(self):
 		if self.product_id.id:
 			self.x_value2_id = self.product_uom_qty - self.qty_delivered
 
 	x_tiempo_total = fields.Integer(string='Tiempo de entrega')
 
-	@api.onchange('x_studio_tiempo_de_entrega_del_proveedor', 'qty_available_today', 'customer_lead')
+	@api.onchange('x_studio_tiempo_de_entrega_del_proveedor', 'qty_available_today', 'customer_lead', 'product_id')
 	def minimos(self):
 		if self.product_id.id:
 			if self.qty_available_today == 0:
@@ -240,7 +240,7 @@ class SaleOrderLine(models.Model):
 		#compute="_compute_x_precio_con_descuento"
 	)
 
-	@api.onchange("price_subtotal", "product_uom_qty")
+	@api.onchange("price_subtotal", "product_uom_qty", 'product_id')
 	def _compute_x_precio_con_descuento(self):
 		#for record in self:
 		if self.product_id.id:
@@ -253,7 +253,7 @@ class SaleOrderLine(models.Model):
 		#compute="_compute_x_value3_id"
 	)
 
-	@api.onchange("x_value2_id", "price_unit")
+	@api.onchange("x_value2_id", "price_unit", 'product_id')
 	def _compute_x_value3_id(self):
 		#for record in self:
 		if self.product_id.id:
@@ -267,8 +267,7 @@ class SaleOrderLine(models.Model):
 		#compute="_compute_x_value4_id"
 	)
 
-
-	@api.onchange("qty_delivered", "price_unit")
+	@api.onchange("qty_delivered", "price_unit", 'product_id')
 	def _compute_x_value4_id(self):
 		#for record in self:
 		if self.product_id.id:
