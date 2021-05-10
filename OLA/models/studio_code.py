@@ -10,11 +10,13 @@ class ProductProduct(models.Model):
 
 	x_preciominimo = fields.Float(
 		string='Precio mínimo',
+		store=True
 	)
 
 	@api.onchange('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
 		#for r in self:
+		_logger.info("Entro a cambiar el precio minimo***************************")
 		self.x_preciominimo = (self.standard_price * self.x_studio_utilidad_ / 100) + self.standard_price
 
 class ProductTemplate(models.Model):
@@ -22,7 +24,8 @@ class ProductTemplate(models.Model):
 
 	x_studio_precio_mnimo = fields.Float(
 		string='Precio mínimo',
-		related='product_variant_id.x_preciominimo'
+		#related='product_variant_id.x_preciominimo',
+		store=True
 	)
 
 	x_studio_utilidad_ = fields.Float(
@@ -32,6 +35,11 @@ class ProductTemplate(models.Model):
 		check_company=True
 	)
 
+	@api.onchange('standard_price', 'x_studio_utilidad_')
+	def _compute_x_preciominimo(self):
+		# for r in self:
+		_logger.info("Entro a cambiar el precio minimo***************************")
+		self.x_studio_precio_mnimo = (self.standard_price * self.x_studio_utilidad_ / 100) + self.standard_price
 
 
 class StockMove(models.Model):
