@@ -11,7 +11,6 @@ SPLIT_METHOD = [
     ('by_current_cost_price', 'By Current Cost'),
     ('by_weight', 'By Weight'),
     ('by_volume', 'By Volume'),
-    ('test','test')
 ]
 import logging, ast
 _logger = logging.getLogger(__name__)
@@ -68,7 +67,6 @@ class StockLadeCost(models.Model):
                         elif line.split_method == 'by_current_cost_price' and total_cost:
                             per_unit = (line.price_unit / total_cost)
                             value = valuation.former_cost * per_unit
-                        elif line.split_method == 'test':
                         else:
                             value = (line.price_unit / total_line)
                         if digits:
