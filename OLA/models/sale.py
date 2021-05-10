@@ -131,16 +131,14 @@ class sale(models.Model):
 
 			self.with_context(context)._action_confirm()
 			if self.env.user.has_group('sale.group_auto_done_setting'):
+
 				self.action_done()
-			#return True
-			return {
-				'alerta': False,
-			}
+			return True
 
 	def action_confirm(self):
 		resultado = self.conf()
 		_logger.info("resultado: " + str(resultado))
-		if resultado['alerta']:
+		if type(resultado) is dict and resultado['alerta']:
 			del resultado['alerta']
 			return resultado
 
