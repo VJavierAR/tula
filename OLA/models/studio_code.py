@@ -149,7 +149,7 @@ class SaleOrderLine(models.Model):
 		#compute="_compute_x_value1_id"
 	)
 
-	@api.onchange('qty_available_today', 'product_uom_qty')
+	@api.onchange('qty_available_today', 'product_uom_qty', 'product_id')
 	def _compute_x_value1_id(self):
 		#for record in self:
 		if self.product_id.id:
