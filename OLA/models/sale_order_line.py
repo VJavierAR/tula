@@ -24,7 +24,7 @@ class saleOr(models.Model):
 		if not self.product_id:  # pragma: no cover
 			return res
 		producto = self.product_id
-		codigo_final = "[" + str(producto.default_code) + "] " + str(producto.name)
+		codigo_final = str(producto.display_name)
 		cliente = self.order_id.partner_id
 		if cliente.id:
 			codigos_por_cliente = self.product_id.codigos_de_producto
