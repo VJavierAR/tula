@@ -136,31 +136,22 @@ class sale(models.Model):
 			return True
 
 	def action_confirm(self):
-		resultado = self.conf()
-		_logger.info("resultado: " + str(resultado))
-		if type(resultado) is dict and resultado['alerta']:
-			del resultado['alerta']
-			return resultado
-
+		return self.conf()
+		#_logger.info("resultado: " + str(resultado))
+		# if type(resultado) is dict and resultado['alerta']:
+		# 	del resultado['alerta']
+		# 	return resultado
 		if self.company_id.auto_picking:
 			sta = self.picking_ids.mapped('state')
-			if 'waiting' in sta or 'confirmed' in sta:
-				return {'warning': {'title': _('Sin stock'),'message': _('No hay stock')}}
-			else:
-				for pi in self.picking_ids:
-					if pi.state == 'assigned':
-						pi.action_confirm()
-						pi.move_lines._action_assign()
-						pi.action_assign()
-						_logger.info(self.picking_ids.mapped('move_line_ids.state'))
-						#pi.move_lines._action_assign()
-						# #pi.move_lines._action_done()
-						return pi.button_validate()
-					#pi._autoconfirm_picking()
-					if pi.state in ('waiting','confirmed'):
-						return pi.button_validate()
-					#raise Warning(_('No hay stock para el pedido'))
-					#_logger.info(self.picking_ids.mapped('move_line_ids.state'))
+			for pi in self.picking_ids:
+				if pi.state == 'assigned':
+					pi.action_confirm()
+					pi.move_lines._action_assign()
+					pi.action_assign()
+					return pi.button_validate()
+				if pi.state in ('waiting','confirmed'):
+					return pi.button_validate()
+
 
 
 	@api.onchange('productos_sugeridos')
