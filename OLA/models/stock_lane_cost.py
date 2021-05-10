@@ -69,10 +69,8 @@ class StockLadeCost(models.Model):
                             per_unit = (line.price_unit / total_cost)
                             value = valuation.former_cost * per_unit
                         elif line.split_method == 'test':
-
                         else:
                             value = (line.price_unit / total_line)
-
                         if digits:
                             value = tools.float_round(value, precision_digits=digits, rounding_method='UP')
                             fnc = min if line.price_unit > 0 else max
