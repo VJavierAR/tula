@@ -135,9 +135,6 @@ class sale(models.Model):
 					#_logger.info(self.picking_ids.mapped('move_line_ids.state'))
 
 
-
-						
-
 	@api.onchange('productos_sugeridos')
 	def agregarci(self):
 		for sug in self.productos_sugeridos:
@@ -194,7 +191,6 @@ class sale(models.Model):
 				rec['limite_credito_conglomerado_actual'] = limite_de_credito_conglomerado - total_de_facturas_no_pagadas
 			else:
 				rec['limite_credito_conglomerado_actual'] = 0
-
 
 	@api.onchange('order_line', 'payment_term_id')
 	def comprobar_limite_de_credito_company_unica(self):
@@ -290,8 +286,8 @@ class sale(models.Model):
 						converted_date = datetime.datetime.strptime(fecha_de_creacion, '%Y-%m-%d').date()
 						fecha_actual = datetime.date.today()
 						dias_transcuridos = (fecha_actual - converted_date).days
-						_logger.info("fecha_de_creacion (invoice_date): " + str(converted_date) + " fecha_actual: " + str(
-							fecha_actual) + " dias_transcuridos: " + str(dias_transcuridos))
+						#_logger.info("fecha_de_creacion (invoice_date): " + str(converted_date) + " fecha_actual: " + str(
+						#	fecha_actual) + " dias_transcuridos: " + str(dias_transcuridos))
 						if dias_transcuridos > plazo_de_pago_cliente:
 							message_factura += """Factura no pagada: """ + str(factura_no_pagada.name) + """\n
 							Fecha de vencimiento de factura: """ + str(converted_date) + """\n
@@ -471,22 +467,21 @@ class sale(models.Model):
 			vals['state']='draft'
 		result = super(sale, self).write(vals)
 		return result
-		
+
 	@api.onchange('order_line')
 	def test(self):
-		l=len(self.order_line)
-		if(l>0):
-			m=self.productos_sugeridos.mapped('product_sug.id')
-			#self.productos_sugeridos=[(5,0,0)]
-			arr=[]
+		l = len(self.order_line)
+		if l > 0:
+			m = self.productos_sugeridos.mapped('product_sug.id')
+			arr = []
 			for p in self.order_line:
-				pro={}
-				ps=p.product_id.mapped('sug_rel.id')+p.product_id.product_tmpl_id.mapped('sug_rel.id')
+				pro = {}
+				ps = p.product_id.mapped('sug_rel.id') + p.product_id.product_tmpl_id.mapped('sug_rel.id')
 				for pss in ps:
-					if(pss not in m):
-						pro['product_rel']=p.product_id.id
-						pro['product_sug']=pss
-						self.productos_sugeridos=[(0, 0, pro)]
+					if pss not in m:
+						pro['product_rel'] = p.product_id.id
+						pro['product_sug'] = pss
+						self.productos_sugeridos = [(0, 0, pro)]
 
 class productSuggested(models.Model):
 	_name='product.suggested'
