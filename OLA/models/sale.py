@@ -86,10 +86,11 @@ class sale(models.Model):
 		na = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.name')
 		ms = 'Se excede el descuento de' + str(self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(na) + '.\n\n'
 		ms += "Las siguientes líneas del pedido exceden el descuento del vendedor:\n\n"
+		_logger.info("U: " + str(U))
 		for linea in self.order_line:
 			if linea.bloqueo:
 				ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(linea.product_uom_qty) + ", Precio unitario: " + str(linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
-		if True in check:
+		if self.env.user.id not in U and True in check:
 			self.write({'state': 'auto'})
 			template_id2 = self.env.ref('OLA.notify_descuento_email_template')
 			mail = template_id2.generate_email(self.id)
