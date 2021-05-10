@@ -85,7 +85,7 @@ class sale(models.Model):
 			self.write({'state':'auto'})
 			template_id2=self.env.ref('OLA.notify_descuento_email_template')
 			mail=template_id2.generate_email(self.id)
-			mail['email_to']=str(m).replace('[','').replace(']','')
+			mail['email_to']=str(m).replace('[','').replace(']','').replace('\'','')
 			self.env['mail.mail'].create(mail).send()
 			view = self.env.ref('OLA.sale_order_alerta_descuento_view')
 			wiz = self.env['sale.order.alerta.descuento'].create({'mensaje': ms})
