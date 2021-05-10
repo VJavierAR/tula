@@ -17,5 +17,17 @@
         </field>
         </record>
 
+        <record id="sale_order_alerta_descuento_view" model="ir.ui.view">
+        <field name="model">sale.order.alerta.descuento</field>
+        <field name="arch" type="xml">
+            <form string="Alerta">
+                <field name="mensaje" readonly='1'/>
+                <footer>
+                    <button special="cancel" string="Cerrar"  class="btn-secondary" />
+                </footer>
+            </form>
+        </field>
+        </record>
+
     </data>
 </odoo>

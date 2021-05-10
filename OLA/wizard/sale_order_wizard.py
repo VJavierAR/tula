@@ -23,3 +23,10 @@ class Alerta_limite_de_credito(models.TransientModel):
         self.sale_id.action_confirm()
 
 
+class AlertaDescuento(models.TransientModel):
+    _name = 'sale.order.alerta.descuento'
+    _description = 'Alerta para el descuento'
+
+    mensaje = fields.Text(
+        string='Mensaje'
+    )
