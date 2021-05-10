@@ -152,12 +152,13 @@ class SaleOrderLine(models.Model):
 	@api.onchange('qty_available_today', 'product_uom_qty')
 	def _compute_x_value1_id(self):
 		#for record in self:
-		if self.qty_available_today >= 1 and self.product_uom_qty > self.qty_available_today:
-			self.x_value1_id = 'No hay suficiente stock'
-		elif self.qty_available_today >= 1 and self.product_uom_qty <= self.qty_available_today:
-			self.x_value1_id = 'Si hay stock'
-		else:
-			self.x_value1_id = 'No hay stock'
+		if self.product_id.id:
+			if self.qty_available_today >= 1 and self.product_uom_qty > self.qty_available_today:
+				self.x_value1_id = 'No hay suficiente stock'
+			elif self.qty_available_today >= 1 and self.product_uom_qty <= self.qty_available_today:
+				self.x_value1_id = 'Si hay stock'
+			else:
+				self.x_value1_id = 'No hay stock'
 
 	x_studio_motivo_de_perdida_de_la_orden = fields.Selection(
 		selection=[('1','1')],
@@ -176,18 +177,20 @@ class SaleOrderLine(models.Model):
 
 	@api.onchange('product_uom_qty', 'qty_delivered')
 	def resta(self):
-		self.x_value2_id = self.product_uom_qty - self.qty_delivered
+		if self.product_id.id:
+			self.x_value2_id = self.product_uom_qty - self.qty_delivered
 
 	x_tiempo_total = fields.Integer(string='Tiempo de entrega')
 
 	@api.onchange('x_studio_tiempo_de_entrega_del_proveedor', 'qty_available_today', 'customer_lead')
 	def minimos(self):
-		if self.qty_available_today == 0:
-			self.x_tiempo_total = self.customer_lead + self.x_studio_tiempo_de_entrega_del_proveedor
-		elif self.qty_available_today >= self.product_uom_qty:
-			self.x_tiempo_total = self.customer_lead
-		else:
-			self.x_tiempo_total = self.customer_lead + self.x_studio_tiempo_de_entrega_del_proveedor
+		if self.product_id.id:
+			if self.qty_available_today == 0:
+				self.x_tiempo_total = self.customer_lead + self.x_studio_tiempo_de_entrega_del_proveedor
+			elif self.qty_available_today >= self.product_uom_qty:
+				self.x_tiempo_total = self.customer_lead
+			else:
+				self.x_tiempo_total = self.customer_lead + self.x_studio_tiempo_de_entrega_del_proveedor
 
 
 	x_studio_tiempo_de_entrega_del_proveedor = fields.Integer(
@@ -240,7 +243,8 @@ class SaleOrderLine(models.Model):
 	@api.onchange("price_subtotal", "product_uom_qty")
 	def _compute_x_precio_con_descuento(self):
 		#for record in self:
-		self.x_precio_con_descuento = self.price_subtotal / self.product_uom_qty
+		if self.product_id.id:
+			self.x_precio_con_descuento = self.price_subtotal / self.product_uom_qty
 
 	x_value3_id = fields.Float(
 		string="Monto perdido",
@@ -252,7 +256,8 @@ class SaleOrderLine(models.Model):
 	@api.onchange("x_value2_id", "price_unit")
 	def _compute_x_value3_id(self):
 		#for record in self:
-		self.x_value3_id = self.x_value2_id * self.price_unit
+		if self.product_id.id:
+			self.x_value3_id = self.x_value2_id * self.price_unit
 
 
 	x_value4_id = fields.Float(
@@ -266,7 +271,8 @@ class SaleOrderLine(models.Model):
 	@api.onchange("qty_delivered", "price_unit")
 	def _compute_x_value4_id(self):
 		#for record in self:
-		self.x_value4_id = self.qty_delivered * self.price_unit
+		if self.product_id.id:
+			self.x_value4_id = self.qty_delivered * self.price_unit
 
 
 class SaleOrder(models.Model):

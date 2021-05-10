@@ -10,8 +10,8 @@
 
 
                 <xpath expr="//field[@name='order_line']" position="replace">
-                    
-                    <field name="order_line" widget="section_and_note_one2many" mode="tree,kanban" >
+
+                    <field name="order_line" widget="section_and_note_one2many" mode="tree,kanban" attrs="{'readonly': [('state', 'in', ('done','cancel'))]}">
                                 <form>
                                     <field name="display_type" invisible="1"/>
                                     <!--
@@ -223,11 +223,10 @@
                 </xpath>
                 -->
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
-                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom_qty']" position="move"/>
                     <field name="x_value1_id" string="Estado del producto" optional="show"/>
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
-                    <field name="existencias" readonly="1" force_save="1" widget="html" optional="show" />
+                    <field name="existencias" readonly="1" force_save="1"  optional="show" />
                 </xpath>
 
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom']" position="after">
@@ -240,6 +239,18 @@
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='company_id']" position="after">
                     <field name="bloqueo" invisible="1"/>
                 </xpath>
+                <xpath expr="//field[@name='order_line']" position="attributes">
+                    <!--<attribute name="attrs">{'invisible': ['|', ('state', 'not in', ['sent']), ('bloqueo_limite_credito', '=', True)] }</attribute>-->
+                    <attribute name="context">{'default_order_partner_id': partner_id}</attribute>
+                </xpath>
+
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
+                    <field name="order_partner_id" invisible="1"/>
+                    <!--<field name="order_id"/>-->
+                </xpath>
+
+
+
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="urgencia" />
                     <field name="bloqueo_limite_credito" invisible="1" />
@@ -270,15 +281,6 @@
                             />
                 </xpath>
 
-                <xpath expr="//field[@name='order_line']" position="attributes">
-                    <!--<attribute name="attrs">{'invisible': ['|', ('state', 'not in', ['sent']), ('bloqueo_limite_credito', '=', True)] }</attribute>-->
-                    <attribute name="context">{'default_order_partner_id': partner_id}</attribute>
-                </xpath>
-
-                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
-                    <field name="order_partner_id" invisible="1"/>
-                    <!--<field name="order_id"/>-->
-                </xpath>
 
             </field>
         </record>
@@ -287,7 +289,7 @@
 <field name="name">view.sale.team.update</field>
 <field name="model">crm.team</field>
 <field name="inherit_id" ref="sales_team.crm_team_view_form"/>
-<field name="arch" type="xml">        
+<field name="arch" type="xml">
   <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='members']/field[@name='member_ids']/kanban[1]" position="after">
     <form string="Users">
       <sheet name="studio_sheet_8efd83">
