@@ -69,7 +69,7 @@ class AccountMove(models.Model):
                 if total_con_facturas > limite_de_credito:
                     title = title + "Límite de crédito excedido. | "
                     message = message + """Se excedio el límite de crédito por facturas no pagadas: \n
-                    Límite de credito: """ + simbolo_moneda + str(limite_de_credito) + """\n
+                    Límite de crédito: """ + simbolo_moneda + str(limite_de_credito) + """\n
                     Costo total de factura actual: """ + simbolo_moneda + str(total) + """\n
                     Costo total en facturas no pagadas: """ + simbolo_moneda + str(total_de_facturas_no_pagadas) + """\n
                     Suma total: """ + simbolo_moneda + str(total_con_facturas) + """\n
@@ -101,7 +101,7 @@ class AccountMove(models.Model):
                 if total_con_facturas_companies > limite_de_credito_conglomerado:
                     title = title + "Límite de crédito de conglomerado excedido. | "
                     message = message + """Se excedio el límite de crédito de conglomerado por facturas no pagadas: \n
-                    Límite de credito de conglomerado: """ + simbolo_moneda + str(limite_de_credito_conglomerado) + """\n
+                    Límite de crédito de conglomerado: """ + simbolo_moneda + str(limite_de_credito_conglomerado) + """\n
                     Costo total de factura actual: """ + simbolo_moneda + str(total) + """\n
                     Costo total en facturas no pagadas: """ + simbolo_moneda + str(total_de_facturas_no_pagadas_companies) + """\n
                     Suma total: """ + simbolo_moneda + str(total_con_facturas_companies) + """\n

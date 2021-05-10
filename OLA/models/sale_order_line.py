@@ -17,7 +17,6 @@ class saleOr(models.Model):
 		store=True
 	)
 
-
 	@api.onchange("product_id")
 	def product_id_change(self):
 		res = super(saleOr, self).product_id_change()
@@ -74,13 +73,12 @@ class saleOr(models.Model):
 
 	@api.onchange('price_unit', 'discount')
 	def precio_minimo(self):
-		"""
 		d = self.env.user.max_discount
+		_logger.info("límite de descuento: " + str(d))
 		if self.discount > d:
 			self.bloqueo = True
 		if self.discount <= d:
 			self.bloqueo = False
-		"""
 
 		genero_alertas = False
 		title = "Alertas: "

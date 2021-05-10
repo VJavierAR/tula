@@ -18,14 +18,14 @@ class partner(models.Model):
         check_company=False
     )
     colchon_credito = fields.Integer(
-        string="Colchon",
+        string="Período de gracia",
         default=0,
         company_dependent=False,
         check_company=False
     )
 
     correoFac = fields.Char(
-        string = "Correo Facturacion"
+        string = "Correo facturación"
     )
     
     correoCobranza = fields.Char(
@@ -39,7 +39,7 @@ class partner(models.Model):
     )
     
     numeroUnico = fields.Boolean(
-        string = "Número Unico"
+        string = "Número único"
     )
     
 

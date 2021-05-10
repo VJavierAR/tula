@@ -2,8 +2,11 @@ from odoo import models, fields, api,_
 import datetime, time
 import logging, ast
 from odoo.exceptions import UserError,AccessDenied,Warning
-_logger = logging.getLogger(__name__)
 from odoo.tools.float_utils import float_compare, float_is_zero, float_round
+from datetime import timedelta
+import pytz
+
+_logger = logging.getLogger(__name__)
 
 class sale(models.Model):
 	_inherit = 'sale.order'
@@ -22,7 +25,7 @@ class sale(models.Model):
 		compute='_compute_limite_credito_actual'
 	)
 	limite_credito_conglomerado_actual = fields.Integer(
-		string='Saldo disponible de límite de céredito de conglomerado',
+		string='Saldo disponible de límite de crédito de conglomerado',
 		compute='_compute_limite_credito_conglomerado_actual'
 	)
 	partner_id = fields.Many2one(
@@ -76,43 +79,48 @@ class sale(models.Model):
 		], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
 
 	def conf(self):
-		check=[False]
-		#check = self.mapped('order_line.bloqueo')
+		check = [False]
+		check = self.mapped('order_line.bloqueo')
 		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
 		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
-		na=self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.name')
-		ms='Se esta excediendo el descueto permitido se envio una alerta a los usuarios'+str(na)+'.'
+		na = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.name')
+		ms = 'Se excede el descuento de' + str(self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(na) + '.\n\n'
+		ms += "Las siguientes líneas del pedido exceden el descuento del vendedor:\n\n"
+		for linea in self.order_line:
+			if linea.bloqueo:
+				ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(linea.product_uom_qty) + ", Precio unitario: " + str(linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
 		if True in check:
-			self.write({'state':'auto'})
-			template_id2=self.env.ref('OLA.notify_descuento_email_template')
-			mail=template_id2.generate_email(self.id)
-			mail['email_to']=str(m).replace('[','').replace(']','').replace('\'','')
+			self.write({'state': 'auto'})
+			template_id2 = self.env.ref('OLA.notify_descuento_email_template')
+			mail = template_id2.generate_email(self.id)
+			mail['email_to'] = str(m).replace('[', '').replace(']', '').replace('\'', '')
 			self.env['mail.mail'].create(mail).send()
 			view = self.env.ref('OLA.sale_order_alerta_descuento_view')
 			wiz = self.env['sale.order.alerta.descuento'].create({'mensaje': ms})
 			return {
-			    'name': _('Alerta'),
-			    'type': 'ir.actions.act_window',
-			    'view_mode': 'form',
-			    'res_model': 'sale.order.alerta.descuento',
-			    'views': [(view.id, 'form')],
-			    'view_id': view.id,
-			    'target': 'new',
-			    'res_id': wiz.id,
-			    'context': self.env.context,
+				'alerta': True,
+				'name': _('Alerta'),
+				'type': 'ir.actions.act_window',
+				'view_mode': 'form',
+				'res_model': 'sale.order.alerta.descuento',
+				'views': [(view.id, 'form')],
+				'view_id': view.id,
+				'target': 'new',
+				'res_id': wiz.id,
+				'context': self.env.context,
 			}
 
 		if True not in check or self.env.user.id in U:
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
 				raise UserError(_(
-			        'It is not allowed to confirm an order in the following states: %s'
-			    ) % (', '.join(self._get_forbidden_state_confirm())))
+					'It is not allowed to confirm an order in the following states: %s'
+				) % (', '.join(self._get_forbidden_state_confirm())))
 
 			for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
 				order.message_subscribe([order.partner_id.id])
 			self.write({
-			    'state': 'sale',
-			    'date_order': fields.Datetime.now()
+				'state': 'sale',
+				'date_order': fields.Datetime.now()
 			})
 
 			# Context key 'default_name' is sometimes propagated up to here.
@@ -123,13 +131,21 @@ class sale(models.Model):
 			self.with_context(context)._action_confirm()
 			if self.env.user.has_group('sale.group_auto_done_setting'):
 				self.action_done()
-			return True
+			#return True
+			return {
+				'alerta': False,
+			}
 
 	def action_confirm(self):
-		self.conf()
+		resultado = self.conf()
+		_logger.info("resultado: " + str(resultado))
+		if resultado['alerta']:
+			del resultado['alerta']
+			return resultado
+
 		if self.company_id.auto_picking:
-			sta=self.picking_ids.mapped('state')
-			if('waiting' in sta or 'confirmed' in sta):
+			sta = self.picking_ids.mapped('state')
+			if 'waiting' in sta or 'confirmed' in sta:
 				return {'warning': {'title': _('Sin stock'),'message': _('No hay stock')}}
 			else:
 				for pi in self.picking_ids:
@@ -139,7 +155,7 @@ class sale(models.Model):
 						pi.action_assign()
 						_logger.info(self.picking_ids.mapped('move_line_ids.state'))
 						#pi.move_lines._action_assign()
-						#pi.move_lines._action_done()
+						# #pi.move_lines._action_done()
 						return pi.button_validate()
 					#pi._autoconfirm_picking()
 					if pi.state in ('waiting','confirmed'):
@@ -291,8 +307,7 @@ class sale(models.Model):
 
 			plazo_de_pago_cliente = 0
 			if self.partner_id.property_payment_term_id.id and self.partner_id.property_payment_term_id.line_ids.mapped('days'):
-				plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[
-										-1] + colchon_de_credito
+				plazo_de_pago_cliente = self.partner_id.property_payment_term_id.line_ids.mapped('days')[-1]
 			total_de_facturas_no_pagadas_companies = 0
 			if facturas_no_pagadas_companies:
 				title_restriccion_dias_factura = "Plazo de pago excedido en facturas. | "
@@ -301,16 +316,20 @@ class sale(models.Model):
 					total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total
 					if factura_no_pagada.invoice_date_due:
 						fecha_de_creacion = str(factura_no_pagada.invoice_date_due).split(' ')[0]
-						converted_date = datetime.datetime.strptime(fecha_de_creacion, '%Y-%m-%d').date()
-						fecha_actual = datetime.date.today()
-						dias_transcuridos = (fecha_actual - converted_date).days
+						#converted_date = datetime.datetime.strptime(fecha_de_creacion, '%Y-%m-%d').date() + timedelta(days=colchon_de_credito)
+						converted_date = datetime.datetime.strptime(fecha_de_creacion, '%Y-%m-%d') + timedelta(
+							days=colchon_de_credito)
+						user_tz = str(pytz.timezone(self.env.context.get('tz') or self.env.user.tz))
+						#fecha_actual = datetime.datetime.now(pytz.timezone(user_tz)).strftime("%Y-%m-%d")
+						fecha_actual = datetime.datetime.strptime(datetime.datetime.now(pytz.timezone(user_tz)).strftime("%Y-%m-%d"), '%Y-%m-%d')
+						# fecha_actual = datetime.date.today()
+						#dias_transcuridos = (fecha_actual - converted_date).days
 						#_logger.info("fecha_de_creacion (invoice_date): " + str(converted_date) + " fecha_actual: " + str(
-						#	fecha_actual) + " dias_transcuridos: " + str(dias_transcuridos))
-						if dias_transcuridos > plazo_de_pago_cliente:
+						#	fecha_actual) )
+						if fecha_actual > converted_date:
+						# if dias_transcuridos > plazo_de_pago_cliente:
 							message_factura += """Factura no pagada: """ + str(factura_no_pagada.name) + """\n
-							Fecha de vencimiento de factura: """ + str(converted_date) + """\n
-							Plazo de pago de cliente más colchón: """ + str(plazo_de_pago_cliente) + """\n
-							Días de transcurridos de factura no pagada: """ + str(dias_transcuridos) + """\n """
+							Fecha de vencimiento de factura: """ + str(converted_date) + """\n"""
 							genero_alertas_facturas = True
 				message_factura = message_factura + "".rstrip() + "\n"
 
