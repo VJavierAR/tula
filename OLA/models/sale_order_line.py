@@ -74,11 +74,13 @@ class saleOr(models.Model):
 
 	@api.onchange('price_unit', 'discount')
 	def precio_minimo(self):
+		"""
 		d = self.env.user.max_discount
 		if self.discount > d:
 			self.bloqueo = True
 		if self.discount <= d:
 			self.bloqueo = False
+		"""
 
 		genero_alertas = False
 		title = "Alertas: "
