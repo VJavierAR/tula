@@ -149,6 +149,7 @@ class sale(models.Model):
 					self.order_line=[(0, 0,pro)]
 					for o in self.order_line:
 						o.buscaProductos()
+						o.product_id_change()
 
 	@api.depends('partner_id')
 	def _compute_limite_credito_actual(self):
