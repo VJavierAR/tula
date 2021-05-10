@@ -237,7 +237,7 @@
                     <field name="x_precio_con_descuento" optional="show"/>
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='company_id']" position="after">
-                    <field name="bloqueo" invisible="1"/>
+                    <field name="bloqueo" invisible="0" readonly="0" force_save="1"/>
                 </xpath>
                 <xpath expr="//field[@name='order_line']" position="attributes">
                     <!--<attribute name="attrs">{'invisible': ['|', ('state', 'not in', ['sent']), ('bloqueo_limite_credito', '=', True)] }</attribute>-->
