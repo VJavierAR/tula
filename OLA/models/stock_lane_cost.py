@@ -20,7 +20,7 @@ import time
 
 
 class StockLadeCost(models.Model):
-	_inherit='stock.landed.cost'
+    _inherit='stock.landed.cost'
 
     def compute_landed_cost(self):
         AdjustementLines = self.env['stock.valuation.adjustment.lines']
