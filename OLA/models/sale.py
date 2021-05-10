@@ -76,7 +76,7 @@ class sale(models.Model):
 		], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
 
 	def conf(self):
-		check=False
+		check=[False]
 		#check = self.mapped('order_line.bloqueo')
 		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
 		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
