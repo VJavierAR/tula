@@ -10,13 +10,12 @@ class ProductProduct(models.Model):
 
 	x_preciominimo = fields.Float(
 		string='Precio mínimo',
-		compute='_compute_x_preciominimo'
 	)
 
-	@api.depends('standard_price', 'x_studio_utilidad_')
+	@api.onchange('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
-		for r in self:
-			r.x_preciominimo = (r.standard_price * r.x_studio_utilidad_ / 100) + r.standard_price
+		#for r in self:
+		self.x_preciominimo = (self.standard_price * self.x_studio_utilidad_ / 100) + self.standard_price
 
 class ProductTemplate(models.Model):
 	_inherit='product.template'
@@ -238,10 +237,10 @@ class SaleOrderLine(models.Model):
 		compute="_compute_x_precio_con_descuento"
 	)
 
-	@api.depends("price_subtotal", "product_uom_qty")
+	@api.onchange("price_subtotal", "product_uom_qty")
 	def _compute_x_precio_con_descuento(self):
-		for record in self:
-			record.x_precio_con_descuento = record.price_subtotal / record.product_uom_qty
+		#for record in self:
+		self.x_precio_con_descuento = self.price_subtotal / self.product_uom_qty
 
 	x_value3_id = fields.Float(
 		string="Monto perdido",
@@ -250,10 +249,10 @@ class SaleOrderLine(models.Model):
 		compute="_compute_x_value3_id"
 	)
 
-	@api.depends("x_value2_id", "price_unit")
+	@api.onchange("x_value2_id", "price_unit")
 	def _compute_x_value3_id(self):
-		for record in self:
-			record.x_value3_id = record.x_value2_id * record.price_unit
+		#for record in self:
+		self.x_value3_id = self.x_value2_id * self.price_unit
 
 
 	x_value4_id = fields.Float(
@@ -264,10 +263,10 @@ class SaleOrderLine(models.Model):
 	)
 
 
-	@api.depends("qty_delivered", "price_unit")
+	@api.onchange("qty_delivered", "price_unit")
 	def _compute_x_value4_id(self):
-		for record in self:
-			record.x_value4_id = record.qty_delivered * record.price_unit
+		#for record in self:
+		self.x_value4_id = self.qty_delivered * self.price_unit
 
 
 class SaleOrder(models.Model):
