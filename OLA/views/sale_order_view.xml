@@ -262,6 +262,7 @@
                 <xpath expr="//button[@name='action_confirm']" position="attributes">
                     <!--<attribute name="invisible">['&amp;', ('state', 'not in', ['sent']), ('bloqueo_limite_credito', '=', True)]</attribute>-->
                     <!--<attribute name="invisible">[('bloqueo_limite_credito', '=', True)]</attribute>-->
+                    <attribute name="name">conf</attribute>
                     <attribute name="attrs">{'invisible': ['|', ('state', 'not in', ['sent']), ('bloqueo_limite_credito', '=', True)] }</attribute>
                 </xpath>
 
@@ -269,7 +270,7 @@
                     <!--<attribute name="invisible">['&amp;', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', True)]</attribute>-->
                     <!--<attribute name="invisible">[('bloqueo_limite_credito', '=', True)]</attribute>-->
                     <attribute name="name">conf</attribute>
-                    <attribute name="attrs">{'invisible': ['|', ('state', 'not in', ['draft','done']), ('bloqueo_limite_credito', '=', True)] }</attribute>
+                    <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['cancel','done']), ('bloqueo_limite_credito', '=', True)] }</attribute>
                 </xpath>
 
                 <xpath expr="//button[@name='action_confirm']" position="after">
