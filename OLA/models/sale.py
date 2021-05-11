@@ -113,38 +113,26 @@ class sale(models.Model):
 			}
 		_logger.info(self.env.user.id in U)
 		if True not in check or self.env.user.id in U:
-			_logger.info('2'+str(self.env.user.id in U))
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
-				raise UserError(_(
-					'It is not allowed to confirm an order in the following states: %s'
-				) % (', '.join(self._get_forbidden_state_confirm())))
-
+				raise UserError(_('It is not allowed to confirm an order in the following states: %s') % (', '.join(self._get_forbidden_state_confirm())))
 			for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
 				order.message_subscribe([order.partner_id.id])
-			self.write({
-				'state': 'sale',
-				'date_order': fields.Datetime.now()
-			})
-
-			# Context key 'default_name' is sometimes propagated up to here.
-			# We don't need it and it creates issues in the creation of linked records.
+			self.write({'state': 'sale','date_order': fields.Datetime.now()})
 			context = self._context.copy()
 			context.pop('default_name', None)
-
 			self.with_context(context)._action_confirm()
 			if self.env.user.has_group('sale.group_auto_done_setting'):
-
 				self.action_done()
 			if self.company_id.auto_picking:
 				sta = self.picking_ids.mapped('state')
-				for pi in self.picking_ids:
-					if pi.state == 'assigned':
-						pi.action_confirm()
-						pi.move_lines._action_assign()
-						pi.action_assign()
-						return pi.button_validate()
-					if pi.state in ('waiting','confirmed'):
-						return pi.button_validate()
+			for pi in self.picking_ids:
+				if pi.state == 'assigned':
+					pi.action_confirm()
+					pi.move_lines._action_assign()
+					pi.action_assign()
+					return pi.button_validate()
+				if pi.state in ('waiting','confirmed'):
+					return pi.button_validate()
 			return True
 
 	# def action_confirm(self):
