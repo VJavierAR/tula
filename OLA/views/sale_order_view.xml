@@ -252,9 +252,9 @@
 
 
                 <xpath expr="//field[@name='validity_date']" position="before">
-                    <field name="urgencia" />
-                    <field name="bloqueo_limite_credito" invisible="1" />
+                    <field name="bloqueo_limite_credito" invisible="0" readonly="1" force_save="1" string="Presupuesto bloqueado" />
                     <field name="mensaje_limite_de_credito" invisible="1" />
+                    <field name="urgencia" />
                     <field name="limite_credito_actual" />
                     <field name="limite_credito_conglomerado_actual" />
                 </xpath>
