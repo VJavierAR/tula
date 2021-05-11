@@ -78,7 +78,7 @@ class sale(models.Model):
 			('cancel', 'Cancelled'),
 		], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
 
-	def action_confirm(self):
+	#def action_confirm(self):
 	# 	if self.env.user.id not in U and True in check:
 	# 		_logger.info('1'+str(self.env.user.id in U))
 	# 		self.write({'state': 'auto'})
@@ -101,27 +101,28 @@ class sale(models.Model):
 	# 			'context': self.env.context,
 	# 		}
 	# 	_logger.info(self.env.user.id in U)
-		if self._get_forbidden_state_confirm() & set(self.mapped('state')):
-			raise UserError(_('It is not allowed to confirm an order in the following states: %s') % (', '.join(self._get_forbidden_state_confirm())))
-		for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
-			order.message_subscribe([order.partner_id.id])
-		self.write({'state': 'sale','date_order': fields.Datetime.now()})
-		context = self._context.copy()
-		context.pop('default_name', None)
-		self.with_context(context)._action_confirm()
-		if self.env.user.has_group('sale.group_auto_done_setting'):
-			self.action_done()
-		if self.company_id.auto_picking:
-			sta = self.picking_ids.mapped('state')
-		for pi in self.picking_ids:
-			if pi.state == 'assigned':
-				pi.action_confirm()
-				pi.move_lines._action_assign()
-				pi.action_assign()
-				return pi.button_validate()
-			if pi.state in ('waiting','confirmed'):
-				return pi.button_validate()
-		return True
+	# 	if True not in check or self.env.user.id in U:
+	# 		if self._get_forbidden_state_confirm() & set(self.mapped('state')):
+	# 			raise UserError(_('It is not allowed to confirm an order in the following states: %s') % (', '.join(self._get_forbidden_state_confirm())))
+	# 		for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
+	# 			order.message_subscribe([order.partner_id.id])
+	# 		self.write({'state': 'sale','date_order': fields.Datetime.now()})
+	# 		context = self._context.copy()
+	# 		context.pop('default_name', None)
+	# 		self.with_context(context)._action_confirm()
+	# 		if self.env.user.has_group('sale.group_auto_done_setting'):
+	# 			self.action_done()
+	# 		if self.company_id.auto_picking:
+	# 			sta = self.picking_ids.mapped('state')
+	# 		for pi in self.picking_ids:
+	# 			if pi.state == 'assigned':
+	# 				pi.action_confirm()
+	# 				pi.move_lines._action_assign()
+	# 				pi.action_assign()
+	# 				return pi.button_validate()
+	# 			if pi.state in ('waiting','confirmed'):
+	# 				return pi.button_validate()
+	# 		return True
 
 
 	def conf(self):
@@ -159,16 +160,17 @@ class sale(models.Model):
 			}
 		if True not in check or self.env.user.id in U:
 			self.action_confirm()			
-			# if self.company_id.auto_picking:
-			# 	sta = self.picking_ids.mapped('state')
-			# 	for pi in self.picking_ids.filtered(lambda x:x.state!='cancel'):
-			# 		if pi.state == 'assigned':
-			# 			pi.action_confirm()
-			# 			pi.move_lines._action_assign()
-			# 			pi.action_assign()
-			# 			return pi.button_validate()
-			# 		if pi.state in ('waiting','confirmed'):
-			# 			return pi.button_validate()
+			if self.company_id.auto_picking:
+				sta = self.picking_ids.mapped('state')
+				for pi in self.picking_ids.filtered(lambda x:x.state!='cancel'):
+					if pi.state == 'assigned':
+						pi.action_confirm()
+						pi.move_lines._action_assign()
+						pi.action_assign()
+						return pi.button_validate()
+					if pi.state in ('waiting','confirmed'):
+						return {'warning': {'title': 'Alerta','message': 'Sin stock disponible'}}
+						#return pi.button_validate()
 
 	@api.onchange('productos_sugeridos')
 	def agregarci(self):
