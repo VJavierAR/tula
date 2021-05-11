@@ -151,7 +151,7 @@ class stock(models.Model):
         self.user_validate_id=self.env.user.id
         return
     def valida(self):
-        if(self.location_id.usage=='supplier'):
+        if(self.location_id.usage=='supplier' or self.location_id.usage=='customer'):
             return self.button_validate(True)
         else:
             view=self.env.ref('OLA.stock_picking_validate_wizard_form')
