@@ -160,16 +160,16 @@ class sale(models.Model):
 			}
 		if True not in check or self.env.user.id in U:
 			self.action_confirm()			
-		if self.company_id.auto_picking:
-			sta = self.picking_ids.mapped('state')
-			for pi in self.picking_ids:
-				if pi.state == 'assigned':
-					pi.action_confirm()
-					pi.move_lines._action_assign()
-					pi.action_assign()
-					return pi.button_validate()
-				if pi.state in ('waiting','confirmed'):
-					return pi.button_validate()
+			if self.company_id.auto_picking:
+				sta = self.picking_ids.mapped('state')
+				for pi in self.picking_ids.filtered(lambda x:x.state!='cancel'):
+					if pi.state == 'assigned':
+						pi.action_confirm()
+						pi.move_lines._action_assign()
+						pi.action_assign()
+						return pi.button_validate()
+					if pi.state in ('waiting','confirmed'):
+						return pi.button_validate()
 
 	@api.onchange('productos_sugeridos')
 	def agregarci(self):
