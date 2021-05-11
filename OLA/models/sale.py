@@ -78,7 +78,7 @@ class sale(models.Model):
 			('cancel', 'Cancelled'),
 		], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
 
-	def conf(self):
+	def action_confirm(self):
 		check = [False]
 		check = self.mapped('order_line.bloqueo')
 		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
@@ -135,24 +135,30 @@ class sale(models.Model):
 			if self.env.user.has_group('sale.group_auto_done_setting'):
 
 				self.action_done()
+			if self.company_id.auto_picking:
+				sta = self.picking_ids.mapped('state')
+				for pi in self.picking_ids:
+					if pi.state == 'assigned':
+						pi.action_confirm()
+						pi.move_lines._action_assign()
+						pi.action_assign()
+						return pi.button_validate()
+					if pi.state in ('waiting','confirmed'):
+						return pi.button_validate()
 			return True
 
-	def action_confirm(self):
-		return self.conf()
-		#_logger.info("resultado: " + str(resultado))
-		# if type(resultado) is dict and resultado['alerta']:
-		# 	del resultado['alerta']
-		# 	return resultado
-		if self.company_id.auto_picking:
-			sta = self.picking_ids.mapped('state')
-			for pi in self.picking_ids:
-				if pi.state == 'assigned':
-					pi.action_confirm()
-					pi.move_lines._action_assign()
-					pi.action_assign()
-					return pi.button_validate()
-				if pi.state in ('waiting','confirmed'):
-					return pi.button_validate()
+	# def action_confirm(self):
+	# 	return self.conf()
+	# 	if self.company_id.auto_picking:
+	# 		sta = self.picking_ids.mapped('state')
+	# 		for pi in self.picking_ids:
+	# 			if pi.state == 'assigned':
+	# 				pi.action_confirm()
+	# 				pi.move_lines._action_assign()
+	# 				pi.action_assign()
+	# 				return pi.button_validate()
+	# 			if pi.state in ('waiting','confirmed'):
+	# 				return pi.button_validate()
 
 
 
