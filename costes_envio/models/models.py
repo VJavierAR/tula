@@ -83,7 +83,7 @@ class LandedCostLine(models.Model):
     	v=self.env['define.cost'].search([])
     	t=[]
     	for val in v:
-    		t.append((str(val.value),str(val.name)))
+    		t.append((str(val.valor),str(val.name)))
     	arr=[]
     	arr=SPLIT_METHOD+t
     	return arr
