@@ -84,9 +84,9 @@ class LandedCostLine(models.Model):
     	t=[]
     	for val in v:
     		t.append((str(val.valor),str(val.name)))
-    	arr=[]
-    	arr=SPLIT_METHOD+t
-    	return arr
+    	for s in SPLIT_METHOD:
+    		t.append(s)
+    	return t
 
     split_method = fields.Selection(get_split, string='Split Method', required=True)
 
