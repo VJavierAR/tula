@@ -28,7 +28,6 @@ class costes_envio(models.Model):
             all_val_line_values = cost.get_valuation_lines()
             for val_line_values in all_val_line_values:
                 for cost_line in cost.cost_lines:
-                    _logger.info(str(val_line_values))
                     val_line_values.update({'cost_id': cost.id, 'cost_line_id': cost_line.id})
                     self.env['stock.valuation.adjustment.lines'].create(val_line_values)
                 total_qty += val_line_values.get('quantity', 0.0)
