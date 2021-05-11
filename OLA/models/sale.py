@@ -271,35 +271,11 @@ class sale(models.Model):
 			genero_alerta_limite = False
 			genero_alerta_limite_conglomerado = False
 			genero_alerta_plazo = False
-			genero_alerta_bloqueo_descuento = False
+
 
 			title_restriccion_dias_factura = ""
 			message_factura = ""
 			genero_alertas_facturas = False
-
-			# Caso en que genera alerta por algun desceunto que excedio el límite de descuento del vendedor
-			check = self.mapped('order_line.bloqueo')
-			U = self.env['res.groups'].sudo().search(
-				[("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
-			m = self.env['res.groups'].sudo().search(
-				[("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
-			na = self.env['res.groups'].sudo().search(
-				[("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.name')
-			ms = 'Se excede el descuento de' + str(
-				self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(na) + '.\n\n'
-			ms += "Las siguientes líneas del pedido exceden el descuento del vendedor:\n\n"
-			for linea in self.order_line:
-				if linea.bloqueo:
-					ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(
-						linea.product_uom_qty) + ", Precio unitario: " + str(linea.price_unit) + ", Descuento: " + str(
-						linea.discount) + "%\n"
-			if self.env.user.id not in U and True in check:
-				# self.write({'state': 'auto'})
-				title = title + "Descuento de vendedor excedido. | "
-				message = message + ms + """ """.rstrip() + "\n\n"
-				genero_alerta_bloqueo_descuento = True
-			if self.env.user.id in U or True not in check:
-				genero_alerta_bloqueo_descuento = False
 
 			# Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
 			facturas_no_pagadas = self.env['account.move'].search(
@@ -428,7 +404,7 @@ class sale(models.Model):
 				title += title_restriccion_dias_factura
 				message += message_factura
 
-			if genero_alerta_limite or genero_alerta_limite_conglomerado or genero_alerta_plazo or genero_alertas_facturas or genero_alerta_bloqueo_descuento:
+			if genero_alerta_limite or genero_alerta_limite_conglomerado or genero_alerta_plazo or genero_alertas_facturas:
 				self.bloqueo_limite_credito = True
 				self.mensaje_limite_de_credito = message
 				"""
