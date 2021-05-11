@@ -271,7 +271,7 @@
                     <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['cancel','done']), ('bloqueo_limite_credito', '=', True)] }</attribute>
                 </xpath>
 
-                <xpath expr="//button[@name='action_confirm']" position="after">
+                <xpath expr="//button[@name='conf']" position="after">
                     <button string="Confirmar excediendo límite de crédito"
                             name="autorizar_sale_limite_de_credito"
                             type="object"
