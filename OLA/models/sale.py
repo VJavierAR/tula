@@ -169,7 +169,21 @@ class sale(models.Model):
 						pi.action_assign()
 						return pi.button_validate()
 					if pi.state in ('waiting','confirmed'):
-						return {'warning': {'title': 'Alerta','message': 'Sin stock disponible'}}
+						view = self.env.ref('OLA.sale_order_alerta_descuento_view')
+						wiz = self.env['sale.order.alerta.descuento'].create({'mensaje': 'Sin stock disponible'})
+						return {
+							'alerta': True,
+							'name': _('Alerta'),
+							'type': 'ir.actions.act_window',
+							'view_mode': 'form',
+							'res_model': 'sale.order.alerta.descuento',
+							'views': [(view.id, 'form')],
+							'view_id': view.id,
+							'target': 'new',
+							'res_id': wiz.id,
+							'context': self.env.context,
+						}
+						#return {'warning': {'title': 'Alerta','message': 'Sin stock disponible'}}
 						#return pi.button_validate()
 
 	@api.onchange('productos_sugeridos')
