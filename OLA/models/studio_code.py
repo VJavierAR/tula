@@ -5,6 +5,7 @@ from odoo.exceptions import AccessDenied
 import logging, ast
 _logger = logging.getLogger(__name__)
 
+
 class ProductProduct(models.Model):
 	_inherit='product.product'
 
@@ -15,9 +16,10 @@ class ProductProduct(models.Model):
 
 	@api.onchange('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
-		#for r in self:
-		_logger.info("Entro a cambiar el precio minimo***************************")
-		self.x_preciominimo = (self.standard_price * self.x_studio_utilidad_ / 100) + self.standard_price
+		caulculo = (self.standard_price * self.x_studio_utilidad_ / 100) + self.standard_price
+		self.x_preciominimo = caulculo
+		self.x_studio_precio_mnimo = caulculo
+
 
 class ProductTemplate(models.Model):
 	_inherit='product.template'
@@ -37,8 +39,6 @@ class ProductTemplate(models.Model):
 
 	@api.onchange('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
-		# for r in self:
-		_logger.info("Entro a cambiar el precio minimo***************************")
 		self.x_studio_precio_mnimo = (self.standard_price * self.x_studio_utilidad_ / 100) + self.standard_price
 
 
