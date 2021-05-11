@@ -91,6 +91,7 @@ class sale(models.Model):
 			if linea.bloqueo:
 				ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(linea.product_uom_qty) + ", Precio unitario: " + str(linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
 		if self.env.user.id not in U and True in check:
+			_logger.info('1'+str(self.env.user.id in U))
 			self.write({'state': 'auto'})
 			template_id2 = self.env.ref('OLA.notify_descuento_email_template')
 			mail = template_id2.generate_email(self.id)
@@ -112,6 +113,7 @@ class sale(models.Model):
 			}
 		_logger.info(self.env.user.id in U)
 		if True not in check or self.env.user.id in U:
+			_logger.info('2'+str(self.env.user.id in U))
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
 				raise UserError(_(
 					'It is not allowed to confirm an order in the following states: %s'
