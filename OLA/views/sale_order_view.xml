@@ -259,19 +259,17 @@
                     <field name="limite_credito_conglomerado_actual" />
                 </xpath>
 
-                <xpath expr="//*button[@name='action_confirm']" position="attributes">
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
                     <!--<attribute name="invisible">['&amp;', ('state', 'not in', ['sent']), ('bloqueo_limite_credito', '=', True)]</attribute>-->
                     <!--<attribute name="invisible">[('bloqueo_limite_credito', '=', True)]</attribute>-->
                     <attribute name="name">conf</attribute>
                     <attribute name="attrs">{'invisible': ['|', ('state', 'not in', ['sent']), ('bloqueo_limite_credito', '=', True)] }</attribute>
                 </xpath>
 
-<!--
-                <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
                     <attribute name="name">conf</attribute>
                     <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['cancel','done']), ('bloqueo_limite_credito', '=', True)] }</attribute>
                 </xpath>
-                -->
 
                 <xpath expr="//button[@name='action_confirm']" position="after">
                     <button string="Confirmar excediendo límite de crédito"
