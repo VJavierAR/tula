@@ -110,7 +110,7 @@ class sale(models.Model):
 				'res_id': wiz.id,
 				'context': self.env.context,
 			}
-
+		_logger.info(self.env.user.id in U)
 		if True not in check or self.env.user.id in U:
 			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
 				raise UserError(_(
