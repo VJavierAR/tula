@@ -268,7 +268,7 @@
                 <xpath expr="//form[1]/header[1]/button[@name='action_confirm'][2]" position="attributes">
                     <!--<attribute name="invisible">['&amp;', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', True)]</attribute>-->
                     <!--<attribute name="invisible">[('bloqueo_limite_credito', '=', True)]</attribute>-->
-                    <!--<attribute name="name">conf</attribute>-->
+                    <attribute name="name">conf</attribute>
                     <attribute name="attrs">{'invisible': ['|', ('state', 'not in', ['draft']), ('bloqueo_limite_credito', '=', True)] }</attribute>
                 </xpath>
 

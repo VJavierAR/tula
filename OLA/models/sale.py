@@ -124,7 +124,7 @@ class sale(models.Model):
 	# 				return pi.button_validate()
 	# 		return True
 
-	"""
+
 	def conf(self):
 		# return self.action_confirm()
 		check = [False]
@@ -170,7 +170,6 @@ class sale(models.Model):
 					return pi.button_validate()
 				if pi.state in ('waiting','confirmed'):
 					return pi.button_validate()
-	"""
 
 	@api.onchange('productos_sugeridos')
 	def agregarci(self):
