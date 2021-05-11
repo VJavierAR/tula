@@ -14,6 +14,8 @@ class AccountMove(models.Model):
 
     @api.onchange('invoice_payment_term_id', 'invoice_line_ids', 'amount_total')
     def cambio_no_permitido(self):
+        #_logger.info("self._origin: " + str(self._origin) + " self._origin.id: " + str(self._origin.id))
+        #if self._origin.id:
         #[('type', '=', 'out_invoice')]
         simbolo_moneda = "₡"
         if self.company_id.id:
