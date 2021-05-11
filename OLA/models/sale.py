@@ -125,7 +125,7 @@ class sale(models.Model):
 	# 		return True
 
 	def conf(self):
-		return self.action_confirm()
+		# return self.action_confirm()
 		check = [False]
 		check = self.mapped('order_line.bloqueo')
 		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
@@ -158,7 +158,7 @@ class sale(models.Model):
 				'context': self.env.context,
 			}
 		if True not in check or self.env.user.id in U:
-			return self.action_confirm()			
+			self.action_confirm()			
 		if self.company_id.auto_picking:
 			sta = self.picking_ids.mapped('state')
 			for pi in self.picking_ids:
