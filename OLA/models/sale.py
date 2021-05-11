@@ -78,7 +78,54 @@ class sale(models.Model):
 			('cancel', 'Cancelled'),
 		], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
 
-	def action_confirm(self):
+	# def action_confirm(self):
+	# 	if self.env.user.id not in U and True in check:
+	# 		_logger.info('1'+str(self.env.user.id in U))
+	# 		self.write({'state': 'auto'})
+	# 		template_id2 = self.env.ref('OLA.notify_descuento_email_template')
+	# 		mail = template_id2.generate_email(self.id)
+	# 		mail['email_to'] = str(m).replace('[', '').replace(']', '').replace('\'', '')
+	# 		self.env['mail.mail'].create(mail).send()
+	# 		view = self.env.ref('OLA.sale_order_alerta_descuento_view')
+	# 		wiz = self.env['sale.order.alerta.descuento'].create({'mensaje': ms})
+	# 		return {
+	# 			'alerta': True,
+	# 			'name': _('Alerta'),
+	# 			'type': 'ir.actions.act_window',
+	# 			'view_mode': 'form',
+	# 			'res_model': 'sale.order.alerta.descuento',
+	# 			'views': [(view.id, 'form')],
+	# 			'view_id': view.id,
+	# 			'target': 'new',
+	# 			'res_id': wiz.id,
+	# 			'context': self.env.context,
+	# 		}
+	# 	_logger.info(self.env.user.id in U)
+	# 	if True not in check or self.env.user.id in U:
+	# 		if self._get_forbidden_state_confirm() & set(self.mapped('state')):
+	# 			raise UserError(_('It is not allowed to confirm an order in the following states: %s') % (', '.join(self._get_forbidden_state_confirm())))
+	# 		for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
+	# 			order.message_subscribe([order.partner_id.id])
+	# 		self.write({'state': 'sale','date_order': fields.Datetime.now()})
+	# 		context = self._context.copy()
+	# 		context.pop('default_name', None)
+	# 		self.with_context(context)._action_confirm()
+	# 		if self.env.user.has_group('sale.group_auto_done_setting'):
+	# 			self.action_done()
+	# 		if self.company_id.auto_picking:
+	# 			sta = self.picking_ids.mapped('state')
+	# 		for pi in self.picking_ids:
+	# 			if pi.state == 'assigned':
+	# 				pi.action_confirm()
+	# 				pi.move_lines._action_assign()
+	# 				pi.action_assign()
+	# 				return pi.button_validate()
+	# 			if pi.state in ('waiting','confirmed'):
+	# 				return pi.button_validate()
+	# 		return True
+
+	def conf(self):
+		return self.action_confirm()
 		check = [False]
 		check = self.mapped('order_line.bloqueo')
 		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
@@ -86,7 +133,6 @@ class sale(models.Model):
 		na = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.name')
 		ms = 'Se excede el descuento de' + str(self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(na) + '.\n\n'
 		ms += "Las siguientes líneas del pedido exceden el descuento del vendedor:\n\n"
-		_logger.info("U: " + str(U))
 		for linea in self.order_line:
 			if linea.bloqueo:
 				ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(linea.product_uom_qty) + ", Precio unitario: " + str(linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
@@ -111,20 +157,10 @@ class sale(models.Model):
 				'res_id': wiz.id,
 				'context': self.env.context,
 			}
-		_logger.info(self.env.user.id in U)
 		if True not in check or self.env.user.id in U:
-			if self._get_forbidden_state_confirm() & set(self.mapped('state')):
-				raise UserError(_('It is not allowed to confirm an order in the following states: %s') % (', '.join(self._get_forbidden_state_confirm())))
-			for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
-				order.message_subscribe([order.partner_id.id])
-			self.write({'state': 'sale','date_order': fields.Datetime.now()})
-			context = self._context.copy()
-			context.pop('default_name', None)
-			self.with_context(context)._action_confirm()
-			if self.env.user.has_group('sale.group_auto_done_setting'):
-				self.action_done()
-			if self.company_id.auto_picking:
-				sta = self.picking_ids.mapped('state')
+			return self.action_confirm()			
+		if self.company_id.auto_picking:
+			sta = self.picking_ids.mapped('state')
 			for pi in self.picking_ids:
 				if pi.state == 'assigned':
 					pi.action_confirm()
@@ -133,20 +169,6 @@ class sale(models.Model):
 					return pi.button_validate()
 				if pi.state in ('waiting','confirmed'):
 					return pi.button_validate()
-			return True
-
-	# def action_confirm(self):
-	# 	return self.conf()
-	# 	if self.company_id.auto_picking:
-	# 		sta = self.picking_ids.mapped('state')
-	# 		for pi in self.picking_ids:
-	# 			if pi.state == 'assigned':
-	# 				pi.action_confirm()
-	# 				pi.move_lines._action_assign()
-	# 				pi.action_assign()
-	# 				return pi.button_validate()
-	# 			if pi.state in ('waiting','confirmed'):
-	# 				return pi.button_validate()
 
 
 
