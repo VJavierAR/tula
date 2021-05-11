@@ -172,7 +172,6 @@ class sale(models.Model):
 					return pi.button_validate()
 	"""
 
-
 	@api.onchange('productos_sugeridos')
 	def agregarci(self):
 		for sug in self.productos_sugeridos:

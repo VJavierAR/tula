@@ -20,12 +20,12 @@ class Alerta_limite_de_credito(models.TransientModel):
 
     def confirmar_sale(self):
         _logger.info("Confirmando...")
+        self.sale_id.action_confirm()
         self.sale_id.write(
             {
                 'bloqueo_limite_credito': False
             }
         )
-        self.sale_id.action_confirm()
 
 
 class AlertaDescuento(models.TransientModel):
