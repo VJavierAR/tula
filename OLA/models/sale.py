@@ -542,13 +542,13 @@ class sale(models.Model):
 	    result = super(sale, self).create(vals)
 	    return result
 
-	def write(self, vals):
-		check = self.mapped('order_line.bloqueo')
-		em = self.company_id
-		if True in check:
-			vals['state']='draft'
-		result = super(sale, self).write(vals)
-		return result
+	#def write(self, vals):
+	#	check = self.mapped('order_line.bloqueo')
+	#	em = self.company_id
+	#	if True in check:
+	#		vals['state']='draft'
+	#	result = super(sale, self).write(vals)
+	#	return result
 
 	@api.onchange('order_line')
 	def test(self):
