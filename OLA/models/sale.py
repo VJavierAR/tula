@@ -134,6 +134,9 @@ class sale(models.Model):
 		na = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.name')
 		ms = 'Se excede el descuento de' + str(self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(na) + '.\n\n'
 		ms += "Las siguientes líneas del pedido exceden el descuento del vendedor:\n\n"
+		_logger.info('1'+str(self.env.user.id in U))
+		_logger.info('1'+str(self.env.user.id in U))
+		_logger.info('1'+str(self.env.user.id in U))
 		for linea in self.order_line:
 			if linea.bloqueo:
 				ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(linea.product_uom_qty) + ", Precio unitario: " + str(linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
@@ -531,14 +534,6 @@ class sale(models.Model):
 	        vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
 	    result = super(sale, self).create(vals)
 	    return result
-
-	#def write(self, vals):
-	#	check = self.mapped('order_line.bloqueo')
-	#	em = self.company_id
-	#	if True in check:
-	#		vals['state']='draft'
-	#	result = super(sale, self).write(vals)
-	#	return result
 
 	@api.onchange('order_line')
 	def test(self):
