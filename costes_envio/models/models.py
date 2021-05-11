@@ -88,7 +88,7 @@ class LandedCostLine(models.Model):
     		t.append(s)
     	return t
 
-    split_method = fields.Selection(get_split, string='Split Method', required=True)
+    split_method = fields.Selection(get_split, string='Split Method', required=False)
 
 class defineCost(models.Model):
 	_name='define.cost'
