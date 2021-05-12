@@ -215,6 +215,13 @@
                         </field>
                       </group>
                     </page>
+                    <page name="alerta_limite_de_credito" string="Alertas" attrs="{'invisible': [('bloqueo_limite_credito', '=', False)] }">
+                        <field name="mensaje_limite_de_credito" readonly="1" force_save="1" />
+                        <!--
+                        <group name="group_left_alerta_limite_de_credito">
+                        </group>
+                        -->
+                    </page>
                 </xpath>
                 <!--
                 <xpath expr="//field[@name='payment_term_id']" position="after">
@@ -255,7 +262,6 @@
 
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="bloqueo_limite_credito" invisible="1" readonly="1" force_save="1" />
-                    <field name="mensaje_limite_de_credito" invisible="1" />
                     <field name="urgencia" />
                     <field name="limite_credito_actual" />
                     <field name="limite_credito_conglomerado_actual" />
