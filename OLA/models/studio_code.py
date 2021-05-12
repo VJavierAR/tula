@@ -14,7 +14,7 @@ class ProductProduct(models.Model):
 		store=True
 	)
 
-	@api.onchange('standard_price', 'x_studio_utilidad_')
+	@api.depends('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
 		caulculo = (self.standard_price * self.x_studio_utilidad_ / 100) + self.standard_price
 		self.x_preciominimo = caulculo
@@ -37,7 +37,7 @@ class ProductTemplate(models.Model):
 		check_company=True
 	)
 
-	@api.onchange('standard_price', 'x_studio_utilidad_')
+	@api.depends('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
 		self.x_studio_precio_mnimo = (self.standard_price * self.x_studio_utilidad_ / 100) + self.standard_price
 
