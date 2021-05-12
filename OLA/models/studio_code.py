@@ -18,8 +18,8 @@ class ProductProduct(models.Model):
 	def _compute_x_preciominimo(self):
 		for rec in self:
 			caulculo = (rec.standard_price * rec.x_studio_utilidad_ / 100) + rec.standard_price
-			rec.x_preciominimo = caulculo
-			rec.x_studio_precio_mnimo = caulculo
+			rec['x_preciominimo'] = caulculo
+			rec['x_studio_precio_mnimo'] = caulculo
 
 
 class ProductTemplate(models.Model):
@@ -41,7 +41,7 @@ class ProductTemplate(models.Model):
 	@api.depends('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
 		for rec in self:
-			rec.x_studio_precio_mnimo = (rec.standard_price * rec.x_studio_utilidad_ / 100) + rec.standard_price
+			rec['x_studio_precio_mnimo'] = (rec.standard_price * rec.x_studio_utilidad_ / 100) + rec.standard_price
 
 
 class StockMove(models.Model):
