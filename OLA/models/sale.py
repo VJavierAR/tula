@@ -72,7 +72,9 @@ class sale(models.Model):
 		[
 			('draft', 'Quotation'),
 			('sent', 'Quotation Sent'),
-			('auto', 'Autorizar'),
+			('auto', 'Autorizar con descuento excedido'),
+			('auto limite de credito', 'Autorizar con límite de crédito excedido o factura vencida'),
+			('auto todo', 'Autorizar excediendo límite de crédito, descuento o factura vencida'),
 			('sale', 'Sales Order'),
 			('done', 'Locked'),
 			('cancel', 'Cancelled'),
@@ -87,6 +89,7 @@ class sale(models.Model):
 
 		if self.env.user.id not in U and (True in check or self.bloqueo_limite_credito):
 			ms = ""
+			nuevo_estado = str(self.state)
 			if True in check:
 				ms = 'Se excede el descuento de' + str(
 					self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(
@@ -97,9 +100,13 @@ class sale(models.Model):
 						ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(
 							linea.product_uom_qty) + ", Precio unitario: " + str(
 							linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
+				nuevo_estado = 'auto'
 			if self.bloqueo_limite_credito:
 				ms += "".rstrip() + "\n" + self.mensaje_limite_de_credito
-			self.write({'state': 'auto'})
+				nuevo_estado = 'auto limite de credito'
+			if self.bloqueo_limite_credito and True in check:
+				nuevo_estado = 'auto todo'
+			self.write({'state': nuevo_estado})
 			template_id2 = self.env.ref('OLA.notify_descuento_email_template')
 			mail = template_id2.generate_email(self.id)
 			mail['email_to'] = str(m).replace('[', '').replace(']', '').replace('\'', '')
