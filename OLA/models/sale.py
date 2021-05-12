@@ -91,7 +91,7 @@ class sale(models.Model):
 			ms = ""
 			nuevo_estado = str(self.state)
 			if True in check:
-				ms = 'Se excede el descuento de' + str(
+				ms = 'Se excede el descuento de ' + str(
 					self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(
 					na) + '.\n\n'
 				ms += "Las siguientes líneas del pedido exceden el descuento del vendedor:\n\n"
@@ -103,7 +103,10 @@ class sale(models.Model):
 				nuevo_estado = 'auto'
 				self.bloqueo_limite_credito = True
 				if self.mensaje_limite_de_credito:
-					self.mensaje_limite_de_credito = ms + "".rstrip() + "\n" + self.mensaje_limite_de_credito
+					solo_limites_ms = str(self.mensaje_limite_de_credito).split("%")[-1]
+					self.mensaje_limite_de_credito = ms + "".rstrip() + "\n" + solo_limites_ms
+				else:
+					self.mensaje_limite_de_credito = ms + "".rstrip() + "\n"
 			if self.bloqueo_limite_credito:
 				nuevo_estado = 'auto limite de credito'
 			if self.bloqueo_limite_credito and True in check:
