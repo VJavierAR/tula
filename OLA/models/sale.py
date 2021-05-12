@@ -78,24 +78,33 @@ class sale(models.Model):
 			('cancel', 'Cancelled'),
 		], string='Status', readonly=True, copy=False, index=True, tracking=3, default='draft')
 
-
 	def conf(self):
 		check = [False]
 		check = self.mapped('order_line.bloqueo')
 		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
 		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
 		na = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.name')
-		ms = 'Se excede el descuento de' + str(self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(na) + '.\n\n'
-		ms += "Las siguientes líneas del pedido exceden el descuento del vendedor:\n\n"
-		for linea in self.order_line:
-			if linea.bloqueo:
-				ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(linea.product_uom_qty) + ", Precio unitario: " + str(linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
-		if self.env.user.id not in U and True in check:
+
+		if self.env.user.id not in U and (True in check or self.bloqueo_limite_credito):
+			ms = ""
+			if True in check:
+				ms = 'Se excede el descuento de' + str(
+					self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(
+					na) + '.\n\n'
+				ms += "Las siguientes líneas del pedido exceden el descuento del vendedor:\n\n"
+				for linea in self.order_line:
+					if linea.bloqueo:
+						ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(
+							linea.product_uom_qty) + ", Precio unitario: " + str(
+							linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
+			if self.bloqueo_limite_credito:
+				ms += "".rstrip() + "\n" + self.mensaje_limite_de_credito
 			self.write({'state': 'auto'})
 			template_id2 = self.env.ref('OLA.notify_descuento_email_template')
 			mail = template_id2.generate_email(self.id)
 			mail['email_to'] = str(m).replace('[', '').replace(']', '').replace('\'', '')
 			self.env['mail.mail'].create(mail).send()
+
 			view = self.env.ref('OLA.sale_order_alerta_descuento_view')
 			wiz = self.env['sale.order.alerta.descuento'].create({'mensaje': ms})
 			return {
