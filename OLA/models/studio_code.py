@@ -12,6 +12,13 @@ class ProductProduct(models.Model):
 	x_preciominimo = fields.Float(
 		string='Precio mínimo',
 		store=True,
+		#compute='_compute_x_preciominimo'
+	)
+
+	x_studio_precio_mnimo = fields.Float(
+		string='Precio mínimo',
+		# related='product_variant_id.x_preciominimo',
+		store=True,
 		compute='_compute_x_preciominimo'
 	)
 
