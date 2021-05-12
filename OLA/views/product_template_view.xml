@@ -68,8 +68,8 @@
                     </page>
                 </xpath>
                 <xpath expr="//field[@name='company_id']" position="after">
-                    <field name="x_studio_utilidad_" string="Utilidad (%)"/>
-                    <field name="x_studio_precio_mnimo" string="Precio mínimo"/>
+                    <field name="x_studio_utilidad_" string="Utilidad (%)" force_save="1"/>
+                    <field name="x_studio_precio_mnimo" string="Precio mínimo" force_save="1"/>
                 </xpath>
 
             </field>
@@ -80,8 +80,10 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
               <xpath expr="//field[@name='company_id']" position="after">
+                  <!--
                 <field name="x_studio_utilidad_" invisible="1"/>
                 <field name="x_studio_precio_mnimo" invisible="1"/>
+                  -->
               </xpath>
               <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                 <page name="studio_page_uOIKV" string="Sugerido">
