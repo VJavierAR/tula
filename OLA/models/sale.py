@@ -101,8 +101,10 @@ class sale(models.Model):
 							linea.product_uom_qty) + ", Precio unitario: " + str(
 							linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
 				nuevo_estado = 'auto'
+				self.bloqueo_limite_credito = True
+				if self.mensaje_limite_de_credito:
+					self.mensaje_limite_de_credito = ms + "".rstrip() + "\n" + self.mensaje_limite_de_credito
 			if self.bloqueo_limite_credito:
-				ms += "".rstrip() + "\n" + self.mensaje_limite_de_credito
 				nuevo_estado = 'auto limite de credito'
 			if self.bloqueo_limite_credito and True in check:
 				nuevo_estado = 'auto todo'
@@ -113,7 +115,7 @@ class sale(models.Model):
 			self.env['mail.mail'].create(mail).send()
 
 			view = self.env.ref('OLA.sale_order_alerta_descuento_view')
-			wiz = self.env['sale.order.alerta.descuento'].create({'mensaje': ms})
+			wiz = self.env['sale.order.alerta.descuento'].create({'mensaje': self.mensaje_limite_de_credito})
 			return {
 				'alerta': True,
 				'name': _('Alerta'),
@@ -127,7 +129,8 @@ class sale(models.Model):
 				'context': self.env.context,
 			}
 		if True not in check or self.env.user.id in U:
-			self.action_confirm()			
+			self.action_confirm()
+			self.bloqueo_limite_credito = False
 			if self.company_id.auto_picking:
 				sta = self.picking_ids.mapped('state')
 				for pi in self.picking_ids.filtered(lambda x:x.state!='cancel'):

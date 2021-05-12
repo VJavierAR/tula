@@ -276,9 +276,10 @@
                 <xpath expr="//button[@name='action_confirm']" position="attributes">
                     <attribute name="name">conf</attribute>
                     <!--<attribute name="attrs">{'invisible': ['|', ('state', 'in', ['cancel','done']), ('bloqueo_limite_credito', '=', True)] }</attribute>-->
-                    <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['cancel','done'])] }</attribute>
+                    <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['cancel', 'done', 'sale'])] }</attribute>
                 </xpath>
 
+                <!--
                 <xpath expr="//button[@name='conf']" position="after">
                     <button string="Confirmar excediendo límite de crédito"
                             name="autorizar_sale_limite_de_credito"
@@ -288,7 +289,7 @@
                             groups="OLA.group_confirm_sale_excede_limite_credito"
                             />
                 </xpath>
-
+                -->
 
             </field>
         </record>
