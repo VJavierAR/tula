@@ -11,6 +11,9 @@ class AccountMove(models.Model):
         string='Intento de cambio no permitido',
         compute='_compute_cambio_no_permitido'
     )
+    tramite = fields.Char(
+        string='Estado Tramite'        
+    )
 
     @api.onchange('invoice_payment_term_id', 'invoice_line_ids', 'amount_total')
     def cambio_no_permitido(self):

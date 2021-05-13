@@ -71,10 +71,11 @@ class Pago(models.Model):
     
     @api.onchange('deposito')
     def cehckDepositi(self):
-        
-        if not self.partner_id.numeroUnico and self.deposito :           
-           depo=self.env['account.payment'] .search([('deposito','=',self.deposito)])
-           if len(depo)>0:
-              self.deposito=False
-              return {'value':{},'warning':{'title':'warning','message':'Valor ya ocupado'}}
-                     
+        if self.partner_type=='customer':
+            if not self.partner_id.numeroUnico and self.deposito :           
+               depo=self.env['account.payment'] .search([('deposito','=',self.deposito)])
+               if len(depo)>0:
+                  self.deposito=False
+                  return {'value':{},'warning':{'title':'warning','message':'Valor ya ocupado'}}
+        if self.partner_type!='customer':             
+            self.deposito=''             
