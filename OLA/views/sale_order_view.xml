@@ -215,7 +215,7 @@
                         </field>
                       </group>
                     </page>
-                    <page name="alerta_limite_de_credito" string="Alertas" attrs="{'invisible': [('bloqueo_limite_credito', '=', False)] }">
+                    <page name="alerta_limite_de_credito" string="Alertas" attrs="{'invisible': [('bloqueo_limite_credito', '=', False), ('bloqueo_limite_descuento', '=', False)] }">
                         <field name="mensaje_limite_de_credito" readonly="1" force_save="1" />
                         <!--
                         <group name="group_left_alerta_limite_de_credito">
