@@ -165,6 +165,7 @@ class sale(models.Model):
 		if True not in check or self.env.user.id in U:
 			self.action_confirm()
 			self.bloqueo_limite_credito = False
+			self.bloqueo_limite_descuento = False
 			if self.company_id.auto_picking:
 				sta = self.picking_ids.mapped('state')
 				for pi in self.picking_ids.filtered(lambda x:x.state!='cancel'):
