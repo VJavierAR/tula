@@ -260,7 +260,7 @@
                     <widget name="web_ribbon"
                             text="Bloqueado"
                             bg_color="bg-danger"
-                            attrs="{'invisible': ['|', ('bloqueo_limite_credito', '=', False), ('bloqueo_limite_descuento', '=', False)] }"/>
+                            attrs="{'invisible': [('bloqueo_limite_credito', '=', False), ('bloqueo_limite_descuento', '=', False)] }"/>
                 </xpath>
 
                 <xpath expr="//field[@name='validity_date']" position="before">
