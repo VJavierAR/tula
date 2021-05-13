@@ -257,11 +257,15 @@
                 </xpath>
 
                 <xpath expr="//form[1]/sheet[1]/div[@name='button_box'][1]" position="before">
-                    <widget name="web_ribbon" text="Bloqueado" bg_color="bg-danger" attrs="{'invisible': [('bloqueo_limite_credito', '=', False)]}"/>
+                    <widget name="web_ribbon"
+                            text="Bloqueado"
+                            bg_color="bg-danger"
+                            attrs="{'invisible': ['|', ('bloqueo_limite_credito', '=', False), ('bloqueo_limite_descuento', '=', False)] }"/>
                 </xpath>
 
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="bloqueo_limite_credito" invisible="1" readonly="1" force_save="1" />
+                    <field name="bloqueo_limite_descuento" invisible="1" readonly="1" force_save="1" />
                     <field name="urgencia" />
                     <field name="limite_credito_actual" />
                     <field name="limite_credito_conglomerado_actual" />

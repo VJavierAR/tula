@@ -16,6 +16,11 @@ class sale(models.Model):
 		default=False,
 		store=True
 	)
+	bloqueo_limite_descuento = fields.Boolean(
+		string='Bloqueo por exceder límite de descuento',
+		default=False,
+		store=True
+	)
 	mensaje_limite_de_credito = fields.Text(
 		string='Mensaje al exceder límite de crédito',
 		store=True
@@ -82,41 +87,65 @@ class sale(models.Model):
 
 	def conf(self):
 		check = [False]
+		genera_alerta = False
+		bloquear = False
 		check = self.mapped('order_line.bloqueo')
-		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
-		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
-		na = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.name')
+		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede descuento")]).mapped('users.id')
+		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede descuento")]).mapped('users.email')
+		na = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede descuento")]).mapped('users.name')
 
-		if self.env.user.id not in U and (True in check or self.bloqueo_limite_credito):
+		ids_grupo_limites = self.env['res.groups'].sudo().search(
+			[("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
+		mails_grupo_limites = self.env['res.groups'].sudo().search(
+			[("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.email')
+		names_grupo_limites = self.env['res.groups'].sudo().search(
+			[("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.name')
+
+		nuevo_estado = str(self.state)
+
+		# Si usuario no esta entre los que validan excediendo descuentos y una linea excede el desuento del usuario
+		if self.env.user.id not in U and True in check:
+			# Agregando mensaje que excede descuento
 			ms = ""
-			nuevo_estado = str(self.state)
-			if True in check:
-				ms = 'Se excede el descuento de ' + str(
-					self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(
-					na) + '.\n\n'
-				ms += "Las siguientes líneas del pedido exceden el descuento del vendedor:\n\n"
-				for linea in self.order_line:
-					if linea.bloqueo:
-						ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(
-							linea.product_uom_qty) + ", Precio unitario: " + str(
-							linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
-				nuevo_estado = 'auto'
-				self.bloqueo_limite_credito = True
-				if self.mensaje_limite_de_credito:
-					solo_limites_ms = str(self.mensaje_limite_de_credito).split("%")[-1]
-					self.mensaje_limite_de_credito = ms + "".rstrip() + "\n" + solo_limites_ms
-				else:
-					self.mensaje_limite_de_credito = ms + "".rstrip() + "\n"
-			if self.bloqueo_limite_credito:
-				nuevo_estado = 'auto limite de credito'
-			if self.bloqueo_limite_credito and True in check:
-				nuevo_estado = 'auto todo'
-			self.write({'state': nuevo_estado})
+			ms = 'Se excede el descuento de ' + str(
+				self.env.user.max_discount) + '% permitido, se envio una alerta a los usuarios: ' + str(
+				na) + '.\n\n'
+			ms += "Las siguientes líneas del pedido exceden el descuento del vendedor:\n\n"
+			for linea in self.order_line:
+				if linea.bloqueo:
+					ms += "Producto: " + str(linea.name) + ", Cantidad: " + str(
+						linea.product_uom_qty) + ", Precio unitario: " + str(
+						linea.price_unit) + ", Descuento: " + str(linea.discount) + "%\n"
+			if self.mensaje_limite_de_credito:
+				solo_limites_ms = str(self.mensaje_limite_de_credito).split("%")[-1]
+				self.mensaje_limite_de_credito = ms + "".rstrip() + "\n" + solo_limites_ms
+			else:
+				self.mensaje_limite_de_credito = ms + "".rstrip() + "\n"
+			bloquear = True
+			# Enviando alerta por correo
 			template_id2 = self.env.ref('OLA.notify_descuento_email_template')
 			mail = template_id2.generate_email(self.id)
 			mail['email_to'] = str(m).replace('[', '').replace(']', '').replace('\'', '')
 			self.env['mail.mail'].create(mail).send()
+			genera_alerta = True
 
+		# Si usuario no esta entre los que valida excediendo limites de credito y excede limite de credito
+		if self.env.user.id not in ids_grupo_limites and self.bloqueo_limite_credito:
+			genera_alerta = True
+
+		# Comprobando si cambia el estado
+		if True in check:
+			nuevo_estado = 'auto'
+		if self.bloqueo_limite_credito:
+			nuevo_estado = 'auto limite de credito'
+		if self.bloqueo_limite_credito and True in check:
+			nuevo_estado = 'auto todo'
+
+		if genera_alerta:
+			self.write({
+				'state': nuevo_estado,
+				'bloqueo_limite_descuento': bloquear
+			})
 			view = self.env.ref('OLA.sale_order_alerta_descuento_view')
 			wiz = self.env['sale.order.alerta.descuento'].create({'mensaje': self.mensaje_limite_de_credito})
 			return {
@@ -131,6 +160,8 @@ class sale(models.Model):
 				'res_id': wiz.id,
 				'context': self.env.context,
 			}
+
+		# Si no hay lineas excediendo descuentos o el usuario esta entre los que valida excediendo descuentos
 		if True not in check or self.env.user.id in U:
 			self.action_confirm()
 			self.bloqueo_limite_credito = False
