@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/templates.xml',
         'wizard/pagos_wizard.xml',
+        'views/account_move_mail.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
