@@ -4,7 +4,7 @@
            
            <field name="name">Notificación</field>
            <field name="model_id" ref="account.model_account_move"/>
-           <field name="email_from">${(object.company_id.email |safe)}</field>
+           <field name="email_from">${(object.partner_id.correoFac |safe)}</field>
 <!--
            <field name="report_template" ref="account_followup.report_followup_print_all"/>
 -->
