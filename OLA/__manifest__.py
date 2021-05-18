@@ -27,7 +27,7 @@
         'wizard/stock_picking_wizard_view.xml',
         'wizard/sale_order_wizard_view.xml',
         'views/templates.xml',
-        'wizard/pagos_wizard.xml',
+        #'wizard/pagos_wizard.xml',
     ],
     'installable': True,
     'application': True,

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report" model="ir.actions.act_window">
+        <field name="name">Tramite</field>
+        <field name="res_model">account.correo</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_move" />
+   
+    </record>
+    <record id="view_report_form" model="ir.ui.view">
+        <field name="model">account.correo</field>
+        <field name="arch" type="xml">
+            <form string="Choose The Details">
+                <group>
+                    <group>
+                       <!--
+                        <field name="date_from" />
+                        <field name="date_to"/>
+                        -->
+                    </group>
+                </group>
+                <footer>
+                    <button name="mensaje" string="mandar " type="object" class="oe_highlight" />
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>
