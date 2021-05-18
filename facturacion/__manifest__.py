@@ -34,6 +34,7 @@
         'wizard/pagos_wizard.xml',
         'views/account_move_mail.xml',
         'report/reporte.xml',
+        'report/reporteC.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
