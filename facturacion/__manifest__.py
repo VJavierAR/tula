@@ -33,6 +33,7 @@
         'views/templates.xml',
         'wizard/pagos_wizard.xml',
         'views/account_move_mail.xml',
+        'report/reporte.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
