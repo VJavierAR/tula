@@ -32,15 +32,20 @@ class TestReport(TransientModel):
         help = "",
     )
 
+
     def mensaje(self):       
         pal=''
+        #template_id2 = self.env.ref('OLA.notify_descuento_email_template')
+        #mail = template_id2.generate_email(self.id)
+        #mail['email_to'] = str(m).replace('[', '').replace(']', '').replace('\'', '')
+        #self.env['mail.mail'].create(mail).send()
         for move in self.move_ids:
-            mail_template = self.env['mail.template'].search([('id', '=', 52)])
+            mail_template = self.env.ref('facturacion.reporte_seguimiento')
             if mail_template:
                mail_template.write({
                     'email_to': move.partner_id.correoFac,
                     })             
-            sen=self.env['mail.template'].browse(mail_template.id).send_mail(move.partner_id.id,force_send=True)             
+            sen=self.env['mail.template'].browse(mail_template.id).send_mail(move.partner_id.id,force_send=True)
             if sen:
-                move.write({'tramite':'tramitado'})
+                move.write({'tramite':'tramitadoo'})
         #raise exceptions.ValidationError(str(self.move_ids))
