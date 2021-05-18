@@ -16,12 +16,12 @@
 
             <![CDATA[
                 <br/>
-                <p>Se genero la solicitud ${object.name} con un descuento no permitido</p>
+                <p>hola</p>
                 <br/>
                  ]]>
 
            </field>
-
+ <field name="report_template" ref="reporte_de_seguimiento"/>
 
        </record>
     </data>
