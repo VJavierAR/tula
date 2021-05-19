@@ -31,6 +31,7 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/account_move_view.xml',
         'wizard/pagos_wizard.xml',
         'views/account_move_mail.xml',
         'report/reporte.xml',
