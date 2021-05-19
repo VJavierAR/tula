@@ -36,16 +36,11 @@ class TestReport(TransientModel):
     def mensaje(self):       
         pal=''
         re=[]
-        for move in self.move_ids:
-            re.append(move.partner_id.id)
         mail_template = self.env.ref('facturacion.reporte_seguimiento')
-        newlista=set(re)
-        for idr in newlista:
-            wt = self.env['res.partner']
-            correo = wt.search([('id', '=', int(idr))]).correoFac
+        for move in self.move_ids:                                                            
             mail_template.write({
-                    'email_to': correo,
+                    'email_to': move.partner_id.correoFac,
                     })            
-            sen=self.env['mail.template'].browse(mail_template.id).send_mail(idr,force_send=True)
+            sen=self.env['mail.template'].browse(mail_template.id).send_mail(move.id,force_send=True)
             if sen:
                 move.write({'tramite':'tramitadoo'})
