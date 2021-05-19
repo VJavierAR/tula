@@ -7,20 +7,48 @@
             <br>Dear  <t t-esc="docs.partner_id.name"/>,</br>
             Exception made if there was a mistake of ours, it seems that the following amount stays unpaid. Please, takeappropriate measures in order to carry out this payment in the next 8 days.Would your payment have been carried out after this mail was sent, please ignore this      message. Do not hesitateto contact our accounting department.Best Regards
             <t t-set="suma" t-value="0"/>
+            
+            
+            <table class="table table-sm o_main_table">
+                				<thead>
+                        
+					<tr>
+						<t t-set="colspan" />
+						<th class="text-left"></th>
+						<th class="text-right">Fecha</th>
+						<th class="text-right">Fecha de Vencimiento</th>
+						<th class="text-right">Origen</th>
+						<th class="text-right">Comunicacion</th>
+                        <th class="text-right">Adeudo total</th>
+					</tr>
+                                        
+				</thead>
+                <tbody class="sale_tbody">
 			<t t-foreach="docs" t-as="doc" >
                 <t t-foreach="doc.partner_id.invoice_ids" t-as="facturas" >
                     
                     <t t-if="facturas.state=='posted'  and facturas.type=='out_invoice'  ">
                         <t t-set="suma" t-value="suma+facturas.amount_residual"/>
-                       <br><t t-esc="facturas.name"/> <t t-esc="facturas.invoice_date"/>  <t t-esc="facturas.invoice_date_due"/>  <t t-esc="facturas.name"/>-<t t-esc="facturas.ref"/> <t t-esc="facturas.amount_residual"/></br>
+                        <tr>         
+                       <td><span t-field="facturas.name"/> </td>
+                       <td><span t-field="facturas.invoice_date"/> </td>
+                       <td><span t-field="facturas.invoice_date_due"/></td> 
+                       <td><span t-field="facturas.invoice_origin"/>  </td>
+                        <td><span t-field="facturas.name"/>-<t t-esc="facturas.ref"/> </td>
+                        <td><span t-field="facturas.amount_residual"/></td>
+                            </tr>                        
                     </t>	
                 </t>	
 			</t>
+                    	</tbody>
+			</table>
+            
+            
                        <br>Adeudo Total</br>  <t t-esc="suma"/> .
             
              <t t-foreach="docs.partner_id.invoice_ids" t-as="o" >
                         <t t-if="o.state=='posted'  and o.type=='out_invoice'  ">
-                            <t t-call="web.external_layout">
+                         <!--   <t t-call="web.external_layout">-->
                 <t t-set="o" t-value="o.with_context(lang=lang)"/>
                 <t t-set="address">
                     <address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
@@ -215,6 +243,6 @@
             
             
                 
-            </t>
+           <!-- </t>-->
 	</template>
 </odoo>
