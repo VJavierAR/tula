@@ -31,11 +31,11 @@
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
-        'views/account_move_view.xml',
-        'views/account_move_mail.xml',
-        'wizard/pagos_wizard.xml',        
         'report/reporte.xml',
         'report/reportC.xml',
+        'views/account_move_view.xml',
+        'views/account_move_mail.xml',
+        'wizard/pagos_wizard.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
