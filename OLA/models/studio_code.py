@@ -21,17 +21,40 @@ class ProductProduct(models.Model):
 		store=True,
 		compute='_compute_x_preciominimo'
 	)
+	x_studio_utilidad_ = fields.Float(
+		string='Utilidad precio mínimo (%)',
+		store=True,
+		company_dependent=True,
+		check_company=True
+	)
+
+	list_price = fields.Float(
+		string="Precio de venta",
+		store=True,
+		copy=True,
+	)
+	x_studio_utilidad_precio_de_venta = fields.Float(
+		string='Utilidad precio de venta (%)',
+		store=True,
+		company_dependent=True,
+		check_company=True
+	)
 
 	@api.depends('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
 		for rec in self:
-			caulculo = (rec.standard_price * rec.x_studio_utilidad_ / 100) + rec.standard_price
-			rec['x_preciominimo'] = caulculo
-			rec['x_studio_precio_mnimo'] = caulculo
+			if rec.standard_price and rec.x_studio_utilidad_:
+				caulculo = (rec.standard_price * rec.x_studio_utilidad_ / 100) + rec.standard_price
+				rec['x_preciominimo'] = caulculo
+				rec['x_studio_precio_mnimo'] = caulculo
+
+	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
+	def cambio_precio_de_venta(self):
+		self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 
 
 class ProductTemplate(models.Model):
-	_inherit='product.template'
+	_inherit = 'product.template'
 
 	x_studio_precio_mnimo = fields.Float(
 		string='Precio mínimo',
@@ -41,7 +64,19 @@ class ProductTemplate(models.Model):
 	)
 
 	x_studio_utilidad_ = fields.Float(
-		string='Utilidad (%)',
+		string='Utilidad precio mínimo (%)',
+		store=True,
+		company_dependent=True,
+		check_company=True
+	)
+
+	list_price = fields.Float(
+		string="Precio de venta",
+		store=True,
+		copy=True,
+	)
+	x_studio_utilidad_precio_de_venta = fields.Float(
+		string='Utilidad precio de venta (%)',
 		store=True,
 		company_dependent=True,
 		check_company=True
@@ -50,8 +85,12 @@ class ProductTemplate(models.Model):
 	@api.depends('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
 		for rec in self:
-			rec['x_studio_precio_mnimo'] = (rec.standard_price * rec.x_studio_utilidad_ / 100) + rec.standard_price
+			if rec.standard_price and rec.x_studio_utilidad_:
+				rec['x_studio_precio_mnimo'] = (rec.standard_price * rec.x_studio_utilidad_ / 100) + rec.standard_price
 
+	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
+	def cambio_precio_de_venta(self):
+		self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 
 class StockMove(models.Model):
 	_inherit='stock.move'
@@ -172,7 +211,7 @@ class SaleOrderLine(models.Model):
 	def _compute_x_value1_id(self):
 		#for record in self:
 		if self.product_id.id:
-			if self.qty_available_today >= 1 and self.product_uom_qty > self.qty_available_today:
+			if self.sudo().qty_available_today >= 1 and self.product_uom_qty > self.sudo().qty_available_today:
 				self.x_value1_id = 'No hay suficiente stock'
 			elif self.qty_available_today >= 1 and self.product_uom_qty <= self.qty_available_today:
 				self.x_value1_id = 'Si hay stock'

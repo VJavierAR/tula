@@ -5,12 +5,13 @@ from odoo.exceptions import AccessDenied
 import logging, ast
 _logger = logging.getLogger(__name__)
 
+
 class saleOr(models.Model):
 	_inherit='sale.order.line'
 
 	bloqueo = fields.Boolean(
-		string = 'Bloqueo por límite de descuento',
-		default = False
+		string='Bloqueo por límite de descuento',
+		default=False
 	)
 	existencias = fields.Char(
 		string="Almacén/Cantidad",
@@ -74,11 +75,17 @@ class saleOr(models.Model):
 	@api.onchange('price_unit', 'discount')
 	def precio_minimo(self):
 		d = self.env.user.max_discount
-		_logger.info("límite de descuento: " + str(d))
-		if self.discount > d:
-			self.bloqueo = True
-		if self.discount <= d:
-			self.bloqueo = False
+		descuento_cliente = self.order_partner_id.limite_de_descuento
+		if descuento_cliente > d:
+			if self.discount > descuento_cliente:
+				self.bloqueo = True
+			else:
+				self.bloqueo = False
+		else:
+			if self.discount > d:
+				self.bloqueo = True
+			else:
+				self.bloqueo = False
 
 		genero_alertas = False
 		title = "Alertas: "

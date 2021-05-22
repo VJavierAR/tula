@@ -68,8 +68,12 @@
                     </page>
                 </xpath>
                 <xpath expr="//field[@name='company_id']" position="after">
-                    <field name="x_studio_utilidad_" string="Utilidad (%)" force_save="1"/>
+                    <field name="x_studio_utilidad_" force_save="1"/>
                     <field name="x_studio_precio_mnimo" string="Precio mínimo" force_save="1"/>
+                </xpath>
+
+                <xpath expr="//label[@for='list_price']" position="before">
+                    <field name="x_studio_utilidad_precio_de_venta" force_save="1"/>
                 </xpath>
 
             </field>
