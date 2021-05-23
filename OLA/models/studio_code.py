@@ -2,16 +2,19 @@ from odoo import models, fields, api,_
 import datetime, time
 from odoo import exceptions
 from odoo.exceptions import AccessDenied
+from odoo.tools import float_is_zero, float_repr
 import logging, ast
 _logger = logging.getLogger(__name__)
 
 
 class ProductProduct(models.Model):
-	_inherit='product.product'
+	_inherit = 'product.product'
 
 	x_preciominimo = fields.Float(
 		string='Precio mínimo',
 		store=True,
+		company_dependent=True,
+		check_company=True,
 		#compute='_compute_x_preciominimo'
 	)
 
@@ -19,6 +22,8 @@ class ProductProduct(models.Model):
 		string='Precio mínimo',
 		# related='product_variant_id.x_preciominimo',
 		store=True,
+		company_dependent=True,
+		check_company=True,
 		compute='_compute_x_preciominimo'
 	)
 	x_studio_utilidad_ = fields.Float(
@@ -32,6 +37,8 @@ class ProductProduct(models.Model):
 		string="Precio de venta",
 		store=True,
 		copy=True,
+		company_dependent=True,
+		check_company=True,
 	)
 	x_studio_utilidad_precio_de_venta = fields.Float(
 		string='Utilidad precio de venta (%)',
@@ -52,15 +59,19 @@ class ProductProduct(models.Model):
 	def cambio_precio_de_venta(self):
 		self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 
+	def actualiza_precio_de_venta_y_precio_minimo(self):
+		self._compute_x_preciominimo()
+		self.cambio_precio_de_venta()
 
 class ProductTemplate(models.Model):
 	_inherit = 'product.template'
 
 	x_studio_precio_mnimo = fields.Float(
 		string='Precio mínimo',
-		#related='product_variant_id.x_preciominimo',
 		store=True,
-		compute='_compute_x_preciominimo'
+		company_dependent=True,
+		check_company=True,
+		#compute='_compute_x_preciominimo'
 	)
 
 	x_studio_utilidad_ = fields.Float(
@@ -74,6 +85,8 @@ class ProductTemplate(models.Model):
 		string="Precio de venta",
 		store=True,
 		copy=True,
+		company_dependent=True,
+		check_company=True,
 	)
 	x_studio_utilidad_precio_de_venta = fields.Float(
 		string='Utilidad precio de venta (%)',
@@ -82,15 +95,20 @@ class ProductTemplate(models.Model):
 		check_company=True
 	)
 
-	@api.depends('standard_price', 'x_studio_utilidad_')
+	@api.onchange('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
-		for rec in self:
-			if rec.standard_price and rec.x_studio_utilidad_:
-				rec['x_studio_precio_mnimo'] = (rec.standard_price * rec.x_studio_utilidad_ / 100) + rec.standard_price
+		# for rec in self:
+		#  if rec.standard_price and rec.x_studio_utilidad_:
+		self.x_studio_precio_mnimo = (self.standard_price * self.x_studio_utilidad_ / 100) + self.standard_price
 
 	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
 	def cambio_precio_de_venta(self):
 		self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
+
+	def actualiza_precio_de_venta_y_precio_minimo(self):
+		self._compute_x_preciominimo()
+		self.cambio_precio_de_venta()
+
 
 class StockMove(models.Model):
 	_inherit='stock.move'

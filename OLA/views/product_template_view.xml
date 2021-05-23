@@ -73,6 +73,7 @@
                 </xpath>
 
                 <xpath expr="//label[@for='list_price']" position="before">
+                    <button name="actualiza_precio_de_venta_y_precio_minimo" string="actualizar precio mínimo y precio de venta" class="oe_highlight" type="object"/>
                     <field name="x_studio_utilidad_precio_de_venta" force_save="1"/>
                 </xpath>
 

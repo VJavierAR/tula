@@ -232,7 +232,7 @@
                 </xpath>
                 -->
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
-                    <field name="x_value1_id" string="Estado del producto" optional="hide"/>
+                    <field name="x_value1_id" string="Estado del producto" optional="hide" readonly="1"/>
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
                     <field name="existencias" readonly="1" force_save="1"  optional="show" />
