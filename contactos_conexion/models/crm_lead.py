@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 
 class CRM(models.Model):
-    _inherit = 'crm.'
+    _inherit = 'crm.lead'
     _description = 'Cambios'
 
     def conect(self):
