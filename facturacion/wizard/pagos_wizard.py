@@ -11,6 +11,9 @@ import xmlrpc.client
 from datetime import date
 from odoo.exceptions import UserError
 from odoo import exceptions, _
+from odoo.tools import email_re
+import base64
+
 
 _logger = logging.getLogger(__name__)
 
@@ -18,12 +21,20 @@ _logger = logging.getLogger(__name__)
 class TestReport(TransientModel):
     _name = 'account.correo'
     _description = 'Tramite'
+    
+    #_inherit = 'mail.compose.message'
    
-    date_from = fields.Date(string='From')
-    date_to = fields.Date(string='To')
-
+    date_from = fields.Char(string='From')
+    date_to = fields.Char(string='Para',compute='_archivo_a')
+    body = fields.Char(string='body')
+    subject = fields.Char(string='subject')
+    attachment_ids=fields.Many2many('ir.attachment', string="attachment")
+    
     def _default_move_ids(self):
+        
         return self.env['account.move'].browse(self.env.context.get('active_ids'))
+    
+    
 
     move_ids = fields.Many2many(
         string = 'Tickets',
@@ -31,12 +42,51 @@ class TestReport(TransientModel):
         default = lambda self: self._default_move_ids(),
         help = "",
     )
+    
+        
+    @api.onchange('date_from')
+    def _archivo_a(self):        
+        pdf = self.env.ref('facturacion.reporte_seguimiento')       
+        
+        
+        pdf = self.env.ref('facturacion.reporte_de_seguimiento').sudo().render_qweb_pdf([self.move_ids[0].id])[0]
+        a=self.env['ir.attachment'].create({
+            'name': "reporteSeguimiento.pdf",
+            'type': 'binary',
+            'res_id': self.move_ids[0].id,
+            'res_model': 'account.correo',
+            'datas': base64.b64encode(pdf),
+            'mimetype': 'application/x-pdf',
+            
+        })
+        
+        self.date_to=str(self.move_ids[0].partner_id.correoFac)
+        self.date_from=''
+        self.subject='Reporte de seguimiento'
+        self.body="<br>Dear  "+str(self.move_ids[0].partner_id.name)+",</br>Exception made if there was a mistake of ours, it seems that the following amount stays unpaid. Please, takeappropriate measures in order to carry out this payment in the next 8 days.Would your payment have been carried out after this mail was sent, please ignore this      message. Do not hesitateto contact our accounting department.Best Regards"
+        self.attachment_ids=[(6,0,[a.id])]
+    
+    
+    
 
+    
+    
+    
+    
+
+
+
+        
+        
+        
+        
+
+        
+    
 
     def mensaje(self):       
         pal=''
-        re=[]
-        
+        re=[]        
         mail_template = self.env.ref('facturacion.reporte_seguimiento')
         clientes=[]
         for move in self.move_ids:                                                            
@@ -48,6 +98,8 @@ class TestReport(TransientModel):
         for send in finalL:
             cliente = cli.search([('id', '=', send)])
             mail_template.write({
-                    'email_to': cliente.correoFac,
+                    'email_to': self.date_to,
+                    'body_html': self.body,
+                
                     })
             sen=self.env['mail.template'].browse(mail_template.id).send_mail(cliente.invoice_ids[0].id,force_send=True) 
