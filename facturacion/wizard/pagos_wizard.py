@@ -24,8 +24,8 @@ class TestReport(TransientModel):
     
     #_inherit = 'mail.compose.message'
    
-    date_from = fields.Char(string='From')
-    date_to = fields.Char(string='Para',compute='_archivo_a')
+    date_from = fields.Char(string='From',compute='_archivo_a')
+    date_to = fields.Char(string='Para')
     body = fields.Char(string='body')
     subject = fields.Char(string='subject')
     attachment_ids=fields.Many2many('ir.attachment', string="attachment")
