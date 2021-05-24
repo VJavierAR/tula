@@ -62,7 +62,7 @@ class TestReport(TransientModel):
         
         self.date_to=str(self.move_ids[0].partner_id.correoFac)
         self.date_from=''
-        self.subject='Reporte de seguimiento'
+        self.subject='Reporte de seguimiento .'
         self.body="<br>Dear  "+str(self.move_ids[0].partner_id.name)+",</br>Exception made if there was a mistake of ours, it seems that the following amount stays unpaid. Please, takeappropriate measures in order to carry out this payment in the next 8 days.Would your payment have been carried out after this mail was sent, please ignore this      message. Do not hesitateto contact our accounting department.Best Regards"
         self.attachment_ids=[(6,0,[a.id])]
     
@@ -97,9 +97,12 @@ class TestReport(TransientModel):
         
         for send in finalL:
             cliente = cli.search([('id', '=', send)])
-            mail_template.write({
+            vals={
                     'email_to': self.date_to,
                     'body_html': self.body,
-                
-                    })
-            sen=self.env['mail.template'].browse(mail_template.id).send_mail(cliente.invoice_ids[0].id,force_send=True) 
+                    'attachment_ids': self.attachment_ids,
+                    'subject': self.subject
+            }
+            mail_id = self.env['mail.mail'].create(vals)
+            mail_id.send()
+
