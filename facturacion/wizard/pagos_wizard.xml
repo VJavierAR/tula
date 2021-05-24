@@ -13,14 +13,22 @@
         <field name="model">account.correo</field>
         <field name="arch" type="xml">
             <form string="Choose The Details">
-                <group>
-                    <group>
-                       <!--
-                        <field name="date_from" />
-                        <field name="date_to"/>
-                        -->
-                    </group>
-                </group>
+                                                                                                                        
+                    
+                        
+                        
+                        <field name="date_from"  invisible="1" />
+                        <field name="subject"  />
+                        <field name="date_to" />
+                                
+                        <field name="body"  widget="html" />
+                       <group col="4">
+                        <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" colspan="2"/>
+
+                        <!--<field name="template_id" options="{'no_create': True}" context="{'default_model': model, 'default_body_html': body, 'default_subject': subject}"/>-->
+                   </group> 
+                   
+                    
                 <footer>
                     <button name="mensaje" string="mandar " type="object" class="oe_highlight" />
                     or
