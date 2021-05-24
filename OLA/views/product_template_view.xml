@@ -69,11 +69,15 @@
                 </xpath>
                 <xpath expr="//field[@name='company_id']" position="after">
                     <field name="x_studio_utilidad_" force_save="1"/>
-                    <field name="x_studio_precio_mnimo" string="Precio mínimo" force_save="1"/>
+                    <field name="x_studio_precio_mnimo" string="Precio mínimo" force_save="1" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='list_price']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                    <attribute name="force_save">1</attribute>
                 </xpath>
 
                 <xpath expr="//label[@for='list_price']" position="before">
-                    <button name="actualiza_precio_de_venta_y_precio_minimo" string="actualizar precio mínimo y precio de venta" class="oe_highlight" type="object"/>
+                    <!--<button name="actualiza_precio_de_venta_y_precio_minimo" string="actualizar precio mínimo y precio de venta" class="oe_highlight" type="object"/>-->
                     <field name="x_studio_utilidad_precio_de_venta" force_save="1"/>
                 </xpath>
 

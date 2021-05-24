@@ -23,8 +23,8 @@ class ProductProduct(models.Model):
 		# related='product_variant_id.x_preciominimo',
 		store=True,
 		company_dependent=True,
-		check_company=True,
-		compute='_compute_x_preciominimo'
+		#check_company=True,
+		#compute='_compute_x_preciominimo'
 	)
 	x_studio_utilidad_ = fields.Float(
 		string='Utilidad precio mínimo (%)',
@@ -38,7 +38,7 @@ class ProductProduct(models.Model):
 		store=True,
 		copy=True,
 		company_dependent=True,
-		check_company=True,
+		#check_company=True,
 	)
 	x_studio_utilidad_precio_de_venta = fields.Float(
 		string='Utilidad precio de venta (%)',
@@ -46,7 +46,7 @@ class ProductProduct(models.Model):
 		company_dependent=True,
 		check_company=True
 	)
-
+	"""
 	@api.depends('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
 		for rec in self:
@@ -58,10 +58,38 @@ class ProductProduct(models.Model):
 	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
 	def cambio_precio_de_venta(self):
 		self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
+	"""
+
+	# @api.depends('standard_price', 'x_studio_utilidad_')
+	@api.onchange('standard_price', 'x_studio_utilidad_')
+	@api.depends_context('force_company')
+	def _compute_x_preciominimo(self):
+		company = self.env.context.get('force_company', False)
+		for rec in self:
+			if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(
+					force_company=self.env.company.id).x_studio_utilidad_:
+				rec.x_studio_precio_mnimo = (rec.with_context(
+					force_company=self.env.company.id).standard_price * rec.with_context(
+					force_company=self.env.company.id).x_studio_utilidad_ / 100) + rec.with_context(
+					force_company=self.env.company.id).standard_price
+
+	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
+	@api.depends_context('force_company')
+	def cambio_precio_de_venta(self):
+		company = self.env.context.get('force_company', False)
+		for rec in self:
+			if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(
+					force_company=self.env.company.id).x_studio_utilidad_precio_de_venta:
+				rec.list_price = (rec.with_context(
+					force_company=self.env.company.id).standard_price * rec.with_context(
+					force_company=self.env.company.id).x_studio_utilidad_precio_de_venta / 100) + rec.with_context(
+					force_company=self.env.company.id).standard_price
+		# self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 
 	def actualiza_precio_de_venta_y_precio_minimo(self):
 		self._compute_x_preciominimo()
 		self.cambio_precio_de_venta()
+
 
 class ProductTemplate(models.Model):
 	_inherit = 'product.template'
@@ -70,7 +98,7 @@ class ProductTemplate(models.Model):
 		string='Precio mínimo',
 		store=True,
 		company_dependent=True,
-		check_company=True,
+		#check_company=True,
 		#compute='_compute_x_preciominimo'
 	)
 
@@ -86,7 +114,7 @@ class ProductTemplate(models.Model):
 		store=True,
 		copy=True,
 		company_dependent=True,
-		check_company=True,
+		#check_company=True,
 	)
 	x_studio_utilidad_precio_de_venta = fields.Float(
 		string='Utilidad precio de venta (%)',
@@ -95,15 +123,23 @@ class ProductTemplate(models.Model):
 		check_company=True
 	)
 
+	#@api.depends('standard_price', 'x_studio_utilidad_')
 	@api.onchange('standard_price', 'x_studio_utilidad_')
+	@api.depends_context('force_company')
 	def _compute_x_preciominimo(self):
-		# for rec in self:
-		#  if rec.standard_price and rec.x_studio_utilidad_:
-		self.x_studio_precio_mnimo = (self.standard_price * self.x_studio_utilidad_ / 100) + self.standard_price
+		company = self.env.context.get('force_company', False)
+		for rec in self:
+			if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(force_company=self.env.company.id).x_studio_utilidad_:
+				rec.x_studio_precio_mnimo = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_ / 100) + rec.with_context(force_company=self.env.company.id).standard_price
 
 	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
+	@api.depends_context('force_company')
 	def cambio_precio_de_venta(self):
-		self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
+		company = self.env.context.get('force_company', False)
+		for rec in self:
+			if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta:
+				rec.list_price = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta / 100) + rec.with_context(force_company=self.env.company.id).standard_price
+				# self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 
 	def actualiza_precio_de_venta_y_precio_minimo(self):
 		self._compute_x_preciominimo()
