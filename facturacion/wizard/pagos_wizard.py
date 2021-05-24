@@ -41,7 +41,7 @@ class TestReport(TransientModel):
         clientes=[]
         for move in self.move_ids:                                                            
             clientes.append(move.partner_id.id)
-            move.write({'tramite':'tramitadoo'})
+            move.write({'tramite':'tramitadas'})
         finalL=set(clientes)    
         cli = self.env['res.partner']
         
