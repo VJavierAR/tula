@@ -86,6 +86,31 @@ class ProductProduct(models.Model):
 					force_company=self.env.company.id).standard_price
 		# self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 
+	def write(self, vals):
+		if 'standard_price' in vals:
+			#_logger.info("self.id: " + str(self.id))
+			producto = self.env['product.template'].search([('id', '=', self.id)])
+			#_logger.info("producto: " + str(producto))
+			# actualiza precio de venta
+			coste = vals['standard_price']
+			vals['list_price'] = (coste * producto.x_studio_utilidad_precio_de_venta / 100) + coste
+			producto.list_price = (coste * producto.x_studio_utilidad_precio_de_venta / 100) + coste
+			# actualiza precio minimo
+			vals['x_studio_precio_mnimo'] = (coste * producto.x_studio_utilidad_ / 100) + coste
+			producto.x_studio_precio_mnimo = (coste * producto.x_studio_utilidad_ / 100) + coste
+
+			vals['x_studio_utilidad_precio_de_venta'] = producto.x_studio_utilidad_precio_de_venta
+			vals['x_studio_utilidad_'] = producto.x_studio_utilidad_
+			#_logger.info(
+			#	"standard_price: " + str(coste) +
+			#	" self.x_studio_utilidad_precio_de_venta: " + str(producto.x_studio_utilidad_precio_de_venta) +
+			#	" self.x_studio_utilidad_: " + str(producto.x_studio_utilidad_) +
+			#	" vals: " + str(vals)
+			#)
+		res = super(ProductProduct, self).write(vals)
+		#_logger.info("res: " + str(res))
+		return res
+
 	def actualiza_precio_de_venta_y_precio_minimo(self):
 		self._compute_x_preciominimo()
 		self.cambio_precio_de_venta()
@@ -130,7 +155,7 @@ class ProductTemplate(models.Model):
 		company = self.env.context.get('force_company', False)
 		for rec in self:
 			if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(force_company=self.env.company.id).x_studio_utilidad_:
-				rec.x_studio_precio_mnimo = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_ / 100) + rec.with_context(force_company=self.env.company.id).standard_price
+				rec.with_context(force_company=self.env.company.id).x_studio_precio_mnimo = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_ / 100) + rec.with_context(force_company=self.env.company.id).standard_price
 
 	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
 	@api.depends_context('force_company')
@@ -138,7 +163,7 @@ class ProductTemplate(models.Model):
 		company = self.env.context.get('force_company', False)
 		for rec in self:
 			if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta:
-				rec.list_price = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta / 100) + rec.with_context(force_company=self.env.company.id).standard_price
+				rec.with_context(force_company=self.env.company.id).list_price = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta / 100) + rec.with_context(force_company=self.env.company.id).standard_price
 				# self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 
 	def actualiza_precio_de_venta_y_precio_minimo(self):
