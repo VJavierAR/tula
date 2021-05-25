@@ -17,7 +17,7 @@ class ProductProduct(models.Model):
 		check_company=True,
 		#compute='_compute_x_preciominimo'
 	)
-
+	"""
 	x_studio_precio_mnimo = fields.Float(
 		string='Precio mínimo',
 		# related='product_variant_id.x_preciominimo',
@@ -46,6 +46,8 @@ class ProductProduct(models.Model):
 		company_dependent=True,
 		check_company=True
 	)
+	"""
+
 	"""
 	@api.depends('standard_price', 'x_studio_utilidad_')
 	def _compute_x_preciominimo(self):
