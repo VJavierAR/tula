@@ -33,6 +33,25 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     _description = 'Cambios'
 
+    def action_confirm(self):
+        res = super(SaleOrder, self).action_confirm()
+        _logger.info("saleoverride_action_confirm")
+        _logger.info(self)
+        view = self.env.ref('contactos_conexion.sale_order_alerta_view')
+        wiz = self.env['sale.order.alerta'].create({'mensaje': "detenido"})
+        return {
+            'name': _('Alerta'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'sale.order.alerta',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'res_id': wiz.id,
+            'context': self.env.context,
+        }
+        return res
+
     def conect(self):
         task = {"username": username_login, "password": password_login}
         resp = requests.post(url_login, json=task)

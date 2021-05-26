@@ -34,6 +34,7 @@
         'views/crm_view.xml',
         'views/sale_order_view.xml',
         'views/res_partner_view.xml',
+        'wizard/sale_order_wizard_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
