@@ -1,5 +1,6 @@
 <odoo>
     <data>
+        <!--
         <record model="ir.ui.view" id="crm_lead_update">
             <field name="name">crm.lead.update</field>
             <field name="model">crm.lead</field>
@@ -10,5 +11,6 @@
                 </xpath>
             </field>
         </record>
+        -->
     </data>
 </odoo>

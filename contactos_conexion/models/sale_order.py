@@ -9,6 +9,7 @@ import datetime, time
 import pytz
 import base64
 import requests
+
 _logger = logging.getLogger(__name__)
 
 token = ""
@@ -29,7 +30,6 @@ contacto_no_existe = "no"
 
 
 class SaleOrder(models.Model):
-    #_inherit = 'crm.lead'
     _inherit = 'sale.order'
     _description = 'Cambios'
 
@@ -83,8 +83,8 @@ class SaleOrder(models.Model):
             "telefono_celular": "88888888",
             "email": "prubas@promed-sa.com",
             "lugar_trabajo": "San salvador",
-            "direccion_trabajo":"direccion",
-            "email_trabajo":"pruebas@email.com",
+            "direccion_trabajo": "direccion",
+            "email_trabajo": "pruebas@email.com",
             "nombre_establecimiento": "Pruebas Galet",
             "razon_social": "",
             "ruc": "15484414",
