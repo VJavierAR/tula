@@ -23,7 +23,8 @@
     'depends': [
         'base',
         'crm',
-        'sale'
+        'sale',
+        'product',
     ],
 
     # always loaded
