@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="res_partner_form_view_update">
+            <field name="name">res.partner.form.update</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="codigo_naf" force_save="1"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>
