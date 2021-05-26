@@ -8,6 +8,12 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <button name="conect" string="test" class="oe_highlight" type="object"/>
                 </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                    <attribute name="name">action_confirm_validacion</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                    <attribute name="name">action_confirm_validacion</attribute>
+                </xpath>
             </field>
         </record>
     </data>

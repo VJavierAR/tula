@@ -11,3 +11,11 @@ class Partner(models.Model):
         string="Código Naf",
         store=True
     )
+    tipo = fields.Char(
+        string="Tipo",
+        store=True
+    )
+    cedula = fields.Char(
+        string="Cedula",
+        store=True
+    )

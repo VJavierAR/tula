@@ -1,16 +1,17 @@
 <odoo>
     <data>
-        <!--
         <record model="ir.ui.view" id="crm_lead_update">
             <field name="name">crm.lead.update</field>
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_lead_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='team_id']" position="after">
-                    <button name="conect" string="test" class="oe_highlight" type="object"/>
+                    <field name="lugar_trabajo" force_save="1"/>
+                    <field name="nombre_establecimiento" force_save="1"/>
+                    <field name="razon_social" force_save="1"/>
+                    <field name="direccion_comercial" force_save="1"/>
                 </xpath>
             </field>
         </record>
-        -->
     </data>
 </odoo>

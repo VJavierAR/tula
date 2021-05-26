@@ -9,6 +9,8 @@
 
                 <xpath expr="//field[@name='vat']" position="after">
                     <field name="codigo_naf" force_save="1"/>
+                    <field name="tipo" force_save="1"/>
+                    <field name="cedula" force_save="1"/>
                 </xpath>
 
             </field>
