@@ -46,7 +46,6 @@ class SaleOrder(models.Model):
                     resp = self.existe_cliente_naf()
                     if 'existe' in resp and resp['existe'] == 'no':
                         company_id = self.env.company.id
-                        vat = self.env['res.company'].search([['id', '=', company_id]]).vat
                         task = {
                             "tipo_cliente": self.partner_id.tipo or "",
                             "id_crm": self.partner_id.id or "",
@@ -63,23 +62,46 @@ class SaleOrder(models.Model):
                             "razon_social": self.opportunity_id.razon_social or "",
                             "ruc": self.partner_id.vat or "",
                             "direccion_comercial": self.opportunity_id.direccion_comercial or "",
-                            "estado": 2,
-                            "no_cia": vat or "",
-                            # "codigo_vendedor": "SM62",
-                            # "digito_verificador": "DV",
-                            # "contacto": "contactos",
-                            # "ciudad": "San salvador",
-                            # "provincia": "San salvador",
-                            # "pais": "El salvador",
-                            # "pagina_web": "www.pruebas.com"
+                            "estado": self.partner_id.estado,
+                            "no_cia": self.partner_id.no_cia or "",
+                            "codigo_vendedor": self.opportunity_id.user_id.codigo_vendedor or "",
+                            "digito_verificador": self.partner_id.digito_verificador or "",
+                            "contacto": self.opportunity_id.contact_name or "",
+                            "ciudad": self.opportunity_id.city or "",
+                            "provincia": self.opportunity_id.city or "",
+                            "pais": self.opportunity_id.country_id.name or "",
+                            "pagina_web": self.opportunity_id.website
                         }
                         resultado_al_crear = self.creaar_cliente_naf(task=task)
                         if 'existe' in resultado_al_crear:
-                            _logger.info("Ya existe e cliente")
+                            _logger.info("Ya existe e cliente actualizalo")
+                            display_msg = "Se intento crear cliente en NAF pero este ya existe"
+                            self.message_post(body=display_msq)
                         elif 'error' in resultado_al_crear:
+                            display_msg = "Error al crear cliete en NAF"
+                            self.message_post(body=display_msq)
                             _logger.info("Error al crear")
                     elif 'existe' in resp and resp['existe'] == 'si':
-                        _logger.info("existe** ")
+                        _logger.info("existe** name y rcu no se cambian")
+                        self.conect()
+                        task = {
+                            "no_cia": self.partner_id.no_cia or "",
+                            "grupo": self.partner_id.grupo or "",
+                            "no_cliente": self.partner_id.no_cliente or "",
+                            "telefono_fijo": self.partner_id.phone or "",
+                            "telefono_celular": self.partner_id.mobile or "",
+                            "email": self.partner_id.email or "",
+                            "contacto": self.partner_id.name or ""
+                        }
+                        resultado_al_actualizar = self.actualizar_cliente_naf(task=task)
+                        if 'existe' in resultado_al_actualizar:
+                            _logger.info("Ya existe e cliente actualizalo")
+                            display_msg = "Se actualizaron datos de cliete en NAF"
+                            self.message_post(body=display_msq)
+                        elif 'error' in resultado_al_actualizar:
+                            display_msg = "Error al actualizar cliete en NAF"
+                            self.message_post(body=display_msq)
+                            _logger.info("Error al crear")
                     elif 'error' in resp:
                         _logger.info("error ***** " + str(resp['error']))
                 # el plazo de pago no es de contado
@@ -170,7 +192,12 @@ class SaleOrder(models.Model):
                 global token
                 token = json_respuesta['idToken']
                 _logger.info(token)
-                # self.creaar_cliente_naf()
+                #self.existe_cliente_naf()
+                #self.crear_cliente_naf()
+                #self.actualizar_cliente_naf()
+                #self.limite_de_credito_cliente_naf()
+                self.saldo_de_cliente_naf()
+
         else:
             _logger.info("Error al realizar petición")
 
@@ -212,7 +239,7 @@ class SaleOrder(models.Model):
             }
 
     def crear_cliente_naf(self, task=None):
-        """
+
         task = {
             "tipo_cliente": 2,
             "id_crm": 99888795,
@@ -226,7 +253,7 @@ class SaleOrder(models.Model):
             "direccion_trabajo": "direccion",
             "email_trabajo": "pruebas@email.com",
             "nombre_establecimiento": "Pruebas Galet",
-            "razon_social": "",
+            "razon_social": None,
             "ruc": "15484414",
             "direccion_comercial": "El salvador",
             "estado": 2,
@@ -239,7 +266,7 @@ class SaleOrder(models.Model):
             "pais": "El salvador",
             "pagina_web": "www.pruebas.com"
         }
-        """
+
         headers = {
             "auth": token
         }
