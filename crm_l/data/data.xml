@@ -9,14 +9,19 @@
         <field eval="True" name="active"/>
         <field name="model_id" ref="crm.model_crm_lead" />
         <field name="state">code</field>
-        <field name="code">
-            sta=env.ref('crm.stage_lead4')
-            op=model.search([['stage_id','!=',sta.id]])
-            fecha=datetime.datetime.now()
-            for a in op:
-                if(abs((fecha-a.write_date).days)>=90):
-                    a.write({'active':False})
-            </field>
-        </record>
+<field name="code">
+sta=env.ref('crm.stage_lead4')
+op=model.search([['stage_id','!=',sta.id],['conexis','=', True]])
+op2=model.search([['stage_id','!=',sta.id],['conexis','=', False]])
+fecha=datetime.datetime.now()
+for aa in op2:
+    if(abs((fecha-aa.write_date).days)>=180):
+        aa.write({'active':False})
+for a in op:
+    if(abs((fecha-a.write_date).days)>=15):
+	    a.write({'active':False})
+
+        </field>
+    </record>
 </data>
 </odoo>
