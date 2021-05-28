@@ -1,0 +1,4 @@
+.ribbon-top-right {
+    display: flex;
+    justify-content: space-between;
+}
