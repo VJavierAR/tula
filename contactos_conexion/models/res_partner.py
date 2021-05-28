@@ -45,3 +45,8 @@ class Partner(models.Model):
         default=0,
         store=True
     )
+    saldo = fields.Float(
+        string="Saldo",
+        default=0,
+        store=True
+    )
