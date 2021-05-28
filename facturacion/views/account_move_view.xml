@@ -15,8 +15,9 @@
                     <widget name="web_ribbon"
                             text="Tramitado"
                             bg_color="bg-primary"
+                            class="ribbon_tramitado"
                             attrs="{'invisible': [('tramite', '!=', 'tramitadas')] }"
-                            class="ribbon_tramitado"/>
+                            />
                 </xpath>
 
             </field>
