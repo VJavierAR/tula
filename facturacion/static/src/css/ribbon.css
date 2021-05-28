@@ -1,4 +1,5 @@
-.ribbon-top-right {
-    display: flex;
-    justify-content: space-between;
+.ribbon_tramitado {
+    display:inline-block;
+    width:20%;
+    padding:10px
 }
