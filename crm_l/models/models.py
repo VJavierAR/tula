@@ -90,7 +90,7 @@ class crm_l(models.Model):
                     
     @api.onchange('partner_id')
     def cambia_cliente(self):
-        if self._origin.email_form:
-            self.email_form = self._origin.email_form
+        if self._origin.email_from:
+            self.email_from = self._origin.email_from
         if self._origin.phone:
             self.phone = self._origin.phone
