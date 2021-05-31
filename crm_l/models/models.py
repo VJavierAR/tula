@@ -4,11 +4,13 @@ from datetime import datetime
 import logging, ast
 _logger = logging.getLogger(__name__)
 
+
 class crm_l(models.Model):
     _inherit = 'crm.lead'
-    no_referencia=fields.Char()
-    fecha_acto=fields.Datetime()
-    conexis=fields.Boolean(default=False)
+    no_referencia = fields.Char()
+    fecha_acto = fields.Datetime()
+    conexis = fields.Boolean(default=False)
+
     @api.onchange('description')
     def test(self):
         for record in self:
@@ -86,4 +88,9 @@ class crm_l(models.Model):
                     record['fecha_acto']=fecha
                     record['no_referencia']=numero
                     
-                
+    @api.onchange('partner_id')
+    def cambia_cliente(self):
+        if self._origin.email_form:
+            self.email_form = self._origin.email_form
+        if self._origin.phone:
+            self.phone = self._origin.phone

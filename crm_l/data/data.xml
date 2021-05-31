@@ -16,10 +16,10 @@ op2=model.search([['stage_id','!=',sta.id],['conexis','=', False]])
 fecha=datetime.datetime.now()
 for aa in op2:
     if(abs((fecha-aa.write_date).days)>=180):
-        aa.write({'active':False})
+        aa.write({'active':False, 'probability':0, 'write_date': aa._origin.write_date})
 for a in op:
     if(abs((fecha-a.write_date).days)>=15):
-	    a.write({'active':False})
+	    a.write({'active':False, 'probability':0, 'write_date': a._origin.write_date})
 
         </field>
     </record>

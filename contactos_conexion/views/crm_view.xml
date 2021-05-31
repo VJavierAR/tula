@@ -26,6 +26,7 @@
                     </header>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="before">
+                    <field name="id" force_save="1"/>
                     <field name="write_date" force_save="1"/>
                 </xpath>
             </field>
