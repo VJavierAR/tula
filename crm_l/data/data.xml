@@ -13,7 +13,7 @@
 
 sta = env.ref('crm.stage_lead4')
 op = model.search([['stage_id','!=',sta.id]])
-for aa in op
+for aa in op:
     aa.cron_validate_lost()
 """
 sta = env.ref('crm.stage_lead4')
