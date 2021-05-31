@@ -98,19 +98,20 @@ class crm_l(models.Model):
     def cron_validate_lost(self):
         fecha = datetime.now()
         if not self.conexis and abs((fecha - self.write_date).days) >= 180:
-                self.write({'active': False, 'probability': 0})
-                self.env.cr.execute(
-                    "update crm_lead set write_date = '" + str(self._origin.write_date) + "' where  id = " + str(
-                        self.id) + ";")
-                display_msg = "Marcado como perdido al exceder 180 días sin cambios.<br/>Fecha de último cambio: " + \
-                              str(self._origin.write_date) + "<br/>Fecha en que se marca como perida: " + str(fecha)
-                self.message_post(body=display_msg)
+            display_msg = "Marcado como perdido al exceder 180 días sin cambios.<br/>Fecha de último cambio: " + \
+                          str(self._origin.write_date) + "<br/>Fecha en que se marca como perida: " + str(fecha)
+            self.message_post(body=display_msg)
+            self.write({'active': False, 'probability': 0})
+            self.env.cr.execute(
+                "update crm_lead set write_date = '" + str(self._origin.write_date) + "' where  id = " + str(
+                    self.id) + ";")
+
         elif self.conexis and abs((fecha - self.write_date).days) >= 15:
-                self.write({'active': False, 'probability': 0})
-                self.env.cr.execute(
-                    "update crm_lead set write_date = '" + str(self._origin.write_date) + "' where  id = " + str(
-                        self.id) + ";")
-                display_msg = "Marcado como perdido al exceder 15 días sin cambios y ser cargada por conexis o " \
-                              "panamacompra.<br/>Fecha de último cambio: " + str(self._origin.write_date) + \
-                              "<br/>Fecha en que se marca como perida: " + str(fecha)
-                self.message_post(body=display_msg)
+            display_msg = "Marcado como perdido al exceder 15 días sin cambios y ser cargada por conexis o " \
+                          "panamacompra.<br/>Fecha de último cambio: " + str(self._origin.write_date) + \
+                          "<br/>Fecha en que se marca como perida: " + str(fecha)
+            self.message_post(body=display_msg)
+            self.write({'active': False, 'probability': 0})
+            self.env.cr.execute(
+                "update crm_lead set write_date = '" + str(self._origin.write_date) + "' where  id = " + str(
+                    self.id) + ";")
