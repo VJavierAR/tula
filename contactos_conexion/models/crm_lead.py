@@ -49,9 +49,9 @@ class CRM(models.Model):
             _logger.info("Error al realizar petición")
 
     def agrega_dias_write_date(self):
-        date_1 = (datetime.strptime(self.write_date, '%Y-%m-%d') + relativedelta(days=+ 15))
+        date_1 = (datetime.datetime.strptime(self.write_date, '%Y-%m-%d') + relativedelta(days=+ 15))
         self.write_date = date_1
 
     def agrega_meses_write_date(self):
-        date_1 = (datetime.strptime(self.write_date, '%Y-%m-%d') + relativedelta(days=+ 180))
+        date_1 = (datetime.datetime.strptime(self.write_date, '%Y-%m-%d') + relativedelta(days=+ 180))
         self.write_date = date_1
