@@ -10,18 +10,21 @@
             <field name="model_id" ref="crm.model_crm_lead" />
             <field name="state">code</field>
             <field name="code">
-                sta = env.ref('crm.stage_lead4')
-                op = model.search([['stage_id','!=',sta.id],['conexis','=', True]])
-                op2 = model.search([['stage_id','!=',sta.id],['conexis','=', False]])
-                fecha = datetime.datetime.now()
-                for aa in op2:
-                    if(abs((fecha-aa.write_date).days) >= 180):
-                        aa.write({'active':False, 'probability':0})
-                        env.cr.execute("update crm_lead set write_date = '" + str(aa._origin.write_date) + "' where  id = " + str(aa.id) + ";")
-                for a in op:
-                    if(abs((fecha-a.write_date).days) >= 15):
-                        a.write({'active':False, 'probability':0})
-                        env.cr.execute("update crm_lead set write_date = '" + str(a._origin.write_date) + "' where  id = " + str(a.id) + ";")
+records.cron_validate_lost()
+"""
+sta = env.ref('crm.stage_lead4')
+op = model.search([['stage_id','!=',sta.id],['conexis','=', True]])
+op2 = model.search([['stage_id','!=',sta.id],['conexis','=', False]])
+fecha = datetime.datetime.now()
+for aa in op2:
+    if(abs((fecha-aa.write_date).days) >= 180):
+        aa.write({'active':False, 'probability':0, 'description': str(aa._origin.write_date)})
+        env.cr.execute("update crm_lead set write_date = '" + str(aa._origin.write_date) + "' where  id = " + str(aa.id) + ";")
+for a in op:
+    if(abs((fecha-a.write_date).days) >= 15):
+        a.write({'active':False, 'probability':0})
+        env.cr.execute("update crm_lead set write_date = '" + str(a._origin.write_date) + "' where  id = " + str(a.id) + ";")
+"""
             </field>
         </record>
     </data>
