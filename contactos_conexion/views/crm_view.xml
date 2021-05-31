@@ -19,11 +19,14 @@
             <field name="model">crm.lead</field>
             <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
             <field name="arch" type="xml">
-                <xpath expr="/form/*" position="before">
+                <xpath expr="/tree/*" position="before">
                     <header>
                         <button name="agrega_dias_write_date" string="Agrega días" type="object" class="btn-primary"/>
                         <button name="agrega_meses_write_date" string="Agrega meses" type="object" class="btn-primary"/>
                     </header>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="write_date" force_save="1"/>
                 </xpath>
             </field>
         </record>
