@@ -4,6 +4,7 @@ from odoo import models, fields, api
 from email.utils import formataddr
 from odoo.exceptions import UserError, RedirectWarning
 from odoo import exceptions, _
+from dateutil.relativedelta import relativedelta
 import logging, ast
 import datetime, time
 import pytz
@@ -46,3 +47,11 @@ class CRM(models.Model):
                 # self.creaar_cliente_naf()
         else:
             _logger.info("Error al realizar petición")
+
+    def agrega_dias_write_date(self):
+        date_1 = (datetime.strptime(self.write_date, '%Y-%m-%d') + relativedelta(days=+ 15))
+        self.write_date = date_1
+
+    def agrega_meses_write_date(self):
+        date_1 = (datetime.strptime(self.write_date, '%Y-%m-%d') + relativedelta(days=+ 180))
+        self.write_date = date_1

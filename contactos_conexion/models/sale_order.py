@@ -251,11 +251,13 @@ class SaleOrder(models.Model):
             _logger.info("Error al realizar petición")
 
     def existe_cliente_naf(self):
+        """
         task = {
             "NO_CIA": "12",
             "GRUPO": "CP",
             "NO_CLIENTE": "CP-002",
         }
+        """
         headers = {
             "auth": token
         }
@@ -288,7 +290,7 @@ class SaleOrder(models.Model):
             }
 
     def crear_cliente_naf(self, task=None):
-
+        """
         task = {
             "tipo_cliente": 2,
             "id_crm": 99888795,
@@ -315,7 +317,7 @@ class SaleOrder(models.Model):
             "pais": "El salvador",
             "pagina_web": "www.pruebas.com"
         }
-
+        """
         headers = {
             "auth": token
         }
@@ -346,11 +348,13 @@ class SaleOrder(models.Model):
             }
 
     def limite_de_credito_cliente_naf(self, task=None):
+        """
         task = {
             "NO_CIA": "12",
             "GRUPO": "CP",
             "NO_CLIENTE": "CP-002"
         }
+        """
         headers = {
             "auth": token
         }
@@ -379,11 +383,13 @@ class SaleOrder(models.Model):
             }
 
     def saldo_de_cliente_naf(self, task=None):
+        """
         task = {
             "NO_CIA": "12",
             "GRUPO": "CP",
             "NO_CLIENTE": "CP-002"
         }
+        """
         headers = {
             "auth": token
         }
@@ -412,6 +418,7 @@ class SaleOrder(models.Model):
             }
 
     def actualizar_cliente_naf(self, task=None):
+        """
         task = {
             "no_cia": "06",
             "grupo": "C",
@@ -421,6 +428,7 @@ class SaleOrder(models.Model):
             "email": "pruebas@promed-sa.com",
             "contacto": "contactos"
         }
+        """
         headers = {
             "auth": token
         }
