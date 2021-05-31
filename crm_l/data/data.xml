@@ -10,7 +10,11 @@
             <field name="model_id" ref="crm.model_crm_lead" />
             <field name="state">code</field>
             <field name="code">
-records.cron_validate_lost()
+
+sta = env.ref('crm.stage_lead4')
+op = model.search([['stage_id','!=',sta.id]])
+for aa in op
+    aa.cron_validate_lost()
 """
 sta = env.ref('crm.stage_lead4')
 op = model.search([['stage_id','!=',sta.id],['conexis','=', True]])

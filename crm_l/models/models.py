@@ -96,19 +96,14 @@ class crm_l(models.Model):
             self.phone = self._origin.phone
 
     def cron_validate_lost(self):
-        sta = self.env.ref('crm.stage_lead4')
-        op = model.search([['stage_id', '!=', sta.id], ['conexis', '=', True]])
-        op2 = model.search([['stage_id', '!=', sta.id], ['conexis', '=', False]])
         fecha = datetime.datetime.now()
-        for aa in op2:
-            if (abs((fecha - aa.write_date).days) >= 180):
-                aa.write({'active': False, 'probability': 0, 'description': str(aa._origin.write_date)})
+        if not self.conexis and abs((fecha - self.write_date).days) >= 180:
+                self.write({'active': False, 'probability': 0, 'description': str(self._origin.write_date)})
                 self.env.cr.execute(
-                    "update crm_lead set write_date = '" + str(aa._origin.write_date) + "' where  id = " + str(
-                        aa.id) + ";")
-        for a in op:
-            if (abs((fecha - a.write_date).days) >= 15):
-                a.write({'active': False, 'probability': 0})
+                    "update crm_lead set write_date = '" + str(self._origin.write_date) + "' where  id = " + str(
+                        self.id) + ";")
+        elif self.conexis and abs((fecha - self.write_date).days) >= 15:
+                self.write({'active': False, 'probability': 0})
                 self.env.cr.execute(
-                    "update crm_lead set write_date = '" + str(a._origin.write_date) + "' where  id = " + str(
-                        a.id) + ";")
+                    "update crm_lead set write_date = '" + str(self._origin.write_date) + "' where  id = " + str(
+                        self.id) + ";")
