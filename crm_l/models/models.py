@@ -99,7 +99,8 @@ class crm_l(models.Model):
         fecha = datetime.now()
         if not self.conexis and abs((fecha - self.write_date).days) >= 180:
             display_msg = "Marcado como perdido al exceder 180 días sin cambios.<br/>Fecha de último cambio: " + \
-                          str(self._origin.write_date) + "<br/>Fecha en que se marca como perida: " + str(fecha)
+                          str(self._origin.write_date) + "<br/>Fecha en que se marca como perida: " + \
+                          str(fecha.strftime("%m-%d-%Y %H:%M:%S"))
             self.message_post(body=display_msg)
             self.write({'active': False, 'probability': 0})
             self.env.cr.execute(
@@ -109,7 +110,7 @@ class crm_l(models.Model):
         elif self.conexis and abs((fecha - self.write_date).days) >= 15:
             display_msg = "Marcado como perdido al exceder 15 días sin cambios y ser cargada por conexis o " \
                           "panamacompra.<br/>Fecha de último cambio: " + str(self._origin.write_date) + \
-                          "<br/>Fecha en que se marca como perida: " + str(fecha)
+                          "<br/>Fecha en que se marca como perida: " + str(fecha.strftime("%m-%d-%Y %H:%M:%S"))
             self.message_post(body=display_msg)
             self.write({'active': False, 'probability': 0})
             self.env.cr.execute(
