@@ -89,6 +89,7 @@ class crm_l(models.Model):
                     record['website']=URL
                     record['fecha_acto']=fecha
                     record['no_referencia']=numero
+                    record['conexis'] = True
                     
     @api.onchange('partner_id')
     def cambia_cliente(self):
