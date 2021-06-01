@@ -1,7 +1,9 @@
 #-*- coding: utf-8 -*-
 from odoo import models, fields, api
 from datetime import datetime
+import pytz
 import logging, ast
+
 _logger = logging.getLogger(__name__)
 
 
@@ -94,25 +96,34 @@ class crm_l(models.Model):
             self.email_from = self._origin.email_from
         if self._origin.phone:
             self.phone = self._origin.phone
+        if self._origin.website:
+            self.website = self._origin.website
 
     def cron_validate_lost(self):
+        # user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        # fecha = pytz.utc.localize(datetime.now()).astimezone(user_tz)
+        fecha_ultimo_cambio = self._origin.write_date
         fecha = datetime.now()
         if not self.conexis and abs((fecha - self.write_date).days) >= 180:
             display_msg = "Marcado como perdido al exceder 180 días sin cambios.<br/>Fecha de último cambio: " + \
                           str(self._origin.write_date) + "<br/>Fecha en que se marca como perida: " + \
-                          str(fecha.strftime("%m-%d-%Y %H:%M:%S"))
+                          str(fecha.strftime("%m-%d-%Y"))
             self.message_post(body=display_msg)
             self.write({'active': False, 'probability': 0})
+            self.env.cr.commit()
             self.env.cr.execute(
-                "update crm_lead set write_date = '" + str(self._origin.write_date) + "' where  id = " + str(
+                "update crm_lead set write_date = '" + str(fecha_ultimo_cambio) + "' where  id = " + str(
                     self.id) + ";")
+            self.env.cr.commit()
 
         elif self.conexis and abs((fecha - self.write_date).days) >= 15:
             display_msg = "Marcado como perdido al exceder 15 días sin cambios y ser cargada por conexis o " \
                           "panamacompra.<br/>Fecha de último cambio: " + str(self._origin.write_date) + \
-                          "<br/>Fecha en que se marca como perida: " + str(fecha.strftime("%m-%d-%Y %H:%M:%S"))
+                          "<br/>Fecha en que se marca como perida: " + str(fecha.strftime("%m-%d-%Y"))
             self.message_post(body=display_msg)
             self.write({'active': False, 'probability': 0})
+            self.env.cr.commit()
             self.env.cr.execute(
-                "update crm_lead set write_date = '" + str(self._origin.write_date) + "' where  id = " + str(
+                "update crm_lead set write_date = '" + str(fecha_ultimo_cambio) + "' where  id = " + str(
                     self.id) + ";")
+            self.env.cr.commit()
