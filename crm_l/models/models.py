@@ -12,6 +12,10 @@ class crm_l(models.Model):
     no_referencia = fields.Char()
     fecha_acto = fields.Datetime()
     conexis = fields.Boolean(default=False)
+    contacto=fields.Char(string='Contacto Adicional', store=True)
+    telefono=fields.Char(string='Teléfono', store=True)
+    website_conexis = fields.Char(string='Sitio web', store=True)
+    correo_conexis = fields.Char(string='Correo', store=True)
 
     @api.onchange('description')
     def test(self):
@@ -55,10 +59,14 @@ class crm_l(models.Model):
                     record['phone']=telefono
                     record['email_from']=correo
                     record['email_cc']=correo
+                    record['correo_conexis']=correo
                     record['website']=e
                     record['fecha_acto']=date_time_obj
                     record['no_referencia']=p
                     record['mobile']=telefono
+                    record['contacto']=Nombre
+                    record['telefono']=telefono
+                    record['website_conexis'] = e
                     record['conexis']=True
                 if('PANAMA COMPRA' in record.description):
                     na=list(filter(lambda v: 'Nombre del Acto:' in v, d))
@@ -83,10 +91,14 @@ class crm_l(models.Model):
                     record['expected_revenue']=float(price)
                     record['contact_name']=nombre.replace('\t','')
                     record['phone']=telefono.replace('\t','')
+                    record['telefono']=telefono.replace('\t','')
+                    record['contacto']=nombre.replace('\t','')
                     record['mobile']=telefono.replace('\t','')
                     record['email_from']=correo.replace('\t','')
                     record['email_cc']=correo.replace('\t','')
+                    record['correo_conexis'] = correo.replace('\t','')
                     record['website']=URL
+                    record['website_conexis'] = URL
                     record['fecha_acto']=fecha
                     record['no_referencia']=numero
                     record['conexis'] = True

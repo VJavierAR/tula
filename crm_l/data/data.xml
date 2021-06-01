@@ -1,5 +1,5 @@
 <odoo>
-    <data noupdate="1">
+    <data>
         <record id="count_location" model="ir.cron">
             <field name="name">Crm expired</field>
             <field name="interval_number">1</field>
