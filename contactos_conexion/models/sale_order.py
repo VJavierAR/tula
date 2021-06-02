@@ -36,6 +36,7 @@ class SaleOrder(models.Model):
     _description = 'Cambios'
 
     def action_confirm_validacion(self):
+        """
         # si proviene de una oportunidad
         if self.opportunity_id.id:
             # Si el cliente no tiene codigo naf
@@ -228,7 +229,7 @@ class SaleOrder(models.Model):
                         display_msg = "El cliente no esta activo, por lo que no es posible confirmar"
                         self.message_post(body=display_msg)
                         return False
-
+        """
         self.action_confirm()
 
     def conect(self):
@@ -245,19 +246,20 @@ class SaleOrder(models.Model):
                 #self.crear_cliente_naf()
                 #self.actualizar_cliente_naf()
                 #self.limite_de_credito_cliente_naf()
+                self.existe_cliente_naf()
                 self.saldo_de_cliente_naf()
 
         else:
             _logger.info("Error al realizar petición")
 
     def existe_cliente_naf(self):
-        """
+
         task = {
             "NO_CIA": "12",
             "GRUPO": "CP",
             "NO_CLIENTE": "CP-002",
         }
-        """
+
         headers = {
             "auth": token
         }
@@ -383,13 +385,13 @@ class SaleOrder(models.Model):
             }
 
     def saldo_de_cliente_naf(self, task=None):
-        """
+
         task = {
             "NO_CIA": "12",
             "GRUPO": "CP",
             "NO_CLIENTE": "CP-002"
         }
-        """
+
         headers = {
             "auth": token
         }
