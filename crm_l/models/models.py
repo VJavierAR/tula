@@ -149,6 +149,3 @@ class crm_l(models.Model):
                 "update crm_lead set write_date = '" + str(fecha_ultimo_cambio) + "' where  id = " + str(
                     self.id) + ";")
             self.env.cr.commit()
-[4:15 p. m., 1/6/2021] Monserrat Gómez Brenes: https://www.e-connexis.com/leads/leads/lead_ficha.php?a=OTk3MDY4&nwi=2
-[4:16 p. m., 1/6/2021] Monserrat Gómez Brenes: https://www.e-connexis.com/leads/leads/lead_ficha.php?a=OTk2NzM1&nwi=2
-[4:16 p. m., 1/6/2021] Monserrat Gómez Brenes: https://www.e-connexis.com/leads/leads/lead_ficha.php?a=OTk3MDY4&nwi=2
