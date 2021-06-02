@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 from odoo import models, fields, api
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 import logging, ast
 
@@ -10,6 +10,7 @@ _logger = logging.getLogger(__name__)
 class crm_l(models.Model):
     _inherit = 'crm.lead'
     no_referencia = fields.Char()
+    no_acto = fields.Char(string='Número de acto', store=True)
     fecha_acto = fields.Datetime()
     conexis = fields.Boolean(default=False)
     contacto=fields.Char(string='Contacto Adicional', store=True)
@@ -19,6 +20,8 @@ class crm_l(models.Model):
 
     @api.onchange('description')
     def test(self):
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+
         for record in self:
             if record.description:
                 d=record.description.splitlines()
@@ -33,9 +36,11 @@ class crm_l(models.Model):
                     filtered_values2 = list(filter(lambda v: 'Fecha/Hora de Cierre de recepción de ofertas: ' in v, d))
                     if(len(filtered_values2)>0):
                         date_time_str =filtered_values2[0].replace('Fecha/Hora de Cierre de recepción de ofertas: ','').replace('Hora: ','')
-                        date_time_obj = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+                        date_time_obj = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S') + timedelta(hours=6)
+
                     if(len(filtered_values2)==0):
-                        date_time_obj=False
+                        date_time_obj = False
+
                     #listo4
                     p=d[d.index('No. de Proceso:')+1] if('No. de Proceso:' in record.description) else ''
                     #listo5
@@ -61,8 +66,10 @@ class crm_l(models.Model):
                     record['email_cc']=correo
                     record['correo_conexis']=correo
                     record['website']=e
-                    record['fecha_acto']=date_time_obj
+                    record['fecha_acto'] = date_time_obj
+
                     record['no_referencia']=p
+                    record['no_acto'] = p
                     record['mobile']=telefono
                     record['contacto']=Nombre
                     record['telefono']=telefono
@@ -77,7 +84,8 @@ class crm_l(models.Model):
                     fecha=False
                     if(len(da)>0):
                         Fec=da[0].replace('Fecha y Hora de Apertura de Propuestas:	','').replace('- ','')
-                        fecha=datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
+                        fecha=datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=6)
+
                     nu=list(filter(lambda v: 'Número:	' in v, d))
                     numero=nu[0].split('Número:	')[1] if(len(nu)>0) else ''
                     URL='https://www.panamacompra.gob.pa/Inicio/#!/'
@@ -101,6 +109,7 @@ class crm_l(models.Model):
                     record['website_conexis'] = URL
                     record['fecha_acto']=fecha
                     record['no_referencia']=numero
+                    record['no_acto'] = numero
                     record['conexis'] = True
                     
     @api.onchange('partner_id')
@@ -119,7 +128,7 @@ class crm_l(models.Model):
         fecha = datetime.now()
         if not self.conexis and abs((fecha - self.write_date).days) >= 180:
             display_msg = "Marcado como perdido al exceder 180 días sin cambios.<br/>Fecha de último cambio: " + \
-                          str(self._origin.write_date) + "<br/>Fecha en que se marca como perida: " + \
+                          str(self._origin.write_date) + "<br/>Fecha en que se marca como perdida: " + \
                           str(fecha.strftime("%m-%d-%Y"))
             self.message_post(body=display_msg)
             self.write({'active': False, 'probability': 0})
@@ -130,9 +139,9 @@ class crm_l(models.Model):
             self.env.cr.commit()
 
         elif self.conexis and abs((fecha - self.write_date).days) >= 15:
-            display_msg = "Marcado como perdido al exceder 15 días sin cambios y ser cargada por conexis o " \
-                          "panamacompra.<br/>Fecha de último cambio: " + str(self._origin.write_date) + \
-                          "<br/>Fecha en que se marca como perida: " + str(fecha.strftime("%m-%d-%Y"))
+            display_msg = "Marcado como perdido al exceder 15 días sin cambios y ser cargada por Connexis o " \
+                          "Panamacompra.<br/>Fecha de último cambio: " + str(self._origin.write_date) + \
+                          "<br/>Fecha en que se marca como perdida: " + str(fecha.strftime("%m-%d-%Y"))
             self.message_post(body=display_msg)
             self.write({'active': False, 'probability': 0})
             self.env.cr.commit()
@@ -140,3 +149,6 @@ class crm_l(models.Model):
                 "update crm_lead set write_date = '" + str(fecha_ultimo_cambio) + "' where  id = " + str(
                     self.id) + ";")
             self.env.cr.commit()
+[4:15 p. m., 1/6/2021] Monserrat Gómez Brenes: https://www.e-connexis.com/leads/leads/lead_ficha.php?a=OTk3MDY4&nwi=2
+[4:16 p. m., 1/6/2021] Monserrat Gómez Brenes: https://www.e-connexis.com/leads/leads/lead_ficha.php?a=OTk2NzM1&nwi=2
+[4:16 p. m., 1/6/2021] Monserrat Gómez Brenes: https://www.e-connexis.com/leads/leads/lead_ficha.php?a=OTk3MDY4&nwi=2
