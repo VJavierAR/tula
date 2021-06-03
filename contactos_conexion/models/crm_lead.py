@@ -4,6 +4,7 @@ from odoo import models, fields, api
 from email.utils import formataddr
 from odoo.exceptions import UserError, RedirectWarning
 from odoo import exceptions, _
+from dateutil.relativedelta import relativedelta
 import logging, ast
 import datetime, time
 import pytz
@@ -46,3 +47,21 @@ class CRM(models.Model):
                 # self.creaar_cliente_naf()
         else:
             _logger.info("Error al realizar petición")
+
+    def agrega_dias_write_date(self):
+        self.conexis = True
+        date_1 = (datetime.datetime.strptime(self.write_date.strftime("%m-%d-%Y %H:%M:%S"), '%m-%d-%Y %H:%M:%S') + relativedelta(days=+ 15))
+        _logger.info("date_1: " + str(date_1))
+        self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
+
+    def agrega_meses_write_date(self):
+        date_1 = (datetime.datetime.strptime(self.write_date.strftime("%m-%d-%Y %H:%M:%S"),
+                                             '%m-%d-%Y %H:%M:%S') + relativedelta(days=+ 180))
+        _logger.info("date_1: " + str(date_1))
+        self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
+
+    def decrmenta_dias_write_date(self):
+        date_1 = (datetime.datetime.strptime(self.write_date.strftime("%m-%d-%Y %H:%M:%S"),
+                                             '%m-%d-%Y %H:%M:%S') + relativedelta(days=- 15))
+        _logger.info("date_1: " + str(date_1))
+        self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")

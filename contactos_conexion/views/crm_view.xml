@@ -13,5 +13,67 @@
                 </xpath>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="crm_case_tree_view_oppor_update">
+            <field name="name">crm.case.tree.view.oppor.update</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+                <xpath expr="/tree/*" position="before">
+                    <header>
+                        <button name="agrega_dias_write_date" string="Agrega días" type="object" class="btn-primary"/>
+                        <button name="agrega_meses_write_date" string="Agrega meses" type="object" class="btn-primary"/>
+                    </header>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="id" force_save="1"/>
+                    <field name="write_date" force_save="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="crm_case_tree_view_leads_update">
+            <field name="name">crm.case.tree.view.leads.update</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+            <field name="arch" type="xml">
+                <xpath expr="/tree/*" position="before">
+                    <header>
+                        <button name="agrega_dias_write_date" string="Agrega días" type="object" class="btn-primary"/>
+                        <button name="agrega_meses_write_date" string="Agrega meses" type="object" class="btn-primary"/>
+                        <button name="decrmenta_dias_write_date" string="Decrmenta días" type="object" class="btn-primary"/>
+                    </header>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="id" force_save="1"/>
+                    <field name="write_date" force_save="1"/>
+                    <field name="create_date" force_save="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_crm_case_leads_filter_update">
+            <field name="name">view.crm.case.leads.filter.update</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <!--<field name=""/>-->
+                    <filter string="Iniciativas creadas en los ultimos 30 días"
+                            name="iniciativas_30"
+                            domain="[('create_date', '&gt;=', (context_today() + relativedelta(days=-30, weekday=0)).strftime('%Y-%m-%d') )]" />
+                    <filter string="Iniciativas creadas en los ultimos 60 días"
+                            name="iniciativas_60"
+                            domain="[('create_date', '&gt;=', (context_today() + relativedelta(days=-60, weekday=0)).strftime('%Y-%m-%d') )]" />
+                    <filter string="Iniciativas creadas en los ultimos 90 días"
+                            name="iniciativas_90"
+                            domain="[('create_date', '&gt;=', (context_today() + relativedelta(days=-90, weekday=0)).strftime('%Y-%m-%d') )]" />
+                    <filter string="Iniciativas no actualizadas en 5 días"
+                            name="iniciativas_5"
+                            domain="[('write_date', '&gt;=', (context_today() + relativedelta(days=-5, weekday=0)).strftime('%Y-%m-%d') )]" />
+                </xpath>
+            </field>
+        </record>
+
     </data>
 </odoo>

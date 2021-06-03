@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="users_simple_form_view_update">
+            <field name="name">users.simple.form.update</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_simple_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='mobile']" position="after">
+                    <field name="codigo_vendedor" force_save="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

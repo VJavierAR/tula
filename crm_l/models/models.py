@@ -35,6 +35,7 @@ class crm_l(models.Model):
                             value=d[d.index('Presupuesto:')+1].replace('[B./]','').replace(',','').replace(' ','') if('Presupuesto:' in record.description) else '0'
                         if('[B./]' in filtered_values[0]):
                             value=filtered_values[0].replace('Presupuesto: ','').replace('[B./]','').replace(',','').replace(' ','') if(len(filtered_values))>0 else 0
+                    value=filtered_values[0].replace('Presupuesto: ','').replace('[B./]','').replace(',','').replace(' ','') if(len(filtered_values))>0 else 0
                     #listo3
                     filtered_values2 = list(filter(lambda v: 'Fecha/Hora de Cierre de recepción de ofertas: ' in v, d))
                     if(len(filtered_values2)>0):
@@ -49,7 +50,7 @@ class crm_l(models.Model):
                     #listo5
                     values3_temp=list(filter(lambda v: 'Contacto Institucional: ' in v, d))
                     filtered_values3 = values3_temp if(len(values3_temp)>0) else list(filter(lambda v: 'Contacto institucional: ' in v, d))
-                    _logger.info(filtered_values3)
+                    filtered_values3 = list(filter(lambda v: 'Contacto Institucional: ' in v, d))
                     if(len(filtered_values3)>0):
                         cad=filtered_values3[0].replace('Contacto Institucional: ','').split('Nombre:')[1].split('Cargo:')
                         Nombre=cad[0]
