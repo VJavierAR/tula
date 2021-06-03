@@ -47,22 +47,24 @@ class CRM(models.Model):
         store=True,
         default=0
     )
+    tiempo_en_ganar_dias = fields.Integer(
+        string="Días en ganar oportunidad",
+        store=True,
+        default=0
+    )
 
-    def conect(self):
-        task = {"username": username_login, "password": password_login}
-        resp = requests.post(url_login, json=task)
-        if resp.status_code == status_code_correct:
-            json_respuesta = resp.json()
-            _logger.info(json_respuesta)
-            if json_respuesta['error'] == no_error_token:
-                global token
-                token = json_respuesta['idToken']
-                _logger.info(token)
-                # self.creaar_cliente_naf()
-        else:
-            _logger.info("Error al realizar petición")
-
-
+    @api.onchange('stage_id')
+    def tiempo_que_llevo_ganar_oportunidad(self):
+        if self.stage_id.id and self.stage_id.id == 4:
+            today_date = datetime.datetime.strptime(datetime.date.today().strftime("%m-%d-%Y %H:%M:%S"),
+                                                    '%m-%d-%Y %H:%M:%S') + relativedelta(hours=+ 6)
+            fecha_creacion = datetime.datetime.strptime(self.create_date.strftime("%m-%d-%Y %H:%M:%S"),
+                                                        '%m-%d-%Y %H:%M:%S') + relativedelta(hours=+ 6)
+            tiempo_en_ganar = int((today_date - fecha_creacion).days)
+            # _logger.info('today_date: ' + str(today_date))
+            # _logger.info('fecha_creacion:' + str(fecha_creacion))
+            # _logger.info("tiempo_en_ganar: " + str(tiempo_en_ganar))
+            self.tiempo_en_ganar_dias = tiempo_en_ganar
 
     def agrega_dias_write_date(self):
         self.conexis = True

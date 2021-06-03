@@ -13,6 +13,7 @@
                     <field name="proviene_de_iniciativa" force_save="1" invisible="0"/>
                     <field name="fecha_convertida_oportunidad" force_save="1" invisible="0"/>
                     <field name="tiempo_de_conversion" force_save="1" invisible="0"/>
+                    <field name="tiempo_en_ganar_dias" force_save="1" invisible="0"/>
                 </xpath>
             </field>
         </record>
@@ -35,6 +36,7 @@
                     <field name="proviene_de_iniciativa" force_save="1" invisible="0"/>
                     <field name="fecha_convertida_oportunidad" force_save="1" invisible="0"/>
                     <field name="tiempo_de_conversion" force_save="1" invisible="0"/>
+                    <field name="tiempo_en_ganar_dias" force_save="1" invisible="0"/>
                 </xpath>
             </field>
         </record>
@@ -59,6 +61,7 @@
                     <field name="proviene_de_iniciativa" force_save="1" invisible="0"/>
                     <field name="fecha_convertida_oportunidad" force_save="1" invisible="0"/>
                     <field name="tiempo_de_conversion" force_save="1" invisible="0"/>
+                    <field name="tiempo_en_ganar_dias" force_save="1" invisible="0"/>
                 </xpath>
             </field>
         </record>
@@ -106,6 +109,7 @@
                     <separator/>
                     <filter string="Iniciativas convertidas en oportunidades" name="iniciativaToOportunidad" context="{'group_by': 'proviene_de_iniciativa'}"/>
                     <filter string="Tiempo de conversión (iniciativa a oportunidad)" name="iniciativaToOportunidadTime" context="{'group_by': 'tiempo_de_conversion'}"/>
+                    <filter string="Tiempo en ganar oportunidad" name="oportunidadToWon" context="{'group_by': 'tiempo_en_ganar_dias'}"/>
                     <separator/>
                 </xpath>
             </field>
