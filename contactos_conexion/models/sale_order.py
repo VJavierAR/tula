@@ -242,7 +242,7 @@ class SaleOrder(models.Model):
                 global token
                 token = json_respuesta['idToken']
                 _logger.info(token)
-                self.crear_cliente_naf()
+                # self.crear_cliente_naf()
 
                 # self.actualizar_cliente_naf()
                 # self.limite_de_credito_cliente_naf()
@@ -293,7 +293,7 @@ class SaleOrder(models.Model):
             }
 
     def crear_cliente_naf(self, task=None):
-
+        """
         task = {
             "tipo_cliente": 2,
             "id_crm": 99888795,
@@ -320,7 +320,7 @@ class SaleOrder(models.Model):
             "pais": "El salvador",
             "pagina_web": "www.pruebas.com"
         }
-
+        """
         headers = {
             "auth": token
         }
