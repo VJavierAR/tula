@@ -29,6 +29,7 @@
                     </header>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="before">
+                    <field name="create_date" force_save="1"/>
                     <field name="id" force_save="1"/>
                     <field name="write_date" force_save="1"/>
                     <field name="proviene_de_iniciativa" force_save="1" invisible="0"/>
@@ -51,6 +52,7 @@
                     </header>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="before">
+                    <field name="create_date" force_save="1"/>
                     <field name="id" force_save="1"/>
                     <field name="write_date" force_save="1"/>
                     <field name="create_date" force_save="1"/>
@@ -102,8 +104,8 @@
                             name="iniciativas_to_oportunidad"
                             domain="[('proviene_de_iniciativa', '=', True)]" />
                     <separator/>
-                    <filter string="Iniciativas convertidas en oportunidades" name="iniciativaToOportunidad" context="{'group_by':'proviene_de_iniciativa'}"/>
-                    <filter string="Tiempo de conversión (iniciativa a oportunidad)" name="iniciativaToOportunidadTime" context="{'group_by':'fecha_convertida_oportunidad'}"/>
+                    <filter string="Iniciativas convertidas en oportunidades" name="iniciativaToOportunidad" context="{'group_by': 'proviene_de_iniciativa'}"/>
+                    <filter string="Tiempo de conversión (iniciativa a oportunidad)" name="iniciativaToOportunidadTime" context="{'group_by': 'tiempo_de_conversion'}"/>
                     <separator/>
                 </xpath>
             </field>
