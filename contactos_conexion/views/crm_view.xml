@@ -10,6 +10,8 @@
                     <field name="nombre_establecimiento" force_save="1"/>
                     <field name="razon_social" force_save="1"/>
                     <field name="direccion_comercial" force_save="1"/>
+                    <field name="proviene_de_iniciativa" force_save="1" invisible="0"/>
+                    <field name="fecha_convertida_oportunidad" force_save="1" invisible="0"/>
                 </xpath>
             </field>
         </record>
@@ -28,6 +30,8 @@
                 <xpath expr="//field[@name='name']" position="before">
                     <field name="id" force_save="1"/>
                     <field name="write_date" force_save="1"/>
+                    <field name="proviene_de_iniciativa" force_save="1" invisible="0"/>
+                    <field name="fecha_convertida_oportunidad" force_save="1" invisible="0"/>
                 </xpath>
             </field>
         </record>
@@ -48,6 +52,8 @@
                     <field name="id" force_save="1"/>
                     <field name="write_date" force_save="1"/>
                     <field name="create_date" force_save="1"/>
+                    <field name="proviene_de_iniciativa" force_save="1" invisible="0"/>
+                    <field name="fecha_convertida_oportunidad" force_save="1" invisible="0"/>
                 </xpath>
             </field>
         </record>
@@ -59,6 +65,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//search" position="inside">
                     <!--<field name=""/>-->
+                    <separator/>
                     <filter string="Iniciativas creadas en los ultimos 30 días"
                             name="iniciativas_30"
                             domain="[('create_date', '&gt;=', (context_today() + relativedelta(days=-30, weekday=0)).strftime('%Y-%m-%d') )]" />
@@ -71,6 +78,30 @@
                     <filter string="Iniciativas no actualizadas en 5 días"
                             name="iniciativas_5"
                             domain="[('write_date', '&gt;=', (context_today() + relativedelta(days=-5, weekday=0)).strftime('%Y-%m-%d') )]" />
+                    <separator/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_crm_case_opportunities_filter_update">
+            <field name="name">view.crm.case.opportunities.filter.update</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <!--<field name=""/>-->
+                    <separator/>
+                    <filter string="Iniciativas convertidas en oportunidades"
+                            name="iniciativas_to_oportunidad"
+                            domain="[('proviene_de_iniciativa', '=', True)]" />
+                    <filter string="Iniciativas convertidas en oportunidades"
+                            name="iniciativas_to_oportunidad"
+                            domain="[('proviene_de_iniciativa', '=', True)]" />
+                    <!--fecha_convertida_oportunidad-->
+                    <separator/>
+                    <filter string="Iniciativas convertidas en oportunidades" name="iniciativaToOportunidad" context="{'group_by':'proviene_de_iniciativa'}"/>
+                    <separator/>
                 </xpath>
             </field>
         </record>

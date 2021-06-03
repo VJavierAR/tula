@@ -33,6 +33,15 @@ class CRM(models.Model):
         string="Dirección comercial",
         store=True
     )
+    proviene_de_iniciativa = fields.Boolean(
+        string="Proviene de iniciativa",
+        store=True,
+        default=False
+    )
+    fecha_convertida_oportunidad = fields.Datetime(
+        string="Fecha en que fue convertida a oportunidad",
+        store=True
+    )
 
     def conect(self):
         task = {"username": username_login, "password": password_login}
@@ -47,6 +56,8 @@ class CRM(models.Model):
                 # self.creaar_cliente_naf()
         else:
             _logger.info("Error al realizar petición")
+
+
 
     def agrega_dias_write_date(self):
         self.conexis = True
@@ -65,3 +76,20 @@ class CRM(models.Model):
                                              '%m-%d-%Y %H:%M:%S') + relativedelta(days=- 15))
         _logger.info("date_1: " + str(date_1))
         self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
+
+
+class CRMWizard(models.TransientModel):
+    _inherit = 'crm.lead2opportunity.partner'
+    _description = 'Cambios'
+
+    def action_apply(self):
+        res = super(CRMWizard, self).action_apply()
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        fecha = pytz.utc.localize(datetime.datetime.now()).astimezone(user_tz)
+        result_opportunities = self.env['crm.lead'].browse(self._context.get('active_ids', []))
+        for oportunidad in result_opportunities:
+            oportunidad.proviene_de_iniciativa = True
+            oportunidad.fecha_convertida_oportunidad = datetime.datetime.strptime(fecha.strftime("%m-%d-%Y %H:%M:%S"),
+                                                                                  '%m-%d-%Y %H:%M:%S') + relativedelta(
+                hours=+ 6)
+        return res
