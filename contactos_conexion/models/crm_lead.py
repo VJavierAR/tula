@@ -42,6 +42,11 @@ class CRM(models.Model):
         string="Fecha en que fue convertida a oportunidad",
         store=True
     )
+    tiempo_de_conversion = fields.Integer(
+        string="Tiempo iniciativa a oportunidad",
+        store=True,
+        default=0
+    )
 
     def conect(self):
         task = {"username": username_login, "password": password_login}
@@ -92,4 +97,5 @@ class CRMWizard(models.TransientModel):
             oportunidad.fecha_convertida_oportunidad = datetime.datetime.strptime(fecha.strftime("%m-%d-%Y %H:%M:%S"),
                                                                                   '%m-%d-%Y %H:%M:%S') + relativedelta(
                 hours=+ 6)
+            oportunidad.tiempo_de_conversion = int((oportunidad.fecha_convertida_oportunidad - oportunidad.create_date).days)
         return res
