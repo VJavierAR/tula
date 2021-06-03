@@ -50,11 +50,10 @@ class crm_l(models.Model):
                     #listo5
                     values3_temp=list(filter(lambda v: 'Contacto Institucional: ' in v, d))
                     filtered_values3 = values3_temp if(len(values3_temp)>0) else list(filter(lambda v: 'Contacto institucional: ' in v, d))
-                    filtered_values3 = list(filter(lambda v: 'Contacto Institucional: ' in v, d))
                     if(len(filtered_values3)>0):
-                        cad=filtered_values3[0].replace('Contacto Institucional: ','').split('Nombre:')[1].split('Cargo:')
+                        cad=filtered_values3[0].replace('Contacto Institucional: ','').split('Nombre:')[1].split('Cargo:') if('Cargo:' in filtered_values3[0]) else filtered_values3[0].replace('Contacto Institucional: ','').split('Nombre:')[1].split('Teléfono:')
                         Nombre=cad[0]
-                        tem=cad[1].split('Teléfono:')
+                        tem=cad[1].split('Teléfono:') if('Cargo:' in filtered_values3[0]) else cad
                         temp2=tem[1].split('Correo:')
                         telefono=temp2[0]
                         correo=temp2[1]
