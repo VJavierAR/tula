@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <template id="assets_backend" inherit_id="web.assets_backend" name="tree view menu">
+        <template id="assets_backend" inherit_id="web.assets_backend" name="facturacion assets">
             <xpath expr="." positio="inside">
                 <link rel="stylesheet" type="text/css" href="/facturacion/static/src/css/ribbon.css"/>
             </xpath>
