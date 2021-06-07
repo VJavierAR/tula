@@ -162,9 +162,9 @@ class Crm_l(models.Model):
             dia=data.create_date.day
             mes=months[data.create_date.month-1]
             if(dia>15):
-                data.write({'quincena':'2.ª quincena '+str(mes)})
+                data.write({'quincena':'2.ª quincena '+str(mes)+' '+data.create_date.year})
             else:
-                data.write({'quincena':'1.ª quincena '+str(mes)})
+                data.write({'quincena':'1.ª quincena '+str(mes)+' '+data.create_date.year})
 
     @api.model 
     def create(self, vals):
@@ -173,8 +173,8 @@ class Crm_l(models.Model):
         dia=fecha.day
         mes=mes=months[fecha.month-1]
         if(dia>15):
-            vals['quincena']='2.ª quincena '+str(mes)
+            vals['quincena']='2.ª quincena '+str(mes)+' '+fecha.year
         else:
-            vals['quincena']='1.ª quincena '+str(mes)
+            vals['quincena']='1.ª quincena '+str(mes)+' '+fecha.year
         rec = super(Crm_l, self).create(vals)      
         return rec
