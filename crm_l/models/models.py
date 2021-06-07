@@ -5,7 +5,7 @@ import pytz
 import logging, ast
 
 _logger = logging.getLogger(__name__)
-
+months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
 
 class crm_l(models.Model):
     _inherit = 'crm.lead'
@@ -17,7 +17,8 @@ class crm_l(models.Model):
     telefono=fields.Char(string='Teléfono', store=True)
     website_conexis = fields.Char(string='Sitio web', store=True)
     correo_conexis = fields.Char(string='Correo', store=True)
-
+    quincena=fields.Char()
+    
     @api.onchange('description')
     def test(self):
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
@@ -154,3 +155,14 @@ class crm_l(models.Model):
                 "update crm_lead set write_date = '" + str(fecha_ultimo_cambio) + "' where  id = " + str(
                     self.id) + ";")
             self.env.cr.commit()
+    
+    def cron_quincena(self):
+        d=self.search([])
+        _logger.info(str(len(d)))
+        for data in d:
+            dia=data.create_date.day
+            mes=months[data.create_date.month-1]
+            if(dia>15):
+                data.write({'quincena':'2.ª quincena '+str(mes)})
+            else:
+                data.write({'quincena':'1.ª quincena '+str(mes)})

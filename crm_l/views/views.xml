@@ -34,5 +34,20 @@
           </xpath>
     </field>
  </record>
+
+
+<record model="ir.ui.view" id="view_crml_case_opportunities_filter_update">
+    <field name="name">view.crml.case.opportunities.filter.update</field>
+    <field name="model">crm.lead</field>
+    <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+    <field name="arch" type="xml">
+        <xpath expr="//search" position="inside">
+            <separator/>
+            <filter string="Quincena" name="quincena" context="{'group_by':'quincena'}"/>
+            <separator/>
+        </xpath>
+    </field>
+</record>
+
 </data>
 </odoo>
