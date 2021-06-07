@@ -39,12 +39,12 @@ class saleOr(models.Model):
 	def mostrar_existencias(self):
 		if self.product_id.id:
 			ft = ''
-			cabecera = '<table><tr><th>Almacén</th><th>Cantidad</th></tr>'
+			cabecera = '<table class="table"><thead><tr><th scope="col">Almacén</th> <th scope="col">Cantidad</th></tr></thead><tbody>'
 			for cal in self.product_id.sudo().stock_quant_ids.filtered(
 					lambda x: x.company_id.id != False and x.quantity >= 0 and x.location_id.usage == 'internal'):
-				ft = '<tr><td>' + str(cal.location_id.display_name) + '</td><td>' + str(
-					cal.quantity) + '</td></tr>' + ft
-			tabla = cabecera + ft + '</table>'
+				ft += '<tr><td>' + str(cal.location_id.display_name) + '</td><td>' + str(
+					cal.quantity) + '</td></tr>'
+			tabla = cabecera + ft + '</tbody></table>'
 			# self.existencias = str(tabla)
 			view = self.env.ref('OLA.sale_order_existencias_view')
 			wiz = self.env['sale.order.existencias'].create({'mensaje': str(tabla)})
