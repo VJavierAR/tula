@@ -11,4 +11,9 @@ class Users(models.Model):
         string="Código de vendedor",
         store=True
     )
+    meta_facturacion = fields.Integer(
+        string="Meta de facturación",
+        store=True,
+        default=0
+    )
 

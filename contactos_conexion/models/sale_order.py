@@ -35,6 +35,18 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     _description = 'Cambios'
 
+    meta_facturacion_equipo = fields.Integer(
+        string="Meta de facturación equipo de ventas",
+        store=True,
+        related="team_id.invoiced_target"
+    )
+
+    meta_facturacion_vendedor = fields.Integer(
+        string="Meta de facturación comercial",
+        store=True,
+        related="user_id.meta_facturacion"
+    )
+
     def action_confirm_validacion(self):
         """
         # si proviene de una oportunidad

@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='mobile']" position="after">
                     <field name="codigo_vendedor" force_save="1"/>
+                    <field name="meta_facturacion" force_save="1"/>
                 </xpath>
             </field>
         </record>

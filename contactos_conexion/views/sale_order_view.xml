@@ -18,5 +18,18 @@
                 </xpath>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="view_quotation_tree_with_onboarding_update">
+            <field name="name">view.quotation.tree.with.onboarding.update</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_total']" position="before">
+                    <field name="meta_facturacion_equipo" force_save="1"/>
+                    <field name="meta_facturacion_vendedor" force_save="1"/>
+                </xpath>
+            </field>
+        </record>
+
     </data>
 </odoo>
