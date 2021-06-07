@@ -25,6 +25,7 @@
             <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='amount_total']" position="before">
+                    <field name="team_id"/>
                     <field name="meta_facturacion_equipo" force_save="1"/>
                     <field name="meta_facturacion_vendedor" force_save="1"/>
                 </xpath>
