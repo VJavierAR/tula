@@ -7,7 +7,7 @@ import logging, ast
 _logger = logging.getLogger(__name__)
 months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
 
-class crm_l(models.Model):
+class Crm_l(models.Model):
     _inherit = 'crm.lead'
     no_referencia = fields.Char()
     no_acto = fields.Char(string='Número de acto', store=True)
@@ -18,7 +18,7 @@ class crm_l(models.Model):
     website_conexis = fields.Char(string='Sitio web', store=True)
     correo_conexis = fields.Char(string='Correo', store=True)
     quincena=fields.Char()
-    
+
     @api.onchange('description')
     def test(self):
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
@@ -158,7 +158,6 @@ class crm_l(models.Model):
     
     def cron_quincena(self):
         d=self.search([])
-        _logger.info(str(len(d)))
         for data in d:
             dia=data.create_date.day
             mes=months[data.create_date.month-1]
@@ -166,3 +165,16 @@ class crm_l(models.Model):
                 data.write({'quincena':'2.ª quincena '+str(mes)})
             else:
                 data.write({'quincena':'1.ª quincena '+str(mes)})
+
+    @api.model 
+    def create(self, vals):
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        fecha = pytz.utc.localize(datetime.now()).astimezone(user_tz)
+        dia=fecha.day
+        mes=mes=months[fecha.month-1]
+        if(dia>15):
+            vals['quincena']='2.ª quincena '+str(mes)
+        else:
+            vals['quincena']='1.ª quincena '+str(mes)
+        rec = super(Crm_l, self).create(vals)      
+        return rec
