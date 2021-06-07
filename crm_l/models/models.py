@@ -157,7 +157,7 @@ class Crm_l(models.Model):
             self.env.cr.commit()
     
     def cron_quincena(self):
-        d=self.search([['date_deadline', '!=', False])
+        d=self.search([['date_deadline', '!=', False]])
         for data in d:
             dia=data.date_deadline.day
             mes=months[data.date_deadline.month-1]
