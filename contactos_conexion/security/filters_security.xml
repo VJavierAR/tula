@@ -3,7 +3,7 @@
         <data noupdate="0">
 
             <record model="ir.module.category" id="module_category_filters_crm">
-                <field name="name">CRM</field>
+                <field name="name">CRM Filtros</field>
                 <field name="description">Permisos de filtros en CRM</field>
             </record>
 
@@ -33,6 +33,10 @@
             </record>
             <record model="res.groups" id="group_tiempo_en_ganar_oportunidad">
                 <field name="name">Tiempo en ganar oportunidad</field>
+                <field name="category_id" ref="module_category_filters_crm"/>
+            </record>
+            <record model="res.groups" id="group_fecha_de_cierre_previsto">
+                <field name="name">Fecha de cierre previsto e ingresos estimados</field>
                 <field name="category_id" ref="module_category_filters_crm"/>
             </record>
 

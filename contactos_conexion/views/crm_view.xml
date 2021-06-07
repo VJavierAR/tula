@@ -121,11 +121,19 @@
                             name="oportunidadToWon"
                             context="{'group_by': 'tiempo_en_ganar_dias'}"
                             groups='contactos_conexion.group_tiempo_en_ganar_oportunidad'/>
-                    <filter string="Fecha de cierre previsto"
+                    <filter string="Fecha de cierre previsto e ingresos estimados"
                             name="fechaDeCierre"
                             domain="[('date_deadline', '!=', False)]"
                             context="{'group_by': 'date_deadline'}"
-                            />
+                            groups='contactos_conexion.group_fecha_de_cierre_previsto'/>
+                    <!--
+                    <filter string="Fecha de cierre previsto e ingresos  2"
+                            name="fechaDeCierreEIngresosEstimados"
+                            domain="[('date_deadline','&lt;=', (context_today() + relativedelta(weeks=0, day=7, weekday=-2)).strftime('%%Y-%%m-%%d')),
+                            ('date_deadline','&gt;=',(context_today() - relativedelta(weeks=2, weekday=0)).strftime('%%Y-%%m-%%d'))]"
+                            groups='contactos_conexion.group_fecha_de_cierre_previsto'/>
+                            -->
+                    <!--domain="[('date_deadline','&lt;=', (context_today() + relativedelta(weeks=0, day=7, weekday=-2)).strftime('%%Y-%%m-%%d')),('date_deadline','&gt;=',(context_today() - relativedelta(weeks=2, weekday=0)).strftime('%%Y-%%m-%%d'))]"-->
                     <separator/>
                 </xpath>
             </field>
