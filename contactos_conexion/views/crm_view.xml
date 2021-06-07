@@ -125,7 +125,7 @@
                             name="fechaDeCierre"
                             domain="[('date_deadline', '!=', False)]"
                             context="{'group_by': 'date_deadline'}"
-                            groups='contactos_conexion.'/>
+                            />
                     <separator/>
                 </xpath>
             </field>
