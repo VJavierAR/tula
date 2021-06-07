@@ -35,13 +35,13 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     _description = 'Cambios'
 
-    meta_facturacion_equipo = fields.Integer(
+    meta_facturacion_equipo = fields.Float(
         string="Meta de facturación equipo de ventas",
         store=True,
         related="team_id.invoiced_target"
     )
 
-    meta_facturacion_vendedor = fields.Integer(
+    meta_facturacion_vendedor = fields.Float(
         string="Meta de facturación comercial",
         store=True,
         related="user_id.meta_facturacion"

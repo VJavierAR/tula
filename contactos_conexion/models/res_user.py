@@ -11,7 +11,7 @@ class Users(models.Model):
         string="Código de vendedor",
         store=True
     )
-    meta_facturacion = fields.Integer(
+    meta_facturacion = fields.Float(
         string="Meta de facturación",
         store=True,
         default=0
