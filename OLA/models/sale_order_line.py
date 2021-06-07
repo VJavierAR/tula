@@ -17,6 +17,11 @@ class saleOr(models.Model):
 		string="Almacén/Cantidad",
 		store=True
 	)
+	coste_producto = fields.Float(
+		string="Coste",
+		store=True,
+		related="product_id.standard_price"
+	)
 
 	@api.onchange("product_id")
 	def product_id_change(self):
