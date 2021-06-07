@@ -157,14 +157,14 @@ class Crm_l(models.Model):
             self.env.cr.commit()
     
     def cron_quincena(self):
-        d=self.search([])
+        d=self.search([['date_deadline', '!=', False])
         for data in d:
-            dia=data.create_date.day
-            mes=months[data.create_date.month-1]
+            dia=data.date_deadline.day
+            mes=months[data.date_deadline.month-1]
             if(dia>15):
-                data.write({'quincena':'2.ª quincena '+str(mes)+' '+str(data.create_date.year)})
+                data.write({'quincena':'2.ª quincena '+str(mes)+' '+str(data.date_deadline.year)})
             else:
-                data.write({'quincena':'1.ª quincena '+str(mes)+' '+str(data.create_date.year)})
+                data.write({'quincena':'1.ª quincena '+str(mes)+' '+str(data.date_deadline.year)})
 
     @api.model 
     def create(self, vals):
