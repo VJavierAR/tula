@@ -36,6 +36,31 @@ class saleOr(models.Model):
 		self.name = codigo_final
 		return res
 
+	def mostrar_existencias(self):
+		if self.product_id.id:
+			ft = ''
+			cabecera = '<table><tr><th>Almacén</th><th>Cantidad</th></tr>'
+			for cal in self.product_id.sudo().stock_quant_ids.filtered(
+					lambda x: x.company_id.id != False and x.quantity >= 0 and x.location_id.usage == 'internal'):
+				ft = '<tr><td>' + str(cal.location_id.display_name) + '</td><td>' + str(
+					cal.quantity) + '</td></tr>' + ft
+			tabla = cabecera + ft + '</table>'
+			# self.existencias = str(tabla)
+			view = self.env.ref('OLA.sale_order_existencias_view')
+			wiz = self.env['sale.order.existencias'].create({'mensaje': str(tabla)})
+			return {
+				'alerta': True,
+				'name': _('Existencias'),
+				'type': 'ir.actions.act_window',
+				'view_mode': 'form',
+				'res_model': 'sale.order.existencias',
+				'views': [(view.id, 'form')],
+				'view_id': view.id,
+				'target': 'new',
+				'res_id': wiz.id,
+				'context': self.env.context,
+			}
+
 	@api.onchange('product_id')
 	def buscaProductos(self):
 		"""

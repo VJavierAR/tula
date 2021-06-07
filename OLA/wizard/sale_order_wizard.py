@@ -35,3 +35,12 @@ class AlertaDescuento(models.TransientModel):
     mensaje = fields.Text(
         string='Mensaje'
     )
+
+
+class ExistenciasProdcuto(models.TransientModel):
+    _name = 'sale.order.existencias'
+    _description = 'Existencias de un producto en todas las compañias'
+
+    mensaje = fields.Text(
+        string='Mensaje'
+    )
