@@ -17,6 +17,7 @@
                             bg_color="bg-primary"
                             class="ribbon_tramitado"
                             attrs="{'invisible': [('tramite', '!=', 'tramitadas')] }"
+                            style="display:inline-block; width:20%; padding:10px;"
                             />
                 </xpath>
 

@@ -30,13 +30,14 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
-        'views/templates.xml',
+        # 'views/templates.xml',
         'report/reporte.xml',
         'report/reportC.xml',
         'views/account_move_view.xml',
         'views/account_move_mail.xml',
         'wizard/pagos_wizard.xml',
     ],
+    'css': ['static/src/css/ribbon.css'],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
