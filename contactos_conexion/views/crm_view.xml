@@ -76,16 +76,20 @@
                     <separator/>
                     <filter string="Iniciativas creadas en los ultimos 30 días"
                             name="iniciativas_30"
-                            domain="[('create_date', '&gt;=', (context_today() + relativedelta(days=-30, weekday=0)).strftime('%Y-%m-%d') )]" />
+                            domain="[('create_date', '&gt;=', (context_today() + relativedelta(days=-30, weekday=0)).strftime('%Y-%m-%d') )]"
+                            groups='contactos_conexion.group_iniciativas_ultimos_30_dias'/>
                     <filter string="Iniciativas creadas en los ultimos 60 días"
                             name="iniciativas_60"
-                            domain="[('create_date', '&gt;=', (context_today() + relativedelta(days=-60, weekday=0)).strftime('%Y-%m-%d') )]" />
+                            domain="[('create_date', '&gt;=', (context_today() + relativedelta(days=-60, weekday=0)).strftime('%Y-%m-%d') )]"
+                            groups='contactos_conexion.group_iniciativas_ultimos_60_dias'/>
                     <filter string="Iniciativas creadas en los ultimos 90 días"
                             name="iniciativas_90"
-                            domain="[('create_date', '&gt;=', (context_today() + relativedelta(days=-90, weekday=0)).strftime('%Y-%m-%d') )]" />
+                            domain="[('create_date', '&gt;=', (context_today() + relativedelta(days=-90, weekday=0)).strftime('%Y-%m-%d') )]"
+                            groups='contactos_conexion.group_iniciativas_ultimos_90_dias'/>
                     <filter string="Iniciativas no actualizadas en 5 días"
                             name="iniciativas_5"
-                            domain="[('write_date', '&gt;=', (context_today() + relativedelta(days=-5, weekday=0)).strftime('%Y-%m-%d') )]" />
+                            domain="[('write_date', '&gt;=', (context_today() + relativedelta(days=-5, weekday=0)).strftime('%Y-%m-%d') )]"
+                            groups='contactos_conexion.group_iniciativas_no_actualizadas_5_dias'/>
                     <separator/>
                 </xpath>
             </field>
@@ -102,14 +106,26 @@
                     <separator/>
                     <filter string="Iniciativas convertidas en oportunidades"
                             name="iniciativas_to_oportunidad"
-                            domain="[('proviene_de_iniciativa', '=', True)]" />
-                    <filter string="Iniciativas convertidas en oportunidades"
-                            name="iniciativas_to_oportunidad"
-                            domain="[('proviene_de_iniciativa', '=', True)]" />
+                            domain="[('proviene_de_iniciativa', '=', True)]"
+                            groups='contactos_conexion.group_iniciativas_convertidas_oportunidades'/>
                     <separator/>
-                    <filter string="Iniciativas convertidas en oportunidades" name="iniciativaToOportunidad" context="{'group_by': 'proviene_de_iniciativa'}"/>
-                    <filter string="Tiempo de conversión (iniciativa a oportunidad)" name="iniciativaToOportunidadTime" context="{'group_by': 'tiempo_de_conversion'}"/>
-                    <filter string="Tiempo en ganar oportunidad" name="oportunidadToWon" context="{'group_by': 'tiempo_en_ganar_dias'}"/>
+                    <filter string="Iniciativas convertidas en oportunidades"
+                            name="iniciativaToOportunidad"
+                            context="{'group_by': 'proviene_de_iniciativa'}"
+                            groups='contactos_conexion.group_iniciativas_convertidas_oportunidades'/>
+                    <filter string="Tiempo de conversión (iniciativa a oportunidad)"
+                            name="iniciativaToOportunidadTime"
+                            context="{'group_by': 'tiempo_de_conversion'}"
+                            groups='contactos_conexion.group_tiempo_conversion_iniciativa_a_oportunidad'/>
+                    <filter string="Tiempo en ganar oportunidad"
+                            name="oportunidadToWon"
+                            context="{'group_by': 'tiempo_en_ganar_dias'}"
+                            groups='contactos_conexion.group_tiempo_en_ganar_oportunidad'/>
+                    <filter string="Fecha de cierre previsto"
+                            name="fechaDeCierre"
+                            domain="[('date_deadline', '!=', False)]"
+                            context="{'group_by': 'date_deadline'}"
+                            groups='contactos_conexion.'/>
                     <separator/>
                 </xpath>
             </field>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <openerp>
+        <data noupdate="0">
+
+            <record model="ir.module.category" id="module_category_filters_crm">
+                <field name="name">CRM</field>
+                <field name="description">Permisos de filtros en CRM</field>
+            </record>
+
+            <record model="res.groups" id="group_iniciativas_ultimos_30_dias">
+                <field name="name">Iniciativas creadas en los ultimos 30 días</field>
+                <field name="category_id" ref="module_category_filters_crm"/>
+            </record>
+            <record model="res.groups" id="group_iniciativas_ultimos_60_dias">
+                <field name="name">Iniciativas creadas en los ultimos 60 días</field>
+                <field name="category_id" ref="module_category_filters_crm"/>
+            </record>
+            <record model="res.groups" id="group_iniciativas_ultimos_90_dias">
+                <field name="name">Iniciativas creadas en los ultimos 90 días</field>
+                <field name="category_id" ref="module_category_filters_crm"/>
+            </record>
+            <record model="res.groups" id="group_iniciativas_no_actualizadas_5_dias">
+                <field name="name">Iniciativas no actualizadas en 5 días</field>
+                <field name="category_id" ref="module_category_filters_crm"/>
+            </record>
+            <record model="res.groups" id="group_iniciativas_convertidas_oportunidades">
+                <field name="name">Iniciativas convertidas en oportunidades</field>
+                <field name="category_id" ref="module_category_filters_crm"/>
+            </record>
+            <record model="res.groups" id="group_tiempo_conversion_iniciativa_a_oportunidad">
+                <field name="name">Tiempo de conversión (iniciativa a oportunidad)</field>
+                <field name="category_id" ref="module_category_filters_crm"/>
+            </record>
+            <record model="res.groups" id="group_tiempo_en_ganar_oportunidad">
+                <field name="name">Tiempo en ganar oportunidad</field>
+                <field name="category_id" ref="module_category_filters_crm"/>
+            </record>
+
+        </data>
+</openerp>
