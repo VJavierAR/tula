@@ -43,7 +43,10 @@
     <field name="arch" type="xml">
         <xpath expr="//search" position="inside">
             <separator/>
-            <filter string="Fecha de cierre previsto e ingresos estimados" name="quincena" context="{'group_by':'quincena'}"/>
+            <filter string="Fecha de cierre previsto e ingresos estimados"
+                    name="quincena"
+                    context="{'group_by':'quincena'}"
+                    groups='contactos_conexion.group_fecha_de_cierre_previsto'/>
             <separator/>
         </xpath>
     </field>
