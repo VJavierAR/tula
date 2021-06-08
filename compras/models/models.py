@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# from odoo import models, fields, api
+from odoo import models, fields, api
 
 
-# class compras(models.Model):
-#     _name = 'compras.compras'
-#     _description = 'compras.compras'
+class compras(models.Model):
+    _inherit = 'purchase.order'
+    tipo=fields.Selection(string='Tipo',[('1','Combustible'), ('2','Compras'), ('3','Pequeño Cont.'), ('4','Servicios'), ('5','Import')])
 
 #     name = fields.Char()
 #     value = fields.Integer()
