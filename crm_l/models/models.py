@@ -168,15 +168,16 @@ class Crm_l(models.Model):
 
     @api.model 
     def create(self, vals):
-        rec=super(Crm_l,self).create(vals)
-        if(rec.date_deadline):
+        #rec=super(Crm_l,self).create(vals)
+        if('date_deadline' in vals):
+            _logger.info(vals['date_deadline'])
             #user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
-            fecha = rec.date_deadline
+            fecha = vals['date_deadline']
             dia=fecha.day
             mes=mes=months[fecha.month-1]
             if(dia>15):
                 rec.write({'quincena':'2.ª quincena '+str(mes)+' '+str(fecha.year)})
             else:
                 rec.write({'quincena':'1.ª quincena '+str(mes)+' '+str(fecha.year)})
-        #rec = super(Crm_l, self).create(vals)      
+        rec = super(Crm_l, self).create(vals)      
         return rec
