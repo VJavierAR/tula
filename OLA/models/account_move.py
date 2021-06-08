@@ -40,7 +40,7 @@ class AccountMove(models.Model):
             if not id_usuario_login in usuarios_con_permisos:
                 raise AccessDenied(_("No tiene los permisos para realizar el cambio de \"terminos de pago\" o \"precios de productos\"."))
             else:
-                total = self.amount_total
+                total = self.amount_total_signed
                 limite_de_credito = self.partner_id.limite_credito
                 limite_de_credito_conglomerado = self.partner_id.limite_credito_conglomerado
 
@@ -54,6 +54,7 @@ class AccountMove(models.Model):
                 # Caso en que excede el limite de credito las facturas no pagadas
                 facturas_no_pagadas = self.env['account.move'].search(
                     [
+                        ('type', '=', 'out_invoice'),
                         ("invoice_payment_state", "=", "not_paid"),
                         ("state", "in", state_facturas_no_pagadas),
                         ("partner_id", "=", self.partner_id.id),
@@ -65,7 +66,7 @@ class AccountMove(models.Model):
                 total_de_facturas_no_pagadas = 0
                 if facturas_no_pagadas:
                     for factura_no_pagada in facturas_no_pagadas:
-                        total_de_facturas_no_pagadas += factura_no_pagada.amount_total
+                        total_de_facturas_no_pagadas += factura_no_pagada.amount_total_signed
 
                 total_con_facturas = total + total_de_facturas_no_pagadas
                 #total_con_facturas = total_de_facturas_no_pagadas
@@ -85,6 +86,7 @@ class AccountMove(models.Model):
                 # Caso en que excede el limite de credito de conglomerado las facturas no pagadas
                 facturas_no_pagadas_companies = self.env['account.move'].sudo().search(
                     [
+                        ('type', '=', 'out_invoice'),
                         ("invoice_payment_state", "=", "not_paid"),
                         ("state", "in", state_facturas_no_pagadas),
                         ("partner_id", "=", self.partner_id.id),
@@ -96,7 +98,7 @@ class AccountMove(models.Model):
                 total_de_facturas_no_pagadas_companies = 0
                 if facturas_no_pagadas_companies:
                     for factura_no_pagada in facturas_no_pagadas_companies:
-                        total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total
+                        total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total_signed
 
                 total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
                 #total_con_facturas_companies = total_de_facturas_no_pagadas_companies

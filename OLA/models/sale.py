@@ -224,7 +224,7 @@ class sale(models.Model):
 				total_de_facturas_no_pagadas = 0
 				if facturas_no_pagadas:
 					for factura_no_pagada in facturas_no_pagadas:
-						total_de_facturas_no_pagadas += factura_no_pagada.amount_total
+						total_de_facturas_no_pagadas += factura_no_pagada.amount_total_signed
 				rec['limite_credito_actual'] = limite_de_credito - total_de_facturas_no_pagadas
 			else:
 				rec['limite_credito_actual'] = 0
@@ -246,7 +246,7 @@ class sale(models.Model):
 				total_de_facturas_no_pagadas = 0
 				if facturas_no_pagadas:
 					for factura_no_pagada in facturas_no_pagadas:
-						total_de_facturas_no_pagadas += factura_no_pagada.amount_total
+						total_de_facturas_no_pagadas += factura_no_pagada.amount_total_signed
 				rec['limite_credito_conglomerado_actual'] = limite_de_credito_conglomerado - total_de_facturas_no_pagadas
 			else:
 				rec['limite_credito_conglomerado_actual'] = 0
@@ -311,7 +311,7 @@ class sale(models.Model):
 			total_de_facturas_no_pagadas = 0
 			if facturas_no_pagadas:
 				for factura_no_pagada in facturas_no_pagadas:
-					total_de_facturas_no_pagadas += factura_no_pagada.amount_total
+					total_de_facturas_no_pagadas += factura_no_pagada.amount_total_signed
 
 			total_con_facturas = total + total_de_facturas_no_pagadas
 			if total_con_facturas > limite_de_credito:
@@ -347,7 +347,7 @@ class sale(models.Model):
 				title_restriccion_dias_factura = "Plazo de pago excedido en facturas. | "
 				message_factura += """Existe una o más facturas no pagadas con un mayor número de días al plazo de pago del cliente:""".rstrip() + "\n"
 				for factura_no_pagada in facturas_no_pagadas_companies:
-					total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total
+					total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total_signed
 					if factura_no_pagada.invoice_date_due:
 						fecha_de_creacion = str(factura_no_pagada.invoice_date_due).split(' ')[0]
 						# converted_date = datetime.datetime.strptime(fecha_de_creacion, '%Y-%m-%d').date() + timedelta(days=colchon_de_credito)
