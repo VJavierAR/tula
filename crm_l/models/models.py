@@ -185,7 +185,7 @@ class Crm_l(models.Model):
 
     def write(self, values):
         if('date_deadline' in values):
-            fecha = vals['date_deadline']
+            fecha = values['date_deadline']
             dia=fecha.day
             mes=mes=months[fecha.month-1]
             if(dia>15):
