@@ -215,6 +215,7 @@ class sale(models.Model):
 				state_facturas_no_pagadas = ['posted']
 				facturas_no_pagadas = rec.env['account.move'].search(
 					[
+						('type', '=', 'out_invoice'),
 						("invoice_payment_state", "=", "not_paid"),
 						("state", "in", state_facturas_no_pagadas),
 						("partner_id", "=", rec.partner_id.id)
@@ -236,6 +237,7 @@ class sale(models.Model):
 				state_facturas_no_pagadas = ['posted']
 				facturas_no_pagadas = rec.env['account.move'].sudo().search(
 					[
+						('type', '=', 'out_invoice'),
 						("invoice_payment_state", "=", "not_paid"),
 						("state", "in", state_facturas_no_pagadas),
 						("partner_id", "=", rec.partner_id.id)
@@ -300,6 +302,7 @@ class sale(models.Model):
 			# Caso en que excede el limite de credito las facturas no pagadas y la linea de pedido de venta
 			facturas_no_pagadas = self.env['account.move'].search(
 				[
+					('type', '=', 'out_invoice'),
 					("invoice_payment_state", "=", "not_paid"),
 					("state", "in", state_facturas_no_pagadas),
 					("partner_id", "=", self.partner_id.id)
@@ -328,6 +331,7 @@ class sale(models.Model):
 			# Caso en que excede el limite de credito de conglomerado las facturas no pagadas y la linea de pedido de venta
 			facturas_no_pagadas_companies = self.env['account.move'].sudo().search(
 				[
+					('type', '=', 'out_invoice'),
 					("invoice_payment_state", "=", "not_paid"),
 					("state", "in", state_facturas_no_pagadas),
 					("partner_id", "=", self.partner_id.id)
