@@ -182,7 +182,7 @@ class Crm_l(models.Model):
         rec = super(Crm_l, self).create(vals)      
         return rec
 
-    @api.model
+
     def write(self, values):
         if('date_deadline' in values):
             fecha = vals['date_deadline']

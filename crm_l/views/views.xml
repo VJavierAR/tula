@@ -43,7 +43,7 @@
     <field name="arch" type="xml">
         <xpath expr="//search" position="inside">
             <separator/>
-            <filter string="Quincena" name="quincena" context="{'group_by':'quincena'}"/>
+            <filter string="Ingresos estimados" name="quincena" context="{'group_by':'quincena'}"/>
             <separator/>
         </xpath>
     </field>
