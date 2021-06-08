@@ -185,6 +185,7 @@ class Crm_l(models.Model):
 
     def write(self, values):
         if('date_deadline' in values):
+            _logger.info(values['date_deadline'])
             fecha = values['date_deadline']
             dia=fecha.day
             mes=mes=months[fecha.month-1]
