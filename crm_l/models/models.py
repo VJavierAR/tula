@@ -172,7 +172,7 @@ class Crm_l(models.Model):
         if('date_deadline' in vals):
             _logger.info(vals['date_deadline'])
             #user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
-            fecha = vals['date_deadline']
+            fecha = datetime.strptime(vals['date_deadline'], '%Y-%m-%d') 
             dia=fecha.day
             mes=mes=months[fecha.month-1]
             if(dia>15):
@@ -186,7 +186,7 @@ class Crm_l(models.Model):
     def write(self, values):
         if('date_deadline' in values):
             _logger.info(values['date_deadline'])
-            fecha = values['date_deadline']
+            fecha =datetime.strptime(values['date_deadline'], '%Y-%m-%d')    
             dia=fecha.day
             mes=mes=months[fecha.month-1]
             if(dia>15):
