@@ -176,8 +176,21 @@ class Crm_l(models.Model):
             dia=fecha.day
             mes=mes=months[fecha.month-1]
             if(dia>15):
-                rec.write({'quincena':'2.ª quincena '+str(mes)+' '+str(fecha.year)})
+                vals['quincena']='2.ª quincena '+str(mes)+' '+str(fecha.year)
             else:
-                rec.write({'quincena':'1.ª quincena '+str(mes)+' '+str(fecha.year)})
+                vals['quincena']='1.ª quincena '+str(mes)+' '+str(fecha.year)
         rec = super(Crm_l, self).create(vals)      
         return rec
+
+    @api.multi
+    def write(self, values):
+        if('date_deadline' in values):
+            fecha = vals['date_deadline']
+            dia=fecha.day
+            mes=mes=months[fecha.month-1]
+            if(dia>15):
+                values['quincena']='2.ª quincena '+str(mes)+' '+str(fecha.year)
+            else:
+                values['quincena']='1.ª quincena '+str(mes)+' '+str(fecha.year)
+        res = super(Crm_l, self).write(values)
+        return res
