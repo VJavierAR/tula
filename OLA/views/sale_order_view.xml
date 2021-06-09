@@ -236,7 +236,8 @@
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
                     <field name="existencias" readonly="1" force_save="1"  invisible="1" />
-                    <button name="mostrar_existencias" type="object" icon="fa-info-circle"/>
+                    <field name="existencias_check" />
+                    <!--<button name="mostrar_existencias" type="object" icon="fa-info-circle"/>-->
                 </xpath>
 
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom']" position="after">

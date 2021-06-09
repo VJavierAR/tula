@@ -22,6 +22,10 @@ class saleOr(models.Model):
 		store=True,
 		related="product_id.standard_price"
 	)
+	existencias_check = fields.Boolean(
+		string="Mostrar existencias",
+		default=False
+	)
 
 	@api.onchange("product_id")
 	def product_id_change(self):
@@ -42,6 +46,7 @@ class saleOr(models.Model):
 		return res
 
 	def mostrar_existencias(self):
+		_logger.info("self.product_id.id: " + str(self.product_id.id))
 		if self.product_id.id:
 			ft = ''
 			cabecera = '<table class="table"><thead><tr><th scope="col">Almacén</th> <th scope="col">Cantidad</th></tr></thead><tbody>'
@@ -64,6 +69,25 @@ class saleOr(models.Model):
 				'target': 'new',
 				'res_id': wiz.id,
 				'context': self.env.context,
+			}
+
+	@api.onchange('existencias_check')
+	def mostrar_existencias_check(self):
+		_logger.info("self.existencias_check: " + str(self.existencias_check))
+		if self.existencias_check and self.product_id.id:
+			#self.mostrar_existencias()
+			cabecera = "Bodega : Cantidad"
+			ft = ''
+			for cal in self.product_id.sudo().stock_quant_ids.filtered(
+					lambda x: x.company_id.id != False and x.quantity >= 0 and x.location_id.usage == 'internal'):
+				ft += str(cal.location_id.display_name) + ': ' + str(cal.quantity) + '\n'
+
+			self.existencias_check = False
+			return {
+				'warning': {
+					'title': "Existencias",
+					'message': str(ft)
+				},
 			}
 
 	@api.onchange('product_id')
