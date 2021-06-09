@@ -40,7 +40,7 @@ class AccountMove(models.Model):
             if not id_usuario_login in usuarios_con_permisos:
                 raise AccessDenied(_("No tiene los permisos para realizar el cambio de \"terminos de pago\" o \"precios de productos\"."))
             else:
-                total = self.amount_total_signed
+                total = self.amount_residual_signed
                 limite_de_credito = self.partner_id.limite_credito
                 limite_de_credito_conglomerado = self.partner_id.limite_credito_conglomerado
 
@@ -66,7 +66,7 @@ class AccountMove(models.Model):
                 total_de_facturas_no_pagadas = 0
                 if facturas_no_pagadas:
                     for factura_no_pagada in facturas_no_pagadas:
-                        total_de_facturas_no_pagadas += factura_no_pagada.amount_total_signed
+                        total_de_facturas_no_pagadas += factura_no_pagada.amount_residual_signed
 
                 total_con_facturas = total + total_de_facturas_no_pagadas
                 #total_con_facturas = total_de_facturas_no_pagadas
@@ -98,7 +98,7 @@ class AccountMove(models.Model):
                 total_de_facturas_no_pagadas_companies = 0
                 if facturas_no_pagadas_companies:
                     for factura_no_pagada in facturas_no_pagadas_companies:
-                        total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_total_signed
+                        total_de_facturas_no_pagadas_companies += factura_no_pagada.amount_residual_signed
 
                 total_con_facturas_companies = total + total_de_facturas_no_pagadas_companies
                 #total_con_facturas_companies = total_de_facturas_no_pagadas_companies
