@@ -143,6 +143,8 @@ class SaleOrder(models.Model):
                             _logger.info("Error al crear")
                     elif 'error' in resp:
                         _logger.info("error ***** " + str(resp['error']))
+                        display_msg = "Error al verificar si existe cliente en NAF.</br>Error: " + str(resp['error'])
+                        self.message_post(body=display_msg)
                 # el plazo de pago no es de contado
                 else:
                     self.conect()
@@ -204,6 +206,8 @@ class SaleOrder(models.Model):
                             return False
                     elif 'error' in resp:
                         _logger.info("error ***** " + str(resp['error']))
+                        display_msg = "Error al verificar si existe cliente en NAF.</br>Error: " + str(resp['error'])
+                        self.message_post(body=display_msg)
             # Cliente si tiene codigo naf
             else:
                 # si el plazo de pago es de contado
@@ -249,6 +253,7 @@ class SaleOrder(models.Model):
         self.action_confirm()
 
     def conect(self):
+        _logger.info("SaleOrder.conect(self)")
         task = {"username": username_login, "password": password_login}
         resp = requests.post(url_login, json=task)
         if resp.status_code == status_code_correct:
@@ -267,6 +272,7 @@ class SaleOrder(models.Model):
             _logger.info("Error al realizar petición")
 
     def existe_cliente_naf(self, task=None):
+        _logger.info("SaleOrder.existe_cliente_naf(self, task=None)")
         """
         task = {
             "NO_CIA": "12",
@@ -307,6 +313,7 @@ class SaleOrder(models.Model):
             }
 
     def crear_cliente_naf(self, task=None):
+        _logger.info("SaleOrder.crear_cliente_naf(self, task=None)")
         """
         task = {
             "tipo_cliente": 2,
@@ -365,6 +372,7 @@ class SaleOrder(models.Model):
             }
 
     def limite_de_credito_cliente_naf(self, task=None):
+        _logger.info("SaleOrder.limite_de_credito_cliente_naf(self, task=None)")
         """
         task = {
             "NO_CIA": "12",
@@ -400,6 +408,7 @@ class SaleOrder(models.Model):
             }
 
     def saldo_de_cliente_naf(self, task=None):
+        _logger.info("SaleOrder.saldo_de_cliente_naf(self, task=None)")
         """
         task = {
             "NO_CIA": "12",
@@ -435,6 +444,7 @@ class SaleOrder(models.Model):
             }
 
     def actualizar_cliente_naf(self, task=None):
+        _logger.info("SaleOrder.actualizar_cliente_naf(self, task=None)")
         """
         task = {
             "no_cia": "06",
@@ -474,6 +484,7 @@ class SaleOrder(models.Model):
             }
 
     def genera_alerta(self, mensaje=None):
+        _logger.info("SaleOrder.genera_alerta(self, mensaje=None)")
         view = self.env.ref('contactos_conexion.sale_order_alerta_view')
         wiz = self.env['sale.order.alerta'].create({'mensaje': mensaje})
         return {
