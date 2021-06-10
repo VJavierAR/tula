@@ -61,7 +61,9 @@ class SaleOrder(models.Model):
                 if self.payment_term_id.id and self.payment_term_id.id == 1:
                     self.conect()
                     resp = self.existe_cliente_naf(task=task_existe_cliente)
+                    _logger.info("resp: " + str(resp))
                     if 'existe' in resp and resp['existe'] == 'no':
+                        _logger.info("")
                         company_id = self.env.company.id
                         task = {
                             "tipo_cliente": self.partner_id.tipo or "",
@@ -89,7 +91,8 @@ class SaleOrder(models.Model):
                             "pais": self.opportunity_id.country_id.name or "",
                             "pagina_web": self.opportunity_id.website
                         }
-                        resultado_al_crear = self.creaar_cliente_naf(task=task)
+                        _logger.info("task crear_cliente_naf(): \n" + str(task))
+                        resultado_al_crear = self.crear_cliente_naf(task=task)
                         if 'existe' in resultado_al_crear:
                             _logger.info("Ya existe e cliente actualizalo")
                             display_msg = "Se intento crear cliente en NAF pero este ya existe"
@@ -345,7 +348,7 @@ class SaleOrder(models.Model):
         headers = {
             "auth": token
         }
-        _logger.info("creaar_cliente_naf() token: " + token)
+        _logger.info("crear_cliente_naf() token: " + token)
         resp = requests.post(url_crear_cliente_naf, json=task, headers=headers)
         if resp.status_code == status_code_correct:
             json_respuesta = resp.json()

@@ -11,7 +11,7 @@ class Partner(models.Model):
         string="Código Naf",
         store=True
     )
-    tipo = fields.Char(
+    tipo = fields.Integer(
         string="Tipo",
         store=True
     )
