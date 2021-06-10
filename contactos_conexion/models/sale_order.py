@@ -50,12 +50,17 @@ class SaleOrder(models.Model):
     def action_confirm_validacion(self):
         # si proviene de una oportunidad
         if self.opportunity_id.id:
+            task_existe_cliente = {
+                "NO_CIA": self.partner_id.no_cia or "",
+                "GRUPO": self.partner_id.grupo or "",
+                "NO_CLIENTE": self.partner_id.no_cliente or ""
+            }
             # Si el cliente no tiene codigo naf
             if self.partner_id.id and not self.partner_id.codigo_naf:
                 # si el plazo de pago es de contado
                 if self.payment_term_id.id and self.payment_term_id.id == 1:
                     self.conect()
-                    resp = self.existe_cliente_naf()
+                    resp = self.existe_cliente_naf(task=task_existe_cliente)
                     if 'existe' in resp and resp['existe'] == 'no':
                         company_id = self.env.company.id
                         task = {
@@ -141,7 +146,7 @@ class SaleOrder(models.Model):
                 # el plazo de pago no es de contado
                 else:
                     self.conect()
-                    resp = self.existe_cliente_naf()
+                    resp = self.existe_cliente_naf(task=task_existe_cliente)
                     if 'existe' in resp and resp['existe'] == 'no':
                         self.conect()
                         task = {
@@ -261,7 +266,7 @@ class SaleOrder(models.Model):
         else:
             _logger.info("Error al realizar petición")
 
-    def existe_cliente_naf(self):
+    def existe_cliente_naf(self, task=None):
         """
         task = {
             "NO_CIA": "12",
