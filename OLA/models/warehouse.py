@@ -196,6 +196,6 @@ class PickingType(models.Model):
 class RegistroOperation(models.Model):
     _name='registro.operation'
     _description='Registro de operaciones en picking'
-    usuario=field.Many2one('res.users')
-    operacion=field.Char()
-    rel_id=field.Many2one('stock.picking')
+    usuario=fields.Many2one('res.users')
+    operacion=fields.Char()
+    rel_id=fields.Many2one('stock.picking')
