@@ -28,8 +28,8 @@ class stock(models.Model):
              " * Done: The transfer has been processed.\n"
              " * Cancelled: The transfer has been cancelled.")
     #state = fields.Selection(selection_add=[('printed', 'Impreso')])
-    user_print_id = fields.Many2one(comodel_name="res.users", string="Usuario que imprimió", tracking=True, copy=False, required=False)
-    user_validate_id = fields.Many2one(comodel_name="res.users", string="Usuario que validó", tracking=True, copy=False, required=False)
+    user_print_id = fields.Many2one(comodel_name="res.users", string="Usuario que imprimió", tracking=True,track_visibility='onchange', copy=False, required=False)
+    user_validate_id = fields.Many2one(comodel_name="res.users", string="Usuario que validó", tracking=True,track_visibility='onchange' ,copy=False, required=False)
     urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia", compute="_compute_urgencia")
     registro=fields.One2many('registro.operation','rel_id')
 
