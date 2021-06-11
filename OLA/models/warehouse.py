@@ -31,6 +31,7 @@ class stock(models.Model):
     user_print_id = fields.Many2one(comodel_name="res.users", string="Usuario que imprimió", tracking=True, copy=False, required=False)
     user_validate_id = fields.Many2one(comodel_name="res.users", string="Usuario que validó", tracking=True, copy=False, required=False)
     urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia", compute="_compute_urgencia")
+    registro=fields.One2many('registro.operation','rel_id')
 
     @api.depends("group_id")
     def _compute_urgencia(self):
@@ -191,3 +192,10 @@ class PickingType(models.Model):
         for record in self:
             record.rate_picking_late = record.count_picking and record.count_picking_late * 100 / record.count_picking or 0
             record.rate_picking_backorders = record.count_picking and record.count_picking_backorders * 100 / record.count_picking or 0
+
+class RegistroOperation(models.Model):
+    _name='registro.operation'
+    _description='Registro de operaciones en picking'
+    usuario=field.Many2one('res.users')
+    operacion=field.Char()
+    rel_id=field.Many2one('stock.picking')

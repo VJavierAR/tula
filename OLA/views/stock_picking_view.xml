@@ -48,6 +48,19 @@
                 </xpath>
                 <xpath expr="//button[6]" position="attributes">
                     <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                    <page name="studio_page_AjYHu" string="Registro">
+                        <group name="studio_group_AjYHu">
+                            <field name='registro' readonly='1'>
+                                <tree>
+                                    <field name='usuario' string='Usuario'/>
+                                    <field name='operacion' string='Operacion'/>
+                                    <field name='create_date' string='Fecha' widget='date'/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
                 </xpath> 
             </field>
         </record>

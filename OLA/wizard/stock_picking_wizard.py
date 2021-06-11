@@ -16,6 +16,7 @@ class StockPickingPrint(models.TransientModel):
                 if self.picking.state == 'assigned':
                     self.picking.show_validate=True
             self.picking.user_print_id = self.env.user.id
+            self.env['registro.operation'].create({'usuario':user_id.id,'operacion':'Impresión','rel_id':self.picking.id})
             return self.picking.do_print_picking()
         else:
             raise UserError("El pin no es válido para el usuario actual.")
@@ -31,6 +32,7 @@ class StockPickingValidate(models.TransientModel):
         user_id = self.env['res.users'].search([('user_pin', '=', self.user_pin)], limit=1)
         if self.env.user.id == user_id.id:
             self.picking.user_validate_id = self.env.user.id
+            self.env['registro.operation'].create({'usuario':user_id.id,'operacion':'Validación picking','rel_id':self.picking.id})
             # picking.message_post(body=("Validación realizada."))
             return self.picking.button_validate(True)
         else:
