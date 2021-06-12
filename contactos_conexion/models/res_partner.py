@@ -21,7 +21,7 @@ class Partner(models.Model):
     )
     estado = fields.Selection(
         selection=[('1', 'Sin código NAF'), ('2', 'En proceso NAF'), ('3', 'Asignado código NAF')],
-        string="estado código NAF",
+        string="Estado código NAF",
         store=True
     )
     digito_verificador = fields.Char(

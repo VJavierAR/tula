@@ -9,6 +9,8 @@ import datetime, time
 import pytz
 import base64
 import requests
+import json
+
 
 _logger = logging.getLogger(__name__)
 
@@ -65,12 +67,13 @@ class SaleOrder(models.Model):
                     if 'existe' in resp and resp['existe'] == 'no':
                         _logger.info("")
                         company_id = self.env.company.id
+
                         task = {
                             "tipo_cliente": self.partner_id.tipo or "",
                             "id_crm": self.partner_id.id or "",
                             "nombre": self.partner_id.name or "",
                             "cedula": self.partner_id.cedula or "",
-                            "direccion": self.opportunity_id.street or "",
+                            "direccion": self.opportunity_id.street or "asdasd",
                             "telefono_fijo": self.opportunity_id.phone or "",
                             "telefono_celular": self.opportunity_id.mobile or "",
                             "email": self.opportunity_id.email_from or "",
@@ -78,10 +81,10 @@ class SaleOrder(models.Model):
                             "direccion_trabajo": self.opportunity_id.street or "",
                             "email_trabajo": self.opportunity_id.email_from or "",
                             "nombre_establecimiento": self.opportunity_id.nombre_establecimiento or "",
-                            "razon_social": self.opportunity_id.razon_social or "",
+                            "razon_social": self.opportunity_id.razon_social or None,
                             "ruc": self.partner_id.vat or "",
                             "direccion_comercial": self.opportunity_id.direccion_comercial or "",
-                            "estado": self.partner_id.estado,
+                            "estado": int(self.partner_id.estado),
                             "no_cia": self.partner_id.no_cia or "",
                             "codigo_vendedor": self.opportunity_id.user_id.codigo_vendedor or "",
                             "digito_verificador": self.partner_id.digito_verificador or "",
@@ -92,6 +95,7 @@ class SaleOrder(models.Model):
                             "pagina_web": self.opportunity_id.website
                         }
                         _logger.info("task crear_cliente_naf(): \n" + str(task))
+                        self.conect()
                         resultado_al_crear = self.crear_cliente_naf(task=task)
                         if 'existe' in resultado_al_crear:
                             _logger.info("Ya existe e cliente actualizalo")
@@ -345,11 +349,13 @@ class SaleOrder(models.Model):
             "pagina_web": "www.pruebas.com"
         }
         """
+        global token
         headers = {
-            "auth": token
+            "auth": token,
         }
-        _logger.info("crear_cliente_naf() token: " + token)
+        _logger.info("crear_cliente_naf() token: " + token + "\n task: \n\n" + str(task))
         resp = requests.post(url_crear_cliente_naf, json=task, headers=headers)
+        _logger.info("resp al crear: " + str(resp))
         if resp.status_code == status_code_correct:
             json_respuesta = resp.json()
             _logger.info(json_respuesta)
