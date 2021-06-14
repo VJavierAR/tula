@@ -49,6 +49,7 @@ class stock(models.Model):
                 rec._set_priority()
             else:
                 rec.urgencia = None
+                rec.priority='1'
 
     
     def print_vale_de_entrega(self):
