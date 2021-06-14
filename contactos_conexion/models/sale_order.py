@@ -146,7 +146,7 @@ class SaleOrder(models.Model):
                                 self.message_post(body=display_msg)
 
                         elif 'error' in resultado_al_actualizar:
-                            display_msg = "Error al actualizar cliete en NAF"
+                            display_msg = "Error al actualizar cliete en NAF.</br>Mensaje: " + resultado_al_actualizar['error']
                             self.message_post(body=display_msg)
                             _logger.info("Error al crear")
                     elif 'error' in resp:
@@ -175,7 +175,7 @@ class SaleOrder(models.Model):
                             display_msg = "Se actualizaron datos de cliete en NAF"
                             self.message_post(body=display_msq)
                         elif 'error' in resultado_al_actualizar:
-                            display_msg = "Error al actualizar cliete en NAF"
+                            display_msg = "Error al actualizar cliete en NAF.</br>Mensaje: " + resultado_al_actualizar['error']
                             self.message_post(body=display_msg)
                     elif 'existe' in resp and resp['existe'] == 'si':
                         _logger.info("existe** ")
