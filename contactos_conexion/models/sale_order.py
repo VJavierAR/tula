@@ -92,7 +92,7 @@ class SaleOrder(models.Model):
                             "ciudad": self.opportunity_id.city or "",
                             "provincia": self.opportunity_id.city or "",
                             "pais": self.opportunity_id.country_id.name or "",
-                            "pagina_web": self.opportunity_id.website
+                            "pagina_web": self.opportunity_id.website.split("//")[-1]
                         }
                         _logger.info("task crear_cliente_naf(): \n" + str(task))
                         self.conect()
@@ -356,29 +356,29 @@ class SaleOrder(models.Model):
         _logger.info("crear_cliente_naf() token: " + token + "\n task: \n\n" + str(task))
         resp = requests.post(url_crear_cliente_naf, json=task, headers=headers)
         _logger.info("resp al crear: " + str(resp))
-        if resp.status_code == status_code_correct:
-            json_respuesta = resp.json()
-            _logger.info(json_respuesta)
-            if int(json_respuesta['status_code']) == status_code_correct:
-                _logger.info("Cliente creado correctamente, mensaje: " + str(json_respuesta['message']))
-                return {
-                    'creado': 'si'
-                }
-            elif int(json_respuesta['status_code']) == status_code_cliente_existente:
-                _logger.info("Cliente ya existe, mensaje: " + str(json_respuesta['message']))
-                return {
-                    'existe': 'Ya existe el cliente'
-                }
-            elif int(json_respuesta['status_code']) == status_code_error:
-                _logger.info("Error al crear cliente, mensaje: " + str(json_respuesta['message']))
-                return {
-                    'error': json_respuesta['message']
-                }
-        else:
-            _logger.info("Error al realizar petición resp.status_code: " + str(resp.status_code))
+        # if resp.status_code == status_code_correct:
+        json_respuesta = resp.json()
+        _logger.info(json_respuesta)
+        if int(json_respuesta['status_code']) == status_code_correct:
+            _logger.info("Cliente creado correctamente, mensaje: " + str(json_respuesta['message']))
             return {
-                'error': str(resp.status_code)
+                'creado': 'si'
             }
+        elif int(json_respuesta['status_code']) == status_code_cliente_existente:
+            _logger.info("Cliente ya existe, mensaje: " + str(json_respuesta['message']))
+            return {
+                'existe': 'Ya existe el cliente'
+            }
+        elif int(json_respuesta['status_code']) == status_code_error:
+            _logger.info("Error al crear cliente, mensaje: " + str(json_respuesta['message']))
+            return {
+                'error': json_respuesta['message']
+            }
+        # else:
+        #    _logger.info("Error al realizar petición resp.status_code: " + str(resp.status_code))
+        #    return {
+        #        'error': str(resp.status_code)
+        #    }
 
     def limite_de_credito_cliente_naf(self, task=None):
         _logger.info("SaleOrder.limite_de_credito_cliente_naf(self, task=None)")
