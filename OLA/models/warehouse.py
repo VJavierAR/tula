@@ -44,6 +44,8 @@ class stock(models.Model):
                     rec.priority='2'
                 else:
                     rec.priority='3'
+                rec._compute_priority()
+                rec._set_priority()
             else:
                 rec.urgencia = None
 
