@@ -33,6 +33,7 @@ class stock(models.Model):
     urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia", compute="_compute_urgencia")
     registro=fields.One2many('registro.operation','rel_id')
     #_order = "urgencia desc,scheduled_date asc"
+    _order = "priority desc, scheduled_date asc, id desc"
 
 
     @api.depends("group_id")
