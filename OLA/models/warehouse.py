@@ -33,11 +33,17 @@ class stock(models.Model):
     urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia", compute="_compute_urgencia")
     registro=fields.One2many('registro.operation','rel_id')
     _order = "urgencia desc,scheduled_date asc"
+
+
     @api.depends("group_id")
     def _compute_urgencia(self):
         for rec in self:
             if rec.sale_id.id:
                 rec.urgencia = rec.sale_id.urgencia
+                if(rec.sale_id.urgencia=='Urgente'):
+                    rec.priority='2'
+                else:
+                    rec.priority='3'
             else:
                 rec.urgencia = None
 
