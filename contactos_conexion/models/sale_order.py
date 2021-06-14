@@ -117,6 +117,7 @@ class SaleOrder(models.Model):
                             "email": self.partner_id.email or "",
                             "contacto": self.partner_id.name or ""
                         }
+                        _logger.debug("self.actualizar_cliente_naf task pago de contado:\n " + str(task))
                         resultado_al_actualizar = self.actualizar_cliente_naf(task=task)
                         if 'exito' in resultado_al_actualizar:
                             _logger.info("Cliente actualizado en naf")
@@ -167,6 +168,7 @@ class SaleOrder(models.Model):
                             "email": self.partner_id.email or "",
                             "contacto": self.partner_id.name or ""
                         }
+                        _logger.debug("self.actualizar_cliente_naf task: " + str(task))
                         resultado_al_actualizar = self.actualizar_cliente_naf(task=task)
                         if 'exito' in resultado_al_actualizar:
                             _logger.info("Cliente actualizado en naf")
@@ -373,6 +375,11 @@ class SaleOrder(models.Model):
             _logger.info("Error al crear cliente, mensaje: " + str(json_respuesta['message']))
             return {
                 'error': json_respuesta['message']
+            }
+        else:
+            _logger.info("Error al realizar petición resp.status_code: " + str(resp.status_code))
+            return {
+                'error': json_respuesta['status_code']
             }
         # else:
         #    _logger.info("Error al realizar petición resp.status_code: " + str(resp.status_code))
