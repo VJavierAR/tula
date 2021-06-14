@@ -32,7 +32,7 @@ class stock(models.Model):
     user_validate_id = fields.Many2one(comodel_name="res.users", string="Usuario que validó", tracking=True,track_visibility='onchange' ,copy=False, required=False)
     urgencia = fields.Selection(selection=[('Urgente','Urgente'),('Muy urgente','Muy urgente')], string="Urgencia", compute="_compute_urgencia")
     registro=fields.One2many('registro.operation','rel_id')
-
+    _order = "scheduled_date asc, urgencia desc"
     @api.depends("group_id")
     def _compute_urgencia(self):
         for rec in self:

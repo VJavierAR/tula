@@ -26,9 +26,9 @@
                 <xpath expr="//field[@name='company_id']" position="attributes">
                     <attribute name="options">{"bg_color": "#77DBEB: state == \"printed\";"}</attribute>
                 </xpath>
-                <xpath expr="//tree" position="attributes">
+                <!--<xpath expr="//tree" position="attributes">
                     <attribute name="default_order">scheduled_date asc</attribute>
-                </xpath>
+                </xpath>-->
 
             </field>
         </record>
