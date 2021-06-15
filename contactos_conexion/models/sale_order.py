@@ -400,7 +400,7 @@ class SaleOrder(models.Model):
             "auth": token
         }
         resp = requests.get(url_limite_de_credito_de_cliente, json=task, headers=headers)
-        if resp.status_code == status_code_correct:
+        if resp.status_code == status_code_correct or resp.status_code == status_code_cliente_existente or resp.status_code == status_code_error:
             json_respuesta = resp.json()
             _logger.info(json_respuesta)
             if int(json_respuesta['status_code']) == status_code_correct:
@@ -436,7 +436,7 @@ class SaleOrder(models.Model):
             "auth": token
         }
         resp = requests.get(url_saldo_de_cliente, json=task, headers=headers)
-        if resp.status_code == status_code_correct:
+        if resp.status_code == status_code_correct or resp.status_code == status_code_cliente_existente or resp.status_code == status_code_error:
             json_respuesta = resp.json()
             _logger.info(json_respuesta)
             if int(json_respuesta['status_code']) == status_code_correct:
