@@ -101,6 +101,9 @@ class SaleOrder(models.Model):
                             _logger.info("Ya existe e cliente actualizalo")
                             display_msg = "Se intento crear cliente en NAF pero este ya existe"
                             self.message_post(body=display_msg)
+                        elif 'creado' in resultado_al_crear:
+                            display_msg = "Cliente creado en sistema NAF."
+                            self.message_post(body=display_msg)
                         elif 'error' in resultado_al_crear:
                             display_msg = "Error al crear cliete en NAF"
                             self.message_post(body=display_msg)
