@@ -296,22 +296,22 @@ class SaleOrder(models.Model):
                                 self.genera_alerta(mensaje=mensaje)
                             self.partner_id.limite_credito = limite_de_credito['limite']
                             display_msg = "Se actualizo límite de crédito de cliente <br/>Límite de crédito: " + \
-                                          limite_de_credito['limite']
+                                          str(limite_de_credito['limite'])
                             saldo_naf = self.saldo_de_cliente_naf(task=task)
                             if 'saldo' in saldo_naf:
                                 self.partner_id.saldo = saldo_naf['saldo']
                                 display_msg = "Se actualizo límite de crédito y saldo de cliente<br/>" \
-                                               "Límite de crédito: " + limite_de_credito['limite'] + \
-                                               "<br/>Saldo: " + saldo_naf['saldo']
+                                               "Límite de crédito: " + str(limite_de_credito['limite']) + \
+                                               "<br/>Saldo: " + str(saldo_naf['saldo'])
                             elif 'error' in saldo_naf:
-                                display_msg = "Error al consultar límite de crédito <br/>Error: " + saldo_naf['error']
+                                display_msg = "Error al consultar límite de crédito <br/>Error: " + str(saldo_naf['error'])
                                 self.message_post(body=display_msg)
 
                             self.message_post(body=display_msg)
 
                         # Si ocurre un error al consultar límite de crédito en NAF entonces, informa
                         elif 'error' in limite_de_credito:
-                            display_msg = "Error al consultar límite de crédito <br/>Error: " + limite_de_credito['error']
+                            display_msg = "Error al consultar límite de crédito <br/>Error: " + str(limite_de_credito['error'])
                             self.message_post(body=display_msg)
 
                     # Si el cliente no esta activo informa de esto y no permitas confirmar
