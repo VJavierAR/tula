@@ -50,6 +50,13 @@ class SaleOrder(models.Model):
     )
 
     def action_confirm_validacion(self):
+        self.env['helpdesk.ticket'].create({
+            'name': 'Petición para crear cliente',
+            'partner_id': self.partner_id.id,
+            'origen_sale': self.id,
+            'description': '',
+            'tag_ids': 1
+        })
         # Si proviene de una oportunidad
         if self.opportunity_id.id:
             task_existe_cliente = {
@@ -110,7 +117,8 @@ class SaleOrder(models.Model):
                                 'name': 'Cliente existe en NAF',
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
-                                'description': display_msg
+                                'description': display_msg,
+                                'tag_ids':
                             })
                         # Si se creo exitosamente entonces, informa y avisa a la mesa de ayuda
                         elif 'creado' in resultado_al_crear:
@@ -121,6 +129,7 @@ class SaleOrder(models.Model):
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg
+                                'tag_ids':
                             })
                         # Si se produjo un error al crear el cliente en NAF entonces, informa
                         elif 'error' in resultado_al_crear:
