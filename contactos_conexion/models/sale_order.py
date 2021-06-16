@@ -69,32 +69,34 @@ class SaleOrder(models.Model):
                     if 'existe' in resp and resp['existe'] == 'no':
                         _logger.info("")
                         company_id = self.env.company.id
-
+                        sitio_web = ""
+                        if self.partner_id.website:
+                            sitio_web = self.partner_id.website.split("//")[-1]
                         task = {
                             "tipo_cliente": self.partner_id.tipo or "",
                             "id_crm": self.partner_id.id or "",
-                            "nombre": self.partner_id.name or "",
+                            "nombre": self.opportunity_id.name or "",
                             "cedula": self.partner_id.cedula or "",
                             "direccion": self.opportunity_id.street or "asdasd",
                             "telefono_fijo": self.opportunity_id.phone or "",
                             "telefono_celular": self.opportunity_id.mobile or "",
                             "email": self.opportunity_id.email_from or "",
-                            "lugar_trabajo": self.opportunity_id.lugar_trabajo or "",
-                            "direccion_trabajo": self.opportunity_id.street or "",
+                            "lugar_trabajo": self.partner_id.street2 or "",
+                            "direccion_trabajo": self.partner_id.street or "",
                             "email_trabajo": self.opportunity_id.email_from or "",
-                            "nombre_establecimiento": self.opportunity_id.nombre_establecimiento or "",
-                            "razon_social": self.opportunity_id.razon_social or None,
+                            "nombre_establecimiento": self.opportunity_id.partner_name or "",
+                            "razon_social": self.partner_id.ref or None,
                             "ruc": self.partner_id.vat or "",
-                            "direccion_comercial": self.opportunity_id.direccion_comercial or "",
+                            "direccion_comercial": self.opportunity_id.user_id.partner_id.street or "",
                             "estado": int(self.partner_id.estado),
                             "no_cia": self.partner_id.no_cia or "",
                             "codigo_vendedor": self.opportunity_id.user_id.codigo_vendedor or "",
                             "digito_verificador": self.partner_id.digito_verificador or "",
-                            "contacto": self.opportunity_id.contact_name or "",
-                            "ciudad": self.opportunity_id.city or "",
-                            "provincia": self.opportunity_id.city or "",
-                            "pais": self.opportunity_id.country_id.name or "",
-                            "pagina_web": self.opportunity_id.website.split("//")[-1]
+                            "contacto": self.partner_id.name or "",
+                            "ciudad": self.partner_id.city or "",
+                            "provincia": self.partner_id.city or "",
+                            "pais": self.partner_id.country_id.name or "",
+                            "pagina_web": sitio_web
                         }
                         _logger.info("task crear_cliente_naf(): \n" + str(task))
                         self.conect()

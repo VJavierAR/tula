@@ -8,16 +8,13 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='vat']" position="after">
+                    <field name="cedula" force_save="1" invisible="[('company_type', '=', 'company')]"/>
                     <field name="digito_verificador" force_save="1"/>
-                    <field name="limite_credito" force_save="1"/>
-                    <field name="saldo" force_save="1"/>
                     <field name="no_cliente" force_save="1"/>
                 </xpath>
 
                 <xpath expr="//field[@name='category_id']" position="after">
                     <field name="tipo" force_save="1"/>
-                    <field name="cedula" force_save="1"/>
-                    <field name="estado" force_save="1"/>
                 </xpath>
 
                 <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
@@ -28,7 +25,11 @@
                                 <field name="codigo_naf" force_save="1" readonly="0"/>
                                 <field name="no_cia" force_save="1" readonly="0"/>
                             </group>
-                            <group name="naf_page_group_right"/>
+                            <group name="naf_page_group_right">
+                                <field name="estado" force_save="1"/>
+                                <field name="limite_credito" force_save="1"/>
+                                <field name="saldo" force_save="1"/>
+                            </group>
                         </group>
                     </page>
                 </xpath>
