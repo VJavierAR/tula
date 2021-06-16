@@ -110,7 +110,7 @@ class SaleOrder(models.Model):
                             self.message_post(body=display_msg)
                         # Si se produjo un error al crear el cliente en NAF entonces, informa
                         elif 'error' in resultado_al_crear:
-                            display_msg = "Error al crear cliete en NAF <br/>Mensaje: " + resultado_al_crear['error']
+                            display_msg = "Error al crear cliete en NAF <br/>Mensaje: " + str(resultado_al_crear['error'])
                             self.message_post(body=display_msg)
                             _logger.info("Error al crear")
                     # Si el cliente existe entonces, intenta actualizar los datos en NAF
@@ -149,7 +149,7 @@ class SaleOrder(models.Model):
                                 self.message_post(body=display_msg)
                             # Si ocurre un error al actualizar límite de crédito entonces, informalo
                             elif 'error' in limite_credito_naf:
-                                display_msg = "Error al actualizar límite de crédito <br/>Mensaje: " + limite_credito_naf['error']
+                                display_msg = "Error al actualizar límite de crédito <br/>Mensaje: " + str(limite_credito_naf['error'])
                                 self.message_post(body=display_msg)
                             self.conect()
                             # Verificando saldo
@@ -161,12 +161,12 @@ class SaleOrder(models.Model):
                                 self.message_post(body=display_msg)
                             # Si ocurre un error al actualizar saldo entonces, informalo
                             elif 'error' in saldo_naf:
-                                display_msg = "Error al actualizar saldo <br/>Mensaje: " + saldo_naf['error']
+                                display_msg = "Error al actualizar saldo <br/>Mensaje: " + str(saldo_naf['error'])
                                 self.message_post(body=display_msg)
 
                         # Si ocurrio un error en la actualización de los datos del cliente entonces, informalo
                         elif 'error' in resultado_al_actualizar:
-                            display_msg = "Error al actualizar cliete en NAF.<br/>Mensaje: " + resultado_al_actualizar['error']
+                            display_msg = "Error al actualizar cliete en NAF.<br/>Mensaje: " + str(resultado_al_actualizar['error'])
                             self.message_post(body=display_msg)
 
                     # Si al buscar cliente en NAF ocurre un error entonces, informalo
@@ -200,7 +200,7 @@ class SaleOrder(models.Model):
                             self.message_post(body=display_msq)
                         # Si la actualización del cliente en sistema NAF no fue exitosa entonces, informalo
                         elif 'error' in resultado_al_actualizar:
-                            display_msg = "Error al actualizar cliete en NAF.</br>Mensaje: " + resultado_al_actualizar['error']
+                            display_msg = "Error al actualizar cliete en NAF.</br>Mensaje: " + str(resultado_al_actualizar['error'])
                             self.message_post(body=display_msg)
                     # Si el cliente existe en sistema NAF entonces, verifica si este esta activo en Odoo
                     elif 'existe' in resp and resp['existe'] == 'si':
@@ -233,24 +233,24 @@ class SaleOrder(models.Model):
                                     self.genera_alerta(mensaje=mensaje)
                                 self.partner_id.limite_credito = limite_de_credito['limite']
                                 display_msg = "Se actualizo límite de crédito de cliente <br/>Límite de crédito: " + \
-                                              limite_de_credito['limite']
+                                              str(limite_de_credito['limite'])
 
                                 self.conect()
                                 saldo_naf = self.saldo_de_cliente_naf(task=task)
                                 if 'saldo' in saldo_naf:
                                     self.partner_id.saldo = saldo_naf['saldo']
                                     display_msg = "<br/>Se actualizo límite de crédito de cliente y saldo<br/>" \
-                                                   "Límite de crédito: " + limite_de_credito['limite'] \
-                                                   + "<br/>Saldo: " + saldo_naf['saldo']
+                                                   "Límite de crédito: " + str(limite_de_credito['limite']) \
+                                                   + "<br/>Saldo: " + str(saldo_naf['saldo'])
                                 elif 'error' in saldo_naf:
-                                    display_msg = "Error al actualizar saldo <br/>Error: " + saldo_naf['error']
+                                    display_msg = "Error al actualizar saldo <br/>Error: " + str(saldo_naf['error'])
                                     self.message_post(body=display_msg)
 
                                 self.message_post(body=display_msg)
 
                             # Si ocurre un error al consultar límite de crédito en NAF entonces, informa
                             elif 'error' in limite_de_credito:
-                                display_msg = "Error al consultar límite de crédito <br/>Error: " + limite_de_credito['error']
+                                display_msg = "Error al consultar límite de crédito <br/>Error: " + str(limite_de_credito['error'])
                                 self.message_post(body=display_msg)
 
                         # Si el cliente no esta activo en Odoo entonces, informa y no permitas confirmar
