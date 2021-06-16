@@ -62,7 +62,7 @@ class SaleOrder(models.Model):
                 # si el plazo de pago es de contado
                 if self.payment_term_id.id and self.payment_term_id.id == 1:
                     # Verifica si existe cliente en NAF
-                    _logger.info("self.existe_cliente_naf(task=task_existe_cliente): " + str(task_existe_cliente))
+                    self.conect()
                     resp = self.existe_cliente_naf(task=task_existe_cliente)
                     _logger.info("resp: " + str(resp))
                     # Si no existe el cliente en NAF entonces, crealo
