@@ -447,34 +447,35 @@ class SaleOrder(models.Model):
         _logger.info("crear_cliente_naf() token: " + token + "\n task: \n\n" + str(task))
         resp = requests.post(url_crear_cliente_naf, json=task, headers=headers)
         _logger.info("resp al crear: " + str(resp))
+        if resp.status_code == status_code_correct or resp.status_code == status_code_cliente_existente or resp.status_code == status_code_error:
         # if resp.status_code == status_code_correct:
-        json_respuesta = resp.json()
-        _logger.info(json_respuesta)
-        if int(json_respuesta['status_code']) == status_code_correct:
-            _logger.info("Cliente creado correctamente, mensaje: " + str(json_respuesta['message']))
-            return {
-                'creado': 'si'
-            }
-        elif int(json_respuesta['status_code']) == status_code_cliente_existente:
-            _logger.info("Cliente ya existe, mensaje: " + str(json_respuesta['message']))
-            return {
-                'existe': 'Ya existe el cliente'
-            }
-        elif int(json_respuesta['status_code']) == status_code_error:
-            _logger.info("Error al crear cliente, mensaje: " + str(json_respuesta['message']))
-            return {
-                'error': json_respuesta['message']
-            }
+            json_respuesta = resp.json()
+            _logger.info(json_respuesta)
+            if int(json_respuesta['status_code']) == status_code_correct:
+                _logger.info("Cliente creado correctamente, mensaje: " + str(json_respuesta['message']))
+                return {
+                    'creado': 'si'
+                }
+            elif int(json_respuesta['status_code']) == status_code_cliente_existente:
+                _logger.info("Cliente ya existe, mensaje: " + str(json_respuesta['message']))
+                return {
+                    'existe': 'Ya existe el cliente'
+                }
+            elif int(json_respuesta['status_code']) == status_code_error:
+                _logger.info("Error al crear cliente, mensaje: " + str(json_respuesta['message']))
+                return {
+                    'error': json_respuesta['message']
+                }
+            else:
+                _logger.info("Error al realizar petición resp.status_code: " + str(resp.status_code))
+                return {
+                    'error': json_respuesta['status_code']
+                }
         else:
             _logger.info("Error al realizar petición resp.status_code: " + str(resp.status_code))
             return {
-                'error': json_respuesta['status_code']
+                'error': str(resp.status_code)
             }
-        # else:
-        #    _logger.info("Error al realizar petición resp.status_code: " + str(resp.status_code))
-        #    return {
-        #        'error': str(resp.status_code)
-        #    }
 
     def limite_de_credito_cliente_naf(self, task=None):
         _logger.info("SaleOrder.limite_de_credito_cliente_naf(self, task=None)")
@@ -489,7 +490,7 @@ class SaleOrder(models.Model):
             "auth": token
         }
         resp = requests.get(url_limite_de_credito_de_cliente, json=task, headers=headers)
-        if resp.status_code == status_code_correct or resp.status_code == status_code_cliente_existente or resp.status_code == status_code_error:
+
             json_respuesta = resp.json()
             _logger.info(json_respuesta)
             if int(json_respuesta['status_code']) == status_code_correct:
