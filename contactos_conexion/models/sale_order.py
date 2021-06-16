@@ -62,7 +62,7 @@ class SaleOrder(models.Model):
                 # si el plazo de pago es de contado
                 if self.payment_term_id.id and self.payment_term_id.id == 1:
                     # Verifica si existe cliente en NAF
-                    self.conect()
+
                     resp = self.existe_cliente_naf(task=task_existe_cliente)
                     _logger.info("resp: " + str(resp))
                     # Si no existe el cliente en NAF entonces, crealo
@@ -139,6 +139,7 @@ class SaleOrder(models.Model):
                                 "GRUPO": self.partner_id.grupo or "",
                                 "NO_CLIENTE": self.partner_id.no_cliente or ""
                             }
+                            self.conect()
                             # Verificando límite de crédito
                             limite_credito_naf = self.limite_de_credito_cliente_naf(task=task)
                             # Si tíene límite de crédito en sistema NAF entonces, actualiza el límite en Odoo e informa
@@ -150,6 +151,7 @@ class SaleOrder(models.Model):
                             elif 'error' in limite_credito_naf:
                                 display_msg = "Error al actualizar límite de crédito <br/>Mensaje: " + limite_credito_naf['error']
                                 self.message_post(body=display_msg)
+                            self.conect()
                             # Verificando saldo
                             saldo_naf = self.saldo_de_cliente_naf(task=task)
                             # Si tiene saldo en sistema NAF entonces, actualizalo e informa
@@ -206,6 +208,7 @@ class SaleOrder(models.Model):
                         # si el cliente esta activo en Odoo entonces, verifica límite de crédito y saldo
                         # para actualizar estos
                         if self.partner_id.active:
+                            self.conect()
                             # verificando límite de credito y saldo de cliente
                             task = {
                                 "NO_CIA": self.partner_id.no_cia or "",
@@ -232,6 +235,7 @@ class SaleOrder(models.Model):
                                 display_msg = "Se actualizo límite de crédito de cliente <br/>Límite de crédito: " + \
                                               limite_de_credito['limite']
 
+                                self.conect()
                                 saldo_naf = self.saldo_de_cliente_naf(task=task)
                                 if 'saldo' in saldo_naf:
                                     self.partner_id.saldo = saldo_naf['saldo']
@@ -272,6 +276,7 @@ class SaleOrder(models.Model):
                     # Si el cliente esta activo en Odoo entonces, consulta límite de crédito y saldo de cliente en
                     # sistema NAF para actualizar estos datos
                     if self.partner_id.active:
+                        self.conect()
                         # verificando límite de credito y saldo de cliente
                         task = {
                             "NO_CIA": self.partner_id.no_cia or "",
@@ -297,6 +302,7 @@ class SaleOrder(models.Model):
                             self.partner_id.limite_credito = limite_de_credito['limite']
                             display_msg = "Se actualizo límite de crédito de cliente <br/>Límite de crédito: " + \
                                           str(limite_de_credito['limite'])
+                            self.conect()
                             saldo_naf = self.saldo_de_cliente_naf(task=task)
                             if 'saldo' in saldo_naf:
                                 self.partner_id.saldo = saldo_naf['saldo']
@@ -450,13 +456,13 @@ class SaleOrder(models.Model):
 
     def limite_de_credito_cliente_naf(self, task=None):
         _logger.info("SaleOrder.limite_de_credito_cliente_naf(self, task=None)")
-
+        """
         task = {
             "NO_CIA": "12",
             "GRUPO": "CP",
             "NO_CLIENTE": "CP-002"
         }
-
+        """
         headers = {
             "auth": token
         }
