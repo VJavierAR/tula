@@ -24,9 +24,9 @@
                     <page name="naf_page" string="NAF">
                         <group name="naf_page_group">
                             <group name="naf_page_group_left">
-                                <field name="grupo" force_save="1" readonly="1"/>
-                                <field name="codigo_naf" force_save="1" readonly="1"/>
-                                <field name="no_cia" force_save="1" readonly="1"/>
+                                <field name="grupo" force_save="1" readonly="0"/>
+                                <field name="codigo_naf" force_save="1" readonly="0"/>
+                                <field name="no_cia" force_save="1" readonly="0"/>
                             </group>
                             <group name="naf_page_group_right"/>
                         </group>
