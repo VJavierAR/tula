@@ -450,13 +450,13 @@ class SaleOrder(models.Model):
 
     def limite_de_credito_cliente_naf(self, task=None):
         _logger.info("SaleOrder.limite_de_credito_cliente_naf(self, task=None)")
-        """
+
         task = {
             "NO_CIA": "12",
             "GRUPO": "CP",
             "NO_CLIENTE": "CP-002"
         }
-        """
+
         headers = {
             "auth": token
         }
