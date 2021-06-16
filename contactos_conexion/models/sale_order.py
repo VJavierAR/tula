@@ -297,7 +297,7 @@ class SaleOrder(models.Model):
                         # También actualiza del cliente saldo en Odoo con base al salndo en NAF e informa
                         if 'limite' in limite_de_credito:
                             monto_de_orden = self.amount_total
-                            if monto_de_orden > limite_de_credito['limite']:
+                            if 0 > limite_de_credito['limite']:
                                 mensaje = "Límite de crédito excedido: \nMonto de orden: " + str(
                                     monto_de_orden) + "\n Límite de crédito: " + str(limite_de_credito['limite'])
                                 display_msg_limite = "Límite de crédito excedido: <br/>Monto de orden: " + str(
