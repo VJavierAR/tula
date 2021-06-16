@@ -230,23 +230,26 @@ class SaleOrder(models.Model):
                                     display_msg_limite = "Límite de crédito excedido: <br/>Monto de orden: " + str(
                                         monto_de_orden) + "<br/> Límite de crédito: " + str(limite_de_credito['limite'])
                                     self.message_post(body=display_msg_limite)
-                                    self.genera_alerta(mensaje=mensaje)
-                                self.partner_id.limite_credito = limite_de_credito['limite']
-                                display_msg = "Se actualizo límite de crédito de cliente <br/>Límite de crédito: " + \
-                                              str(limite_de_credito['limite'])
+                                    generar_alerta = self.genera_alerta(mensaje=mensaje)
 
-                                self.conect()
-                                saldo_naf = self.saldo_de_cliente_naf(task=task)
-                                if 'saldo' in saldo_naf:
-                                    self.partner_id.saldo = saldo_naf['saldo']
-                                    display_msg = "<br/>Se actualizo límite de crédito de cliente y saldo<br/>" \
-                                                   "Límite de crédito: " + str(limite_de_credito['limite']) \
-                                                   + "<br/>Saldo: " + str(saldo_naf['saldo'])
-                                elif 'error' in saldo_naf:
-                                    display_msg = "Error al actualizar saldo <br/>Error: " + str(saldo_naf['error'])
+                                    self.partner_id.limite_credito = limite_de_credito['limite']
+                                    display_msg = "Se actualizo límite de crédito de cliente <br/>Límite de crédito: " + \
+                                                  str(limite_de_credito['limite'])
+
+                                    self.conect()
+                                    saldo_naf = self.saldo_de_cliente_naf(task=task)
+                                    if 'saldo' in saldo_naf:
+                                        self.partner_id.saldo = saldo_naf['saldo']
+                                        display_msg = "<br/>Se actualizo límite de crédito de cliente y saldo<br/>" \
+                                                       "Límite de crédito: " + str(limite_de_credito['limite']) \
+                                                       + "<br/>Saldo: " + str(saldo_naf['saldo'])
+                                    elif 'error' in saldo_naf:
+                                        display_msg += "Error al actualizar saldo <br/>Error: " + str(saldo_naf['error'])
+                                        self.message_post(body=display_msg)
+
                                     self.message_post(body=display_msg)
 
-                                self.message_post(body=display_msg)
+                                    return generar_alerta
 
                             # Si ocurre un error al consultar límite de crédito en NAF entonces, informa
                             elif 'error' in limite_de_credito:
@@ -298,22 +301,25 @@ class SaleOrder(models.Model):
                                 display_msg_limite = "Límite de crédito excedido: <br/>Monto de orden: " + str(
                                     monto_de_orden) + "<br/> Límite de crédito: " + str(limite_de_credito['limite'])
                                 self.message_post(body=display_msg_limite)
-                                self.genera_alerta(mensaje=mensaje)
-                            self.partner_id.limite_credito = limite_de_credito['limite']
-                            display_msg = "Se actualizo límite de crédito de cliente <br/>Límite de crédito: " + \
-                                          str(limite_de_credito['limite'])
-                            self.conect()
-                            saldo_naf = self.saldo_de_cliente_naf(task=task)
-                            if 'saldo' in saldo_naf:
-                                self.partner_id.saldo = saldo_naf['saldo']
-                                display_msg = "Se actualizo límite de crédito y saldo de cliente<br/>" \
-                                               "Límite de crédito: " + str(limite_de_credito['limite']) + \
-                                               "<br/>Saldo: " + str(saldo_naf['saldo'])
-                            elif 'error' in saldo_naf:
-                                display_msg = "Error al consultar límite de crédito <br/>Error: " + str(saldo_naf['error'])
+                                generar_alerta = self.genera_alerta(mensaje=mensaje)
+
+                                self.partner_id.limite_credito = limite_de_credito['limite']
+                                display_msg = "Se actualizo límite de crédito de cliente <br/>Límite de crédito: " + \
+                                              str(limite_de_credito['limite'])
+                                self.conect()
+                                saldo_naf = self.saldo_de_cliente_naf(task=task)
+                                if 'saldo' in saldo_naf:
+                                    self.partner_id.saldo = saldo_naf['saldo']
+                                    display_msg = "Se actualizo límite de crédito y saldo de cliente<br/>" \
+                                                   "Límite de crédito: " + str(limite_de_credito['limite']) + \
+                                                   "<br/>Saldo: " + str(saldo_naf['saldo'])
+                                elif 'error' in saldo_naf:
+                                    display_msg += "<br/>Error al consultar límite de crédito <br/>Error: " + str(saldo_naf['error'])
+                                    self.message_post(body=display_msg)
+
                                 self.message_post(body=display_msg)
 
-                            self.message_post(body=display_msg)
+                                return generar_alerta
 
                         # Si ocurre un error al consultar límite de crédito en NAF entonces, informa
                         elif 'error' in limite_de_credito:
