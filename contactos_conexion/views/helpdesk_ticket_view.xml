@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="helpdesk_ticket_update">
+            <field name="name">helpdesk.ticket.update</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="before">
+
+                    <field name="origen_sale" force_save="1" attrs="{'invisible': [('origen_sale', '=', False)] }"/>
+
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

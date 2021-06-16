@@ -106,10 +106,22 @@ class SaleOrder(models.Model):
                             _logger.info("Ya existe e cliente actualizalo")
                             display_msg = "Se intento crear cliente en NAF pero este ya existe"
                             self.message_post(body=display_msg)
-                        # Si se creo exitosamente entonces, informa
+                            self.env['helpdesk.ticket'].create({
+                                'name': 'Cliente existe en NAF',
+                                'partner_id': self.partner_id.id,
+                                'origen_sale': self.id,
+                                'description': display_msg
+                            })
+                        # Si se creo exitosamente entonces, informa y avisa a la mesa de ayuda
                         elif 'creado' in resultado_al_crear:
                             display_msg = "Cliente creado en sistema NAF."
                             self.message_post(body=display_msg)
+                            self.env['helpdesk.ticket'].create({
+                                'name': 'Petición para crear cliente',
+                                'partner_id': self.partner_id.id,
+                                'origen_sale': self.id,
+                                'description': display_msg
+                            })
                         # Si se produjo un error al crear el cliente en NAF entonces, informa
                         elif 'error' in resultado_al_crear:
                             display_msg = "Error al crear cliete en NAF <br/>Mensaje: " + str(resultado_al_crear['error'])
@@ -297,7 +309,7 @@ class SaleOrder(models.Model):
                         # También actualiza del cliente saldo en Odoo con base al salndo en NAF e informa
                         if 'limite' in limite_de_credito:
                             monto_de_orden = self.amount_total
-                            if 0 > limite_de_credito['limite']:
+                            if monto_de_orden > limite_de_credito['limite']:
                                 mensaje = "Límite de crédito excedido: \nMonto de orden: " + str(
                                     monto_de_orden) + "\n Límite de crédito: " + str(limite_de_credito['limite'])
                                 display_msg_limite = "Límite de crédito excedido: <br/>Monto de orden: " + str(
