@@ -107,7 +107,7 @@ class SaleOrder(models.Model):
                             display_msg = "Se intento crear cliente en NAF pero este ya existe"
                             self.message_post(body=display_msg)
                             self.env['helpdesk.ticket'].create({
-                                'name': 'Cliente existe en NAF',
+                                'name': 'Solicitud de creación de cliente',
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg,
@@ -144,7 +144,7 @@ class SaleOrder(models.Model):
                         display_msg = "Se intento crear cliente en NAF pero este ya existe"
                         self.message_post(body=display_msg)
                         self.env['helpdesk.ticket'].create({
-                            'name': 'Cliente existe en NAF',
+                            'name': 'Solicitud de cliente en NAF',
                             'partner_id': self.partner_id.id,
                             'origen_sale': self.id,
                             'description': display_msg,
@@ -243,9 +243,8 @@ class SaleOrder(models.Model):
                             display_msg = "Se actualizaron datos de cliete en NAF"
                             self.message_post(body=display_msq)
 
-
                             self.env['helpdesk.ticket'].create({
-                                'name': 'Cliente existe en NAF',
+                                'name': 'Solicitud de creación de cliente ',
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg,
@@ -261,7 +260,7 @@ class SaleOrder(models.Model):
 
 
                             self.env['helpdesk.ticket'].create({
-                                'name': 'Cliente existe en NAF',
+                                'name': 'Solcicitud de creación de cliente',
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg,
