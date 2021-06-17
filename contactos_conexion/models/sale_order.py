@@ -113,6 +113,9 @@ class SaleOrder(models.Model):
                                 'description': display_msg,
                                 'tag_ids': (4, 1)
                             })
+                            generar_alerta = self.genera_alerta(mensaje=display_msg)
+                            return generar_alerta
+
                         # Si se creo exitosamente entonces, informa y avisa a la mesa de ayuda
                         elif 'creado' in resultado_al_crear:
                             display_msg = "Cliente creado en sistema NAF."
