@@ -133,6 +133,20 @@ class SaleOrder(models.Model):
                     elif 'existe' in resp and resp['existe'] == 'si':
                         # Actualizando datos en NAF
                         _logger.info("existe** name y rcu no se cambian")
+                        display_msg = "Se intento crear cliente en NAF pero este ya existe"
+                        self.message_post(body=display_msg)
+                        self.env['helpdesk.ticket'].create({
+                            'name': 'Cliente existe en NAF',
+                            'partner_id': self.partner_id.id,
+                            'origen_sale': self.id,
+                            'description': display_msg,
+                            'tag_ids': (4, 1)
+                        })
+                        generar_alerta = self.genera_alerta(mensaje=display_msg)
+                        return generar_alerta
+                        """
+                        /
+                        
                         self.conect()
                         task = {
                             "no_cia": self.partner_id.no_cia or "",
@@ -184,6 +198,9 @@ class SaleOrder(models.Model):
                         elif 'error' in resultado_al_actualizar:
                             display_msg = "Error al actualizar cliete en NAF.<br/>Mensaje: " + str(resultado_al_actualizar['error'])
                             self.message_post(body=display_msg)
+                        
+                        /
+                        """
 
                     # Si al buscar cliente en NAF ocurre un error entonces, informalo
                     elif 'error' in resp:
