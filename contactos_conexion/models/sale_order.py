@@ -134,6 +134,9 @@ class SaleOrder(models.Model):
                             display_msg = "Error al crear cliete en NAF <br/>Mensaje: " + str(resultado_al_crear['error'])
                             self.message_post(body=display_msg)
                             _logger.info("Error al crear")
+                            generar_alerta = self.genera_alerta(mensaje="Error de conexión vuelve a intentarlo")
+                            return generar_alerta
+
                     # Si el cliente existe entonces, intenta actualizar los datos en NAF
                     elif 'existe' in resp and resp['existe'] == 'si':
                         # Actualizando datos en NAF
@@ -212,6 +215,9 @@ class SaleOrder(models.Model):
                         _logger.info("error ***** " + str(resp['error']))
                         display_msg = "Error al verificar si existe cliente en NAF.<br/>Error: " + str(resp['error'])
                         self.message_post(body=display_msg)
+                        generar_alerta = self.genera_alerta(mensaje="Error de conexión vuelve a intentarlo")
+                        return generar_alerta
+
                 # si el cliente no tiene código NAF y el plazo de pago no es de contado entonces verifica si existe el
                 # cliente en sistema NAF
                 else:
@@ -236,10 +242,34 @@ class SaleOrder(models.Model):
                             _logger.info("Cliente actualizado en naf")
                             display_msg = "Se actualizaron datos de cliete en NAF"
                             self.message_post(body=display_msq)
+
+
+                            self.env['helpdesk.ticket'].create({
+                                'name': 'Cliente existe en NAF',
+                                'partner_id': self.partner_id.id,
+                                'origen_sale': self.id,
+                                'description': display_msg,
+                                'tag_ids': (4, 1)
+                            })
+                            generar_alerta = self.genera_alerta(mensaje=display_msg)
+                            return generar_alerta
+
                         # Si la actualización del cliente en sistema NAF no fue exitosa entonces, informalo
                         elif 'error' in resultado_al_actualizar:
                             display_msg = "Error al actualizar cliete en NAF.</br>Mensaje: " + str(resultado_al_actualizar['error'])
                             self.message_post(body=display_msg)
+
+
+                            self.env['helpdesk.ticket'].create({
+                                'name': 'Cliente existe en NAF',
+                                'partner_id': self.partner_id.id,
+                                'origen_sale': self.id,
+                                'description': display_msg,
+                                'tag_ids': (4, 1)
+                            })
+                            generar_alerta = self.genera_alerta(mensaje=display_msg)
+                            return generar_alerta
+
                     # Si el cliente existe en sistema NAF entonces, verifica si este esta activo en Odoo
                     elif 'existe' in resp and resp['existe'] == 'si':
 
@@ -284,15 +314,19 @@ class SaleOrder(models.Model):
                                     elif 'error' in saldo_naf:
                                         display_msg += "Error al actualizar saldo <br/>Error: " + str(saldo_naf['error'])
                                         self.message_post(body=display_msg)
+                                        generar_alerta = self.genera_alerta(
+                                            mensaje="Error de conexión vuelve a intentarlo")
+                                        return generar_alerta
 
                                     self.message_post(body=display_msg)
-
                                     return generar_alerta
 
                             # Si ocurre un error al consultar límite de crédito en NAF entonces, informa
                             elif 'error' in limite_de_credito:
                                 display_msg = "Error al consultar límite de crédito <br/>Error: " + str(limite_de_credito['error'])
                                 self.message_post(body=display_msg)
+                                generar_alerta = self.genera_alerta(mensaje="Error de conexión vuelve a intentarlo")
+                                return generar_alerta
 
                         # Si el cliente no esta activo en Odoo entonces, informa y no permitas confirmar
                         else:
@@ -305,6 +339,8 @@ class SaleOrder(models.Model):
                         _logger.info("error ***** " + str(resp['error']))
                         display_msg = "Error al verificar si existe cliente en NAF.<br/>Error: " + str(resp['error'])
                         self.message_post(body=display_msg)
+                        generar_alerta = self.genera_alerta(mensaje="Error de conexión vuelve a intentarlo")
+                        return generar_alerta
 
             # Si el cliente tiene código NAF entonces, verifica el plazo de pago
             else:
