@@ -127,6 +127,8 @@ class SaleOrder(models.Model):
                                 'description': display_msg,
                                 'tag_ids': (4, 1)
                             })
+                            generar_alerta = self.genera_alerta(mensaje=display_msg)
+                            return generar_alerta
                         # Si se produjo un error al crear el cliente en NAF entonces, informa
                         elif 'error' in resultado_al_crear:
                             display_msg = "Error al crear cliete en NAF <br/>Mensaje: " + str(resultado_al_crear['error'])
