@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <report id="libro_compras_xlsx"
+            model="account.move"
+            string="Libro de Compras"
+            report_type="xlsx"
+            name="libro.compras"
+            file="Libro de Compras"
+            attachment_use="False"/>
+        <report>
+     </data>
+</odoo>
