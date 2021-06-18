@@ -7,6 +7,5 @@
             name="libro.compras"
             file="Libro de Compras"
             attachment_use="False"/>
-        <report>
      </data>
 </odoo>
