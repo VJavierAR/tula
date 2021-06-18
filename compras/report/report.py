@@ -22,7 +22,7 @@ class MovimientosXlsx(models.AbstractModel):
             sheet.write(i, 1, obj.date.strftime("%Y/%m/%d"), bold)
             sheet.write(i, 2, obj.invoice_doc_serie, bold)
             sheet.write(i, 3, obj.invoice_doc_number, bold)
-            sheet.write(i, 4 obj.partner_id.vat, bold)
+            sheet.write(i, 4, obj.partner_id.vat, bold)
             sheet.write(i, 5, obj.partner_id.name, bold)
             sheet.write(i, 6, obj.amount_untaxed if(obj.tipo=='1') else 0, bold)
             sheet.write(i, 7, obj.amount_untaxed if(obj.tipo=='2') else 0, bold)
