@@ -35,6 +35,7 @@ class MovimientosXlsx(models.AbstractModel):
             idp=obj.line_ids.filtered(lambda x:x.account_id.code=='531031')
             sheet.write(i, 11,iva.credit if(iva!=[]) else 0, bold)
             sheet.write(i, 12,idp.credit if(idp!=[]) else 0, bold)
+            sheet.write(i, 13, obj.amount_untaxed, bold)
             sheet.write(i, 13, obj.amount_total, bold)
             sheet.write(i, 14, obj.ref, bold)
             i=i+1
