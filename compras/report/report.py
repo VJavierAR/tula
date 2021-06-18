@@ -33,9 +33,9 @@ class MovimientosXlsx(models.AbstractModel):
             sheet.write(i, 10, obj.amount_untaxed if(obj.tipo=='5') else 0, bold)
             iva=obj.line_ids.filtered(lambda x:x.account_id.code=='112101')
             idp=obj.line_ids.filtered(lambda x:x.account_id.code=='531031')
-            sheet.write(i, 11,iva[0].credit if(len(iva)>0) else 0, bold)
-            sheet.write(i, 12,idp[0].credit if(len(idp)>0) else 0, bold)
+            sheet.write(i, 11,iva[0].debit if(len(iva)>0) else 0, bold)
+            sheet.write(i, 12,idp[0].debit if(len(idp)>0) else 0, bold)
             sheet.write(i, 13, obj.amount_untaxed, bold)
-            sheet.write(i, 13, obj.amount_total, bold)
-            sheet.write(i, 14, obj.ref, bold)
+            sheet.write(i, 14, obj.amount_total, bold)
+            sheet.write(i, 15, obj.ref, bold)
             i=i+1
