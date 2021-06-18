@@ -13,9 +13,10 @@ odoo.define("refresher.pager", function(require) {
     var inter;
     var isPaused = false;
     var idPresupuestos = 806; //id de vista lista sale.order
-    var idPedidosAFacturar = 585 //Clientes.facturas
-    var idTransferencias = 1794 //id vista lista stock.picking
-    var idsVistasPermitidas = [idTransferencias, idPedidosAFacturar]
+    var idClientesFacturas = 558 //Clientes.facturas  //id demo mia: 585
+    var idPedidosAFacturar = 922  // id demo mia: 804
+    var idTransferencias = 1095  //id vista lista stock.picking //id demo mia: 1794
+    var idsVistasPermitidas = [idTransferencias, idPedidosAFacturar, idClientesFacturas]
 
     // Allowed decoration on the list's rows: bold, italic and bootstrap semantics classes
     var DECORATIONS = [
