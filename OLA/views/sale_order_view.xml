@@ -242,7 +242,10 @@
 
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom']" position="after">
                     <field name="x_tiempo_total" optional="show" readonly="1" force_save="1"/>
+                    <!--
                     <field name="coste_producto" optional="show" readonly="1" groups="sales_team.group_sale_manager"/>
+                    -->
+                    <field name="purchase_price" optional="show" readonly="1" groups="sales_team.group_sale_manager"/>
                     <field name="x_studio_precio_mnimo" optional="show" groups="sales_team.group_sale_manager"/>
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='discount']" position="after">
