@@ -1,18 +1,10 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
-# from odoo import models, fields, api
+from odoo import models, fields, api
 
 
-# class facturable(models.Model):
-#     _name = 'facturable.facturable'
-#     _description = 'facturable.facturable'
+class facturable(models.Model):
+    _inherit = 'sale.order.line'
+    facturable=fields.Double('Facturable')
+    
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
