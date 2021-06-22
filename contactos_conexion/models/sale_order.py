@@ -118,10 +118,10 @@ class SaleOrder(models.Model):
 
                         # Si se creo exitosamente entonces, informa y avisa a la mesa de ayuda
                         elif 'creado' in resultado_al_crear:
-                            display_msg = "Cliente creado en sistema NAF."
+                            display_msg = "Se envió solicitud de creación de cliente a NAF."
                             self.message_post(body=display_msg)
                             self.env['helpdesk.ticket'].create({
-                                'name': 'Petición para crear cliente',
+                                'name': 'Solicitud para crear cliente',
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg,
@@ -131,7 +131,7 @@ class SaleOrder(models.Model):
                             return generar_alerta
                         # Si se produjo un error al crear el cliente en NAF entonces, informa
                         elif 'error' in resultado_al_crear:
-                            display_msg = "Error al crear cliete en NAF <br/>Mensaje: " + str(resultado_al_crear['error'])
+                            display_msg = "Error al crear cliente en NAF <br/>Mensaje: " + str(resultado_al_crear['error'])
                             self.message_post(body=display_msg)
                             _logger.info("Error al crear")
                             generar_alerta = self.genera_alerta(mensaje="Error de conexión vuelve a intentarlo")
@@ -170,7 +170,7 @@ class SaleOrder(models.Model):
                         # Si fue exitosa la actualización de los datos del cliente entonces,
                         # informalo, intenta actualizar límite de crédito y saldo
                         if 'exito' in resultado_al_actualizar:
-                            display_msg = "Se actualizaron datos de cliete en NAF"
+                            display_msg = "Se actualizaron datos de cliente en NAF"
                             self.message_post(body=display_msq)
                             task = {
                                 "NO_CIA": self.partner_id.no_cia or "",
@@ -204,7 +204,7 @@ class SaleOrder(models.Model):
 
                         # Si ocurrio un error en la actualización de los datos del cliente entonces, informalo
                         elif 'error' in resultado_al_actualizar:
-                            display_msg = "Error al actualizar cliete en NAF.<br/>Mensaje: " + str(resultado_al_actualizar['error'])
+                            display_msg = "Error al actualizar cliente en NAF.<br/>Mensaje: " + str(resultado_al_actualizar['error'])
                             self.message_post(body=display_msg)
                         
                         /
@@ -240,7 +240,7 @@ class SaleOrder(models.Model):
                         # Si la actualización del cliente en sistema NAF fue exitosa entonces, informalo
                         if 'exito' in resultado_al_actualizar:
                             _logger.info("Cliente actualizado en naf")
-                            display_msg = "Se actualizaron datos de cliete en NAF"
+                            display_msg = "Se actualizaron datos de cliente en NAF"
                             self.message_post(body=display_msq)
 
                             self.env['helpdesk.ticket'].create({
@@ -255,12 +255,12 @@ class SaleOrder(models.Model):
 
                         # Si la actualización del cliente en sistema NAF no fue exitosa entonces, informalo
                         elif 'error' in resultado_al_actualizar:
-                            display_msg = "Error al actualizar cliete en NAF.</br>Mensaje: " + str(resultado_al_actualizar['error'])
+                            display_msg = "Error al actualizar cliente en NAF.</br>Mensaje: " + str(resultado_al_actualizar['error'])
                             self.message_post(body=display_msg)
 
 
                             self.env['helpdesk.ticket'].create({
-                                'name': 'Solcicitud de creación de cliente',
+                                'name': 'Solicitud de creación de cliente',
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg,
