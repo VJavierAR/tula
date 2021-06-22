@@ -10,6 +10,8 @@ odoo.define("refresher.pager", function(require) {
     var ListView = require('web.ListView')
     var WebClient = require('web.WebClient')
     var data_manager = require('web.data_manager');
+    var search_filters = require('web.search_filters');
+
     var inter;
     var isPaused = false;
     var idPresupuestos = 806; //id de vista lista sale.order
@@ -29,6 +31,61 @@ odoo.define("refresher.pager", function(require) {
         'decoration-success',
         'decoration-warning'
     ];
+
+    search_filters.include({
+        start: function() {
+            var self = this;
+            var res = self._super();
+
+            var $button = $("<span>", {
+                class: "fa fa-refresh btn btn-icon o_pager_refresh",
+                css: {"margin-right": "8px"},
+                "aria-label": "Refresh",
+            });
+            var $button_play = $("<span>", {
+                class: "fa fa-play btn btn-icon o_pager_play",
+                css: {"margin-right": "8px"},
+                "aria-label": "Play",
+            });
+            var $button_pause = $("<span>", {
+                class: "fa fa-pause btn btn-icon o_pager_pause",
+                css: {"margin-right": "8px"},
+                "aria-label": "Pause",
+            });
+            $button.on("click", function() {
+                self._changeSelection(0);
+            });
+            $button_play.on("click", function() {
+                self._playInterval();
+            });
+            $button_pause.on("click", function() {
+                self._pauseInterval();
+            });
+
+            self.$el.prepend($button);
+            self.$el.prepend($button_play);
+            self.$el.prepend($button_pause);
+            return res;
+        },
+        _playInterval: function() {
+            //console.log("continuando....")
+            if (!isPaused) {
+                alert("La recarga automatica permanece activa")
+                return
+            }
+            isPaused = false;
+            alert("Continuando recarga automatica...")
+        },
+        _pauseInterval: function() {
+            //console.log("pausando....")
+            if (isPaused) {
+                alert("La recarga automatica permanece en pausa")
+                return
+            }
+            isPaused = true;
+            alert("Deteniendo recarga automatica...")
+        },
+    });
 
     pager.include({
         start: function() {
