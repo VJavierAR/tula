@@ -17,12 +17,12 @@ class MovimientosXlsx(models.AbstractModel):
         bold = workbook.add_format({'bold': True})
         sheet = workbook.add_worksheet('Libro de Compras')
         sheet.merge_range('A1:P1', 'Libro de Compras', merge_format)
-        sheet.write(2, 0, self.env.user.company_id.name, bold)
-        sheet.write(2, 1,'NIT: ' +str(self.env.user.company_id.vat), bold)
-        sheet.write(3, 0,'MES: ' +str(months[datetime.datetime.now().month]), bold)
-        sheet.write(3, 1,'AÑO: ' +str(datetime.datetime.now().year), bold)
+        sheet.write(1, 0, self.env.user.company_id.name, bold)
+        sheet.write(1, 1,'NIT: ' +str(self.env.user.company_id.vat), bold)
+        sheet.write(2, 0,'MES: ' +str(months[datetime.datetime.now().month]), bold)
+        sheet.write(2, 1,'AÑO: ' +str(datetime.datetime.now().year), bold)
         for obj in account:
-            sheet.write(i, 0, str(i-1), bold)
+            sheet.write(i, 0, str(i-3), bold)
             sheet.write(i, 1, obj.date.strftime("%Y/%m/%d"), bold)
             nombre=obj.name.replace('Factura ','').split('-') if(obj.name) else []
             sheet.write(i, 2, nombre[0] if(nombre!=[] and len(nombre)>1) else obj.name, bold)
