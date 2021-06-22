@@ -15,7 +15,7 @@ odoo.define("refresher.pager", function(require) {
     var idPresupuestos = 806; //id de vista lista sale.order
     var idClientesFacturas = 558 //Clientes.facturas  //id demo mia: 585
     var idPedidosAFacturar = 922  // id demo mia: 804
-    var idTransferencias = 1095  //id vista lista stock.picking //id demo mia: 1794
+    var idTransferencias = 1794 //1095  //id vista lista stock.picking //id demo mia: 1794
     var idsVistasPermitidas = [idTransferencias, idPedidosAFacturar, idClientesFacturas]
 
     // Allowed decoration on the list's rows: bold, italic and bootstrap semantics classes
@@ -81,19 +81,20 @@ odoo.define("refresher.pager", function(require) {
         _playInterval: function() {
             //console.log("continuando....")
             if (!isPaused) {
-                alert("Recarga automatica activa")
+                alert("La recarga automatica permanece activa")
                 return
             }
             isPaused = false;
-
+            alert("Continuando recarga automatica...")
         },
         _pauseInterval: function() {
             //console.log("pausando....")
             if (isPaused) {
-                alert("Recarga automatica en pausa")
+                alert("La recarga automatica permanece en pausa")
                 return
             }
             isPaused = true;
+            alert("Deteniendo recarga automatica...")
         },
     });
 
