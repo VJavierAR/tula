@@ -4,19 +4,35 @@ import datetime, time
 import xlsxwriter
 import pytz
 _logger = logging.getLogger(__name__)
-
+months = ["Unknown",
+          "January",
+          "Febuary",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"]
 class MovimientosXlsx(models.AbstractModel):
     _name = 'report.libro.compras'
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, account):
-        i=2
+        i=4
         d=[]
         merge_format = workbook.add_format({'bold': 1,'border': 1,'align': 'center','valign': 'vcenter','fg_color': 'blue'})
         report_name = 'Libro de Compras'
         bold = workbook.add_format({'bold': True})
         sheet = workbook.add_worksheet('Libro de Compras')
-        sheet.merge_range('A1:R1', 'Libro de Compras', merge_format)
+        sheet.merge_range('A1:P1', 'Libro de Compras', merge_format)
+        sheet.write(2, 0, self.env.user.company_id.name, bold)
+        sheet.write(2, 1,'NIT: ' +str(self.env.user.company_id.vat), bold)
+        sheet.write(3, 0,'MES: ' +str(months[int(datetime.datetime.now().month())]), bold)
+        sheet.write(3, 1,'AÑO: ' +str(datetime.datetime.now().year()), bold)
         for obj in account:
             sheet.write(i, 0, str(i-1), bold)
             sheet.write(i, 1, obj.date.strftime("%Y/%m/%d"), bold)
@@ -40,3 +56,4 @@ class MovimientosXlsx(models.AbstractModel):
             sheet.write(i, 14, obj.amount_total, bold)
             sheet.write(i, 15, obj.ref, bold)
             i=i+1
+        sheet.add_table('A4:P'+str(i),{'style': 'Table Style Medium 9','columns': [{'header': '#'},{'header': 'Fecha'},{'header': 'Serie'},{'header':'Numero'},{'header': 'NIT/CED'},{'header': 'Nombre del Proveedor'},{'header': 'Combustible'},{'header': 'Compras'},{'header': 'Pequeño/Cont'},{'header': 'Servicios'},{'header': 'Import'},{'header': 'IVA'},{'header': 'IDP'},{'header': 'Total'},{'header': 'Base'},{'header': 'Concepto'}]})
