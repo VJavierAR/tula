@@ -31,7 +31,7 @@ class MovimientosXlsx(models.AbstractModel):
         sheet.merge_range('A1:P1', 'Libro de Compras', merge_format)
         sheet.write(2, 0, self.env.user.company_id.name, bold)
         sheet.write(2, 1,'NIT: ' +str(self.env.user.company_id.vat), bold)
-        sheet.write(3, 0,'MES: ' +str(months[int(datetime.datetime.now().month())]), bold)
+        sheet.write(3, 0,'MES: ' +str(months[datetime.datetime.now().month()]), bold)
         sheet.write(3, 1,'AÑO: ' +str(datetime.datetime.now().year()), bold)
         for obj in account:
             sheet.write(i, 0, str(i-1), bold)
