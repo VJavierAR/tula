@@ -521,7 +521,7 @@ class SaleOrder(models.Model):
             elif int(json_respuesta['status_code']) == status_code_cliente_existente:
                 _logger.info("Cliente ya existe, mensaje: " + str(json_respuesta['message']))
                 return {
-                    'existe': 'Ya existe el cliente'
+                    'existe': json_respuesta['message']
                 }
             elif int(json_respuesta['status_code']) == status_code_error:
                 _logger.info("Error al crear cliente, mensaje: " + str(json_respuesta['message']))
