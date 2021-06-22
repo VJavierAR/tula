@@ -68,6 +68,11 @@ class SaleOrder(models.Model):
                     # Si no existe el cliente en NAF entonces, crealo
                     if 'existe' in resp and resp['existe'] == 'no':
                         _logger.info("")
+                        if not self.partner_id.vat and not self.partner_id.digito_verificador and not self.partner_id.id and not self.partner_id.name:
+                            display_msg = "Se intento crear cliente en NAF pero falta alguno de los siguientes campos: <br/>RUC, digíto verificador, id crm o nombre del contacto"
+                            generar_alerta = self.genera_alerta(mensaje=display_msg)
+                            return generar_alerta
+
                         company_id = self.env.company.id
                         sitio_web = ""
                         if self.partner_id.website:
@@ -75,7 +80,7 @@ class SaleOrder(models.Model):
                         task = {
                             "tipo_cliente": self.partner_id.tipo or "",
                             "id_crm": self.partner_id.id or "",
-                            "nombre": self.opportunity_id.name or "",
+                            "nombre": self.partner_id.name or "",
                             "cedula": self.partner_id.cedula or "",
                             "direccion": self.opportunity_id.street or "asdasd",
                             "telefono_fijo": self.opportunity_id.phone or "",

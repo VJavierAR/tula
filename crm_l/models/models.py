@@ -166,6 +166,7 @@ class Crm_l(models.Model):
             else:
                 data.write({'quincena':'1.ª quincena '+str(mes)+' '+str(data.date_deadline.year)})
 
+    """
     @api.model 
     def create(self, vals):
         #rec=super(Crm_l,self).create(vals)
@@ -196,3 +197,4 @@ class Crm_l(models.Model):
                 values['quincena']='1.ª quincena '+str(mes)+' '+str(fecha.year)
         res = super(Crm_l, self).write(values)
         return res
+    """
