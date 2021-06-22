@@ -121,7 +121,7 @@ class SaleOrder(models.Model):
                             display_msg = "Se envió solicitud de creación de cliente a NAF."
                             self.message_post(body=display_msg)
                             self.env['helpdesk.ticket'].create({
-                                'name': 'Solicitud para crear cliente',
+                                'name': 'Petición para crear cliente',
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg,
