@@ -4,19 +4,7 @@ import datetime, time
 import xlsxwriter
 import pytz
 _logger = logging.getLogger(__name__)
-months = ["Unknown",
-          "January",
-          "Febuary",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-          "August",
-          "September",
-          "October",
-          "November",
-          "December"]
+months = ["Unknown","January","Febuary","March","April","May","June","July","August","September","October","November","December"]
 class MovimientosXlsx(models.AbstractModel):
     _name = 'report.libro.compras'
     _inherit = 'report.report_xlsx.abstract'
@@ -31,8 +19,8 @@ class MovimientosXlsx(models.AbstractModel):
         sheet.merge_range('A1:P1', 'Libro de Compras', merge_format)
         sheet.write(2, 0, self.env.user.company_id.name, bold)
         sheet.write(2, 1,'NIT: ' +str(self.env.user.company_id.vat), bold)
-        sheet.write(3, 0,'MES: ' +str(months[datetime.datetime.now().month()]), bold)
-        sheet.write(3, 1,'AÑO: ' +str(datetime.datetime.now().year()), bold)
+        sheet.write(3, 0,'MES: ' +str(months[datetime.datetime.now().month]), bold)
+        sheet.write(3, 1,'AÑO: ' +str(datetime.datetime.now().year), bold)
         for obj in account:
             sheet.write(i, 0, str(i-1), bold)
             sheet.write(i, 1, obj.date.strftime("%Y/%m/%d"), bold)
