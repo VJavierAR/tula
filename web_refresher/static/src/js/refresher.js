@@ -80,10 +80,19 @@ odoo.define("refresher.pager", function(require) {
         },
         _playInterval: function() {
             //console.log("continuando....")
+            if (!isPaused) {
+                alert("Recarga automatica activa")
+                return
+            }
             isPaused = false;
+
         },
         _pauseInterval: function() {
             //console.log("pausando....")
+            if (isPaused) {
+                alert("Recarga automatica en pausa")
+                return
+            }
             isPaused = true;
         },
     });
