@@ -90,7 +90,7 @@ class SaleOrder(models.Model):
                             "direccion_trabajo": self.partner_id.street or "",
                             "email_trabajo": self.opportunity_id.email_from or "",
                             "nombre_establecimiento": self.opportunity_id.partner_name or "",
-                            "razon_social": self.partner_id.ref or None,
+                            "razon_social": self.partner_id.ref or "",
                             "ruc": self.partner_id.vat or "",
                             "direccion_comercial": self.opportunity_id.user_id.partner_id.street or "",
                             "estado": int(self.partner_id.estado),
