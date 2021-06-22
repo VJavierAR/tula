@@ -22,6 +22,12 @@ class saleOr(models.Model):
 		store=True,
 		related="product_id.standard_price"
 	)
+	purchase_price = fields.Float(
+		string="Coste",
+		store=True,
+		copy=True,
+	)
+
 	existencias_check = fields.Boolean(
 		string="Mostrar existencias",
 		default=False
