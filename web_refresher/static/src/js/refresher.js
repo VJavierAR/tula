@@ -10,12 +10,15 @@ odoo.define("refresher.pager", function(require) {
     var ListView = require('web.ListView')
     var WebClient = require('web.WebClient')
     var data_manager = require('web.data_manager');
+    var favorite_menu = require('web.FavoriteMenu');
+
     var inter;
     var isPaused = false;
     var idPresupuestos = 806; //id de vista lista sale.order
-    var idPedidosAFacturar = 585 //Clientes.facturas
-    var idTransferencias = 1794 //id vista lista stock.picking
-    var idsVistasPermitidas = [idTransferencias, idPedidosAFacturar]
+    var idClientesFacturas = 558 //Clientes.facturas  //id demo mia: 585
+    var idPedidosAFacturar = 922  // id demo mia: 804
+    var idTransferencias = 1095  //id vista lista stock.picking //id demo mia: 1794
+    var idsVistasPermitidas = [idTransferencias, idPedidosAFacturar, idClientesFacturas]
 
     // Allowed decoration on the list's rows: bold, italic and bootstrap semantics classes
     var DECORATIONS = [
@@ -29,6 +32,62 @@ odoo.define("refresher.pager", function(require) {
         'decoration-warning'
     ];
 
+    favorite_menu.include({
+        start: function() {
+            var self = this;
+            var res = self._super();
+
+            var $button = $("<span>", {
+                class: "fa fa-refresh btn btn-icon o_pager_refresh",
+                css: {"margin-right": "8px"},
+                "aria-label": "Refresh",
+            });
+            var $button_play = $("<span>", {
+                class: "fa fa-play btn btn-icon o_pager_play",
+                css: {"margin-right": "8px"},
+                "aria-label": "Play",
+            });
+            var $button_pause = $("<span>", {
+                class: "fa fa-pause btn btn-icon o_pager_pause",
+                css: {"margin-right": "8px"},
+                "aria-label": "Pause",
+            });
+            $button.on("click", function() {
+                self._changeSelection(0);
+            });
+            $button_play.on("click", function() {
+                self._playInterval();
+            });
+            $button_pause.on("click", function() {
+                self._pauseInterval();
+            });
+            console.log(self.$el)
+            self.$el.append($button);
+            self.$el.append($button_play);
+            self.$el.append($button_pause);
+            return res;
+        },
+        _playInterval: function() {
+            //console.log("continuando....")
+            if (!isPaused) {
+                alert("La recarga automatica permanece activa")
+                return
+            }
+            isPaused = false;
+            alert("Continuando recarga automatica...")
+        },
+        _pauseInterval: function() {
+            //console.log("pausando....")
+            if (isPaused) {
+                alert("La recarga automatica permanece en pausa")
+                return
+            }
+            isPaused = true;
+            alert("Deteniendo recarga automatica...")
+        },
+    });
+
+    /*
     pager.include({
         start: function() {
             var self = this;
@@ -64,13 +123,12 @@ odoo.define("refresher.pager", function(require) {
             //console.log("self.__parentedParent.viewType: ")
             //console.log(self.__parentedParent.viewType)
             //undefined
-            /*
-            if (self.__parentedParent.viewType == "list") {
-                inter = setInterval(function() {
-                    self._changeSelection(0);
-                }, 10000, "JavaScript");
-            }
-            */
+
+            //if (self.__parentedParent.viewType == "list") {
+            //    inter = setInterval(function() {
+            //        self._changeSelection(0);
+            //    }, 10000, "JavaScript");
+            //}
 
             self.$el.prepend($button);
             self.$el.prepend($button_play);
@@ -79,13 +137,24 @@ odoo.define("refresher.pager", function(require) {
         },
         _playInterval: function() {
             //console.log("continuando....")
+            if (!isPaused) {
+                alert("La recarga automatica permanece activa")
+                return
+            }
             isPaused = false;
+            alert("Continuando recarga automatica...")
         },
         _pauseInterval: function() {
             //console.log("pausando....")
+            if (isPaused) {
+                alert("La recarga automatica permanece en pausa")
+                return
+            }
             isPaused = true;
+            alert("Deteniendo recarga automatica...")
         },
     });
+    */
 
     AbstractController.include({
         _onOpenRecord: function (event, params) {
