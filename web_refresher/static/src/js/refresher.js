@@ -10,7 +10,7 @@ odoo.define("refresher.pager", function(require) {
     var ListView = require('web.ListView')
     var WebClient = require('web.WebClient')
     var data_manager = require('web.data_manager');
-    var search_filters = require('web.search_filters');
+    var favorite_menu = require('web.FavoriteMenu');
 
     var inter;
     var isPaused = false;
@@ -32,7 +32,7 @@ odoo.define("refresher.pager", function(require) {
         'decoration-warning'
     ];
 
-    search_filters.include({
+    favorite_menu.include({
         start: function() {
             var self = this;
             var res = self._super();
@@ -61,10 +61,10 @@ odoo.define("refresher.pager", function(require) {
             $button_pause.on("click", function() {
                 self._pauseInterval();
             });
-
-            self.$el.prepend($button);
-            self.$el.prepend($button_play);
-            self.$el.prepend($button_pause);
+            console.log(self.$el)
+            self.$el.append($button);
+            self.$el.append($button_play);
+            self.$el.append($button_pause);
             return res;
         },
         _playInterval: function() {
@@ -87,6 +87,7 @@ odoo.define("refresher.pager", function(require) {
         },
     });
 
+    /*
     pager.include({
         start: function() {
             var self = this;
@@ -122,13 +123,12 @@ odoo.define("refresher.pager", function(require) {
             //console.log("self.__parentedParent.viewType: ")
             //console.log(self.__parentedParent.viewType)
             //undefined
-            /*
-            if (self.__parentedParent.viewType == "list") {
-                inter = setInterval(function() {
-                    self._changeSelection(0);
-                }, 10000, "JavaScript");
-            }
-            */
+
+            //if (self.__parentedParent.viewType == "list") {
+            //    inter = setInterval(function() {
+            //        self._changeSelection(0);
+            //    }, 10000, "JavaScript");
+            //}
 
             self.$el.prepend($button);
             self.$el.prepend($button_play);
@@ -154,6 +154,7 @@ odoo.define("refresher.pager", function(require) {
             alert("Deteniendo recarga automatica...")
         },
     });
+    */
 
     AbstractController.include({
         _onOpenRecord: function (event, params) {
