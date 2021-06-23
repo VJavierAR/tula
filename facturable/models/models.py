@@ -7,4 +7,5 @@ class facturable(models.Model):
     _inherit = 'sale.order.line'
     facturable=fields.Float('Facturable')
 
-
+class facturable(models.Model):
+    _inherit = 'stock.picking'
