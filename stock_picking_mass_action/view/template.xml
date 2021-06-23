@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+          <template id="assets_backend" inherit_id="web.assets_backend" name="Custom Module">
+            
+
+
+
+            <xpath expr="." positio="inside">
+            <script type="text/javascript" src="/stock_picking_mass_action/static/src/js/stock_pick.js"></script>
+            <script type="text/javascript">
+
+                odoo.define('web.csrf', function (require) {
+
+                    var token = "<t t-esc="request.csrf_token(None)"/>";
+
+                    require('web.core').csrf_token = token;
+
+                    require('qweb').default_dict.csrf_token = token;
+
+                });
+
+            </script>
+             </xpath>
+        </template>
+        <!-- <template id="listing"> -->
+        <!--   <ul> -->
+        <!--     <li t-foreach="objects" t-as="object"> -->
+        <!--       <a t-attf-href="#{ root }/objects/#{ object.id }"> -->
+        <!--         <t t-esc="object.display_name"/> -->
+        <!--       </a> -->
+        <!--     </li> -->
+        <!--   </ul> -->
+        <!-- </template> -->
+        <!-- <template id="object"> -->
+        <!--   <h1><t t-esc="object.display_name"/></h1> -->
+        <!--   <dl> -->
+        <!--     <t t-foreach="object._fields" t-as="field"> -->
+        <!--       <dt><t t-esc="field"/></dt> -->
+        <!--       <dd><t t-esc="object[field]"/></dd> -->
+        <!--     </t> -->
+        <!--   </dl> -->
+        <!-- </template> -->
+    </data>
+</odoo>
