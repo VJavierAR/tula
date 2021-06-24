@@ -154,7 +154,7 @@ class Cierre(models.Model):
             cierre_dia = fields.Datetime.now()
 
             pagos = payment_env.search(
-                [('create_date', '>=', cierre.name), ('create_date', '<=', cierre_dia), ('create_uid', '=', cierre.user_id.id), ('state', 'not in', ('draft', 'cancelled')), ('partner_type', '=', 'customer'), ('payment_type', 'in', ('inbound', 'outbound'))])
+                [('create_date', '>=', cierre.name), ('create_date', '<=', cierre_dia), ('create_uid', '=', cierre.user_id.id), ('state', 'not in', ('draft', 'cancelled')), ('partner_type', '=', 'customer'), ('payment_type', 'in', ('inbound', 'outbound')),('journal_id.quitar_diario','=',False)])
             #pagos |= payment_env.search(
             #    [('create_date', '>=', '2020-08-10 00:00:00'), ('create_date', '<=', inicio_dia), ('create_uid', '=', cierre.user_id.id), ('incluir', '=', True)])
             #pagos_hoy_olvidados = payment_env.search(
