@@ -40,3 +40,6 @@ class AccountPayment(models.Model):
     #             if self[0].payment_type in ('inbound', 'outbound') and self[0].partner_type == 'customer':
     #                 self.validar_caja(self[0].journal_id.id, conf_usuario)
     #     return super(AccountPayment, self).write(vals)
+class Diarios(models.Model):
+    _inherit='account.journal'
+    quitar_diario=fields.Boolean()

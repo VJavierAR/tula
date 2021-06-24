@@ -1,5 +1,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 medio_pago_values = [('cheque', 'Cheque'), ('efectivo', 'Efectivo'), ('datafono', 'Datafono Local'), ('transferencia', 'Transferencia')]
 
@@ -107,7 +109,14 @@ class Cierre(models.Model):
 
     notas = fields.Text('Notas')
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
-
+    monto_cierre_acumulado=fields.Float('Monto Cierre Acumulado',compute='compute_monto_cierre_acumulado')
+    
+    def compute_monto_cierre_acumulado(self):
+        fecha=fields.Datetime.now()
+        prime_day_of_month=datetime.datetime(fecha.year, fecha.month, 1)
+        last_date_of_month = datetime.datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
+        data=self.search([['name','>=',prime_day_of_month],['name','<=',last_date_of_month]])
+        self.monto_cierre_acumulado=sum(data.mapped('diferencia'))
     def print_report(self):
         return self.env.ref('cierre_caja.cierre_caja_report').report_action(self)
 
@@ -125,9 +134,16 @@ class Cierre(models.Model):
             cierre.write(vals)
 
     def set_closed(self):
+        fecha=fields.Datetime.now()
+        last_date_of_month = datetime.datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         for cierre in self:
-            cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
-
+            if(fecha.day==last_date_of_month.day):
+                if(cierre.monto_cierre_acumulado<=>0):
+                    raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.monto_cierre_acumulado))
+                else:
+                    cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
+            else:
+                cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
     def get_payments(self):
         payment_env = self.env['account.payment']
         for cierre in self:
