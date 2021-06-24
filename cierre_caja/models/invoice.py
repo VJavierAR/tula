@@ -138,7 +138,7 @@ class Cierre(models.Model):
         last_date_of_month = datetime.datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         for cierre in self:
             if(fecha.day==last_date_of_month.day):
-                if(cierre.monto_cierre_acumulado<=>0):
+                if(cierre.monto_cierre_acumulado!=0):
                     raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.monto_cierre_acumulado))
                 else:
                     cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
