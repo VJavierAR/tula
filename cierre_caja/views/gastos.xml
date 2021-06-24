@@ -137,6 +137,33 @@
         </field>
       </record>
 
+      <record id="cierre_caja_tipo_pago_form" model="ir.ui.view">
+        <field name="name">tipo.pago</field>
+        <field name="model">tipo.pago</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name='name'/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+      </record>
+
+      <record id="cierre_caja_tipo_pago_tree" model="ir.ui.view">
+        <field name="name">tipo.pago</field>
+        <field name="model">tipo.pago</field>
+        <field name="arch" type="xml">
+            <tree>
+                <sheet>
+                    <field name='id'/>
+                    <field name='name'/>
+            </tree>
+        </field>
+      </record>
+
+
 
         <record id="cierre_caja_form_action" model="ir.actions.act_window">
             <field name="name">Cierre de caja</field>
@@ -148,6 +175,13 @@
             <field name="res_model">cierre.conf</field>
             <field name="view_mode">tree,form</field>
         </record>
+        <record id="cierre_tipo_pago_form_action" model="ir.actions.act_window">
+            <field name="name">Tipo de pago</field>
+            <field name="res_model">tipo.pago</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+      <menuitem action="cierre_tipo_pago_form_action"
+            id="menu_action_cierre_tipo_pago" parent="account.account_invoicing_menu" sequence="5" groups="group_cierre_caja"/>
 
       <menuitem action="cierre_caja_conf_form_action"
             id="menu_action_cierre_conf_form" parent="account.account_invoicing_menu" sequence="1" groups="group_cierre_caja"/>
