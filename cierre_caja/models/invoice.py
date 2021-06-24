@@ -136,7 +136,7 @@ class Cierre(models.Model):
 
     def set_closed(self):
         fecha=fields.Datetime.now()
-        last_date_of_month = datetime.datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
+        last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         for cierre in self:
             if(fecha.day==last_date_of_month.day):
                 if(cierre.monto_cierre_acumulado!=0):
