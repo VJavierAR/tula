@@ -13,7 +13,7 @@ class AccountPayment(models.Model):
 
     def get_tipo_pago(self):
         m=medio_pago_values
-        t=self.env['tipo.pago'].search()
+        t=self.env['tipo.pago'].search([])
         for ti in t:
             m.append((ti.name,ti.name))
         return m
