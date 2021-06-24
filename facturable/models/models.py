@@ -10,5 +10,5 @@ class facturable(models.Model):
 class facturable(models.Model):
     _inherit = 'stock.picking'
     
-    def write(self, values):
-    	if('state' in values):
+    #def write(self, values):
+    #	if('state' in values):
