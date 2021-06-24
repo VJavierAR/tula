@@ -17,6 +17,7 @@ class AccountPayment(models.Model):
         for ti in t:
             m.append((ti.name,ti.name))
         return m
+    
     medio_pago = fields.Selection(get_tipo_pago, string='Medio Pago')
 
 
