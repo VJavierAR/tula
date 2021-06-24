@@ -156,8 +156,7 @@
         <field name="model">tipo.pago</field>
         <field name="arch" type="xml">
             <tree>
-                <sheet>
-                    <field name='id'/>
+                <field name='id'/>
                     <field name='name'/>
             </tree>
         </field>
