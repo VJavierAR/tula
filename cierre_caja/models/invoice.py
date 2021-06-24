@@ -12,10 +12,12 @@ class AccountPayment(models.Model):
     incluir = fields.Boolean('Incluir', default=False)
 
     def get_tipo_pago(self):
-        m=medio_pago_values
+        m=[]
         t=self.env['tipo.pago'].search([])
         for ti in t:
             m.append((ti.name,ti.name))
+        for a in medio_pago_values:
+            m.append(a)
         return m
     
     medio_pago = fields.Selection(get_tipo_pago, string='Medio Pago')
