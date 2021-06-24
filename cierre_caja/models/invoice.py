@@ -68,7 +68,7 @@ class Cierre(models.Model):
     @api.depends('desglose_pagos2')
     def compute_monto_cierre_calculado(self):
         for cierre in self:
-            total_pagos = sum(cierre.desglose_pagos2.filterde(lambda x:x.).mapped('monto_calculado'))
+            total_pagos = sum(cierre.desglose_pagos2.mapped('monto_calculado'))
             monto_reportado = sum(cierre.desglose_pagos2.mapped('monto_reportado'))
             cierre.update(dict(monto_cierre_calculado = total_pagos , monto_cierre=monto_reportado))
 
