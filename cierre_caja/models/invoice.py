@@ -110,6 +110,7 @@ class Cierre(models.Model):
     notas = fields.Text('Notas')
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     monto_cierre_acumulado=fields.Float('Monto Cierre Acumulado',compute='compute_monto_cierre_acumulado')
+    monto_cierre_sin=fields.Float()
     
     def compute_monto_cierre_acumulado(self):
         fecha=fields.Datetime.now()
