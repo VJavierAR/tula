@@ -10,7 +10,15 @@ class AccountPayment(models.Model):
 
     cierre_id = fields.Many2one('cierre.caja')
     incluir = fields.Boolean('Incluir', default=False)
-    medio_pago = fields.Selection(medio_pago_values, string='Medio Pago')
+    medio_pago = fields.Selection(get_tipo_pago, string='Medio Pago')
+
+    def get_tipo_pago(self):
+        m=medio_pago_values
+        t=self.env['tipo.pago'].search([]).mapped('name')
+        if(t!=[]):
+            for ti in t:
+                m.append((ti.name,ti.name))
+        return m
 
 class CierreLineas(models.Model):
     _name = "cierre.caja.lineas"
