@@ -111,11 +111,11 @@ class Cierre(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     monto_cierre_acumulado=fields.Float('Monto Cierre Acumulado',compute='compute_monto_cierre_acumulado')
     monto_cierre_sin=fields.Float()
-    
+
     def compute_monto_cierre_acumulado(self):
         fecha=fields.Datetime.now()
-        prime_day_of_month=datetime.datetime(fecha.year, fecha.month, 1)
-        last_date_of_month = datetime.datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
+        prime_day_of_month=datetime(fecha.year, fecha.month, 1)
+        last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         data=self.search([['name','>=',prime_day_of_month],['name','<=',last_date_of_month]])
         self.monto_cierre_acumulado=sum(data.mapped('diferencia'))
     def print_report(self):
