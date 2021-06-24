@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Groups-->
+        <record model="res.groups" id="group_cierre_caja">
+            <field name="name">Cierre de caja</field>
+        </record>
+        <!--Rules-->
+        <record id="cierre_caja_comp_rule" model="ir.rule">
+            <field name="name">Cierre caja Company</field>
+            <field name="model_id" ref="model_cierre_caja"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="cierre_conf_comp_rule" model="ir.rule">
+            <field name="name">Cierre caja Company</field>
+            <field name="model_id" ref="model_cierre_conf"/>
+            <field name="global" eval="True"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

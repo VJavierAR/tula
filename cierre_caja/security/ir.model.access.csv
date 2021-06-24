@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cierre_caja,cierre.caja,model_cierre_caja,group_cierre_caja,1,1,1,1
+access_cierre_conf,cierre.conf,model_cierre_conf,group_cierre_caja,1,1,1,1
+access_cierre_caja_lineas,cierre.caja.lineas,model_cierre_caja_lineas,group_cierre_caja,1,1,1,1
+access_cierre_caja_lineas2,cierre.caja.lineas2,model_cierre_caja_lineas2,group_cierre_caja,1,1,1,1
