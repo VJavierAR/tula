@@ -125,7 +125,7 @@ class Cierre(models.Model):
         jounal_env = self.env['account.journal']
         for cierre in self:
             vals = dict(state='progress')
-            journal_ids = jounal_env.search([('type', 'in', ('bank', 'cash'))])
+            journal_ids = jounal_env.search([('type', 'in', ('bank', 'cash')),('quitar_diario','=',False)])
             vals['desglose_pagos'] = []
             vals['desglose_pagos2'] = []
             for j in journal_ids:
