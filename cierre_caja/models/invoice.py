@@ -47,7 +47,7 @@ class CierreLineas2(models.Model):
         
         for line in self:
             pagos = line.cierre_id.pagos_hoy
-            line.monto_calculado = sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name).mapped('amount'))
+            line.monto_calculado = sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name and p.payment_type=='inbound').mapped('amount'))-sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name and p.payment_type=='outbound').mapped('amount'))
             line.diferencia = line.monto_calculado - line.monto_reportado
 
 class Cierre(models.Model):
@@ -68,9 +68,9 @@ class Cierre(models.Model):
     @api.depends('desglose_pagos2')
     def compute_monto_cierre_calculado(self):
         for cierre in self:
-            total_pagos = sum(cierre.desglose_pagos2.mapped('monto_calculado'))
+            total_pagos = sum(cierre.desglose_pagos2.filterde(lambda x:x.).mapped('monto_calculado'))
             monto_reportado = sum(cierre.desglose_pagos2.mapped('monto_reportado'))
-            cierre.update(dict(monto_cierre_calculado = total_pagos + cierre.monto_apertura, monto_cierre=monto_reportado))
+            cierre.update(dict(monto_cierre_calculado = total_pagos , monto_cierre=monto_reportado))
 
     @api.depends('monto_cierre_calculado', 'monto_cierre')
     def compute_diferencia(self):
