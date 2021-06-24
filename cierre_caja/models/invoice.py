@@ -13,10 +13,9 @@ class AccountPayment(models.Model):
 
     def get_tipo_pago(self):
         m=medio_pago_values
-        t=self.env['tipo.pago'].search([[]]).mapped('name')
-        if(t!=[]):
-            for ti in t:
-                m.append((ti.name,ti.name))
+        t=self.env['tipo.pago'].search([])
+        for ti in t:
+            m.append((ti.name,ti.name))
         return m
     medio_pago = fields.Selection(get_tipo_pago, string='Medio Pago')
 
