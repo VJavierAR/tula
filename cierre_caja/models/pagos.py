@@ -43,3 +43,7 @@ class AccountPayment(models.Model):
 class Diarios(models.Model):
     _inherit='account.journal'
     quitar_diario=fields.Boolean()
+class TypePago(models.Model):
+    _name='tipo.pago'
+    _description='Agregación de tipo de pago'
+    name=fields.Char()
