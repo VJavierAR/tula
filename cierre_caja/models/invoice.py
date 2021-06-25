@@ -42,7 +42,7 @@ class CierreLineas(models.Model):
         ayer=datetime(fecha.year, fecha.month, fecha.day)
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
-        acunt=self.env['account.journal'].search([['journal_id','=',self.name.id],['payment_date','>=',prime_day_of_month],['payment_date','<',ayer]])  
+        acunt=self.env['account.journal'].search([['journal_id','=',self.name],['payment_date','>=',prime_day_of_month],['payment_date','<',ayer]])  
         self.monto_acumulado=sum(acunt.mapped('amount'))
 
     @api.depends('name')
