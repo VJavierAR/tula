@@ -33,6 +33,17 @@ class CierreLineas(models.Model):
     diferencia = fields.Float('Diferencia', compute='compute_monto_calculado')
     monto_reportado = fields.Float('Monto Reportado')
     cierre_id = fields.Many2one('cierre.caja')
+    monto_acumulado= fields.Float('Acumulado', compute='compute_monto_acumulado')
+    
+
+    @api.depends('name')
+    def compute_monto_acumulado(self):
+        fecha=fields.Datetime.now()
+        ayer=datetime(fecha.year, fecha.month, fecha.day)
+        prime_day_of_month=datetime(fecha.year, fecha.month, 1)
+        last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
+        acunt=self.env['account.journal'].search([['journal_id','=',self.name.id],['payment_date','>=',prime_day_of_month],['payment_date','<',ayer]])  
+        self.monto_acumulado=sum(acunt.mapped('amount'))
 
     @api.depends('name')
     def compute_monto_calculado(self):
