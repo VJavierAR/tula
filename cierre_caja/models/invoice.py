@@ -10,6 +10,7 @@ class AccountPayment(models.Model):
 
     cierre_id = fields.Many2one('cierre.caja')
     incluir = fields.Boolean('Incluir', default=False)
+    tipo_pago=fields.Selection([('Contado','Contado'),('Credito','Credito')],default='Credito')
 
     def get_tipo_pago(self):
         m=[]
@@ -198,8 +199,19 @@ class Cierre(models.Model):
             if cierre.state != 'draft':
                 raise UserError('No puede eliminar el ciere %s ya que no está en borrador'% (cierre.name_get()[0][1],))
         return super(Cierre, self).unlink()
-
-
+    
+    def get_pagos(self):
+        fecha=fields.Datetime.now()
+        ayer=datetime(fecha.year, fecha.month, fecha.day)
+        prime_day_of_month=datetime(fecha.year, fecha.month, 1)
+        last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
+        acumulado=self.env['account.payment'].search([['payment_date','>=',prime_day_of_month],['payment_date','<',ayer]])
+        hoy=self.env['account.payment'].search([['payment_date','=',fecha]])
+        data=[]
+        data.append({'nombre':'Contado','acumulado':sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount')),'hoy':sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))})
+        data.append({'nombre':'Abonos Recibidos','acumulado':sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),'hoy':sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))})
+        data.append({'nombre':'Total Depositos','acumulado':sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),'hoy':sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))})
+        return data
 class CierreConf(models.Model):
     _name = "cierre.conf"
 

@@ -288,6 +288,28 @@
                             </tr>
                         </t>
                     </table>
+                     <t t-set="pagos" t-value="o.get_pagos()"/>
+                     <table class="table table-bordered">
+                        <tr>
+                            <th>Desglose de Pagos</th>
+                            <th>Total acumulado</th>
+                            <th>Total hoy</th>
+                        </tr>
+                        <t t-foreach="pagos" t-as="p">
+                            <tr>
+                                <td>
+                                    <span t-field="p.name"/>
+                                </td>
+                                <td >
+                                    <span t-field="p.acumulado"/>
+                                </td>
+                                <td >
+                                    <span t-field="p.hoy"/>
+                                </td>
+                            </tr>
+                        </t>
+                     </table>
+
                 </div>
             </t>
         </template>
@@ -322,6 +344,7 @@
 
              <field name="journal_id" position="after">
                      <field name="medio_pago" attrs="{'invisible':[('payment_type', '=','transfer')],'required':[('payment_type', '!=','transfer')]}"/>
+                     <field name='tipo_pago'/>
              </field>
 
         </field>
