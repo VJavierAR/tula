@@ -194,7 +194,7 @@
         <template id="report_cierre_caja_document">
             <t t-call="web.external_layout">
                 <t t-set="o" t-value="o.with_context(lang=lang)" />
-                <div class="page">
+                <div class="page" id="wrapwrap">
                     <style>
                         .table th, .table td{
                             padding: 0.1rem;
