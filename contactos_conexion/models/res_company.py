@@ -21,5 +21,5 @@ class ResCompany(models.Model):
         string="No Cia",
         store=True,
         company_dependent=True,
-        check_company=True
+        #check_company=True
     )
