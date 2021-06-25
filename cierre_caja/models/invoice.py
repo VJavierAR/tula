@@ -248,8 +248,29 @@ class Cierre(models.Model):
         data.append(['Total Ventas',sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')),sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')),sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))])
         return data
 
-    #def get_ventas(self):
-
+    def get_ventas(self):
+        fecha=fields.Datetime.now()
+        ayer=datetime(fecha.year, fecha.month, fecha.day)
+        prime_day_of_month=datetime(fecha.year, fecha.month, 1)
+        last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
+        hoy_temp=fecha+relativedelta(days=1)
+        hoy=datetime(hoy_temp.year, hoy_temp.month, hoy_temp.day)
+        lines=self.env['sale.order.line'].search([['state','=','sale'],['write_date','>=',prime_day_of_month],['write_date','<',ayer]])
+        total=0
+        descuento=0
+        iva=0
+        total2=0
+        descuento2=0
+        iva2=0
+        for li in lines:
+            total=total+(li.price_unit*li.product_uom_qty)
+            descuento=descuento+((li.price_unit*li.product_uom_qty)-(li.price_subtotal*li.product_uom_qty))
+            iva=iva+(li.price_tax*li.product_uom_qty)
+        lines2=self.env['sale.order.line'].search([['state','=','sale'],['write_date','>',ayer],['write_date','<',hoy]])
+        for li in line2:
+            total2=total2+(li.price_unit*li.product_uom_qty)
+            descuento2=descuento2+((li.price_unit*li.product_uom_qty)-(li.price_subtotal*li.product_uom_qty))
+            iva2=iva2+(li.price_tax*li.product_uom_qty)
 class CierreConf(models.Model):
     _name = "cierre.conf"
 
