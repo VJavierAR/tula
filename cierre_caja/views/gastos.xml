@@ -76,6 +76,8 @@
                                     <field name="name" readonly="1"/>
                                     <field name="monto_calculado" sum="Total"/>
                                     <field name="monto_reportado" sum="Total" invisible="1"/>
+                                    <field name="monto_acumulado" sum="Total" invisible="1"/>
+                                    <field name="monto_final" sum="Total" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
