@@ -298,13 +298,13 @@
                         <t t-foreach="pagos" t-as="p">
                             <tr>
                                 <td>
-                                    <span t-raw="p['name']"/>
+                                    <span t-raw="p[0]"/>
                                 </td>
                                 <td >
-                                    <span t-raw="p['acumulado']"/>
+                                    <span t-raw="p[1]"/>
                                 </td>
                                 <td >
-                                    <span t-raw="p['hoy']"/>
+                                    <span t-raw="p[2]"/>
                                 </td>
                             </tr>
                         </t>
