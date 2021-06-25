@@ -111,7 +111,7 @@
                     <separator/>
                     <filter string="Iniciativas convertidas en oportunidades"
                             name="iniciativas_to_oportunidad"
-                            domain="[('date_conversion', '=', True)]"
+                            domain="[('proviene_de_iniciativa', '=', True)]"
                             groups='contactos_conexion.group_iniciativas_convertidas_oportunidades'/>
                     <separator/>
                     <filter string="Iniciativas convertidas en oportunidades"

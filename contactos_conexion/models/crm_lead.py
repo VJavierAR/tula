@@ -56,6 +56,7 @@ class CRM(models.Model):
     def write(self, values):
         if 'date_conversion' in values:
             values['tiempo_de_conversion'] = int((values['date_conversion'] - self.create_date).days)
+            values['proviene_de_iniciativa'] = True
         res = super(CRM, self).write(values)
         return res
 
