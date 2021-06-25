@@ -66,6 +66,11 @@ class CRM(models.Model):
             # _logger.info("tiempo_en_ganar: " + str(tiempo_en_ganar))
             self.tiempo_en_ganar_dias = tiempo_en_ganar
 
+    @api.onchange('date_conversion')
+    def cambia_date_conversion(self):
+        if self.date_conversion:
+            self.tiempo_de_conversion = int((self.date_conversion - self.create_date).days)
+
     def agrega_dias_write_date(self):
         self.conexis = True
         date_1 = (datetime.datetime.strptime(self.write_date.strftime("%m-%d-%Y %H:%M:%S"), '%m-%d-%Y %H:%M:%S') + relativedelta(days=+ 15))
@@ -85,6 +90,7 @@ class CRM(models.Model):
         self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
 
 
+"""
 class CRMWizard(models.TransientModel):
     _inherit = 'crm.lead2opportunity.partner'
     _description = 'Cambios'
@@ -95,9 +101,14 @@ class CRMWizard(models.TransientModel):
         fecha = pytz.utc.localize(datetime.datetime.now()).astimezone(user_tz)
         result_opportunities = self.env['crm.lead'].browse(self._context.get('active_ids', []))
         for oportunidad in result_opportunities:
-            oportunidad.proviene_de_iniciativa = True
-            oportunidad.fecha_convertida_oportunidad = datetime.datetime.strptime(fecha.strftime("%m-%d-%Y %H:%M:%S"),
-                                                                                  '%m-%d-%Y %H:%M:%S') + relativedelta(
-                hours=+ 6)
-            oportunidad.tiempo_de_conversion = int((oportunidad.fecha_convertida_oportunidad - oportunidad.create_date).days)
+            try:
+                oportunidad.proviene_de_iniciativa = True
+                oportunidad.fecha_convertida_oportunidad = datetime.datetime.strptime(fecha.strftime("%m-%d-%Y %H:%M:%S"),
+                                                                                      '%m-%d-%Y %H:%M:%S') + relativedelta(
+                    hours=+ 6)
+                oportunidad.tiempo_de_conversion = int((oportunidad.fecha_convertida_oportunidad - oportunidad.create_date).days)
+                oportunidad.tiempo_de_conversion = int((oportunidad.date_conversion - oportunidad.create_date).days)
+            except:
+                _logger.info("error......................................")
         return res
+"""

@@ -30,7 +30,8 @@ class Partner(models.Model):
     )
     no_cia = fields.Char(
         string="No Cia",
-        store=True
+        store=True,
+        related="company_id.no_cia"
     )
     grupo = fields.Char(
         string="Grupo",
