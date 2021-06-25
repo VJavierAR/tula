@@ -53,6 +53,19 @@ class CRM(models.Model):
         default=0
     )
 
+    def write(self, values):
+        if 'date_conversion' in values:
+            values['tiempo_de_conversion'] = int((values['date_conversion'] - self.create_date).days)
+        res = super(CRM, self).write(values)
+        return res
+
+    """
+    @api.onchange('date_conversion')
+    def cambia_date_conversion(self):
+        if self.date_conversion:
+            self.tiempo_de_conversion = int((self.date_conversion - self.create_date).days)
+    """
+
     @api.onchange('stage_id')
     def tiempo_que_llevo_ganar_oportunidad(self):
         if self.stage_id.id and self.stage_id.id == 4:
@@ -65,11 +78,6 @@ class CRM(models.Model):
             # _logger.info('fecha_creacion:' + str(fecha_creacion))
             # _logger.info("tiempo_en_ganar: " + str(tiempo_en_ganar))
             self.tiempo_en_ganar_dias = tiempo_en_ganar
-
-    @api.onchange('date_conversion')
-    def cambia_date_conversion(self):
-        if self.date_conversion:
-            self.tiempo_de_conversion = int((self.date_conversion - self.create_date).days)
 
     def agrega_dias_write_date(self):
         self.conexis = True
