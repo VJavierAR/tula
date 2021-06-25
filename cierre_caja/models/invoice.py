@@ -248,6 +248,8 @@ class Cierre(models.Model):
         data.append(['Total Ventas',sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')),sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')),sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))])
         return data
 
+    #def get_ventas(self):
+
 class CierreConf(models.Model):
     _name = "cierre.conf"
 
