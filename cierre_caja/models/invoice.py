@@ -84,7 +84,7 @@ class Cierre(models.Model):
         for cierre in self:
             total_pagos = sum(cierre.desglose_pagos2.mapped('monto_calculado'))
             monto_reportado = sum(cierre.desglose_pagos2.mapped('monto_reportado'))
-            cierre.update(dict(monto_cierre_calculado = total_pagos , monto_cierre=monto_reportado))
+            cierre.update(dict(monto_cierre_calculado = total_pagos , monto_cierre=monto_reportado,monto_cierre_sin=(total_pagos+cierre.monto_apertura)))
 
     @api.depends('monto_cierre_calculado', 'monto_cierre')
     def compute_diferencia(self):
@@ -128,8 +128,10 @@ class Cierre(models.Model):
         fecha=fields.Datetime.now()
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
-        data=self.search([['name','>=',prime_day_of_month],['name','<=',last_date_of_month]])
+        data=self.search([['name','>=',prime_day_of_month],['name','<=',last_date_of_month],['user_id','=',self.user_id.id]])
         self.monto_cierre_acumulado=sum(data.mapped('diferencia'))
+
+
     def print_report(self):
         return self.env.ref('cierre_caja.cierre_caja_report').report_action(self)
 

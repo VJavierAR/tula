@@ -19,15 +19,17 @@
                         <group>
                             <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}" save_force="1" readonly="1"/>
                             <field name="monto_apertura" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                            <field name="user_id" invisible="1"/>
-                            <field name="monto_cierre_acumulado" readonly='1'/>
+                            <field name="monto_cierre_calculado" string='Monto Registrado'/>
+                            <field name="monto_cierre_sin" string='Monto Final' readonly='1'/>
                         </group>
                         <group>
+                            <field name="monto_cierre_calculado" string='Monto Registrado'/>
                             <field name="monto_cierre" string='Monto Reportado' readonly='1'/>
-                            <field name="monto_cierre_calculado"/>
                             <field name="diferencia"/>
+                            <field name="monto_cierre_acumulado" readonly='1'/>
                             <field name="date_closed" attrs="{'invisible': [('date_closed', '=', False)]}" readonly="1"/>
                             <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="user_id" invisible="1"/>
                         </group>
                     </group>
                     <notebook>
