@@ -271,8 +271,9 @@
                     <table class="table table-bordered">
                         <tr>
                             <th>Diario de Pago</th>
+                            <th>Monto Ayer</th>
                             <th>Monto Sistema</th>
-                            <!--th>Monto Reportado</th-->
+                            <th>Monto Acumulado</th>
                         </tr>
                         <t t-foreach="o.desglose_pagos" t-as="l">
                             <tr>
@@ -280,11 +281,14 @@
                                     <span t-field="l.name"/>
                                 </td>
                                 <td class="text-right">
+                                    <span t-field="l.monto_acumulado"/>
+                                </td>
+                                <td class="text-right">
                                     <span t-field="l.monto_calculado"/>
                                 </td>
-                                <!--td class="text-right">
-                                    <span t-field="l.monto_reportado"/>
-                                </td-->
+                                <td class="text-right">
+                                    <span t-field="l.monto_final"/>
+                                </td>
                             </tr>
                         </t>
                     </table>

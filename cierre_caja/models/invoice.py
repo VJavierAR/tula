@@ -34,7 +34,7 @@ class CierreLineas(models.Model):
     monto_reportado = fields.Float('Monto Reportado')
     cierre_id = fields.Many2one('cierre.caja')
     monto_acumulado= fields.Float('Acumulado', compute='compute_monto_acumulado')
-    
+    monto_final= fields.Float('Acumulado', compute='compute_monto_final')
 
     @api.depends('name')
     def compute_monto_acumulado(self):
@@ -54,6 +54,10 @@ class CierreLineas(models.Model):
             pagos = line.cierre_id.pagos_hoy
             line.monto_calculado = sum(pagos.filtered(lambda p: p.journal_id == line.name).mapped('amount'))
             line.diferencia = line.monto_calculado - line.monto_reportado
+    
+    @api.depends('name')
+    def compute_monto_final(self):
+        self.monto_final=self.monto_calculado+self.monto_acumulado
 
 class CierreLineas2(models.Model):
     _name = "cierre.caja.lineas2"
