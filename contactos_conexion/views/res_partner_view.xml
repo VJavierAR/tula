@@ -23,7 +23,7 @@
                             <group name="naf_page_group_left">
                                 <field name="grupo" force_save="1" readonly="0"/>
                                 <field name="codigo_naf" force_save="1" readonly="0"/>
-                                <field name="no_cia" force_save="1" readonly="0"/>
+                                <field name="no_cia" force_save="1" readonly="1"/>
                             </group>
                             <group name="naf_page_group_right">
                                 <field name="estado" force_save="1"/>
