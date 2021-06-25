@@ -223,7 +223,7 @@ class Cierre(models.Model):
         acumulado=self.env['account.move'].search([['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['type','=','out_invoice']])
         hoy=self.env['account.move'].search([['invoice_date','=',fecha],['type','=','out_invoice']])
         data=[]
-        inmediato=self.ref('account.account_payment_term_immediate')
+        inmediato=self.env.ref('account.account_payment_term_immediate')
         #credito_hoy=
         #contado_hoy=
         #credito_acumulado=
