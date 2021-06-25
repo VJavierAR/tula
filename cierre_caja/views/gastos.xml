@@ -292,8 +292,9 @@
                      <table class="table table-bordered">
                         <tr>
                             <th>Desglose de Pagos</th>
-                            <th>Total acumulado</th>
+                            <th>Total ayer</th>
                             <th>Total hoy</th>
+                            <th>Acumulado</th>
                         </tr>
                         <t t-foreach="pagos" t-as="p">
                             <tr>
@@ -305,6 +306,9 @@
                                 </td>
                                 <td >
                                     <span t-raw="p[2]"/>
+                                </td>
+                                <td >
+                                    <span t-raw="p[3]"/>
                                 </td>
                             </tr>
                         </t>

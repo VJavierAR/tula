@@ -208,9 +208,9 @@ class Cierre(models.Model):
         acumulado=self.env['account.payment'].search([['payment_date','>=',prime_day_of_month],['payment_date','<',ayer]])
         hoy=self.env['account.payment'].search([['payment_date','=',fecha]])
         data=[]
-        data.append(['Contado',sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount')),sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))])
-        data.append(['Abonos Recibidos',sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))])
-        data.append(['Total Depositos',sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))])
+        data.append(['Contado',sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount')),sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount')),sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))])
+        data.append(['Abonos Recibidos',sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))])
+        data.append(['Total Depositos',sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))])
         return data
 class CierreConf(models.Model):
     _name = "cierre.conf"
