@@ -267,7 +267,7 @@ class Cierre(models.Model):
             descuento=descuento+((li.price_unit*li.product_uom_qty)-(li.price_subtotal*li.product_uom_qty))
             iva=iva+(li.price_tax*li.product_uom_qty)
         lines2=self.env['sale.order.line'].search([['state','=','sale'],['write_date','>',ayer],['write_date','<',hoy]])
-        for li in line2:
+        for li in lines2:
             total2=total2+(li.price_unit*li.product_uom_qty)
             descuento2=descuento2+((li.price_unit*li.product_uom_qty)-(li.price_subtotal*li.product_uom_qty))
             iva2=iva2+(li.price_tax*li.product_uom_qty)
