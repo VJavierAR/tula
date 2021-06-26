@@ -255,7 +255,7 @@ class Cierre(models.Model):
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         hoy_temp=fecha+relativedelta(days=1)
         hoy=datetime(hoy_temp.year, hoy_temp.month, hoy_temp.day)
-        lines=self.env['sale.order.line'].search([['state','=','sale'],['write_date','>=',prime_day_of_month],['write_date','<',ayer]])
+        lines=self.env['sale.order.line'].search(['|','&',['write_date','>=',prime_day_of_month],['write_date','<',ayer],['state','=','sale']])
         total=0
         descuento=0
         iva=0
@@ -266,7 +266,7 @@ class Cierre(models.Model):
             total=total+(li.price_unit*li.product_uom_qty)
             descuento=descuento+((li.price_unit*li.product_uom_qty)-(li.price_subtotal*li.product_uom_qty))
             iva=iva+(li.price_tax*li.product_uom_qty)
-        lines2=self.env['sale.order.line'].search([['state','=','sale'],['write_date','>',ayer],['write_date','<',hoy]])
+        lines2=self.env['sale.order.line'].search(['|','&',['write_date','>',ayer],['write_date','<',hoy],['state','=','sale']])
         for li in lines2:
             total2=total2+(li.price_unit*li.product_uom_qty)
             descuento2=descuento2+((li.price_unit*li.product_uom_qty)-(li.price_subtotal*li.product_uom_qty))
