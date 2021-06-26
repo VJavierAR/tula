@@ -296,6 +296,7 @@
                     </table>
                      <t t-set="pagos" t-value="o.get_pagos()"/>
                      <t t-set="facturas" t-value="o.get_facturas()"/>
+                     <t t-set="ventas" t-value="o.get_ventas()"/>
                      <h3>Desglose de pagos acumulado</h3>
                      <table class="table table-bordered">
                         <tr>
@@ -323,6 +324,31 @@
                      </table>
 
                 <h3>Desglose de Ventas</h3>
+                     <table class="table table-bordered">
+                        <tr>
+                            <th>Desglose</th>
+                            <th>Total ayer</th>
+                            <th>Total hoy</th>
+                            <th>Acumulado</th>
+                        </tr>
+                        <t t-foreach="ventas" t-as="f">
+                            <tr>
+                                <td>
+                                    <span t-raw="f[0]"/>
+                                </td>
+                                <td >
+                                    <span t-raw="f[1]"/>
+                                </td>
+                                <td >
+                                    <span t-raw="f[2]"/>
+                                </td>
+                                <td >
+                                    <span t-raw="f[3]"/>
+                                </td>
+                            </tr>
+                        </t>
+                     </table>
+                     <h3>Distribución de Ventas</h3>
                      <table class="table table-bordered">
                         <tr>
                             <th>Desglose</th>

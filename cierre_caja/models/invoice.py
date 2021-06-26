@@ -271,6 +271,12 @@ class Cierre(models.Model):
             total2=total2+(li.price_unit*li.product_uom_qty)
             descuento2=descuento2+((li.price_unit*li.product_uom_qty)-(li.price_subtotal*li.product_uom_qty))
             iva2=iva2+(li.price_tax*li.product_uom_qty)
+        data=[]
+        data.append(['Ventas',total,total2,total+total2])
+        data.append(['Descuento',descuento,descuento2,descuento+descuento2])
+        data.append(['Impuestos',iva,iva2,iva+iva2])
+        data.append(['Total',total-descuento+iva,total2-descuento2+iva2,total-descuento+iva+(total2-descuento2+iva2)])
+        return data
 class CierreConf(models.Model):
     _name = "cierre.conf"
 
