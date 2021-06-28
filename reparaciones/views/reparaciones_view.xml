@@ -5,6 +5,7 @@
             <field name="name">reparaciones.tree</field>
             <field name="model">sale.order</field>
             <field name="arch" type="xml">
+                
                 <tree string="Reparaciones" default_order="create_date desc">
                     <field name="name" string="Number" readonly="1" decoration-bf="1"/>
                     <field name="create_date" string="Creation Date" widget="date" optional="show"/>
@@ -25,9 +26,6 @@
                     <field name="message_needaction" invisible="1"/>
                     <field name="currency_id" invisible="1"/>
                 </tree>
-                <form>
-                    <field name="name" string="Number" readonly="1" decoration-bf="1"/>
-                </form>
             </field>
         </record>
 
