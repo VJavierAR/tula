@@ -25,6 +25,9 @@
                     <field name="message_needaction" invisible="1"/>
                     <field name="currency_id" invisible="1"/>
                 </tree>
+                <form>
+                    <field name="name" string="Number" readonly="1" decoration-bf="1"/>
+                </form>
             </field>
         </record>
 
