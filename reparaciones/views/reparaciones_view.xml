@@ -674,11 +674,12 @@
             <field name="view_id" ref="reparaciones.reparaciones_form_view"/>
             <!--<field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>-->
             <field name="context">{}</field>
-                        <field name="views" eval="[(6, 0, 0),
+                        <!--<field name="views" eval="[(5, 0, 0),
                             (0, 0, {'view_mode': 'tree', 'view_id': ref('reparaciones.reparaciones_tree_view')}),
                             (0, 0, {'view_mode': 'form', 'view_id': ref('reparaciones.reparaciones_form_view')}),
-                            ]"/>
-                    <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field>
+                            ]"/>-->
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field>
+            <field name="views" eval="[(5, 0, 0)]"/>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create a new quotation, the first step of a new sale!
@@ -695,7 +696,7 @@
             <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
             <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
             <field name="context">{'search_default_my_quotation': 1}</field>
-             <field name="views" eval="[(6, 0, 0),
+             <field name="views" eval="[(5, 0, 0),
                 (0, 0, {'view_mode': 'tree', 'view_id': ref('reparaciones.reparaciones_tree_view')}),
                 (0, 0, {'view_mode': 'form', 'view_id': ref('reparaciones.reparaciones_form_view')}),
                 ]"/>
