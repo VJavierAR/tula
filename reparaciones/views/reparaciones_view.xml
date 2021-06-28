@@ -8,6 +8,7 @@
                 <tree string="Reparaciones" default_order="create_date desc">
                     <field name="name" string="Number" readonly="1" decoration-bf="1"/>
                     <field name="create_date" string="Creation Date" widget="date" optional="show"/>
+                    <field name="flota" optional="show"/>
                     <field name="commitment_date" widget="date" optional="hide"/>
                     <field name="expected_date" widget="date" optional="hide"/>
                     <field name="partner_id" readonly="1"/>
