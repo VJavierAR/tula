@@ -6,9 +6,24 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
               <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom']" position="after">
-                <field name="facturable"/>
+                <field name="facturable" readonly='1'/>
+                  <field name="facturablePrevio" readonly='1'/>
                 </xpath>
             </field>
           </record>
+      
+      
+        <record model="ir.ui.view" id="purchase_order_form_view_update_facturable">
+        <field name="name">sale.order.form.view.update.facturable</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">     
+        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='products']/field[@name='order_line']/tree[1]/field[@name='product_qty']" position="after">
+    <field name="facturable" invisible='1'/>
+  </xpath>
+            </field>
+      </record>
+      
+      
   </data>
 </odoo>
