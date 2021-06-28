@@ -234,7 +234,7 @@
                                         </control>
 
                                         <field name="tipo" />
-                                        
+
 
 
                                         <field name="sequence" widget="handle"/>
@@ -473,7 +473,7 @@
             <field name="act_window_id" ref="reparaciones_action_window"/>
         </record>
 
-        <record model="ir.actions.act_window.view" id="action_reparaciones_form">
+        <record model="ir.actions.act_window.view" id="action_jobapplication_application_form">
             <field name="sequence" eval="2"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="reparaciones_form_view"/>
