@@ -13,6 +13,6 @@ class Reparaciones(models.Model):
     _description = 'reparaciones.reparaciones'
 
     flota = fields.Many2one(
-        comodel_name='fleet',
+        comodel_name='fleet.vehicle',
         string='Vehículo'
     )
