@@ -99,6 +99,8 @@
                                        context="{'default_type':'delivery'}"
                                        options="{&quot;always_reload&quot;: True}"/>
                                 <field name="flota" />
+                                <field name="responsable" />
+                                
                             </group>
                             <group name="order_details">
                                 <field name="validity_date" attrs="{'invisible': [('state', 'in', ['sale', 'done'])]}"/>

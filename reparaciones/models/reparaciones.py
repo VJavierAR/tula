@@ -17,6 +17,11 @@ class Reparaciones(models.Model):
         string='Vehículo'
     )
 
+    responsable = fields.Many2one(
+        comodel_name='res.users',
+        string='Responsable'
+    )
+
     servicios = fields.One2many(
         comodel_name='sale.order.line',
         inverse_name='reparaciones_rel',
