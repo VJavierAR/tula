@@ -4,46 +4,46 @@ from odoo import models, fields, api
 import logging, ast
 _logger = logging.getLogger(__name__)
 
-class facturable(models.Model):
+class fact(models.Model):
     _inherit = 'sale.order.line'
-    facturable=fields.Float('Facturable')
-
+    facturable=fields.Float('Facturable',compute='f')
+    facturablePrevio=fields.Float('Facturable Previo')
+    @api.depends('qty_delivered')
+    def f(self):
+        _logger.info('Hola')
+        valor=1
+        for record in self:
+            if(record.qty_delivered==record.product_uom_qty):
+                valor=0
+            if(record.qty_delivered!=record.product_uom_qty):
+                q=self.env['stock.move'].search([['sale_line_id','=',record.id]])
+                hechos=q.filtered(lambda x:x.state=='done' and x.location_id.id==record.warehouse_id.lot_stock_id.id)
+                cancelados=q.filtered(lambda x:x.state=='cancel' and x.location_id.id==record.warehouse_id.lot_stock_id.id)
+                otros=q.filtered(lambda x:x.state not in ['cancel','done'] and x.location_id.id==record.warehouse_id.lot_stock_id.id)
+                if(len(cancelados)>0):
+                    valor=0
+                else:
+                    valor=record.product_uom_qty-record.qty_delivered
+        self.facturable=valor
+        
 class facturable(models.Model):
-    _inherit = 'stock.picking'
+    _inherit = 'purchase.order.line'
+    facturable=fields.Float('Facturable',compute='full')
     
-    def write(self, vals):
-        if vals.get('picking_type_id') and self.state != 'draft':
-            raise UserError(_("Changing the operation type of this record is forbidden at this point."))
-        # set partner as a follower and unfollow old partner
-        if vals.get('partner_id'):
-            for picking in self:
-                if picking.location_id.usage == 'supplier' or picking.location_dest_id.usage == 'customer':
-                    if picking.partner_id:
-                        picking.message_unsubscribe(picking.partner_id.ids)
-                    picking.message_subscribe([vals.get('partner_id')])
-        res = super(Picking, self).write(vals)
-        # Change locations of moves if those of the picking change
-        after_vals = {}
-        if vals.get('location_id'):
-            after_vals['location_id'] = vals['location_id']
-        if vals.get('location_dest_id'):
-            after_vals['location_dest_id'] = vals['location_dest_id']
-        if after_vals:
-            self.mapped('move_lines').filtered(lambda move: not move.scrapped).write(after_vals)
-        if vals.get('move_lines'):
-            # Do not run autoconfirm if any of the moves has an initial demand. If an initial demand
-            # is present in any of the moves, it means the picking was created through the "planned
-            # transfer" mechanism.
-            pickings_to_not_autoconfirm = self.env['stock.picking']
-            for picking in self:
-                if picking.state != 'draft':
-                    continue
-                for move in picking.move_lines:
-                    if not float_is_zero(move.product_uom_qty, precision_rounding=move.product_uom.rounding):
-                        pickings_to_not_autoconfirm |= picking
-                        break
-            (self - pickings_to_not_autoconfirm)._autoconfirm_picking()
-        if('state' in vals):
-            if(vals['state']=='done'):
-                _logger.info(str(vals))
-        return res
+    @api.depends('qty_received')
+    def full(self):
+        q=self.env['stock.move'].search([['product_id','=',self.product_id.id],['sale_line_id','!=',False]],order='date asc')
+        fin=q.filtered(lambda x:x.state not in ['done','cancel'])
+        _logger.info(self.qty_received)
+        _logger.info(len(fin))
+        valor=self.qty_received
+        for f in fin:
+            if(valor>0):
+                temp=valor
+                valor=valor-self.product_uom_qty
+                _logger.info(f.sale_line_id.id)
+                if(valor>=0):
+                    f.sale_line_id.write({'facturablePrevio':self.product_uom_qty})
+                else:
+                    f.sale_line_id.write({'facturablePrevio':temp})
+        self.facturable=0
