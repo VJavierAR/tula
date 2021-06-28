@@ -16,3 +16,5 @@ class Reparaciones(models.Model):
         comodel_name='fleet.vehicle',
         string='Vehículo'
     )
+
+
