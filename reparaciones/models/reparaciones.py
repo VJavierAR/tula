@@ -17,4 +17,8 @@ class Reparaciones(models.Model):
         string='Vehículo'
     )
 
-
+    servicios = fields.One2many(
+        comodel_name='sale.order.line',
+        inverse_name='reparaciones_rel',
+        string='Servicios'
+    )

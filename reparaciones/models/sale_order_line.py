@@ -17,4 +17,9 @@ class SOL(models.Model):
         string='Tipo'
     )
 
+    reparaciones_rel = fields.Many2one(
+        comodel_name='sale.order',
+        string='reparaciones_rel'
+    )
+
 
