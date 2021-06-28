@@ -1,0 +1,50 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="reparaciones_tree_view">
+            <field name="name">reparaciones.tree</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <tree string="Reparaciones" default_order="create_date desc">
+                    <field name="name" string="Number" readonly="1" decoration-bf="1"/>
+                    <field name="create_date" string="Creation Date" widget="date" optional="show"/>
+                    <field name="commitment_date" widget="date" optional="hide"/>
+                    <field name="expected_date" widget="date" optional="hide"/>
+                    <field name="partner_id" readonly="1"/>
+                    <field name="user_id" widget="many2one_avatar_user" optional="show"/>
+                    <field name="activity_ids" widget="list_activity" optional="show"/>
+                    <field name="team_id" optional="hide"/>
+                    <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
+                    <field name="amount_untaxed" sum="Total Tax Excluded" widget="monetary" optional="hide"/>
+                    <field name="amount_tax" sum="Tax Total" widget="monetary" optional="hide"/>
+                    <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1" optional="show"/>
+                    <field name="state" decoration-success="state == 'sale' or state == 'done'" decoration-info="state == 'draft' or state == 'sent'" widget="badge" optional="show"/>
+                    <field name="invoice_status" optional="hide"/>
+                    <field name="message_needaction" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="reparaciones_action_window">
+            <field name="name">Reparaciones</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="reparaciones_tree_view"/>
+        </record>
+
+        <menuitem id="reparaciones_root"
+              name="Reparaciones"
+              web_icon="reparaciones, static/description/imagen.png"
+              />
+        <menuitem id="reparaciones_view_sale"
+              name="Reparaciones"
+              parent="reparaciones_root"
+              sequence="0"
+              action="reparaciones_action_window"
+              />
+
+
+    </data>
+</odoo>
