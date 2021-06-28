@@ -1,7 +1,8 @@
 #-*- coding: utf-8 -*-
 
 from odoo import models, fields, api
-
+import logging, ast
+_logger = logging.getLogger(__name__)
 
 class facturable(models.Model):
     _inherit = 'sale.order.line'
@@ -43,6 +44,6 @@ class facturable(models.Model):
                         break
             (self - pickings_to_not_autoconfirm)._autoconfirm_picking()
         if('state' in vals):
-        	if(vals['state']=='done'):
-        		pass	
+            if(vals['state']=='done'):
+                _logger.info(str(vals))
         return res
