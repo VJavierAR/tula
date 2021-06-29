@@ -8,6 +8,8 @@ class fact(models.Model):
     _inherit = 'sale.order.line'
     facturable=fields.Float('Facturable',compute='f')
     facturablePrevio=fields.Float('Facturable Previo')
+    arreglo=fields.Char(default='[]')
+
     @api.depends('qty_delivered')
     def f(self):
         _logger.info('Hola')
@@ -26,9 +28,10 @@ class fact(models.Model):
                     valor=record.product_uom_qty-record.qty_delivered
         self.facturable=valor
         
+
 class facturable(models.Model):
     _inherit = 'purchase.order.line'
-    facturable=fields.Float('Facturable',compute='full')
+    facturable=fields.Float('Facturable',compute='full',default=0)
     
     @api.depends('qty_received')
     def full(self):
@@ -37,14 +40,15 @@ class facturable(models.Model):
             fin=q.filtered(lambda x:x.state not in ['done','cancel'])
             _logger.info(record.qty_received)
             _logger.info(len(fin))
-            valor=record.qty_received
+            valor=record.qty_received if(record.facturable==0) else record.facturable
             for f in fin:
-                if(valor>0):
-                    temp=valor
-                    valor=valor-record.product_uom_qty
-                    _logger.info(f.sale_line_id.id)
-                    if(valor>=0):
-                        f.sale_line_id.write({'facturablePrevio':record.product_uom_qty})
-                    else:
-                        f.sale_line_id.write({'facturablePrevio':temp})
-        self.facturable=0
+                arr=eval(f.sale_line_id.arreglo)
+                if(self.id not in arr):
+                    if(valor>0):
+                        temp=valor
+                        valor=valor-record.product_uom_qty
+                        if(valor>=0):
+                            f.sale_line_id.write({'facturablePrevio':record.product_uom_qty,'arreglo':str(arr.append(self.id))})
+                        else:
+                            f.sale_line_id.write({'facturablePrevio':temp,'arreglo':str(arr.append(self.id))})
+        self.facturable=valor
