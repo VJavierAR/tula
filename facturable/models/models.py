@@ -9,6 +9,7 @@ class fact(models.Model):
     facturable=fields.Float('Facturable',compute='f')
     facturablePrevio=fields.Float('Facturable Previo')
     arreglo=fields.Char(default='[]')
+    check=fields.Boolean()
 
     @api.depends('qty_delivered','product_uom_qty')
     def f(self):
@@ -53,4 +54,4 @@ class facturable(models.Model):
                             f.sale_line_id.write({'facturablePrevio':record.product_uom_qty,'arreglo':str(arr.append(record.id))})
                         else:
                             f.sale_line_id.write({'facturablePrevio':temp,'arreglo':str(arr.append(record.id))})
-        self.facturable=valor
+            record.facturable=valor
