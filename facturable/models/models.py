@@ -27,6 +27,7 @@ class fact(models.Model):
                 else:
                     espera=otros.filtered(lambda x:x.state !='asigned')
                     asigados=otros.filtered(lambda x:x.state =='asigned')
+                    _logger.info(len(asigados))
                     #valor=record.product_uom_qty-record.qty_delivered
                     valor=sum(asigados.mapped('reserved_availability'))
         self.facturable=valor
