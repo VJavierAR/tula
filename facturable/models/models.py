@@ -36,22 +36,22 @@ class facturable(models.Model):
     _inherit = 'purchase.order.line'
     facturable=fields.Float('Facturable',compute='full',default=0)
     
-    @api.depends('qty_received')
-    def full(self):
-        for record in self:
-            q=self.env['stock.move'].search([['product_id','=',record.product_id.id],['sale_line_id','!=',False]],order='date asc')
-            fin=q.filtered(lambda x:x.state not in ['done','cancel','asigned'])
-            _logger.info(record.qty_received)
-            _logger.info(len(fin))
-            valor=record.qty_received if(record.facturable==0) else record.facturable
-            for f in fin:
-                arr=eval(f.sale_line_id.arreglo)
-                if(self.id not in arr):
-                    if(valor>0):
-                        temp=valor
-                        valor=valor-record.product_uom_qty
-                        if(valor>=0):
-                            f.sale_line_id.write({'facturablePrevio':record.product_uom_qty,'arreglo':str(arr.append(record.id))})
-                        else:
-                            f.sale_line_id.write({'facturablePrevio':temp,'arreglo':str(arr.append(record.id))})
-            record.facturable=valor
+    # @api.depends('qty_received')
+    # def full(self):
+    #     for record in self:
+    #         q=self.env['stock.move'].search([['product_id','=',record.product_id.id],['sale_line_id','!=',False]],order='date asc')
+    #         fin=q.filtered(lambda x:x.state not in ['done','cancel','asigned'])
+    #         _logger.info(record.qty_received)
+    #         _logger.info(len(fin))
+    #         valor=record.qty_received if(record.facturable==0) else record.facturable
+    #         for f in fin:
+    #             arr=eval(f.sale_line_id.arreglo)
+    #             if(self.id not in arr):
+    #                 if(valor>0):
+    #                     temp=valor
+    #                     valor=valor-record.product_uom_qty
+    #                     if(valor>=0):
+    #                         f.sale_line_id.write({'facturablePrevio':record.product_uom_qty,'arreglo':str(arr.append(self.id))})
+    #                     else:
+    #                         f.sale_line_id.write({'facturablePrevio':temp,'arreglo':str(arr.append(self.id))})
+    #         record.facturable=valor
