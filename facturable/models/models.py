@@ -37,7 +37,7 @@ class facturable(models.Model):
     facturable=fields.Float('Facturable',compute='full',default=0)
     @api.depends('qty_received')
     def full(self):
-        pass
+        self.facturable=0
     # @api.depends('qty_received')
     # def full(self):
     #     for record in self:
