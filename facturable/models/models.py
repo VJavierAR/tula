@@ -19,16 +19,17 @@ class fact(models.Model):
                 valor=0
             if(record.qty_delivered!=record.product_uom_qty):
                 q=self.env['stock.move'].search([['sale_line_id','=',record.id]])
+                _logger.info(len(q))
                 hechos=q.filtered(lambda x:x.state=='done' and x.location_id.id==record.warehouse_id.lot_stock_id.id)
                 cancelados=q.filtered(lambda x:x.state=='cancel' and x.location_id.id==record.warehouse_id.lot_stock_id.id)
                 otros=q.filtered(lambda x:x.state not in ['cancel','done'] and x.location_id.id==record.warehouse_id.lot_stock_id.id)
-                _logger.info(len(otros))
+                #_logger.info(len(otros))
                 if(len(cancelados)>0):
                     valor=0
                 else:
                     espera=otros.filtered(lambda x:x.state !='asigned')
                     asigados=otros.filtered(lambda x:x.state =='asigned')
-                    _logger.info(len(asigados))
+                    #_logger.info(len(asigados))
                     #valor=record.product_uom_qty-record.qty_delivered
                     valor=sum(asigados.mapped('reserved_availability'))
         self.facturable=valor
