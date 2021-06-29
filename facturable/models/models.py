@@ -25,7 +25,10 @@ class fact(models.Model):
                 if(len(cancelados)>0):
                     valor=0
                 else:
-                    valor=record.product_uom_qty-record.qty_delivered
+                    espera=otros.filtered(lambda x:x.state =='asigned')
+                    asigados=otros.filtered(lambda x:x.state !='asigned')
+                    #valor=record.product_uom_qty-record.qty_delivered
+                    valor=sum(asigados.mapped('reserved_availability'))
         self.facturable=valor
         
 
