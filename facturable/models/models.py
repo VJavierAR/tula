@@ -20,19 +20,22 @@ class fact(models.Model):
             if(record.qty_delivered!=record.product_uom_qty):
                 q=self.env['stock.move'].search([['sale_line_id','=',record.id]])
                 _logger.info(len(q))
-                hechos=q.filtered(lambda x:x.state=='done' and x.location_id.id==record.warehouse_id.lot_stock_id.id)
-                cancelados=q.filtered(lambda x:x.state=='cancel' and x.location_id.id==record.warehouse_id.lot_stock_id.id)
-                otros=q.filtered(lambda x:x.state not in ['cancel','done'] and x.location_id.id==record.warehouse_id.lot_stock_id.id)
+                hechos=q.filtered(lambda x:x.state=='done')
                 #_logger.info(len(otros))
+                cancelados=q.filtered(lambda x:x.state=='cancel')
+                otros=q.filtered(lambda x:x.state not in ['cancel','done'])
+                _logger.info(len(cancelados))
                 if(len(cancelados)>0):
                     valor=0
                 else:
-                    espera=otros.filtered(lambda x:x.state !='asigned')
-                    asigados=otros.filtered(lambda x:x.state =='asigned')
-                    #_logger.info(len(asigados))
+                    espera=q.filtered(lambda x:x.state not in ['assigned','partially_available','cancel','done'])
+                    asigados=q.filtered(lambda x:x.state in ['assigned','partially_available'])
+                    _logger.info(len(asigados))
+                    _logger.info(len(espera))
                     #valor=record.product_uom_qty-record.qty_delivered
-                    valor=sum(asigados.mapped('reserved_availability'))
-        self.facturable=valor
+                    valor=sum(asigados.mapped('reserved_availability')) if(len(asigados)>0) else record.product_uom_qty-record.qty_delivered
+            record.facturable=valor
+        
         
 
 class facturable(models.Model):
