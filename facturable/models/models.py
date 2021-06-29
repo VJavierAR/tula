@@ -35,7 +35,9 @@ class fact(models.Model):
 class facturable(models.Model):
     _inherit = 'purchase.order.line'
     facturable=fields.Float('Facturable',compute='full',default=0)
-    
+    @api.depends('qty_received')
+    def full(self):
+        pass
     # @api.depends('qty_received')
     # def full(self):
     #     for record in self:
