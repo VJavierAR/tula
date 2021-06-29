@@ -37,7 +37,7 @@ class facturable(models.Model):
     def full(self):
         for record in self:
             q=self.env['stock.move'].search([['product_id','=',record.product_id.id],['sale_line_id','!=',False]],order='date asc')
-            fin=q.filtered(lambda x:x.state not in ['done','cancel'])
+            fin=q.filtered(lambda x:x.state not in ['done','cancel','asigned'])
             _logger.info(record.qty_received)
             _logger.info(len(fin))
             valor=record.qty_received if(record.facturable==0) else record.facturable
@@ -48,7 +48,7 @@ class facturable(models.Model):
                         temp=valor
                         valor=valor-record.product_uom_qty
                         if(valor>=0):
-                            f.sale_line_id.write({'facturablePrevio':record.product_uom_qty,'arreglo':str(arr.append(self.id))})
+                            f.sale_line_id.write({'facturablePrevio':record.product_uom_qty,'arreglo':str(arr.append(record.id))})
                         else:
-                            f.sale_line_id.write({'facturablePrevio':temp,'arreglo':str(arr.append(self.id))})
+                            f.sale_line_id.write({'facturablePrevio':temp,'arreglo':str(arr.append(record.id))})
         self.facturable=valor
