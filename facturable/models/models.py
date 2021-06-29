@@ -10,7 +10,7 @@ class fact(models.Model):
     facturablePrevio=fields.Float('Facturable Previo')
     arreglo=fields.Char(default='[]')
 
-    @api.depends('qty_delivered')
+    @api.depends('qty_delivered','product_uom_qty')
     def f(self):
         _logger.info('Hola')
         valor=1
