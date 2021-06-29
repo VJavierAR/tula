@@ -22,6 +22,7 @@ class fact(models.Model):
                 hechos=q.filtered(lambda x:x.state=='done' and x.location_id.id==record.warehouse_id.lot_stock_id.id)
                 cancelados=q.filtered(lambda x:x.state=='cancel' and x.location_id.id==record.warehouse_id.lot_stock_id.id)
                 otros=q.filtered(lambda x:x.state not in ['cancel','done'] and x.location_id.id==record.warehouse_id.lot_stock_id.id)
+                _logger.info(len(otros))
                 if(len(cancelados)>0):
                     valor=0
                 else:
