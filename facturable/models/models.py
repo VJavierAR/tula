@@ -6,8 +6,8 @@ _logger = logging.getLogger(__name__)
 
 class fact(models.Model):
     _inherit = 'sale.order.line'
-    facturable=fields.Float('Facturable',compute='f')
-    facturablePrevio=fields.Float('Facturable Previo')
+    cantidad_facturable=fields.Float('Cantidad Facturable',compute='f')
+    facturable=fields.Float('Facturable')
     arreglo=fields.Char(default='[]')
     check=fields.Boolean()
 
@@ -15,19 +15,19 @@ class fact(models.Model):
     def f(self):
         valor=0
         for record in self:
-            if(record.qty_delivered==record.product_uom_qty):
+            if(record.qty_invoiced==record.product_uom_qty or record.qty_invoiced!=0):
                 valor=0
             if(record.qty_delivered!=record.product_uom_qty):
                 q=self.env['stock.move'].search([['sale_line_id','=',record.id]])
                 hechos=q.filtered(lambda x:x.state=='done')
                 cancelados=q.filtered(lambda x:x.state=='cancel')
                 otros=q.filtered(lambda x:x.state not in ['cancel','done'])
-                if(len(cancelados)>0):
-                    valor=0
-                else:
-                    espera=q.filtered(lambda x:x.state not in ['assigned','partially_available','cancel','done'])
-                    asigados=q.filtered(lambda x:x.state in ['assigned','partially_available'])
-                    valor=sum(asigados.mapped('reserved_availability')) if(len(asigados)>0) else record.product_uom_qty-record.qty_delivered
+                #if(len(cancelados)>0):
+                #    valor=0
+                #else:
+                espera=q.filtered(lambda x:x.state not in ['assigned','partially_available','cancel','done'])
+                asigados=q.filtered(lambda x:x.state in ['assigned','partially_available'])
+                valor=sum(asigados.mapped('reserved_availability')) if(len(asigados)>0) else record.product_uom_qty-record.qty_delivered
             record.facturable=valor
         
         
