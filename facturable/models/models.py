@@ -28,7 +28,7 @@ class fact(models.Model):
                 espera=q.filtered(lambda x:x.state not in ['assigned','partially_available','cancel','done'])
                 asigados=q.filtered(lambda x:x.state in ['assigned','partially_available'])
                 valor=sum(asigados.mapped('reserved_availability')) if(len(asigados)>0) else record.product_uom_qty-record.qty_delivered
-            record.facturable=valor
+            record.cantidad_facturable=valor
         
         
 
