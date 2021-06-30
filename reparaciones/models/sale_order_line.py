@@ -14,7 +14,8 @@ class SOL(models.Model):
 
     tipo = fields.Selection(
         selection=[('add', 'Añadir'),('remove','Eliminar')],
-        string='Tipo'
+        string='Tipo',
+        default='add'
     )
 
     reparaciones_rel = fields.Many2one(
