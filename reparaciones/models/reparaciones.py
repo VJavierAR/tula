@@ -30,7 +30,9 @@ class Reparaciones(models.Model):
 
     @api.onchange('state')
     def conf(self):
+        _logger.info("conf()****************")
         if self.state == 'sale' and self.picking_ids:
+            _logger.info("entrando si el estado es sale y tiene picking_ids")
             for linea in self.order_line:
                 if linea.tipo == 'remove':
                     for picking in self.picking_ids:
