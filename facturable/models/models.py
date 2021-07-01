@@ -84,7 +84,7 @@ import logging, ast
 _logger = logging.getLogger(__name__)
 
 class SaleReport(models.Model):
-    _name = "sale.report"
+    _inherit = "sale.report"
     _description = "Sales Analysis Report"
     _auto = False
     _rec_name = 'date'
