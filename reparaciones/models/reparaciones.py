@@ -32,13 +32,16 @@ class Reparaciones(models.Model):
     def conf(self):
         self.action_confirm()
         _logger.info("conf()****************")
-        if self.state == 'sale' and self.picking_ids:
-            _logger.info("entrando si el estado es sale y tiene picking_ids")
-            for linea in self.order_line:
-                if linea.tipo == 'remove':
-                    for picking in self.picking_ids:
-                        if picking.move_line_ids_without_package:
-                            for linea_orden in picking.move_line_ids_without_package:
-                                if linea_orden.product_id.id == linea.product_id.id:
-                                    picking.move_line_ids_without_package = (3, linea_orden.id, 0)
+        if self.state == 'sale':
+            for pi in self.picking_ids.filtered(lambda x:x.state not in ['done','cancel']):
+                pi.do_unreserved()
+            for linea in self.order_line.filtered(lambda x:x.tipo=='remove'):
+                p=self.env['stock.move'].search([['sale_line_id','=',linea.id],['state','not in',['done','cancel','assigned']]])
+                p.remove()
+                #if linea.tipo == 'remove':
+                    #for picking in self.picking_ids:
+                    #    if picking.move_line_ids_without_package:
+                    #       for linea_orden in picking.move_line_ids_without_package:
+                    #            if linea_orden.product_id.id == linea.product_id.id:
+                    #                picking.move_line_ids_without_package = (3, linea_orden.id, 0)
 
