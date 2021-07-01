@@ -34,7 +34,7 @@ class Reparaciones(models.Model):
         _logger.info("conf()****************")
         if self.state == 'sale':
             for pi in self.picking_ids.filtered(lambda x:x.state not in ['done','cancel']):
-                pi.do_unreserved()
+                pi.do_unreserve()
             for linea in self.order_line.filtered(lambda x:x.tipo=='remove'):
                 p=self.env['stock.move'].search([['sale_line_id','=',linea.id],['state','not in',['done','cancel','assigned']]])
                 p.remove()
