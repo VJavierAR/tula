@@ -5,6 +5,9 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                    <attribute name="name">conf</attribute>
+                </xpath>
               <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_id']" position="before">
                 <field name="tipo" />
                   <!--<field name="facturablePrevio" readonly='1'/>-->
@@ -21,9 +24,7 @@
                   </group>
                 </page>
                 </xpath>
-                <xpath expr="//button[@name='action_confirm']" position="attributes">
-                    <attribute name="name">conf</attribute>
-                </xpath>
+
             </field>
           </record>
         <!--<record model="ir.ui.view" id="reparaciones_tree_view">
