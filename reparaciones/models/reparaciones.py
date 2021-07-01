@@ -26,7 +26,7 @@ class Reparaciones(models.Model):
         comodel_name='sale.order.line',
         inverse_name='order_id',
         string='Servicios',
-        domain="[('product_id.type','=','service')]"
+        domain="[('product_type','=','service')]"
 
     )
 
