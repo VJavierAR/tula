@@ -17,19 +17,33 @@ class fact(models.Model):
         for record in self:
             if(record.qty_invoiced==record.product_uom_qty or record.qty_invoiced!=0):
                 valor=0
-            if(record.qty_delivered!=record.product_uom_qty):
+            if(record.qty_invoiced!=record.product_uom_qty):
                 q=self.env['stock.move'].search([['sale_line_id','=',record.id]])
-                hechos=q.filtered(lambda x:x.state=='done')
-                cancelados=q.filtered(lambda x:x.state=='cancel')
-                otros=q.filtered(lambda x:x.state not in ['cancel','done'])
+                if(len(q)>0):
+                    hechos=q.filtered(lambda x:x.state=='done')
+                    cancelados=q.filtered(lambda x:x.state=='cancel')
+                    otros=q.filtered(lambda x:x.state not in ['cancel','done'])
                 #if(len(cancelados)>0):
                 #    valor=0
                 #else:
-                espera=q.filtered(lambda x:x.state not in ['assigned','partially_available','cancel','done'])
-                asigados=q.filtered(lambda x:x.state in ['assigned','partially_available'])
-                valor=sum(asigados.mapped('reserved_availability')) if(len(asigados)>0) else record.product_uom_qty-record.qty_delivered
-            _logger.info(str(valor))
+                    espera=q.filtered(lambda x:x.state not in ['assigned','partially_available','cancel','done'])
+                    asigados=q.filtered(lambda x:x.state in ['assigned','partially_available'])
+                    valor=sum(asigados.mapped('reserved_availability')) if(len(asigados)>0) else sum(espera.mapped('reserved_availability'))
+                    if(record.product_id.virtual_available>0 and valor==0):
+                        t=record.product_id.virtual_available-record.product_uom_qty
+                        valor=record.product_uom_qty if(t>=0) else record.product_id.virtual_available
+                    if(record.product_id.virtual_available<0 and valor==0):
+                        if(record.product_uom_qty--record.product_id.virtual_available>=0):
+                            valor=record.product_uom_qty--record.product_id.virtual_available
+                else:
+                    if(record.product_id.virtual_available>0):
+                        t=record.product_id.virtual_available-record.product_uom_qty
+                        valor=record.product_uom_qty if(t>=0) else record.product_id.virtual_available
+                    else:
+                        valor=0
+            #_logger.info(str(valor))
             record.cantidad_facturable=valor
+            record.facturable=valor*record.price_reduce
         
         
 
