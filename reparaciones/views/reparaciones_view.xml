@@ -9,6 +9,18 @@
                 <field name="tipo" />
                   <!--<field name="facturablePrevio" readonly='1'/>-->
                 </xpath>
+
+                <xpath expr="//field[@name='sale_order_template_id']" position="after">
+                    <field name="flota"/>
+                    <field name="responsable"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
+                <page name="studio_page_4P8Tx" string="Servicios">
+                  <group name="studio_group_4P8Tx">
+                    <field name="servicios"/>
+                  </group>
+                </page>
+                </xpath>
             </field>
           </record>
         <!--<record model="ir.ui.view" id="reparaciones_tree_view">
