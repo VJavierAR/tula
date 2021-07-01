@@ -1,7 +1,17 @@
 <odoo>
     <data>
-
-        <record model="ir.ui.view" id="reparaciones_tree_view">
+            <record model="ir.ui.view" id="sale_order_form_view_update_facturable">
+            <field name="name">sale.order.form.view.update.facturable</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+              <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_id']" position="before">
+                <field name="tipo" />
+                  <!--<field name="facturablePrevio" readonly='1'/>-->
+                </xpath>
+            </field>
+          </record>
+        <!--<record model="ir.ui.view" id="reparaciones_tree_view">
             <field name="name">reparaciones.tree</field>
             <field name="model">sale.order</field>
             <field name="arch" type="xml">
@@ -135,12 +145,12 @@
                                 <field name="order_line" widget="section_and_note_one2many" mode="tree,kanban"
                                        attrs="{'readonly': [('state', 'in', ('done','cancel'))]}">
                                     <form>
-                                        <field name="display_type" invisible="1"/>
+                                        <field name="display_type" invisible="1"/>-->
                                         <!--
                                             We need the sequence field to be here for new lines to be added at the correct position.
                                             TODO: at some point we want to fix this in the framework so that an invisible field is not required.
                                         -->
-                                        <field name="sequence" invisible="1"/>
+                                        <!--<field name="sequence" invisible="1"/>
                                         <field name="product_uom_category_id" invisible="1"/>
                                         <group>
                                             <group attrs="{'invisible': [('display_type', '!=', False)]}">
@@ -190,14 +200,14 @@
                                                 <div name="discount" groups="product.group_discount_per_so_line">
                                                     <field name="discount" class="oe_inline"/>
                                                     %
-                                                </div>
+                                                </div>-->
                                                 <!--
                                                     We need the sequence field to be here
                                                     because we want to be able to overwrite the default sequence value in the JS
                                                     in order for new lines to be added at the correct position.
                                                     NOTE: at some point we want to fix this in the framework so that an invisible field is not required.
                                                 -->
-                                                <field name="sequence" invisible="1"/>
+                                                <!--<field name="sequence" invisible="1"/>
                                             </group>
                                             <group attrs="{'invisible': [('display_type', '!=', False)]}">
                                                 <label for="customer_lead"/>
@@ -235,9 +245,9 @@
                                                     context="{'default_display_type': 'line_note'}"/>
                                         </control>
 
-                                        <field name="sequence" widget="handle"/>
+                                        <field name="sequence" widget="handle"/>-->
                                         <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
-                                        <field name="display_type" invisible="1"/>
+                                        <!--<field name="display_type" invisible="1"/>
                                         <field name="product_uom_category_id" invisible="1"/>
 
                                         <field name="product_updatable" invisible="1"/>
@@ -397,12 +407,12 @@
                                 <field name="servicios" widget="section_and_note_one2many" mode="tree"
                                        attrs="{'readonly': [('state', 'in', ('done','cancel'))]}" domain="[('product_type','=','service')]">
                                     <form>
-                                        <field name="display_type" invisible="1"/>
+                                        <field name="display_type" invisible="1"/>-->
                                         <!--
                                             We need the sequence field to be here for new lines to be added at the correct position.
                                             TODO: at some point we want to fix this in the framework so that an invisible field is not required.
                                         -->
-                                        <field name="sequence" invisible="1"/>
+                                        <!--<field name="sequence" invisible="1"/>
                                         <field name="product_uom_category_id" invisible="1"/>
                                         <group>
                                             <group attrs="{'invisible': [('display_type', '!=', False)]}">
@@ -452,14 +462,14 @@
                                                 <div name="discount" groups="product.group_discount_per_so_line">
                                                     <field name="discount" class="oe_inline"/>
                                                     %
-                                                </div>
+                                                </div>-->
                                                 <!--
                                                     We need the sequence field to be here
                                                     because we want to be able to overwrite the default sequence value in the JS
                                                     in order for new lines to be added at the correct position.
                                                     NOTE: at some point we want to fix this in the framework so that an invisible field is not required.
                                                 -->
-                                                <field name="sequence" invisible="1"/>
+                                                <!--<field name="sequence" invisible="1"/>
                                             </group>
                                             <group attrs="{'invisible': [('display_type', '!=', False)]}">
                                                 <label for="customer_lead"/>
@@ -497,9 +507,9 @@
                                                     context="{'default_display_type': 'line_note'}"/>
                                         </control>
 
-                                        <field name="sequence" widget="handle"/>
+                                        <field name="sequence" widget="handle"/>-->
                                         <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
-                                        <field name="display_type" invisible="1"/>
+                                        <!--<field name="display_type" invisible="1"/>
                                         <field name="product_uom_category_id" invisible="1"/>
 
                                         <field name="product_updatable" invisible="1"/>
@@ -674,16 +684,16 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">sale.order</field>
             <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
-            <field name="view_id" ref="reparaciones.reparaciones_form_view"/>
+            <field name="view_id" ref="reparaciones.reparaciones_form_view"/>-->
             <!--<field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>-->
             <!--<field name="context">{}</field>-->
-                        <field name="views" eval="[(5, 0, 0),
+                        <!--<field name="views" eval="[(5, 0, 0),
                             (0, 0, {'view_mode': 'tree', 'view_id': ref('reparaciones_tree_view')}),
                             (0, 0, {'view_mode': 'form', 'view_id': ref('reparaciones_form_view')}),
                             ]"/>
-            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field>
+            <field name="domain">[('state', 'not in', ('draft', 'sent', 'cancel'))]</field>-->
             <!--<field name="views" eval="[(5, 0, 0)]"/>-->
-            <field name="help" type="html">
+            <!--<field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
                     Create a new quotation, the first step of a new sale!
                 </p><p>
@@ -715,7 +725,7 @@
                 Once the quotation is confirmed by the customer, it becomes a sales order.<br/> You will be able to create an invoice and collect the payment.
               </p>
             </field>
-        </record>
+        </record>-->
     
 
 
