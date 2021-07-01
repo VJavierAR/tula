@@ -21,6 +21,9 @@
                   </group>
                 </page>
                 </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                    <attribute name="name">conf</attribute>
+                </xpath>
             </field>
           </record>
         <!--<record model="ir.ui.view" id="reparaciones_tree_view">
