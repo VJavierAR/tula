@@ -18,9 +18,9 @@ class SOL(models.Model):
         default='add'
     )
 
-    reparaciones_rel = fields.Many2one(
-        comodel_name='sale.order',
-        string='reparaciones_rel'
-    )
+    #reparaciones_rel = fields.Many2one(
+    #    comodel_name='sale.order',
+    #    string='reparaciones_rel'
+    #)
 
 
