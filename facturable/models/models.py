@@ -11,7 +11,7 @@ class fact(models.Model):
     arreglo=fields.Char(default='[]')
     check=fields.Boolean()
 
-    @api.depends('qty_delivered','product_uom_qty')
+    @api.depends('qty_invoiced','product_uom_qty')
     def f(self):
         valor=0
         for record in self:
@@ -28,6 +28,7 @@ class fact(models.Model):
                 espera=q.filtered(lambda x:x.state not in ['assigned','partially_available','cancel','done'])
                 asigados=q.filtered(lambda x:x.state in ['assigned','partially_available'])
                 valor=sum(asigados.mapped('reserved_availability')) if(len(asigados)>0) else record.product_uom_qty-record.qty_delivered
+            _logger.info(str(valor))
             record.cantidad_facturable=valor
         
         
