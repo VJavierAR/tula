@@ -43,7 +43,15 @@ class fact(models.Model):
             record.cantidad_facturable=valor
             record.facturable=valor*record.price_reduce
         
-        
+class fact(models.Model):
+    _inherit = 'sale.order'
+
+
+    @api.onchange('order_line')
+    def check(self):
+        for o in self.order_line:
+            if(o.qty_invoiced==0):
+                o.f()
 
 class facturable(models.Model):
     _inherit = 'purchase.order.line'
