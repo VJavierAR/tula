@@ -85,7 +85,7 @@ class facturable(models.Model):
 
 
 
-class fact(models.Model):
+class fact3(models.Model):
     _inherit = 'account.move.line'
 
 
@@ -163,7 +163,7 @@ class fact(models.Model):
                         move.date,
                     ))
 
-        lines = super(AccountMoveLine, self).create(vals_list)
+        lines = super(fact3, self).create(vals_list)
 
         moves = lines.mapped('move_id')
         if self._context.get('check_move_validity', True):
