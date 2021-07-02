@@ -11,7 +11,7 @@ class fact(models.Model):
     arreglo=fields.Char(default='[]')
     check=fields.Boolean()
 
-    @api.depends('qty_invoiced','product_uom_qty')
+    @api.depends('qty_invoiced','product_uom_qty','price_unit')
     def f(self):
         valor=0
         for record in self:
