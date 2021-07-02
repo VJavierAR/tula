@@ -58,9 +58,9 @@ class SaleReport(models.Model):
 
     def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
         fields['facturable'] = ",sum(l.facturable / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) as facturable"
-        s=self.env['sale.order.line'].search([['qty_invoiced','!=',0]])
-        for sa in s:
-            sa.f()
+        #s=self.env['sale.order.line'].search([['qty_invoiced','!=',0]])
+        #for sa in s:
+        #    sa.f()
         return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
 
     # def init(self):
