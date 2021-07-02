@@ -29,7 +29,7 @@
                 <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
                     <page name="studio_page_4P8Tx" string="Servicios">
                         <group name="studio_group_4P8Tx">
-                            <field name="servicios">
+                            <field name="servicios" domain="[('product_type','=','service')]">
                                 <tree>
                                     <field name="sequence" widget="handle"/>-->
         <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
