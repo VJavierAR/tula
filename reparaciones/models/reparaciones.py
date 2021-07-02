@@ -38,7 +38,7 @@ class Reparaciones(models.Model):
                 pi.do_unreserve()
             for linea in self.order_line.filtered(lambda x:x.tipo=='remove'):
                 p=self.env['stock.move'].search([['sale_line_id','=',linea.id],['state','not in',['done','cancel','assigned']]])
-                p.remove()
+                p.unlink()
                 #if linea.tipo == 'remove':
                     #for picking in self.picking_ids:
                     #    if picking.move_line_ids_without_package:
