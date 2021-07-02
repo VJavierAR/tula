@@ -17,7 +17,7 @@ class fact(models.Model):
         for record in self:
             if(record.qty_invoiced==record.product_uom_qty or record.qty_invoiced!=0):
                 valor=0
-            if(record.qty_invoiced!=record.product_uom_qty):
+            if(record.qty_invoiced!=record.product_uom_qty and record.product_id.type!='service'):
                 q=self.env['stock.move'].search([['sale_line_id','=',record.id],['picking_code','=','outgoing']])
                 t=record.product_id.bom_ids.mapped('bom_line_ids.product_id.id')
                 e=record.product_id.bom_ids.mapped('bom_line_ids.product_qty')
@@ -40,6 +40,8 @@ class fact(models.Model):
                         valor=record.product_uom_qty if(t>=0) else record.product_id.virtual_available
                     else:
                         valor=0
+            if(record.qty_invoiced!=record.product_uom_qty and record.product_id.type=='service'):
+                valor=record.product_uom_qty
             record.cantidad_facturable=valor
             record.facturable=valor*record.price_reduce
         
