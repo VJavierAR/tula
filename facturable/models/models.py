@@ -18,14 +18,13 @@ class fact(models.Model):
             if(record.qty_invoiced==record.product_uom_qty or record.qty_invoiced!=0):
                 valor=0
             if(record.qty_invoiced!=record.product_uom_qty):
-                q=self.env['stock.move'].search([['sale_line_id','=',record.id]])
-                if(len(q)>0):
+                q=self.env['stock.move'].search([['sale_line_id','=',record.id],['picking_code','=','outgoing']])
+                t=record.product_id.bom_ids.mapped('bom_line_ids.product_id.id')
+                e=record.product_id.bom_ids.mapped('bom_line_ids.product_qty')
+                if(len(q)>0 and t==[]):
                     hechos=q.filtered(lambda x:x.state=='done')
                     cancelados=q.filtered(lambda x:x.state=='cancel')
                     otros=q.filtered(lambda x:x.state not in ['cancel','done'])
-                #if(len(cancelados)>0):
-                #    valor=0
-                #else:
                     espera=q.filtered(lambda x:x.state not in ['assigned','partially_available','cancel','done'])
                     asigados=q.filtered(lambda x:x.state in ['assigned','partially_available'])
                     valor=sum(asigados.mapped('reserved_availability')) if(len(asigados)>0) else sum(espera.mapped('reserved_availability'))
@@ -41,7 +40,6 @@ class fact(models.Model):
                         valor=record.product_uom_qty if(t>=0) else record.product_id.virtual_available
                     else:
                         valor=0
-            #_logger.info(str(valor))
             record.cantidad_facturable=valor
             record.facturable=valor*record.price_reduce
         
