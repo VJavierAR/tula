@@ -51,5 +51,5 @@ class Reparaciones(models.Model):
 
     def validate_picking(self):
         if self.state == 'sale':
-            P=self.picking_ids.filtered(lambda x:x.state not in ['done','cancel']):
+            P=self.picking_ids.filtered(lambda x:x.state not in ['done','cancel'])
             return P.action_confirm()
