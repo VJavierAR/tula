@@ -520,7 +520,7 @@
 <field name="state" invisible="1"/>
 <field name="company_id" invisible="1"/>
 </form>
-<tree string="Sales Order Lines" editable="bottom">
+<tree string="Sales Order Lines" editable="bottom" domain="[('product_type','=','service')]">
 <control>
     <create name="add_product_control" string="Add a product"/>
     <create name="add_section_control" string="Add a section"
