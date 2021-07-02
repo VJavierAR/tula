@@ -170,5 +170,7 @@ class fact3(models.Model):
             moves._check_balanced()
         moves._check_fiscalyear_lock_date()
         lines._check_tax_lock_date()
-        lines.sale_line_ids.f()
+        for sa in lines.sale_line_ids:
+            sa._get_invoice_qty()
+            sa.f()
         return lines
