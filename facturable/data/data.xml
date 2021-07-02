@@ -11,9 +11,9 @@
         <field name="model_id" ref="sale.model_sale_order_line" />
         <field name="state">code</field>
         <field name="code">
-        p=env['sale.order.line'].search([['qty_invoiced','!=',0]])
-        for pi in p:
-            pi.f()</field>
+p=env['sale.order.line'].search([['qty_invoiced','!=',0]])
+for pi in p:
+    pi.f()</field>
     </record>
 
 </odoo>
