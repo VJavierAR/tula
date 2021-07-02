@@ -1,10 +1,14 @@
 <odoo>
     <data>
-        <record model="ir.ui.view" id="sale_order_form_view_update_reparaciones">
+        <!--<record model="ir.ui.view" id="sale_order_form_view_update_reparaciones">
             <field name="name">sale.order.form.view.update.reparaciones</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                    <attribute name="name">conf</attribute>
+                </xpath>
 
                 <xpath expr="//button[@name='action_confirm']" position="attributes">
                     <attribute name="name">conf</attribute>
@@ -27,7 +31,7 @@
                 </xpath>
 
             </field>
-        </record>
+        </record>-->
         <!--<record model="ir.ui.view" id="reparaciones_tree_view">
             <field name="name">reparaciones.tree</field>
             <field name="model">sale.order</field>
@@ -56,10 +60,10 @@
                     <field name="currency_id" invisible="1"/>
                 </tree>
             </field>
-        </record>
+        </record>-->
 
-        <record model="ir.ui.view" id="reparaciones_form_view">
-            <field name="name">reparaciones.form</field>
+        <record model="ir.ui.view" id="sale.view_order_form">
+            <field name="name">sale.order.form</field>
             <field name="model">sale.order</field>
             <field name="arch" type="xml">
 
@@ -162,12 +166,12 @@
                                 <field name="order_line" widget="section_and_note_one2many" mode="tree,kanban"
                                        attrs="{'readonly': [('state', 'in', ('done','cancel'))]}">
                                     <form>
-                                        <field name="display_type" invisible="1"/>-->
+                                        <field name="display_type" invisible="1"/>
         <!--
             We need the sequence field to be here for new lines to be added at the correct position.
             TODO: at some point we want to fix this in the framework so that an invisible field is not required.
         -->
-        <!--<field name="sequence" invisible="1"/>
+        <field name="sequence" invisible="1"/>
         <field name="product_uom_category_id" invisible="1"/>
         <group>
             <group attrs="{'invisible': [('display_type', '!=', False)]}">
@@ -217,14 +221,14 @@
                 <div name="discount" groups="product.group_discount_per_so_line">
                     <field name="discount" class="oe_inline"/>
                     %
-                </div>-->
+                </div>
         <!--
             We need the sequence field to be here
             because we want to be able to overwrite the default sequence value in the JS
             in order for new lines to be added at the correct position.
             NOTE: at some point we want to fix this in the framework so that an invisible field is not required.
         -->
-        <!--<field name="sequence" invisible="1"/>
+        <field name="sequence" invisible="1"/>
     </group>
     <group attrs="{'invisible': [('display_type', '!=', False)]}">
         <label for="customer_lead"/>
@@ -262,9 +266,9 @@
             context="{'default_display_type': 'line_note'}"/>
 </control>
 
-<field name="sequence" widget="handle"/>-->
+<field name="sequence" widget="handle"/>
         <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
-        <!--<field name="display_type" invisible="1"/>
+        <field name="display_type" invisible="1"/>
         <field name="product_uom_category_id" invisible="1"/>
 
         <field name="product_updatable" invisible="1"/>
@@ -424,12 +428,12 @@
 <field name="servicios" widget="section_and_note_one2many" mode="tree"
        attrs="{'readonly': [('state', 'in', ('done','cancel'))]}" domain="[('product_type','=','service')]">
     <form>
-        <field name="display_type" invisible="1"/>-->
+        <field name="display_type" invisible="1"/>
         <!--
             We need the sequence field to be here for new lines to be added at the correct position.
             TODO: at some point we want to fix this in the framework so that an invisible field is not required.
         -->
-        <!--<field name="sequence" invisible="1"/>
+        <field name="sequence" invisible="1"/>
         <field name="product_uom_category_id" invisible="1"/>
         <group>
             <group attrs="{'invisible': [('display_type', '!=', False)]}">
@@ -479,14 +483,14 @@
                 <div name="discount" groups="product.group_discount_per_so_line">
                     <field name="discount" class="oe_inline"/>
                     %
-                </div>-->
+                </div>
         <!--
             We need the sequence field to be here
             because we want to be able to overwrite the default sequence value in the JS
             in order for new lines to be added at the correct position.
             NOTE: at some point we want to fix this in the framework so that an invisible field is not required.
         -->
-        <!--<field name="sequence" invisible="1"/>
+        <field name="sequence" invisible="1"/>
     </group>
     <group attrs="{'invisible': [('display_type', '!=', False)]}">
         <label for="customer_lead"/>
@@ -524,9 +528,9 @@
             context="{'default_display_type': 'line_note'}"/>
 </control>
 
-<field name="sequence" widget="handle"/>-->
+<field name="sequence" widget="handle"/>
         <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
-        <!--<field name="display_type" invisible="1"/>
+        <field name="display_type" invisible="1"/>
         <field name="product_uom_category_id" invisible="1"/>
 
         <field name="product_updatable" invisible="1"/>
@@ -660,6 +664,8 @@
 
 </field>
 </record>
+
+<!--
 
 <record model="ir.actions.act_window" id="reparaciones_action_window">
 <field name="name">Reparaciones</field>
