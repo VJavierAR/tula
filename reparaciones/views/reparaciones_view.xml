@@ -12,10 +12,10 @@
                             attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>-->
                 </xpath>
 
-                <xpath expr="//form[1]/header[1]/button[@name='action_confirm_validacion']" position="attributes">
+                <xpath expr="//button[@name='action_confirm_validacion']" position="attributes">
                     <attribute name="name">conf</attribute>
                 </xpath>
-                
+
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_id']"
                        position="before">
                     <field name="tipo"/>
