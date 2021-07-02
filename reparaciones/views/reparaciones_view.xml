@@ -6,7 +6,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <!--<xpath expr="//button[@name='action_confirm']" position="replace">-->
-                <xpath expr="//form[1]/header[1]/button[@name='action_confirm']" position="attributes">
+                <xpath expr="//form[1]/header[1]/button[@name='action_confirm_validacion']" position="attributes">
                     <attribute name="name">conf</attribute>
                     <!--<button name="conf" string="Confirm" type="object"
                             attrs="{'invisible': [('state', 'not in', ['draft'])]}"/>-->
