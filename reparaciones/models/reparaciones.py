@@ -38,7 +38,10 @@ class Reparaciones(models.Model):
                 pi.do_unreserve()
             for linea in self.order_line.filtered(lambda x:x.tipo=='remove'):
                 p=self.env['stock.move'].search([['sale_line_id','=',linea.id],['state','not in',['done','cancel','assigned']]])
+                p._action_cancel()
                 p.unlink()
+            for pi in self.picking_ids.filtered(lambda x:x.state not in ['done','cancel']):
+                pi.action_assign()
                 #if linea.tipo == 'remove':
                     #for picking in self.picking_ids:
                     #    if picking.move_line_ids_without_package:
@@ -46,3 +49,7 @@ class Reparaciones(models.Model):
                     #            if linea_orden.product_id.id == linea.product_id.id:
                     #                picking.move_line_ids_without_package = (3, linea_orden.id, 0)
 
+    def validate_picking(self):
+        if self.state == 'sale':
+            P=self.picking_ids.filtered(lambda x:x.state not in ['done','cancel']):
+            return P.action_confirm()
