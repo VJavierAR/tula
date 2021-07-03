@@ -761,15 +761,15 @@
 <field name="name">Taller</field>
 <field name="res_model">sale.order</field>
 <field name="view_mode">tree,form</field>
-<field name="context">{'search_default_my_quotation': 1}</field>
+<!--<field name="context">{'search_default_my_quotation': 1}</field>-->
 </record>
 
-<record id="reparaciones_action_view_order_form" model="ir.actions.act_window.view">
-    <field name="sequence" eval="3"/>
-    <field name="view_mode">form</field>
-    <field name="view_id" ref="reparaciones.reparaciones_form_view"/>
-    <field name="act_window_id" ref="reparaciones.reparaciones_action_window"/>
-</record>
+
+
+<menuitem id="reparaciones_root" name="Taller" web_icon="ic_reparaciones, static/description/icon.png" action="reparaciones_action_window"/>
+
+
+
 
 <record id="reparaciones_action_view_order_tree" model="ir.actions.act_window.view">
     <field name="sequence" eval="1"/>
@@ -778,7 +778,12 @@
     <field name="act_window_id" ref="reparaciones.reparaciones_action_window"/>
 </record>
 
-<menuitem id="reparaciones_root" name="Taller" web_icon="reparaciones, static/description/icon.jpeg" action="reparaciones_action_window"/>
+<record id="reparaciones_action_view_order_form" model="ir.actions.act_window.view">
+    <field name="sequence" eval="3"/>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="reparaciones.reparaciones_form_view"/>
+    <field name="act_window_id" ref="reparaciones.reparaciones_action_window"/>
+</record>
 
 
 
