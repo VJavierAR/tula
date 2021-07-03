@@ -787,14 +787,6 @@
     <field name="act_window_id" ref="reparaciones.reparaciones_action_window"/>
 </record>
 
-
-<record id="Ssale_order_action_view_quotation_tree" model="ir.actions.act_window.view">
-    <field name="sequence" eval="1"/>
-    <field name="view_mode">tree</field>
-    <field name="view_id" ref="sale.view_order_tree"/>
-    <field name="act_window_id" ref="sale.action_quotations_with_onboarding"/>
-</record>
-
 <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
     <field name="name">Quotations</field>
     <field name="type">ir.actions.act_window</field>
@@ -812,6 +804,18 @@
       </p>
     </field>
 </record>
+
+
+
+
+<record id="Ssale_order_action_view_quotation_tree" model="ir.actions.act_window.view">
+    <field name="sequence" eval="1"/>
+    <field name="view_mode">tree</field>
+    <field name="view_id" ref="sale.view_order_tree"/>
+    <field name="act_window_id" ref="sale.action_quotations_with_onboarding"/>
+</record>
+
+
 
 
 
