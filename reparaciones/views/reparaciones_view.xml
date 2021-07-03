@@ -786,6 +786,13 @@
 </record>
 
 
+<record id="sale.sale_order_action_view_quotation_form" model="ir.actions.act_window.view">
+    <field name="sequence" eval="3"/>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="sale.view_order_form"/>
+    <field name="act_window_id" ref="sale.action_quotations"/>
+</record>
+
 
 
 
