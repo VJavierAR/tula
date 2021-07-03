@@ -790,7 +790,7 @@
     <field name="sequence" eval="3"/>
     <field name="view_mode">form</field>
     <field name="view_id" ref="sale.view_order_form"/>
-    <field name="act_window_id" ref="sale.action_quotations"/>
+    <field name="act_window_id" ref="sale.action_quotations_with_onboarding"/>
 </record>
 
 
