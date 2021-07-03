@@ -768,17 +768,17 @@
     <field name="sequence" eval="3"/>
     <field name="view_mode">form</field>
     <field name="view_id" ref="reparaciones.reparaciones_form_view"/>
-    <field name="act_window_id" ref="reparaciones_action_window"/>
+    <field name="act_window_id" ref="reparaciones.reparaciones_action_window"/>
 </record>
 
 <record id="reparaciones_action_view_order_tree" model="ir.actions.act_window.view">
     <field name="sequence" eval="1"/>
     <field name="view_mode">tree</field>
     <field name="view_id" ref="sale.view_order_tree"/>
-    <field name="act_window_id" ref="reparaciones_action_window"/>
+    <field name="act_window_id" ref="reparaciones.reparaciones_action_window"/>
 </record>
 
-<menuitem id="reparaciones_root" name="Taller" web_icon="reparaciones, static/description/imagen.jpg" action="reparaciones_action_window"/>
+<menuitem id="reparaciones_root" name="Taller" web_icon="reparaciones, static/description/icon.jpeg" action="reparaciones_action_window"/>
 
 
 
