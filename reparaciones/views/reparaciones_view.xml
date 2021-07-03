@@ -763,6 +763,7 @@
 <field name="res_model">sale.order</field>
 <field name="view_mode">tree,form</field>
 <field name="context">{'default_check': 1}</field>
+<field name="domain">[('check','!=',True)]</field>
 </record>
 
 
