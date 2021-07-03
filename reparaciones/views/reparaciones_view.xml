@@ -1,66 +1,5 @@
 <odoo>
     <data>
-        <!--<record model="ir.ui.view" id="sale_order_form_view_update_reparaciones">
-            <field name="name">sale.order.form.view.update.reparaciones</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.view_order_form"/>
-            <field name="arch" type="xml">
-
-                <xpath expr="//button[@name='action_confirm']" position="attributes">
-                    <attribute name="name">conf</attribute>
-                </xpath>
-
-                <xpath expr="//button[@name='action_confirm']" position="attributes">
-                    <attribute name="name">conf</attribute>
-                </xpath>
-                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_id']"
-                       position="before">
-                    <field name="tipo"/>
-                </xpath>
-
-                <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="flota"/>
-                    <field name="responsable"/>
-                </xpath>
-                <xpath expr="//form[1]/sheet[1]/notebook[1]" position="inside">
-                    <page name="studio_page_4P8Tx" string="Servicios">
-                        <group name="studio_group_4P8Tx">
-                            <field name="servicios"/>
-                        </group>
-                    </page>
-                </xpath>
-
-            </field>
-        </record>-->
-        <!--<record model="ir.ui.view" id="reparaciones_tree_view">
-            <field name="name">reparaciones.tree</field>
-            <field name="model">sale.order</field>
-            <field name="arch" type="xml">
-
-                <tree string="Reparaciones" default_order="create_date desc">
-                    <field name="name" string="Number" readonly="1" decoration-bf="1"/>
-                    <field name="create_date" string="Creation Date" widget="date" optional="show"/>
-                    <field name="flota" optional="show"/>
-                    <field name="commitment_date" widget="date" optional="hide"/>
-                    <field name="expected_date" widget="date" optional="hide"/>
-                    <field name="partner_id" readonly="1"/>
-                    <field name="user_id" widget="many2one_avatar_user" optional="show"/>
-                    <field name="activity_ids" widget="list_activity" optional="show"/>
-                    <field name="team_id" optional="hide"/>
-                    <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                    <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1"/>
-                    <field name="amount_untaxed" sum="Total Tax Excluded" widget="monetary" optional="hide"/>
-                    <field name="amount_tax" sum="Tax Total" widget="monetary" optional="hide"/>
-                    <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1"
-                           optional="show"/>
-                    <field name="state" decoration-success="state == 'sale' or state == 'done'"
-                           decoration-info="state == 'draft' or state == 'sent'" widget="badge" optional="show"/>
-                    <field name="invoice_status" optional="hide"/>
-                    <field name="message_needaction" invisible="1"/>
-                    <field name="currency_id" invisible="1"/>
-                </tree>
-            </field>
-        </record>-->
 <record id="reparaciones_form_view" model="ir.ui.view">
             <field name="name">reparaciones.order.form</field>
             <field name="model">sale.order</field>
@@ -839,22 +778,8 @@
     <field name="act_window_id" ref="reparaciones_action_window"/>
 </record>
 
-<!--<record model="ir.actions.act_window.view" id="action_reparaciones_tree">
-<field name="sequence" eval="1"/>
-<field name="view_mode">tree</field>
-<field name="view_id" ref="reparaciones_tree_view"/>
-<field name="act_window_id" ref="reparaciones_action_window"/>
-</record>-->
-
-<!--<record model="ir.actions.act_window.view" id="action_jobapplication_application_form">
-<field name="sequence" eval="2"/>
-<field name="view_mode">form</field>
-<field name="view_id" ref="reparaciones_form_view"/>
-<field name="act_window_id" ref="reparaciones_action_window"/>
-</record>-->
-
 <menuitem id="reparaciones_root" name="Taller" web_icon="reparaciones, static/description/imagen.jpg" action="reparaciones_action_window"/>
-<!--<menuitem id="reparaciones_view_sale" name="Reparaciones" parent="reparaciones_root" sequence="0"/>-->
+
 
 
 
