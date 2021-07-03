@@ -766,7 +766,7 @@
 
 
 
-<menuitem id="reparaciones_root" name="Taller" active="False" web_icon="ic_reparaciones,static/description/icon.png" action="reparaciones_action_window" sequence="5"/>
+<menuitem id="reparaciones_root" name="Taller" active="True" web_icon="ic_reparaciones,static/description/icon.png" action="reparaciones_action_window" sequence="5"/>
 
 
 
