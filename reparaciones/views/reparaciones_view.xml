@@ -819,7 +819,7 @@
 
 
 <record model="ir.actions.act_window" id="reparaciones_action_window">
-<field name="name">Reparaciones</field>
+<field name="name">Taller</field>
 <field name="res_model">sale.order</field>
 <field name="view_mode">tree,form</field>
 <field name="view_id" ref="reparaciones_form_view"/>
@@ -839,7 +839,7 @@
 <field name="act_window_id" ref="reparaciones_action_window"/>
 </record>-->
 
-<menuitem id="reparaciones_root" name="Reparaciones" web_icon="reparaciones, static/description/imagen.png" action="reparaciones_action_window"/>
+<menuitem id="reparaciones_root" name="Taller" web_icon="reparaciones, static/description/imagen.jpg" action="reparaciones_action_window"/>
 <!--<menuitem id="reparaciones_view_sale" name="Reparaciones" parent="reparaciones_root" sequence="0"/>-->
 
 
