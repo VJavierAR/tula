@@ -784,7 +784,6 @@
     <field name="view_mode">form</field>
     <field name="view_id" ref="reparaciones.reparaciones_form_view"/>
     <field name="act_window_id" ref="reparaciones.reparaciones_action_window"/>
-    <field name="context">{'default_check': True}</field>
 </record>
 
 
