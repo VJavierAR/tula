@@ -761,7 +761,7 @@
 <field name="name">Taller</field>
 <field name="res_model">sale.order</field>
 <field name="view_mode">tree,form</field>
-<!--<field name="context">{'search_default_my_quotation': 1}</field>-->
+<field name="context">{'default_check': True}</field>
 </record>
 
 

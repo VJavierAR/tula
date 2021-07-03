@@ -28,7 +28,7 @@ class Reparaciones(models.Model):
         string='Servicios',
 
     )
-
+    check=fields.Boolean(default=False)
     # @api.depends('state')
     def conf(self):
         self.action_confirm()
