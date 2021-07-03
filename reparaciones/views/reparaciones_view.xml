@@ -6,6 +6,7 @@
             <field name="arch" type="xml">
               <form string="Sales Order" class="o_sale_order">
                 <header>
+                    <field name="check" invisible="1"/>
                     <field name="authorized_transaction_ids" invisible="1"/>
                     <button name="payment_action_capture" type="object"
                             string="Capture Transaction" class="oe_highlight"
@@ -783,6 +784,7 @@
     <field name="view_mode">form</field>
     <field name="view_id" ref="reparaciones.reparaciones_form_view"/>
     <field name="act_window_id" ref="reparaciones.reparaciones_action_window"/>
+    <field name="context">{'default_check': True}</field>
 </record>
 
 
