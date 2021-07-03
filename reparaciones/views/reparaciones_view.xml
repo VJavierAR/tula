@@ -6,7 +6,7 @@
             <field name="arch" type="xml">
               <form string="Sales Order" class="o_sale_order">
                 <header>
-                    <field name="check" default="1" invisible="1"/>
+                    <field name="check"  invisible="1"/>
                     <field name="authorized_transaction_ids" invisible="1"/>
                     <button name="payment_action_capture" type="object"
                             string="Capture Transaction" class="oe_highlight"
@@ -762,7 +762,7 @@
 <field name="name">Taller</field>
 <field name="res_model">sale.order</field>
 <field name="view_mode">tree,form</field>
-<field name="context">{'default_check': True}</field>
+<field name="context">{'default_check': 1}</field>
 </record>
 
 
