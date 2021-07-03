@@ -61,8 +61,8 @@
                 </tree>
             </field>
         </record>-->
-<record id="sale.view_order_form" model="ir.ui.view">
-            <field name="name">sale.order.form</field>
+<record id="reparaciones_form_view" model="ir.ui.view">
+            <field name="name">reparaciones.order.form</field>
             <field name="model">sale.order</field>
             <field name="arch" type="xml">
               <form string="Sales Order" class="o_sale_order">
@@ -815,6 +815,45 @@
               </form>
             </field>
         </record>
+
+
+
+<record model="ir.actions.act_window" id="reparaciones_action_window">
+<field name="name">Reparaciones</field>
+<field name="res_model">sale.order</field>
+<field name="view_mode">tree,form</field>
+<field name="view_id" ref="reparaciones_form_view"/>
+</record>
+
+<!--<record model="ir.actions.act_window.view" id="action_reparaciones_tree">
+<field name="sequence" eval="1"/>
+<field name="view_mode">tree</field>
+<field name="view_id" ref="reparaciones_tree_view"/>
+<field name="act_window_id" ref="reparaciones_action_window"/>
+</record>-->
+
+<!--<record model="ir.actions.act_window.view" id="action_jobapplication_application_form">
+<field name="sequence" eval="2"/>
+<field name="view_mode">form</field>
+<field name="view_id" ref="reparaciones_form_view"/>
+<field name="act_window_id" ref="reparaciones_action_window"/>
+</record>-->
+
+<menuitem id="reparaciones_root" name="Reparaciones" web_icon="reparaciones, static/description/imagen.png" action="reparaciones_action_window"/>
+<!--<menuitem id="reparaciones_view_sale" name="Reparaciones" parent="reparaciones_root" sequence="0"/>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     </data>
 </odoo>
