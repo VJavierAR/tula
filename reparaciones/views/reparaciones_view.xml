@@ -870,14 +870,6 @@
                 <xpath expr="//group[@name='sale_shipping']" position="inside">
                     <field name="effective_date" attrs="{'invisible': [('effective_date', '=', False)]}"/>
                 </xpath>
-                <xpath expr="//field[@name='order_line']/form/group/group/field[@name='analytic_tag_ids']" position="before">
-                    <field name="route_id" groups="stock.group_adv_location" options="{'no_create': True}"/>
-                </xpath>
-                <xpath expr="//field[@name='order_line']/tree/field[@name='analytic_tag_ids']" position="after">
-                    <field name="route_id" groups="stock.group_adv_location" options="{'no_create': True}" optional="hide"/>
-                </xpath>
-
-
             </field>
           </record>
 
