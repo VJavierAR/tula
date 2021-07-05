@@ -1011,6 +1011,67 @@
 
 
 
+        <record id="sale.action_quotations" model="ir.actions.act_window">
+            <field name="name">Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,kanban,form,calendar,pivot,graph,activity</field>
+            <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="context">{'search_default_my_quotation': 1}</field>
+            <field name="domain">[('check','!=',True)]</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Create a new quotation, the first step of a new sale!
+              </p><p>
+                Once the quotation is confirmed by the customer, it becomes a sales order.<br/> You will be able to create an invoice and collect the payment.
+              </p>
+            </field>
+        </record>
+
+        <record id="sale.sale_order_action_view_quotation_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sale.view_quotation_tree"/>
+            <field name="act_window_id" ref="sale.action_quotations"/>
+        </record>
+
+        <record id="sale.sale_order_action_view_quotation_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="sale.view_sale_order_kanban"/>
+            <field name="act_window_id" ref="sale.action_quotations"/>
+        </record>
+
+        <record id="sale.sale_order_action_view_quotation_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sale.view_order_form"/>
+            <field name="act_window_id" ref="sale.action_quotations"/>
+        </record>
+
+        <record id="sale.sale_order_action_view_quotation_calendar" model="ir.actions.act_window.view">
+            <field name="sequence" eval="4"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="sale.view_sale_order_calendar"/>
+            <field name="act_window_id" ref="sale.action_quotations"/>
+        </record>
+
+        <record id="sael.sale_order_action_view_quotation_pivot" model="ir.actions.act_window.view">
+            <field name="sequence" eval="5"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="sale.view_sale_order_pivot"/>
+            <field name="act_window_id" ref="sale.action_quotations"/>
+        </record>
+
+        <record id="sale.sale_order_action_view_quotation_graph" model="ir.actions.act_window.view">
+            <field name="sequence" eval="6"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="sale.view_sale_order_graph"/>
+            <field name="act_window_id" ref="sale.action_quotations"/>
+        </record>
+
+
+
 
 
 
