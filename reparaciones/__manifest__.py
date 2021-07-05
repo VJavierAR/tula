@@ -24,7 +24,8 @@
         'base',
         'sale',
         'product',
-        'fleet'
+        'fleet',
+        'sale_stock',
     ],
 
     # always loaded
