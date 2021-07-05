@@ -26,6 +26,8 @@
         'product',
         'fleet',
         'sale_stock',
+        'sale_account_taxcloud',
+        'sale_management',
     ],
 
     # always loaded
