@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo >
 
-    <record id="ir_cron_check_assign_all" model="ir.cron">
+    <record id="ir_cron_check_facturable" model="ir.cron">
         <field name="name">Check Facturable</field>
         <field name="interval_number">30</field>
         <field name="interval_type">minutes</field>
