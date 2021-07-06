@@ -33,7 +33,10 @@ class RepairLine(models.Model):
     qty_to_deliver = fields.Float(compute='_compute_qty_to_deliver')
     is_mto = fields.Boolean(compute='_compute_is_mto')
     display_qty_widget = fields.Boolean(compute='_compute_qty_to_deliver')
-
+    customer_lead = fields.Float(
+        'Lead Time', required=True, default=0.0,
+        help="Number of days between the order confirmation and the shipping of the products to the customer")
+    
     @api.depends('product_id', 'product_uom_qty', 'qty_delivered', 'state', 'product_uom')
     def _compute_qty_to_deliver(self):
         """Compute the visibility of the inventory widget."""
