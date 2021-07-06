@@ -39,7 +39,6 @@ class Reparaciones(models.Model):
 
 
 
-
     # @api.depends('state')
     def conf(self):
         self.action_confirm()
@@ -69,3 +68,14 @@ class Reparaciones(models.Model):
                     pi.move_lines._action_assign()
                     pi.action_assign()
                     return pi.button_validate()
+    @api.onchange('operations','fees_lines')
+    def addLine(self):
+        for record in self:
+            arr=[]
+            data=record.operations.filtered(lambda x:x.type=='add')
+            for da in data:
+                arr.append({'product_id':da.product_id.id,'price_unit':da.price_unit,'tax_id':da.tax_id.mapped('id'),'product_uom_qty':da.product_uom_qty})
+            for da2 in record.fees_lines:
+                arr.append({'product_id':da.product_id.id,'price_unit':da.price_unit,'tax_id':da.tax_id.mapped('id'),'product_uom_qty':da.product_uom_qty})
+            record.order_line=[(5,0,0)]
+            record.order_line=arr
