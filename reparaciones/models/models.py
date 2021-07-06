@@ -84,8 +84,9 @@ class RepairLine(models.Model):
                 fp = partner.property_account_position_id
                 if not fp:
                     # Check automatic detection
-                    fp_id = self.env['account.fiscal.position'].get_fiscal_position(partner.id, delivery_id=self.repair_id.address_id.id)
-                    fp = self.env['account.fiscal.position'].browse(fp_id)
+                    pass
+                    #fp_id = self.env['account.fiscal.position'].get_fiscal_position(partner.id, delivery_id=self.repair_id.address_id.id)
+                    #fp = self.env['account.fiscal.position'].browse(fp_id)
                 taxes = self.product_id.taxes_id.filtered(lambda x: x.company_id == self.repair_id.company_id)
                 self.tax_id = fp.map_tax(taxes, self.product_id, partner).ids
             warning = False
@@ -149,8 +150,9 @@ class RepairFee(models.Model):
             fp = partner.property_account_position_id
             if not fp:
                 # Check automatic detection
-                fp_id = self.env['account.fiscal.position'].get_fiscal_position(partner.id, delivery_id=self.repair_id.address_id.id)
-                fp = self.env['account.fiscal.position'].browse(fp_id)
+                pass
+                #fp_id = self.env['account.fiscal.position'].get_fiscal_position(partner.id, delivery_id=self.repair_id.address_id.id)
+                #fp = self.env['account.fiscal.position'].browse(fp_id)
             taxes = self.product_id.taxes_id.filtered(lambda x: x.company_id == self.repair_id.company_id)
             self.tax_id = fp.map_tax(taxes, self.product_id, partner).ids
         if self.product_id:
