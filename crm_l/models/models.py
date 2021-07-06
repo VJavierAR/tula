@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 from odoo import models, fields, api
 from datetime import datetime, timedelta
+from django.utils import timezone
 import pytz
 import logging, ast
 
@@ -97,7 +98,8 @@ class Crm_l(models.Model):
                         Fec=da[0].replace('Fecha y Hora de Apertura de Propuestas:	','').replace('- ','')
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=6)
                         fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
-                        date_time_acto = pytz.utc.localize(fecha).astimezone(user_tz)
+                        date_time_acto = timezone.make_aware(pytz.utc.localize(fecha).astimezone(user_tz),
+                                                             timezone.get_current_timezone())
 
                     nu=list(filter(lambda v: 'Número:	' in v, d))
                     numero=nu[0].split('Número:	')[1] if(len(nu)>0) else ''
