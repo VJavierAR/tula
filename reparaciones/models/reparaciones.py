@@ -80,13 +80,13 @@ class Reparaciones(models.Model):
                 pro['price_unit']=da.price_unit
                 pro['tax_id']=da.tax_id.ids
                 pro['product_uom_qty']=da.product_uom_qty
-                self.order_line=[(0, 0,pro)]
+                record.order_line=[(0, 0,pro)]
             for da2 in record.fees_lines:
                 pro=dict()
                 pro['product_id']=da2.product_id.id
                 pro['price_unit']=da2.price_unit
                 pro['tax_id']=da2.tax_id.ids
                 pro['product_uom_qty']=da2.product_uom_qty
-                self.order_line=[(0, 0,pro)]
+                record.order_line=[(0, 0,pro)]
             for o in record.order_line:
                 o.product_id_change()
