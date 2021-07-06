@@ -29,6 +29,17 @@ class Reparaciones(models.Model):
 
     )
     check=fields.Boolean(default=False)
+
+    operations = fields.One2many(
+        'repair.product', 'repair_id', 'Parts',
+        copy=True, readonly=True, states={'draft': [('readonly', False)]})
+    fees_lines = fields.One2many(
+        'repair.service', 'repair_id', 'Operations',
+        copy=True, readonly=True, states={'draft': [('readonly', False)]})
+
+
+
+
     # @api.depends('state')
     def conf(self):
         self.action_confirm()
