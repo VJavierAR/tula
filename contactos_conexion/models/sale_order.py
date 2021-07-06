@@ -77,8 +77,12 @@ class SaleOrder(models.Model):
                         sitio_web = ""
                         if self.partner_id.website:
                             sitio_web = self.partner_id.website.split("//")[-1]
+                        tipo_cliente = 0
+                        pazo_de_pago_cliente = self.partner_id.property_payment_term_id.id
+                        if pazo_de_pago_cliente and pazo_de_pago_cliente != 1:
+                            tipo_cliente = 2
                         task = {
-                            "tipo_cliente": self.partner_id.tipo or "",
+                            "tipo_cliente": tipo_cliente or "",
                             "id_crm": self.partner_id.id or "",
                             "nombre": self.partner_id.name or "",
                             "cedula": self.partner_id.cedula or "",
