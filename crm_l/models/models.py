@@ -95,7 +95,10 @@ class Crm_l(models.Model):
                     fecha=False
                     if(len(da)>0):
                         Fec=da[0].replace('Fecha y Hora de Apertura de Propuestas:	','').replace('- ','')
-                        fecha=datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=6)
+                        # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=6)
+                        fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
+                        date_time_acto = pytz.utc.localize(
+                            datetime.strptime(fecha, '%Y-%m-%d %H:%M:%S')).astimezone(user_tz)
 
                     nu=list(filter(lambda v: 'Número:	' in v, d))
                     numero=nu[0].split('Número:	')[1] if(len(nu)>0) else ''
@@ -118,7 +121,7 @@ class Crm_l(models.Model):
                     record['correo_conexis'] = correo.replace('\t','')
                     record['website']=URL
                     record['website_conexis'] = URL
-                    record['fecha_acto']=fecha
+                    record['fecha_acto']=date_time_acto
                     record['no_referencia']=numero
                     record['no_acto'] = numero
                     record['conexis'] = True
