@@ -44,9 +44,9 @@ class Crm_l(models.Model):
                     if(len(filtered_values2)>0):
                         date_time_str = filtered_values2[0].replace('Fecha/Hora de Cierre de recepción de ofertas: ','').replace('Hora: ','')
                         date_time_obj = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S') + timedelta(hours=6)
-                        date_time_acto = pytz.utc.localize(datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')).astimezone(user_tz)
-                        _logger.info("date_time_obj: " + str(date_time_obj))
-                        _logger.info("date_time_acto: " + str(date_time_acto))
+                        # date_time_acto = pytz.utc.localize(datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')).astimezone(user_tz)
+                        # _logger.info("date_time_obj: " + str(date_time_obj))
+                        # _logger.info("date_time_acto: " + str(date_time_acto))
 
                     if(len(filtered_values2)==0):
                         date_time_obj = False
