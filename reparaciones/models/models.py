@@ -24,9 +24,16 @@ class RepairLine(models.Model):
     move_id = fields.Many2one('stock.move', 'Inventory Move',copy=False, readonly=True)
     lot_id = fields.Many2one('stock.production.lot', 'Lot/Serial')
     state = fields.Selection([('draft', 'Draft'),('confirmed', 'Confirmed'),('done', 'Done'),('cancel', 'Cancelled')], 'Status', default='draft',copy=False, readonly=True, required=True,help='The status of a repair line is set automatically to the one of the linked repair order.')
-    display_qty_widget = fields.Boolean(compute='_compute_qty_to_deliver')
+    product_type = fields.Selection(related='product_id.type')
+    virtual_available_at_date = fields.Float(compute='_compute_qty_at_date')
+    scheduled_date = fields.Datetime(compute='_compute_qty_at_date')
+    free_qty_today = fields.Float(compute='_compute_qty_at_date')
+    qty_available_today = fields.Float(compute='_compute_qty_at_date')
+    warehouse_id = fields.Many2one('stock.warehouse', compute='_compute_qty_at_date')
     qty_to_deliver = fields.Float(compute='_compute_qty_to_deliver')
-    
+    is_mto = fields.Boolean(compute='_compute_is_mto')
+    display_qty_widget = fields.Boolean(compute='_compute_qty_to_deliver')
+
     @api.depends('product_id', 'product_uom_qty', 'qty_delivered', 'state', 'product_uom')
     def _compute_qty_to_deliver(self):
         """Compute the visibility of the inventory widget."""
@@ -37,6 +44,83 @@ class RepairLine(models.Model):
             else:
                 line.display_qty_widget = False
 
+    @api.depends('product_id', 'customer_lead', 'product_uom_qty', 'product_uom', 'order_id.warehouse_id', 'order_id.commitment_date')
+    def _compute_qty_at_date(self):
+        """ Compute the quantity forecasted of product at delivery date. There are
+        two cases:
+         1. The quotation has a commitment_date, we take it as delivery date
+         2. The quotation hasn't commitment_date, we compute the estimated delivery
+            date based on lead time"""
+        qty_processed_per_product = defaultdict(lambda: 0)
+        grouped_lines = defaultdict(lambda: self.env['sale.order.line'])
+        # We first loop over the SO lines to group them by warehouse and schedule
+        # date in order to batch the read of the quantities computed field.
+        for line in self:
+            if not (line.product_id and line.display_qty_widget):
+                continue
+            line.warehouse_id = line.order_id.warehouse_id
+            if line.order_id.commitment_date:
+                date = line.order_id.commitment_date
+            else:
+                date = line._expected_date()
+            grouped_lines[(line.warehouse_id.id, date)] |= line
+
+        treated = self.browse()
+        for (warehouse, scheduled_date), lines in grouped_lines.items():
+            product_qties = lines.mapped('product_id').with_context(to_date=scheduled_date, warehouse=warehouse).read([
+                'qty_available',
+                'free_qty',
+                'virtual_available',
+            ])
+            qties_per_product = {
+                product['id']: (product['qty_available'], product['free_qty'], product['virtual_available'])
+                for product in product_qties
+            }
+            for line in lines:
+                line.scheduled_date = scheduled_date
+                qty_available_today, free_qty_today, virtual_available_at_date = qties_per_product[line.product_id.id]
+                line.qty_available_today = qty_available_today - qty_processed_per_product[line.product_id.id]
+                line.free_qty_today = free_qty_today - qty_processed_per_product[line.product_id.id]
+                line.virtual_available_at_date = virtual_available_at_date - qty_processed_per_product[line.product_id.id]
+                if line.product_uom and line.product_id.uom_id and line.product_uom != line.product_id.uom_id:
+                    line.qty_available_today = line.product_id.uom_id._compute_quantity(line.qty_available_today, line.product_uom)
+                    line.free_qty_today = line.product_id.uom_id._compute_quantity(line.free_qty_today, line.product_uom)
+                    line.virtual_available_at_date = line.product_id.uom_id._compute_quantity(line.virtual_available_at_date, line.product_uom)
+                qty_processed_per_product[line.product_id.id] += line.product_uom_qty
+            treated |= lines
+        remaining = (self - treated)
+        remaining.virtual_available_at_date = False
+        remaining.scheduled_date = False
+        remaining.free_qty_today = False
+        remaining.qty_available_today = False
+        remaining.warehouse_id = False
+
+    @api.depends('product_id', 'route_id', 'order_id.warehouse_id', 'product_id.route_ids')
+    def _compute_is_mto(self):
+        """ Verify the route of the product based on the warehouse
+            set 'is_available' at True if the product availibility in stock does
+            not need to be verified, which is the case in MTO, Cross-Dock or Drop-Shipping
+        """
+        self.is_mto = False
+        for line in self:
+            if not line.display_qty_widget:
+                continue
+            product = line.product_id
+            product_routes = line.route_id or (product.route_ids + product.categ_id.total_route_ids)
+
+            # Check MTO
+            mto_route = line.order_id.warehouse_id.mto_pull_id.route_id
+            if not mto_route:
+                try:
+                    mto_route = self.env['stock.warehouse']._find_global_route('stock.route_warehouse0_mto', _('Make To Order'))
+                except UserError:
+                    # if route MTO not found in ir_model_data, we treat the product as in MTS
+                    pass
+
+            if mto_route and mto_route in product_routes:
+                line.is_mto = True
+            else:
+                line.is_mto = False
     @api.constrains('lot_id', 'product_id')
     def constrain_lot_id(self):
         for line in self.filtered(lambda x: x.product_id.tracking != 'none' and not x.lot_id):
