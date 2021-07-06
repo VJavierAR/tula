@@ -24,178 +24,178 @@ class RepairLine(models.Model):
     move_id = fields.Many2one('stock.move', 'Inventory Move',copy=False, readonly=True)
     lot_id = fields.Many2one('stock.production.lot', 'Lot/Serial')
     state = fields.Selection([('draft', 'Draft'),('confirmed', 'Confirmed'),('done', 'Done'),('cancel', 'Cancelled')], 'Status', default='draft',copy=False, readonly=True, required=True,help='The status of a repair line is set automatically to the one of the linked repair order.')
-    product_type = fields.Selection(related='product_id.type')
-    virtual_available_at_date = fields.Float(compute='_compute_qty_at_date')
-    scheduled_date = fields.Datetime(compute='_compute_qty_at_date')
-    free_qty_today = fields.Float(compute='_compute_qty_at_date')
-    qty_available_today = fields.Float(compute='_compute_qty_at_date')
-    warehouse_id = fields.Many2one('stock.warehouse', compute='_compute_qty_at_date')
-    qty_to_deliver = fields.Float(compute='_compute_qty_to_deliver')
-    is_mto = fields.Boolean(compute='_compute_is_mto')
-    display_qty_widget = fields.Boolean(compute='_compute_qty_to_deliver')
-    qty_delivered = fields.Float('Delivered Quantity', copy=False, compute='_compute_qty_delivered', inverse='_inverse_qty_delivered', compute_sudo=True, store=True, digits='Product Unit of Measure', default=0.0)
-    customer_lead = fields.Float(
-        'Lead Time', required=True, default=0.0,
-        help="Number of days between the order confirmation and the shipping of the products to the customer")
+    # product_type = fields.Selection(related='product_id.type')
+    # virtual_available_at_date = fields.Float(compute='_compute_qty_at_date')
+    # scheduled_date = fields.Datetime(compute='_compute_qty_at_date')
+    # free_qty_today = fields.Float(compute='_compute_qty_at_date')
+    # qty_available_today = fields.Float(compute='_compute_qty_at_date')
+    # warehouse_id = fields.Many2one('stock.warehouse', compute='_compute_qty_at_date')
+    # qty_to_deliver = fields.Float(compute='_compute_qty_to_deliver')
+    # is_mto = fields.Boolean(compute='_compute_is_mto')
+    # display_qty_widget = fields.Boolean(compute='_compute_qty_to_deliver')
+    # qty_delivered = fields.Float('Delivered Quantity', copy=False, compute='_compute_qty_delivered', inverse='_inverse_qty_delivered', compute_sudo=True, store=True, digits='Product Unit of Measure', default=0.0)
+    # customer_lead = fields.Float(
+    #     'Lead Time', required=True, default=0.0,
+    #     help="Number of days between the order confirmation and the shipping of the products to the customer")
 
-    @api.depends('qty_delivered_method', 'qty_delivered_manual', 'analytic_line_ids.so_line', 'analytic_line_ids.unit_amount', 'analytic_line_ids.product_uom_id')
-    def _compute_qty_delivered(self):
-        """ This method compute the delivered quantity of the SO lines: it covers the case provide by sale module, aka
-            expense/vendor bills (sum of unit_amount of AAL), and manual case.
-            This method should be overridden to provide other way to automatically compute delivered qty. Overrides should
-            take their concerned so lines, compute and set the `qty_delivered` field, and call super with the remaining
-            records.
-        """
-        # compute for analytic lines
-        lines_by_analytic = self.filtered(lambda sol: sol.qty_delivered_method == 'analytic')
-        mapping = lines_by_analytic._get_delivered_quantity_by_analytic([('amount', '<=', 0.0)])
-        for so_line in lines_by_analytic:
-            so_line.qty_delivered = mapping.get(so_line.id or so_line._origin.id, 0.0)
-        # compute for manual lines
-        for line in self:
-            if line.qty_delivered_method == 'manual':
-                line.qty_delivered = line.qty_delivered_manual or 0.0
+    # @api.depends('qty_delivered_method', 'qty_delivered_manual', 'analytic_line_ids.so_line', 'analytic_line_ids.unit_amount', 'analytic_line_ids.product_uom_id')
+    # def _compute_qty_delivered(self):
+    #     """ This method compute the delivered quantity of the SO lines: it covers the case provide by sale module, aka
+    #         expense/vendor bills (sum of unit_amount of AAL), and manual case.
+    #         This method should be overridden to provide other way to automatically compute delivered qty. Overrides should
+    #         take their concerned so lines, compute and set the `qty_delivered` field, and call super with the remaining
+    #         records.
+    #     """
+    #     # compute for analytic lines
+    #     lines_by_analytic = self.filtered(lambda sol: sol.qty_delivered_method == 'analytic')
+    #     mapping = lines_by_analytic._get_delivered_quantity_by_analytic([('amount', '<=', 0.0)])
+    #     for so_line in lines_by_analytic:
+    #         so_line.qty_delivered = mapping.get(so_line.id or so_line._origin.id, 0.0)
+    #     # compute for manual lines
+    #     for line in self:
+    #         if line.qty_delivered_method == 'manual':
+    #             line.qty_delivered = line.qty_delivered_manual or 0.0
 
 
 
-    def _get_delivered_quantity_by_analytic(self, additional_domain):
-        """ Compute and write the delivered quantity of current SO lines, based on their related
-            analytic lines.
-            :param additional_domain: domain to restrict AAL to include in computation (required since timesheet is an AAL with a project ...)
-        """
-        result = {}
+    # def _get_delivered_quantity_by_analytic(self, additional_domain):
+    #     """ Compute and write the delivered quantity of current SO lines, based on their related
+    #         analytic lines.
+    #         :param additional_domain: domain to restrict AAL to include in computation (required since timesheet is an AAL with a project ...)
+    #     """
+    #     result = {}
 
-        # avoid recomputation if no SO lines concerned
-        if not self:
-            return result
+    #     # avoid recomputation if no SO lines concerned
+    #     if not self:
+    #         return result
 
-        # group analytic lines by product uom and so line
-        domain = expression.AND([[('so_line', 'in', self.ids)], additional_domain])
-        data = self.env['account.analytic.line'].read_group(
-            domain,
-            ['so_line', 'unit_amount', 'product_uom_id'], ['product_uom_id', 'so_line'], lazy=False
-        )
+    #     # group analytic lines by product uom and so line
+    #     domain = expression.AND([[('so_line', 'in', self.ids)], additional_domain])
+    #     data = self.env['account.analytic.line'].read_group(
+    #         domain,
+    #         ['so_line', 'unit_amount', 'product_uom_id'], ['product_uom_id', 'so_line'], lazy=False
+    #     )
 
-        # convert uom and sum all unit_amount of analytic lines to get the delivered qty of SO lines
-        # browse so lines and product uoms here to make them share the same prefetch
-        lines = self.browse([item['so_line'][0] for item in data])
-        lines_map = {line.id: line for line in lines}
-        product_uom_ids = [item['product_uom_id'][0] for item in data if item['product_uom_id']]
-        product_uom_map = {uom.id: uom for uom in self.env['uom.uom'].browse(product_uom_ids)}
-        for item in data:
-            if not item['product_uom_id']:
-                continue
-            so_line_id = item['so_line'][0]
-            so_line = lines_map[so_line_id]
-            result.setdefault(so_line_id, 0.0)
-            uom = product_uom_map.get(item['product_uom_id'][0])
-            if so_line.product_uom.category_id == uom.category_id:
-                qty = uom._compute_quantity(item['unit_amount'], so_line.product_uom, rounding_method='HALF-UP')
-            else:
-                qty = item['unit_amount']
-            result[so_line_id] += qty
+    #     # convert uom and sum all unit_amount of analytic lines to get the delivered qty of SO lines
+    #     # browse so lines and product uoms here to make them share the same prefetch
+    #     lines = self.browse([item['so_line'][0] for item in data])
+    #     lines_map = {line.id: line for line in lines}
+    #     product_uom_ids = [item['product_uom_id'][0] for item in data if item['product_uom_id']]
+    #     product_uom_map = {uom.id: uom for uom in self.env['uom.uom'].browse(product_uom_ids)}
+    #     for item in data:
+    #         if not item['product_uom_id']:
+    #             continue
+    #         so_line_id = item['so_line'][0]
+    #         so_line = lines_map[so_line_id]
+    #         result.setdefault(so_line_id, 0.0)
+    #         uom = product_uom_map.get(item['product_uom_id'][0])
+    #         if so_line.product_uom.category_id == uom.category_id:
+    #             qty = uom._compute_quantity(item['unit_amount'], so_line.product_uom, rounding_method='HALF-UP')
+    #         else:
+    #             qty = item['unit_amount']
+    #         result[so_line_id] += qty
 
-        return result
+    #     return result
 
-    @api.onchange('qty_delivered')
-    def _inverse_qty_delivered(self):
-        """ When writing on qty_delivered, if the value should be modify manually (`qty_delivered_method` = 'manual' only),
-            then we put the value in `qty_delivered_manual`. Otherwise, `qty_delivered_manual` should be False since the
-            delivered qty is automatically compute by other mecanisms.
-        """
-        for line in self:
-            if line.qty_delivered_method == 'manual':
-                line.qty_delivered_manual = line.qty_delivered
-            else:
-                line.qty_delivered_manual = 0.0
+    # @api.onchange('qty_delivered')
+    # def _inverse_qty_delivered(self):
+    #     """ When writing on qty_delivered, if the value should be modify manually (`qty_delivered_method` = 'manual' only),
+    #         then we put the value in `qty_delivered_manual`. Otherwise, `qty_delivered_manual` should be False since the
+    #         delivered qty is automatically compute by other mecanisms.
+    #     """
+    #     for line in self:
+    #         if line.qty_delivered_method == 'manual':
+    #             line.qty_delivered_manual = line.qty_delivered
+    #         else:
+    #             line.qty_delivered_manual = 0.0
 
-    @api.depends('product_id', 'product_uom_qty', 'qty_delivered', 'state', 'product_uom')
-    def _compute_qty_to_deliver(self):
-        """Compute the visibility of the inventory widget."""
-        for line in self:
-            line.qty_to_deliver = line.product_uom_qty - line.qty_delivered
-            if line.state == 'draft' and line.product_type == 'product' and line.product_uom and line.qty_to_deliver > 0:
-                line.display_qty_widget = True
-            else:
-                line.display_qty_widget = False
+    # @api.depends('product_id', 'product_uom_qty', 'qty_delivered', 'state', 'product_uom')
+    # def _compute_qty_to_deliver(self):
+    #     """Compute the visibility of the inventory widget."""
+    #     for line in self:
+    #         line.qty_to_deliver = line.product_uom_qty - line.qty_delivered
+    #         if line.state == 'draft' and line.product_type == 'product' and line.product_uom and line.qty_to_deliver > 0:
+    #             line.display_qty_widget = True
+    #         else:
+    #             line.display_qty_widget = False
 
-    @api.depends('product_id', 'customer_lead', 'product_uom_qty', 'product_uom', 'repair_id.warehouse_id', 'repair_id.commitment_date')
-    def _compute_qty_at_date(self):
-        """ Compute the quantity forecasted of product at delivery date. There are
-        two cases:
-         1. The quotation has a commitment_date, we take it as delivery date
-         2. The quotation hasn't commitment_date, we compute the estimated delivery
-            date based on lead time"""
-        qty_processed_per_product = defaultdict(lambda: 0)
-        grouped_lines = defaultdict(lambda: self.env['sale.order.line'])
-        # We first loop over the SO lines to group them by warehouse and schedule
-        # date in order to batch the read of the quantities computed field.
-        for line in self:
-            if not (line.product_id and line.display_qty_widget):
-                continue
-            line.warehouse_id = line.repair_id.warehouse_id
-            if line.repair_id.commitment_date:
-                date = line.repair_id.commitment_date
-            else:
-                date = line._expected_date()
-            grouped_lines[(line.warehouse_id.id, date)] |= line
+    # @api.depends('product_id', 'customer_lead', 'product_uom_qty', 'product_uom', 'repair_id.warehouse_id', 'repair_id.commitment_date')
+    # def _compute_qty_at_date(self):
+    #     """ Compute the quantity forecasted of product at delivery date. There are
+    #     two cases:
+    #      1. The quotation has a commitment_date, we take it as delivery date
+    #      2. The quotation hasn't commitment_date, we compute the estimated delivery
+    #         date based on lead time"""
+    #     qty_processed_per_product = defaultdict(lambda: 0)
+    #     grouped_lines = defaultdict(lambda: self.env['sale.order.line'])
+    #     # We first loop over the SO lines to group them by warehouse and schedule
+    #     # date in order to batch the read of the quantities computed field.
+    #     for line in self:
+    #         if not (line.product_id and line.display_qty_widget):
+    #             continue
+    #         line.warehouse_id = line.repair_id.warehouse_id
+    #         if line.repair_id.commitment_date:
+    #             date = line.repair_id.commitment_date
+    #         else:
+    #             date = line._expected_date()
+    #         grouped_lines[(line.warehouse_id.id, date)] |= line
 
-        treated = self.browse()
-        for (warehouse, scheduled_date), lines in grouped_lines.items():
-            product_qties = lines.mapped('product_id').with_context(to_date=scheduled_date, warehouse=warehouse).read([
-                'qty_available',
-                'free_qty',
-                'virtual_available',
-            ])
-            qties_per_product = {
-                product['id']: (product['qty_available'], product['free_qty'], product['virtual_available'])
-                for product in product_qties
-            }
-            for line in lines:
-                line.scheduled_date = scheduled_date
-                qty_available_today, free_qty_today, virtual_available_at_date = qties_per_product[line.product_id.id]
-                line.qty_available_today = qty_available_today - qty_processed_per_product[line.product_id.id]
-                line.free_qty_today = free_qty_today - qty_processed_per_product[line.product_id.id]
-                line.virtual_available_at_date = virtual_available_at_date - qty_processed_per_product[line.product_id.id]
-                if line.product_uom and line.product_id.uom_id and line.product_uom != line.product_id.uom_id:
-                    line.qty_available_today = line.product_id.uom_id._compute_quantity(line.qty_available_today, line.product_uom)
-                    line.free_qty_today = line.product_id.uom_id._compute_quantity(line.free_qty_today, line.product_uom)
-                    line.virtual_available_at_date = line.product_id.uom_id._compute_quantity(line.virtual_available_at_date, line.product_uom)
-                qty_processed_per_product[line.product_id.id] += line.product_uom_qty
-            treated |= lines
-        remaining = (self - treated)
-        remaining.virtual_available_at_date = False
-        remaining.scheduled_date = False
-        remaining.free_qty_today = False
-        remaining.qty_available_today = False
-        remaining.warehouse_id = False
+    #     treated = self.browse()
+    #     for (warehouse, scheduled_date), lines in grouped_lines.items():
+    #         product_qties = lines.mapped('product_id').with_context(to_date=scheduled_date, warehouse=warehouse).read([
+    #             'qty_available',
+    #             'free_qty',
+    #             'virtual_available',
+    #         ])
+    #         qties_per_product = {
+    #             product['id']: (product['qty_available'], product['free_qty'], product['virtual_available'])
+    #             for product in product_qties
+    #         }
+    #         for line in lines:
+    #             line.scheduled_date = scheduled_date
+    #             qty_available_today, free_qty_today, virtual_available_at_date = qties_per_product[line.product_id.id]
+    #             line.qty_available_today = qty_available_today - qty_processed_per_product[line.product_id.id]
+    #             line.free_qty_today = free_qty_today - qty_processed_per_product[line.product_id.id]
+    #             line.virtual_available_at_date = virtual_available_at_date - qty_processed_per_product[line.product_id.id]
+    #             if line.product_uom and line.product_id.uom_id and line.product_uom != line.product_id.uom_id:
+    #                 line.qty_available_today = line.product_id.uom_id._compute_quantity(line.qty_available_today, line.product_uom)
+    #                 line.free_qty_today = line.product_id.uom_id._compute_quantity(line.free_qty_today, line.product_uom)
+    #                 line.virtual_available_at_date = line.product_id.uom_id._compute_quantity(line.virtual_available_at_date, line.product_uom)
+    #             qty_processed_per_product[line.product_id.id] += line.product_uom_qty
+    #         treated |= lines
+    #     remaining = (self - treated)
+    #     remaining.virtual_available_at_date = False
+    #     remaining.scheduled_date = False
+    #     remaining.free_qty_today = False
+    #     remaining.qty_available_today = False
+    #     remaining.warehouse_id = False
 
-    @api.depends('product_id', 'repair_id.warehouse_id', 'product_id.route_ids')
-    def _compute_is_mto(self):
-        """ Verify the route of the product based on the warehouse
-            set 'is_available' at True if the product availibility in stock does
-            not need to be verified, which is the case in MTO, Cross-Dock or Drop-Shipping
-        """
-        self.is_mto = False
-        for line in self:
-            if not line.display_qty_widget:
-                continue
-            product = line.product_id
-            #product_routes = line.route_id or (product.route_ids + product.categ_id.total_route_ids)
+    # @api.depends('product_id', 'repair_id.warehouse_id', 'product_id.route_ids')
+    # def _compute_is_mto(self):
+    #     """ Verify the route of the product based on the warehouse
+    #         set 'is_available' at True if the product availibility in stock does
+    #         not need to be verified, which is the case in MTO, Cross-Dock or Drop-Shipping
+    #     """
+    #     self.is_mto = False
+    #     for line in self:
+    #         if not line.display_qty_widget:
+    #             continue
+    #         product = line.product_id
+    #         #product_routes = line.route_id or (product.route_ids + product.categ_id.total_route_ids)
 
-            # Check MTO
-            #mto_route = line.repair_id.warehouse_id.mto_pull_id.route_id
-            #if not mto_route:
-                #try:
-                #    mto_route = self.env['stock.warehouse']._find_global_route('stock.route_warehouse0_mto', _('Make To Order'))
-                #except UserError:
-                    # if route MTO not found in ir_model_data, we treat the product as in MTS
-             #       pass
+    #         # Check MTO
+    #         #mto_route = line.repair_id.warehouse_id.mto_pull_id.route_id
+    #         #if not mto_route:
+    #             #try:
+    #             #    mto_route = self.env['stock.warehouse']._find_global_route('stock.route_warehouse0_mto', _('Make To Order'))
+    #             #except UserError:
+    #                 # if route MTO not found in ir_model_data, we treat the product as in MTS
+    #          #       pass
 
-            #if mto_route and mto_route in product_routes:
-            #    line.is_mto = True
-            #else:
-            line.is_mto = False
+    #         #if mto_route and mto_route in product_routes:
+    #         #    line.is_mto = True
+    #         #else:
+    #         line.is_mto = False
     @api.constrains('lot_id', 'product_id')
     def constrain_lot_id(self):
         for line in self.filtered(lambda x: x.product_id.tracking != 'none' and not x.lot_id):

@@ -786,7 +786,7 @@
                                 <field name="location_dest_id" options="{'no_create': True}" groups="stock.group_stock_multi_locations" optional="show"/>
 
                           <!--widget-->      
-                    <field name="product_type" invisible="1"/>
+                    <!--<field name="product_type" invisible="1"/>
                     <field name="virtual_available_at_date" invisible="1"/>
                     <field name="qty_available_today" invisible="1"/>
                     <field name="free_qty_today" invisible="1"/>
@@ -796,7 +796,7 @@
                     <field name="is_mto" invisible="1"/>
                     <field name="display_qty_widget" invisible="1"/>
                     <field name="scheduled_date" invisible="1"/>
-                    <widget name="qty_at_date_widget" width="20px"/>
+                    <widget name="qty_at_date_widget" width="20px"/>-->
 <!--widget-->      
 
 
