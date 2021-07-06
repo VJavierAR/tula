@@ -89,12 +89,12 @@ class RepairLine(models.Model):
                 taxes = self.product_id.taxes_id.filtered(lambda x: x.company_id == self.repair_id.company_id)
                 self.tax_id = fp.map_tax(taxes, self.product_id, partner).ids
             warning = False
-            if not pricelist:
-                warning = {
-                    'title': _('No pricelist found.'),
-                    'message':
-                        _('You have to select a pricelist in the Repair form !\n Please set one before choosing a product.')}
-                return {'warning': warning}
+            #if not pricelist:
+            #    warning = {
+            #        'title': _('No pricelist found.'),
+            #        'message':
+            #           _('You have to select a pricelist in the Repair form !\n Please set one before choosing a product.')}
+            #    return {'warning': warning}
             else:
                 self._onchange_product_uom()
 
@@ -104,12 +104,12 @@ class RepairLine(models.Model):
         pricelist = self.repair_id.pricelist_id
         if pricelist and self.product_id and self.type != 'remove':
             price = pricelist.get_product_price(self.product_id, self.product_uom_qty, partner, uom_id=self.product_uom.id)
-            if price is False:
-                warning = {
-                    'title': _('No valid pricelist line found.'),
-                    'message':
-                        _("Couldn't find a pricelist line matching this product and quantity.\nYou have to change either the product, the quantity or the pricelist.")}
-                return {'warning': warning}
+            #if price is False:
+            #    warning = {
+            #        'title': _('No valid pricelist line found.'),
+            #        'message':
+            #            _("Couldn't find a pricelist line matching this product and quantity.\nYou have to change either the product, the quantity or the pricelist.")}
+             #   return {'warning': warning}
             else:
                 self.price_unit = price
 
@@ -166,12 +166,12 @@ class RepairFee(models.Model):
                     self.name += '\n' + self.product_id.description_sale
 
         warning = False
-        if not pricelist:
-            warning = {
-                'title': _('No pricelist found.'),
-                'message':
-                    _('You have to select a pricelist in the Repair form !\n Please set one before choosing a product.')}
-            return {'warning': warning}
+        #if not pricelist:
+        #    warning = {
+        #        'title': _('No pricelist found.'),
+        #        'message':
+        #            _('You have to select a pricelist in the Repair form !\n Please set one before choosing a product.')}
+        #    return {'warning': warning}
         else:
             self._onchange_product_uom()
 
@@ -181,12 +181,12 @@ class RepairFee(models.Model):
         pricelist = self.repair_id.pricelist_id
         if pricelist and self.product_id:
             price = pricelist.get_product_price(self.product_id, self.product_uom_qty, partner, uom_id=self.product_uom.id)
-            if price is False:
-                warning = {
-                    'title': _('No valid pricelist line found.'),
-                    'message':
-                        _("Couldn't find a pricelist line matching this product and quantity.\nYou have to change either the product, the quantity or the pricelist.")}
-                return {'warning': warning}
+            #if price is False:
+                #warning = {
+                #    'title': _('No valid pricelist line found.'),
+                 #   'message':
+                 #       _("Couldn't find a pricelist line matching this product and quantity.\nYou have to change either the product, the quantity or the pricelist.")}
+                #return {'warning': warning}
             else:
                 self.price_unit = price
 
