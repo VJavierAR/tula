@@ -30,7 +30,8 @@ class RepairLine(models.Model):
         for line in self.filtered(lambda x: x.product_id.tracking != 'none' and not x.lot_id):
             raise ValidationError(_("Serial number is required for operation line with product '%s'") % (line.product_id.name))
 
-    @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id', 'repair_id.invoice_method')
+    #@api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id', 'repair_id.invoice_method')
+    @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id')
     def _compute_price_subtotal(self):
         for line in self:
             taxes = line.tax_id.compute_all(line.price_unit, line.repair_id.pricelist_id.currency_id, line.product_uom_qty, line.product_id, line.repair_id.partner_id)
