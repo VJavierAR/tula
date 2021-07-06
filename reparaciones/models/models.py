@@ -33,9 +33,81 @@ class RepairLine(models.Model):
     qty_to_deliver = fields.Float(compute='_compute_qty_to_deliver')
     is_mto = fields.Boolean(compute='_compute_is_mto')
     display_qty_widget = fields.Boolean(compute='_compute_qty_to_deliver')
+    qty_delivered = fields.Float('Delivered Quantity', copy=False, compute='_compute_qty_delivered', inverse='_inverse_qty_delivered', compute_sudo=True, store=True, digits='Product Unit of Measure', default=0.0)
     customer_lead = fields.Float(
         'Lead Time', required=True, default=0.0,
         help="Number of days between the order confirmation and the shipping of the products to the customer")
+
+    @api.depends('qty_delivered_method', 'qty_delivered_manual', 'analytic_line_ids.so_line', 'analytic_line_ids.unit_amount', 'analytic_line_ids.product_uom_id')
+    def _compute_qty_delivered(self):
+        """ This method compute the delivered quantity of the SO lines: it covers the case provide by sale module, aka
+            expense/vendor bills (sum of unit_amount of AAL), and manual case.
+            This method should be overridden to provide other way to automatically compute delivered qty. Overrides should
+            take their concerned so lines, compute and set the `qty_delivered` field, and call super with the remaining
+            records.
+        """
+        # compute for analytic lines
+        lines_by_analytic = self.filtered(lambda sol: sol.qty_delivered_method == 'analytic')
+        mapping = lines_by_analytic._get_delivered_quantity_by_analytic([('amount', '<=', 0.0)])
+        for so_line in lines_by_analytic:
+            so_line.qty_delivered = mapping.get(so_line.id or so_line._origin.id, 0.0)
+        # compute for manual lines
+        for line in self:
+            if line.qty_delivered_method == 'manual':
+                line.qty_delivered = line.qty_delivered_manual or 0.0
+
+
+
+    def _get_delivered_quantity_by_analytic(self, additional_domain):
+        """ Compute and write the delivered quantity of current SO lines, based on their related
+            analytic lines.
+            :param additional_domain: domain to restrict AAL to include in computation (required since timesheet is an AAL with a project ...)
+        """
+        result = {}
+
+        # avoid recomputation if no SO lines concerned
+        if not self:
+            return result
+
+        # group analytic lines by product uom and so line
+        domain = expression.AND([[('so_line', 'in', self.ids)], additional_domain])
+        data = self.env['account.analytic.line'].read_group(
+            domain,
+            ['so_line', 'unit_amount', 'product_uom_id'], ['product_uom_id', 'so_line'], lazy=False
+        )
+
+        # convert uom and sum all unit_amount of analytic lines to get the delivered qty of SO lines
+        # browse so lines and product uoms here to make them share the same prefetch
+        lines = self.browse([item['so_line'][0] for item in data])
+        lines_map = {line.id: line for line in lines}
+        product_uom_ids = [item['product_uom_id'][0] for item in data if item['product_uom_id']]
+        product_uom_map = {uom.id: uom for uom in self.env['uom.uom'].browse(product_uom_ids)}
+        for item in data:
+            if not item['product_uom_id']:
+                continue
+            so_line_id = item['so_line'][0]
+            so_line = lines_map[so_line_id]
+            result.setdefault(so_line_id, 0.0)
+            uom = product_uom_map.get(item['product_uom_id'][0])
+            if so_line.product_uom.category_id == uom.category_id:
+                qty = uom._compute_quantity(item['unit_amount'], so_line.product_uom, rounding_method='HALF-UP')
+            else:
+                qty = item['unit_amount']
+            result[so_line_id] += qty
+
+        return result
+
+    @api.onchange('qty_delivered')
+    def _inverse_qty_delivered(self):
+        """ When writing on qty_delivered, if the value should be modify manually (`qty_delivered_method` = 'manual' only),
+            then we put the value in `qty_delivered_manual`. Otherwise, `qty_delivered_manual` should be False since the
+            delivered qty is automatically compute by other mecanisms.
+        """
+        for line in self:
+            if line.qty_delivered_method == 'manual':
+                line.qty_delivered_manual = line.qty_delivered
+            else:
+                line.qty_delivered_manual = 0.0
 
     @api.depends('product_id', 'product_uom_qty', 'qty_delivered', 'state', 'product_uom')
     def _compute_qty_to_deliver(self):
