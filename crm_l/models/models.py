@@ -1,7 +1,6 @@
 #-*- coding: utf-8 -*-
 from odoo import models, fields, api
 from datetime import datetime, timedelta
-from django.utils import timezone
 import pytz
 import logging, ast
 
@@ -95,11 +94,10 @@ class Crm_l(models.Model):
                     da=list(filter(lambda v: 'Fecha y Hora de Apertura de Propuestas:	' in v, d))
                     fecha=False
                     if(len(da)>0):
-                        Fec=da[0].replace('Fecha y Hora de Apertura de Propuestas:	','').replace('- ','')
-                        # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=6)
-                        fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
-                        date_time_acto = timezone.make_aware(pytz.utc.localize(fecha).astimezone(user_tz),
-                                                             timezone.get_current_timezone())
+                        Fec = da[0].replace('Fecha y Hora de Apertura de Propuestas:	','').replace('- ','')
+                        fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=5)
+                        # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
+                        # date_time_acto = pytz.utc.localize(fecha).astimezone(user_tz)
 
                     nu=list(filter(lambda v: 'Número:	' in v, d))
                     numero=nu[0].split('Número:	')[1] if(len(nu)>0) else ''
@@ -122,7 +120,7 @@ class Crm_l(models.Model):
                     record['correo_conexis'] = correo.replace('\t','')
                     record['website']=URL
                     record['website_conexis'] = URL
-                    record['fecha_acto']=date_time_acto
+                    record['fecha_acto'] = fecha
                     record['no_referencia']=numero
                     record['no_acto'] = numero
                     record['conexis'] = True
