@@ -170,7 +170,7 @@ class RepairLine(models.Model):
         remaining.qty_available_today = False
         remaining.warehouse_id = False
 
-    @api.depends('product_id', 'route_id', 'repair_id.warehouse_id', 'product_id.route_ids')
+    @api.depends('product_id', 'repair_id.warehouse_id', 'product_id.route_ids')
     def _compute_is_mto(self):
         """ Verify the route of the product based on the warehouse
             set 'is_available' at True if the product availibility in stock does
@@ -181,21 +181,21 @@ class RepairLine(models.Model):
             if not line.display_qty_widget:
                 continue
             product = line.product_id
-            product_routes = line.route_id or (product.route_ids + product.categ_id.total_route_ids)
+            #product_routes = line.route_id or (product.route_ids + product.categ_id.total_route_ids)
 
             # Check MTO
-            mto_route = line.repair_id.warehouse_id.mto_pull_id.route_id
-            if not mto_route:
-                try:
-                    mto_route = self.env['stock.warehouse']._find_global_route('stock.route_warehouse0_mto', _('Make To Order'))
-                except UserError:
+            #mto_route = line.repair_id.warehouse_id.mto_pull_id.route_id
+            #if not mto_route:
+                #try:
+                #    mto_route = self.env['stock.warehouse']._find_global_route('stock.route_warehouse0_mto', _('Make To Order'))
+                #except UserError:
                     # if route MTO not found in ir_model_data, we treat the product as in MTS
-                    pass
+             #       pass
 
-            if mto_route and mto_route in product_routes:
-                line.is_mto = True
-            else:
-                line.is_mto = False
+            #if mto_route and mto_route in product_routes:
+            #    line.is_mto = True
+            #else:
+            line.is_mto = False
     @api.constrains('lot_id', 'product_id')
     def constrain_lot_id(self):
         for line in self.filtered(lambda x: x.product_id.tracking != 'none' and not x.lot_id):
