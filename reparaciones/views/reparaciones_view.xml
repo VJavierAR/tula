@@ -494,11 +494,11 @@
 
                         <!--Order lines-->
 
-                        
 
 
 
-                        <page string="Servicios" name="servicios">
+
+                        <page string="Servicios" name="servicios" invisible='1'>
                             <field
                                 name="servicios"
                                 widget="section_and_note_one2many"
@@ -958,7 +958,7 @@
             <field name="inherit_id" ref="reparaciones.reparaciones_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//page/field[@name='order_line']/.." position="after">
-                <page string="Optional Products" name="optional_products" attrs="{'invisible': [('state', 'not in', ['draft', 'sent'])]}">
+                <page invisible='1' string="Optional Products" name="optional_products" attrs="{'invisible': [('state', 'not in', ['draft', 'sent'])]}">
                     <field name="sale_order_option_ids" mode="tree,form,kanban">
                         <form string="Optional Products">
                             <group>
