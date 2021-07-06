@@ -25,7 +25,8 @@ class RepairLine(models.Model):
     lot_id = fields.Many2one('stock.production.lot', 'Lot/Serial')
     state = fields.Selection([('draft', 'Draft'),('confirmed', 'Confirmed'),('done', 'Done'),('cancel', 'Cancelled')], 'Status', default='draft',copy=False, readonly=True, required=True,help='The status of a repair line is set automatically to the one of the linked repair order.')
     display_qty_widget = fields.Boolean(compute='_compute_qty_to_deliver')
-
+    qty_to_deliver = fields.Float(compute='_compute_qty_to_deliver')
+    
     @api.depends('product_id', 'product_uom_qty', 'qty_delivered', 'state', 'product_uom')
     def _compute_qty_to_deliver(self):
         """Compute the visibility of the inventory widget."""
@@ -35,7 +36,7 @@ class RepairLine(models.Model):
                 line.display_qty_widget = True
             else:
                 line.display_qty_widget = False
-                
+
     @api.constrains('lot_id', 'product_id')
     def constrain_lot_id(self):
         for line in self.filtered(lambda x: x.product_id.tracking != 'none' and not x.lot_id):
