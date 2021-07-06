@@ -95,8 +95,8 @@ class RepairLine(models.Model):
             #        'message':
             #           _('You have to select a pricelist in the Repair form !\n Please set one before choosing a product.')}
             #    return {'warning': warning}
-            else:
-                self._onchange_product_uom()
+            #else:
+            self._onchange_product_uom()
 
     @api.onchange('product_uom')
     def _onchange_product_uom(self):
@@ -110,8 +110,8 @@ class RepairLine(models.Model):
             #        'message':
             #            _("Couldn't find a pricelist line matching this product and quantity.\nYou have to change either the product, the quantity or the pricelist.")}
              #   return {'warning': warning}
-            else:
-                self.price_unit = price
+            #else:
+            self.price_unit = price
 
 
 class RepairFee(models.Model):
@@ -172,8 +172,8 @@ class RepairFee(models.Model):
         #        'message':
         #            _('You have to select a pricelist in the Repair form !\n Please set one before choosing a product.')}
         #    return {'warning': warning}
-        else:
-            self._onchange_product_uom()
+        #else:
+        self._onchange_product_uom()
 
     @api.onchange('product_uom')
     def _onchange_product_uom(self):
@@ -187,6 +187,6 @@ class RepairFee(models.Model):
                  #   'message':
                  #       _("Couldn't find a pricelist line matching this product and quantity.\nYou have to change either the product, the quantity or the pricelist.")}
                 #return {'warning': warning}
-            else:
-                self.price_unit = price
+            #else:
+            self.price_unit = price
 
