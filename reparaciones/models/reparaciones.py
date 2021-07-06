@@ -71,21 +71,22 @@ class Reparaciones(models.Model):
 
     @api.onchange('operations','fees_lines')
     def addLine(self):
-        self.order_line=[(5,0,0)]
-        data=self.operations.filtered(lambda x:x.type=='add')
-        for da in data:
-            pro=dict()
-            pro['product_id']=da.product_id.id
-            pro['price_unit']=da.price_unit
-            pro['tax_id']=da.tax_id.ids
-            pro['product_uom_qty']=da.product_uom_qty
-            self.order_line=[(0, 0,pro)]
-        for da2 in self.fees_lines:
-            pro=dict()
-            pro['product_id']=da2.product_id.id
-            pro['price_unit']=da2.price_unit
-            pro['tax_id']=da2.tax_id.ids
-            pro['product_uom_qty']=da2.product_uom_qty
-            self.order_line=[(0, 0,pro)]
-        for o in self.order_line:
-            o.product_id_change()
+        for record in self:
+            record.order_line=[(5,0,0)]
+            data=record.operations.filtered(lambda x:x.type=='add')
+            for da in data:
+                pro=dict()
+                pro['product_id']=da.product_id.id
+                pro['price_unit']=da.price_unit
+                pro['tax_id']=da.tax_id.ids
+                pro['product_uom_qty']=da.product_uom_qty
+                self.order_line=[(0, 0,pro)]
+            for da2 in record.fees_lines:
+                pro=dict()
+                pro['product_id']=da2.product_id.id
+                pro['price_unit']=da2.price_unit
+                pro['tax_id']=da2.tax_id.ids
+                pro['product_uom_qty']=da2.product_uom_qty
+                self.order_line=[(0, 0,pro)]
+            for o in record.order_line:
+                o.product_id_change()
