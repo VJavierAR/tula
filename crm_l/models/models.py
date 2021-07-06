@@ -7,6 +7,7 @@ import logging, ast
 _logger = logging.getLogger(__name__)
 months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
 
+# licitaciones@promed-sa.com / contraseña: jaxpa
 class Crm_l(models.Model):
     _inherit = 'crm.lead'
     no_referencia = fields.Char()
@@ -22,6 +23,7 @@ class Crm_l(models.Model):
     @api.onchange('description')
     def test(self):
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        _logger.info("user_tz: " + str(user_tz))
 
         for record in self:
             if record.description:
@@ -40,8 +42,11 @@ class Crm_l(models.Model):
                     #listo3
                     filtered_values2 = list(filter(lambda v: 'Fecha/Hora de Cierre de recepción de ofertas: ' in v, d))
                     if(len(filtered_values2)>0):
-                        date_time_str =filtered_values2[0].replace('Fecha/Hora de Cierre de recepción de ofertas: ','').replace('Hora: ','')
+                        date_time_str = filtered_values2[0].replace('Fecha/Hora de Cierre de recepción de ofertas: ','').replace('Hora: ','')
                         date_time_obj = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S') + timedelta(hours=6)
+                        date_time_acto = pytz.utc.localize(datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')).astimezone(user_tz)
+                        _logger.info("date_time_obj: " + str(date_time_obj))
+                        _logger.info("date_time_acto: " + str(date_time_acto))
 
                     if(len(filtered_values2)==0):
                         date_time_obj = False
