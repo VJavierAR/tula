@@ -7,7 +7,7 @@ _logger = logging.getLogger(__name__)
 class fact(models.Model):
     _inherit = 'sale.order.line'
     cantidad_facturable=fields.Float('Cantidad Facturable',compute='f')
-    facturable=fields.Float('Facturable'default=0)
+    facturable=fields.Float('Facturable',default=0)
     arreglo=fields.Char(default='[]')
     check=fields.Boolean()
 
