@@ -46,6 +46,15 @@ model.cron_quincena()
 </field>
 </record>
 
+    <record model="utm.source" id="conexis_id">
+      <field name="name">CONNEXIS</field>
+      <field name="user_id" ref="base.user_root" />
+    </record>
+
+    <record model="utm.source" id="panama_id">
+      <field name="name">PANAMA COMPRA</field>
+      <field name="user_id" ref="base.user_root" />
+    </record>
 
     </data>
 </odoo>

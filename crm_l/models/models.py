@@ -81,11 +81,12 @@ class Crm_l(models.Model):
 
                     record['no_referencia']=p
                     record['no_acto'] = p
-                    record['mobile']=telefono
+                    #record['mobile']=telefono
                     record['contacto']=Nombre
                     record['telefono']=telefono
                     record['website_conexis'] = e
                     record['conexis']=True
+                    record['source_id']=self.env.ref('conexis_id').id
                 if('PANAMA COMPRA' in record.description):
                     na=list(filter(lambda v: 'Nombre del Acto:' in v, d))
                     name=na[0].split('Nombre del Acto:')[1] if(len(na)>0) else ''
@@ -114,7 +115,7 @@ class Crm_l(models.Model):
                     record['phone']=telefono.replace('\t','')
                     record['telefono']=telefono.replace('\t','')
                     record['contacto']=nombre.replace('\t','')
-                    record['mobile']=telefono.replace('\t','')
+                    #record['mobile']=telefono.replace('\t','')
                     record['email_from']=correo.replace('\t','')
                     record['email_cc']=correo.replace('\t','')
                     record['correo_conexis'] = correo.replace('\t','')
@@ -123,6 +124,7 @@ class Crm_l(models.Model):
                     record['fecha_acto'] = fecha
                     record['no_referencia']=numero
                     record['no_acto'] = numero
+                    record['source_id']=self.env.ref('panama_id').id
                     record['conexis'] = True
                     
     @api.onchange('partner_id')
