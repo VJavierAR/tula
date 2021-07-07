@@ -232,7 +232,7 @@
                 </xpath>
                 -->
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
-                    <field name="x_value1_id" string="Estado del producto" optional="hide" readonly="1"/>
+                    <field name="x_value1_id" string="Estado del producto" optional="hide" readonly="1" force_save="1"/>
                 </xpath>
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
                     <field name="existencias" readonly="1" force_save="1"  invisible="1" />
@@ -278,6 +278,8 @@
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="bloqueo_limite_credito" invisible="1" readonly="1" force_save="1" />
                     <field name="bloqueo_limite_descuento" invisible="1" readonly="1" force_save="1" />
+                    <field name="paso_validacion_descuento" invisible="1" readonly="1" force_save="1" />
+                    <field name="paso_validacion_limite" invisible="1" readonly="1" force_save="1" />
                     <field name="urgencia" />
                     <field name="limite_credito_actual" />
                     <field name="limite_credito_conglomerado_actual" />

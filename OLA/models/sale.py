@@ -21,6 +21,16 @@ class sale(models.Model):
 		default=False,
 		store=True
 	)
+	paso_validacion_descuento = fields.Boolean(
+		string='Pasa validacion descuento',
+		default=False,
+		store=True
+	)
+	paso_validacion_limite = fields.Boolean(
+		string='Pasa validacion limite',
+		default=False,
+		store=True
+	)
 	mensaje_limite_de_credito = fields.Text(
 		string='Mensaje al exceder límite de crédito',
 		store=True
@@ -129,9 +139,17 @@ class sale(models.Model):
 			self.env['mail.mail'].create(mail).send()
 			genera_alerta = True
 
+		# Si usuario esta entre los que validan excediendo descuentos y una linea excede el desuento del usuario
+		if self.env.user.id in U and True in check:
+			self.paso_validacion_descuento = True
+
 		# Si usuario no esta entre los que valida excediendo limites de credito y excede limite de credito
 		if self.env.user.id not in ids_grupo_limites and self.bloqueo_limite_credito:
 			genera_alerta = True
+
+		# Si usuario esta entre los que valida excediendo limites de credito y excede limite de credito
+		if self.env.user.id in ids_grupo_limites and self.bloqueo_limite_credito:
+			self.paso_validacion_limite = True
 
 		# Comprobando si cambia el estado
 		if True in check:
@@ -141,7 +159,7 @@ class sale(models.Model):
 		if self.bloqueo_limite_credito and True in check:
 			nuevo_estado = 'auto todo'
 
-		if genera_alerta:
+		if genera_alerta and (not self.paso_validacion_descuento or not self.paso_validacion_limite):
 			self.write({
 				'state': nuevo_estado,
 				'bloqueo_limite_descuento': bloquear

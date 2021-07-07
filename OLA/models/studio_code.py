@@ -285,6 +285,7 @@ class SaleOrderLine(models.Model):
 
 	x_value1_id = fields.Char(
 		string='valor1',
+		store=True
 		#compute="_compute_x_value1_id"
 	)
 
