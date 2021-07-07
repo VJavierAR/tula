@@ -31,9 +31,9 @@ class fact(models.Model):
                     if(record.product_id.virtual_available>0 and valor==0):
                         t=record.product_id.virtual_available-record.product_uom_qty
                         valor=record.product_uom_qty if(t>=0) else record.product_id.virtual_available
-                    if(record.product_id.virtual_available<0 and valor==0):
-                        if(record.product_uom_qty--record.product_id.virtual_available>=0):
-                            valor=record.product_uom_qty--record.product_id.virtual_available
+                    #if(record.product_id.virtual_available<0 and valor==0):
+                    #    if(record.product_uom_qty--record.product_id.virtual_available>=0):
+                    #        valor=record.product_uom_qty--record.product_id.virtual_available
                 else:
                     if(record.product_id.virtual_available>0):
                         t=record.product_id.virtual_available-record.product_uom_qty
