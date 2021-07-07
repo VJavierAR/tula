@@ -5,14 +5,9 @@ _logger = logging.getLogger(__name__)
 
 
 class Users(models.Model):
-    _inherit = 'res.users'
+    _inherit = 'crm.team'
 
-    codigo_vendedor = fields.Char(
-        string="Código de vendedor",
-        store=True
-    )
-
-    meta_facturacion = fields.Float(
+    invoiced_target = fields.Float(
         string="Meta de facturación",
         store=False,
         compute='_compute_meta_facturacion'
@@ -22,11 +17,11 @@ class Users(models.Model):
         for rec in self:
             totales = self.env['sale.order'].search(
                 [
-                    ('user_id', '=', rec._origin.id),
+                    ('team_id', '=', rec._origin.id),
                     ('state', '=', 'sale')
                 ]
             ).mapped('amount_total')
             suma_totales = 0
             for total in totales:
                 suma_totales += total
-            rec.meta_facturacion = suma_totales
+            rec.invoiced_target = suma_totales
