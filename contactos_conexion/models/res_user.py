@@ -31,10 +31,10 @@ class Users(models.Model):
 
     meta_facturacion = fields.Float(
         string="Meta de facturación",
-        store=True,
+        store=False,
         # default=0
-        default=lambda self: self.get_meta_facturacion()
-        # compute='_compute_meta_facturacion'
+        # default=lambda self: self.get_meta_facturacion()
+        compute='_compute_meta_facturacion'
     )
 
     # @api.depends()
