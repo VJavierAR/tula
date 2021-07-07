@@ -28,6 +28,8 @@ class Users(models.Model):
                     ('state', '=', 'sale')
                 ]
             ).mapped('amount_total')
+            _logger.info("id: " + str(rec.id))
+            _logger.info("totales: " + str(totales))
             suma_totales = 0
             for total in totales:
                 suma_totales += total
