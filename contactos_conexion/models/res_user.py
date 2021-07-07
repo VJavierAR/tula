@@ -12,6 +12,7 @@ class Users(models.Model):
         store=True
     )
 
+    @api.model
     def get_meta_facturacion(self):
         # for rec in self:
         totales = self.env['sale.order'].search(
@@ -32,11 +33,11 @@ class Users(models.Model):
         string="Meta de facturación",
         store=True,
         # default=0
-        # default=lambda self: self.get_meta_facturacion()
-        compute='_compute_meta_facturacion'
+        default=lambda self: self.get_meta_facturacion()
+        # compute='_compute_meta_facturacion'
     )
 
-    @api.depends()
+    # @api.depends()
     def _compute_meta_facturacion(self):
         _logger.info("entreeeeeeeeeeeeeeeeeeeeeee: ")
         for rec in self:
