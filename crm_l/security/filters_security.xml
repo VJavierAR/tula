@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <openerp>
+        <data noupdate="0">
+
+            <record model="ir.module.category" id="module_category_crm_licitacion">
+                <field name="name">CRM Licitación</field>
+                <field name="description">Permisos de licitación en CRM</field>
+            </record>
+    <record model="res.groups" id="group_crm_licitacion">
+        <field name="name">Licitación</field>
+        <field name="category_id" ref="module_category_crm_licitacion"/>
+    </record>
+        </data>
+</openerp>
