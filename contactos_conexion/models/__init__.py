@@ -2,7 +2,7 @@
 
 from . import models
 from . import crm_lead
-from . import crm_team
+#from . import crm_team
 from . import res_user
 from . import res_company
 from . import sale_order
