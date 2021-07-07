@@ -36,7 +36,7 @@ class Users(models.Model):
         compute='_compute_meta_facturacion'
     )
 
-    @api.depends('codigo_vendedor')
+    @api.depends('')
     def _compute_meta_facturacion(self):
         _logger.info("entreeeeeeeeeeeeeeeeeeeeeee: ")
         for rec in self:
@@ -46,7 +46,7 @@ class Users(models.Model):
                     ('state', '=', 'sale')
                 ]
             ).mapped('amount_total')
-            _logger.info("id: " + str(rec.id))
+            _logger.info("id: " + str(rec._origin.id))
             _logger.info("totales: " + str(totales))
             suma_totales = 0
             for total in totales:
