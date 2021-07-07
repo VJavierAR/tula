@@ -4,7 +4,7 @@ import logging, ast
 _logger = logging.getLogger(__name__)
 
 
-class Users(models.Model):
+class CRM_TEAM(models.Model):
     _inherit = 'crm.team'
 
     invoiced_target = fields.Float(
