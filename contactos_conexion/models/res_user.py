@@ -14,6 +14,20 @@ class Users(models.Model):
     meta_facturacion = fields.Float(
         string="Meta de facturación",
         store=True,
-        default=0
+        # default=0
+        default=lambda self: self.get_meta_facturacion()
     )
 
+    @api.model
+    def get_meta_facturacion(self):
+        totales = self.env['sale.order'].search(
+            [
+                ('user_id', '=', self.id),
+                ('state', '=', 'sale')
+            ]
+        ).mapped('amount_total')
+        suma_totales = 0
+        for total in totales:
+            suma_totales += total
+
+        return suma_totales
