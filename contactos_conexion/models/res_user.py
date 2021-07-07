@@ -42,7 +42,7 @@ class Users(models.Model):
         for rec in self:
             totales = self.env['sale.order'].search(
                 [
-                    ('user_id', '=', rec.id),
+                    ('user_id', '=', rec._origin.id),
                     ('state', '=', 'sale')
                 ]
             ).mapped('amount_total')
@@ -51,7 +51,7 @@ class Users(models.Model):
             suma_totales = 0
             for total in totales:
                 suma_totales += total
-            rec.meta_faturacion = suma_totales
+            rec.meta_facturacion = suma_totales
 
 
 
