@@ -39,6 +39,8 @@
                 <field name="name">Fecha de cierre previsto e ingresos estimados</field>
                 <field name="category_id" ref="module_category_filters_crm"/>
             </record>
-
+    <record model="res.groups" id="crm_licitacion">
+        <field name="name">Licitación</field>
+    </record>
         </data>
 </openerp>

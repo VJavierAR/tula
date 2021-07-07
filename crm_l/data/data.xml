@@ -54,10 +54,5 @@ model.cron_quincena()
       <field name="name">PANAMA COMPRA</field>
     </record>
 
-
-    <record model="res.groups" id="crm_licitacion">
-        <field name="name">Licitación</field>
-    </record>
-
     </data>
 </odoo>
