@@ -15,19 +15,21 @@ class Users(models.Model):
         string="Meta de facturación",
         store=True,
         # default=0
-        default=lambda self: self.get_meta_facturacion()
+        # default=lambda self: self.get_meta_facturacion()
+        compute='_compute_meta_facturacion'
     )
 
-    @api.model
-    def get_meta_facturacion(self):
-        totales = self.env['sale.order'].search(
-            [
-                ('user_id', '=', self.id),
-                ('state', '=', 'sale')
-            ]
-        ).mapped('amount_total')
-        suma_totales = 0
-        for total in totales:
-            suma_totales += total
-
-        return suma_totales
+    #@api.model
+    def _compute_meta_facturacion(self):
+        for rec in self:
+            totales = self.env['sale.order'].search(
+                [
+                    ('user_id', '=', rec.id),
+                    ('state', '=', 'sale')
+                ]
+            ).mapped('amount_total')
+            suma_totales = 0
+            for total in totales:
+                suma_totales += total
+            rec.meta_faturacion = suma_totales
+            # return suma_totales
