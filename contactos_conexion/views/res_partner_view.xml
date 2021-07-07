@@ -11,6 +11,7 @@
                     <field name="cedula" force_save="1" attrs="{'invisible': [('is_company', '=', True)] }"/>
                     <field name="digito_verificador" force_save="1" attrs="{'invisible': [('is_company', '=', False)] }"/>
                     <field name="no_cliente" force_save="1"/>
+                    <field name="meta_facturacion" />
                 </xpath>
 
                 <xpath expr="//field[@name='category_id']" position="after">

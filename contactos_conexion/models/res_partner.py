@@ -51,3 +51,21 @@ class Partner(models.Model):
         default=0,
         store=True
     )
+    meta_facturacion = fields.Float(
+        string="Meta de facturación",
+        store=False,
+        compute='_compute_meta_facturacion'
+    )
+
+    def _compute_meta_facturacion(self):
+        for rec in self:
+            totales = self.env['sale.order'].search(
+                [
+                    ('partner_id', '=', rec._origin.id),
+                    ('state', '=', 'sale')
+                ]
+            ).mapped('amount_total')
+            suma_totales = 0
+            for total in totales:
+                suma_totales += total
+            rec.meta_facturacion = suma_totales
