@@ -36,7 +36,7 @@ class Users(models.Model):
         compute='_compute_meta_facturacion'
     )
 
-    @api.depends('')
+    @api.depends()
     def _compute_meta_facturacion(self):
         _logger.info("entreeeeeeeeeeeeeeeeeeeeeee: ")
         for rec in self:
