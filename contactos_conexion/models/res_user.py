@@ -11,27 +11,30 @@ class Users(models.Model):
         string="Código de vendedor",
         store=True
     )
+
+    def get_meta_facturacion(self):
+        # for rec in self:
+        totales = self.env['sale.order'].search(
+            [
+                ('user_id', '=', self.id),
+                ('state', '=', 'sale')
+            ]
+        ).mapped('amount_total')
+        _logger.info("id: " + str(self.id))
+        _logger.info("totales: " + str(totales))
+        suma_totales = 0
+        for total in totales:
+            suma_totales += total
+        # rec.meta_faturacion = suma_totales
+        return suma_totales
+
     meta_facturacion = fields.Float(
         string="Meta de facturación",
         store=True,
         # default=0
-        # default=lambda self: self.get_meta_facturacion()
-        compute='_compute_meta_facturacion'
+        default=lambda self: self.get_meta_facturacion()
+        # compute='_compute_meta_facturacion'
     )
 
-    #@api.model
-    def _compute_meta_facturacion(self):
-        for rec in self:
-            totales = self.env['sale.order'].search(
-                [
-                    ('user_id', '=', rec.id),
-                    ('state', '=', 'sale')
-                ]
-            ).mapped('amount_total')
-            _logger.info("id: " + str(rec.id))
-            _logger.info("totales: " + str(totales))
-            suma_totales = 0
-            for total in totales:
-                suma_totales += total
-            rec.meta_faturacion = suma_totales
-            # return suma_totales
+
+
