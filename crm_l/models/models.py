@@ -96,7 +96,7 @@ class Crm_l(models.Model):
                     fecha=False
                     if(len(da)>0):
                         Fec = da[0].replace('Fecha y Hora de Apertura de Propuestas:	','').replace('- ','')
-                        fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=5)
+                        fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=6)
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
                         # date_time_acto = pytz.utc.localize(fecha).astimezone(user_tz)
 
