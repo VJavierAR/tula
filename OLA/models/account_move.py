@@ -141,4 +141,9 @@ class ACCOUNT_PAYMENT(models.Model):
         default=lambda self: self.get_num_deposito()
     )
 
+    numeroUnico = fields.Boolean(
+        string="Número único",
+        related="partner_id.numeroUnico"
+    )
+
 

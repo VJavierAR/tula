@@ -8,7 +8,8 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='communication']" position="after">
-                    <field name="numeroDeposito" attrs="{'readonly': [('partner_id.numeroUnico', '=', True)]}" />
+                    <field name="numeroDeposito" attrs="{'readonly': [('numeroUnico', '=', True)]}" />
+                    <field name="numeroUnico" />
                 </xpath>
 
             </field>
