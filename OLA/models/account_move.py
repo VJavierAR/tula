@@ -138,8 +138,15 @@ class ACCOUNT_PAYMENT(models.Model):
     numeroDeposito = fields.Char(
         string="Número de deposito",
         store=True,
-        default=lambda self: self.get_num_deposito()
+        # default=lambda self: self.get_num_deposito()
+        compute="_compute_numeroDeposito"
     )
+
+    @api.depends('partner_id.numeroUnico', 'partner_id.numeroDeposito')
+    def _compute_numeroDeposito(self):
+        for rec in self:
+            if rec.partner_id.numeroUnico:
+                rec.numeroDeposito = rec.partner_id.numeroDeposito
 
     numeroUnico = fields.Boolean(
         string="Número único",
