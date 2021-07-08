@@ -147,4 +147,16 @@ class ACCOUNT_PAYMENT(models.Model):
         related="partner_id.numeroUnico"
     )
 
+    def confirmar(self):
+        if not self.numeroUnico and self.numeroDeposito:
+            existe = self.env['account.payment'].search(
+                [
+                    ('numeroDeposito', '=', self.numeroDeposito),
+                    ('partner_id', '=', self.partner_id.id)
+                ]
+            )
+            if existe:
+                return
+        self.post()
+
 
