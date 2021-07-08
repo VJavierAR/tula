@@ -133,7 +133,7 @@ class ACCOUNT_PAYMENT(models.Model):
 
     def get_num_deposito(self):
         if self.partner_id.numeroUnico:
-            self.numeroDeposito = self.partner_id.numeroDeposito
+            return self.partner_id.numeroDeposito
 
     numeroDeposito = fields.Char(
         string="Número de deposito",
@@ -143,6 +143,7 @@ class ACCOUNT_PAYMENT(models.Model):
 
     numeroUnico = fields.Boolean(
         string="Número único",
+        store=True,
         related="partner_id.numeroUnico"
     )
 
