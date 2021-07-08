@@ -91,15 +91,21 @@ class Reparaciones(models.Model):
             vals['partner_shipping_id'] = vals.setdefault('partner_shipping_id', addr['delivery'])
             vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
         result = super(Reparaciones, self).create(vals)
-        op=result.mapped('operations.id')
+        op=result.operations
         _logger.info(op)
         if('operations' in vals):
+            i=0
             for r in vals['operations']:
                 r[2]['order_id']=result.id
                 sl=self.env['sale.order.line'].create(r[2])
+                result.operations[0].write({'sale_line_id':sl.id})
+                i=i+1
         if('fees_lines' in vals):
+            i=0
             for r in vals['fees_lines']:
                 r[2]['order_id']=result.id
                 del r[2]['tecnico']
                 sl=self.env['sale.order.line'].create(r[2])
+                result.fees_lines[0].write({'sale_line_id':sl.id})
+                i=i+1
         return result

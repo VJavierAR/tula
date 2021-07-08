@@ -19,6 +19,7 @@ class RepairLine(models.Model):
     product_uom = fields.Many2one('uom.uom', 'Product Unit of Measure',required=True, domain="[('category_id', '=', product_uom_category_id)]")
     product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id')
     invoice_line_id = fields.Many2one('account.move.line', 'Invoice Line',copy=False, readonly=True)
+    sale_line_id=fields.Many2one('sale.order.line')
     #location_id = fields.Many2one('stock.location', 'Source Location',index=True, required=True)
     #location_dest_id = fields.Many2one('stock.location', 'Dest. Location',index=True, required=True)
     move_id = fields.Many2one('stock.move', 'Inventory Move',copy=False, readonly=True)
@@ -301,7 +302,8 @@ class RepairFee(models.Model):
     invoice_line_id = fields.Many2one('account.move.line', 'Invoice Line', copy=False, readonly=True)
     invoiced = fields.Boolean('Invoiced', copy=False, readonly=True)
     tecnico=fields.Many2one(comodel_name='res.users',string='Tecnico')
-
+    sale_line_id=fields.Many2one('sale.order.line')
+    
     @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id')
     def _compute_price_subtotal(self):
         for fee in self:
