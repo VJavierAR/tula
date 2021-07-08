@@ -69,24 +69,48 @@ class Reparaciones(models.Model):
                     pi.action_assign()
                     return pi.button_validate()
 
-    @api.onchange('operations','fees_lines')
-    def addLine(self):
-        for record in self:
-            record.order_line=[(5,0,0)]
-            data=record.operations.filtered(lambda x:x.type=='add')
-            for da in data:
-                pro=dict()
-                pro['product_id']=da.product_id.id
-                pro['price_unit']=da.price_unit
-                pro['tax_id']=da.tax_id.ids
-                pro['product_uom_qty']=da.product_uom_qty
-                record.order_line=[(0, 0,pro)]
-            for da2 in record.fees_lines:
-                pro=dict()
-                pro['product_id']=da2.product_id.id
-                pro['price_unit']=da2.price_unit
-                pro['tax_id']=da2.tax_id.ids
-                pro['product_uom_qty']=da2.product_uom_qty
-                record.order_line=[(0, 0,pro)]
-            for o in record.order_line:
-                o.product_id_change()
+    # @api.onchange('operations','fees_lines')
+    # def addLine(self):
+    #     for record in self:
+    #         record.order_line=[(5,0,0)]
+    #         data=record.operations.filtered(lambda x:x.type=='add')
+    #         for da in data:
+    #             pro=dict()
+    #             pro['product_id']=da.product_id.id
+    #             pro['price_unit']=da.price_unit
+    #             pro['tax_id']=da.tax_id.ids
+    #             pro['product_uom_qty']=da.product_uom_qty
+    #             record.order_line=[(0, 0,pro)]
+    #         for da2 in record.fees_lines:
+    #             pro=dict()
+    #             pro['product_id']=da2.product_id.id
+    #             pro['price_unit']=da2.price_unit
+    #             pro['tax_id']=da2.tax_id.ids
+    #             pro['product_uom_qty']=da2.product_uom_qty
+    #             record.order_line=[(0, 0,pro)]
+    #         for o in record.order_line:
+    #             o.product_id_change()
+    @api.model
+    def create(self, vals):
+        if vals.get('name', _('New')) == _('New'):
+            seq_date = None
+            if 'date_order' in vals:
+                seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals['date_order']))
+            if 'company_id' in vals:
+                vals['name'] = self.env['ir.sequence'].with_context(force_company=vals['company_id']).next_by_code(
+                    'sale.order', sequence_date=seq_date) or _('New')
+            else:
+                vals['name'] = self.env['ir.sequence'].next_by_code('sale.order', sequence_date=seq_date) or _('New')
+
+        # Makes sure partner_invoice_id', 'partner_shipping_id' and 'pricelist_id' are defined
+        if any(f not in vals for f in ['partner_invoice_id', 'partner_shipping_id', 'pricelist_id']):
+            partner = self.env['res.partner'].browse(vals.get('partner_id'))
+            addr = partner.address_get(['delivery', 'invoice'])
+            vals['partner_invoice_id'] = vals.setdefault('partner_invoice_id', addr['invoice'])
+            vals['partner_shipping_id'] = vals.setdefault('partner_shipping_id', addr['delivery'])
+            vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
+        result = super(SaleOrder, self).create(vals)
+        for r in result.operations:
+            s=self.env['sale.order.line'].create({})
+            s|=r
+        return result
