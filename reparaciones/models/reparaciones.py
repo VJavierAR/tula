@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api
+from odoo import models, fields, api,_
 from datetime import datetime, timedelta
 import pytz
 import logging, ast
@@ -46,7 +46,7 @@ class Reparaciones(models.Model):
         if self.state == 'sale':
             for pi in self.picking_ids.filtered(lambda x:x.state not in ['done','cancel']):
                 pi.do_unreserve()
-            for linea in self.order_line.filtered(lambda x:x.tipo=='remove'):
+            for linea in self.order_line.filtered(lambda x:x.type=='remove'):
                 p=self.env['stock.move'].search([['sale_line_id','=',linea.id],['state','not in',['done','cancel','assigned']]])
                 p._action_cancel()
                 p.unlink()
@@ -109,8 +109,15 @@ class Reparaciones(models.Model):
             vals['partner_invoice_id'] = vals.setdefault('partner_invoice_id', addr['invoice'])
             vals['partner_shipping_id'] = vals.setdefault('partner_shipping_id', addr['delivery'])
             vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
-        result = super(SaleOrder, self).create(vals)
-        for r in result.operations:
-            s=self.env['sale.order.line'].create({})
-            s|=r
+        result = super(Reparaciones, self).create(vals)
+        op=result.mapped('operations.id')
+        _logger.info(op)
+        if('operations' in vals):
+            for r in vals['operations']:
+                r[2]['order_id']=result.id
+                sl=self.env['sale.order.line'].create(r[2])
+        if('fees_lines' in vals):
+            for r in vals['fees_lines']:
+                r[2]['order_id']=result.id
+                sl=self.env['sale.order.line'].create(r[2])
         return result
