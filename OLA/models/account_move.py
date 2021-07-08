@@ -137,7 +137,7 @@ class ACCOUNT_PAYMENT(models.Model):
 
     numeroDeposito = fields.Char(
         string="Número de deposito",
-        store=False,
+        store=True,
         default=lambda self: self.get_num_deposito()
     )
 
