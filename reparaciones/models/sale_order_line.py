@@ -12,7 +12,7 @@ class SOL(models.Model):
     _inherit = 'sale.order.line'
     _description = 'reparaciones.sale.order.line'
 
-    tipo = fields.Selection(
+    type = fields.Selection(
         selection=[('add', 'Añadir'),('remove','Eliminar')],
         string='Tipo',
         default='add'
