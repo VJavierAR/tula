@@ -58,7 +58,8 @@ class CierreLineas(models.Model):
     
     @api.depends('name')
     def compute_monto_final(self):
-        self.monto_final=self.monto_calculado+self.monto_acumulado
+        for record in self:
+            record.monto_final=record.monto_calculado+record.monto_acumulado
 
 class CierreLineas2(models.Model):
     _name = "cierre.caja.lineas2"
