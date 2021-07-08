@@ -12,31 +12,12 @@ class Reparaciones(models.Model):
     _inherit = 'sale.order'
     _description = 'reparaciones.reparaciones'
 
-    flota = fields.Many2one(
-        comodel_name='fleet.vehicle',
-        string='Vehículo'
-    )
-
-    responsable = fields.Many2one(
-        comodel_name='res.users',
-        string='Responsable'
-    )
-
-    servicios = fields.One2many(
-        comodel_name='sale.order.line',
-        inverse_name='order_id',
-        string='Servicios',
-
-    )
+    flota = fields.Many2one(comodel_name='fleet.vehicle',string='Vehículo')
+    responsable = fields.Many2one(comodel_name='res.users',string='Responsable')
+    servicios = fields.One2many(comodel_name='sale.order.line',inverse_name='order_id',string='Servicios',)
     check=fields.Boolean(default=False)
-
-    operations = fields.One2many(
-        'repair.product', 'repair_id', 'Parts',
-        copy=True, readonly=True, states={'draft': [('readonly', False)]})
-    fees_lines = fields.One2many(
-        'repair.service', 'repair_id', 'Operations',
-        copy=True, readonly=True, states={'draft': [('readonly', False)]})
-
+    operations = fields.One2many('repair.product', 'repair_id', 'Parts', states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True, auto_join=True)
+    fees_lines = fields.One2many('repair.service', 'repair_id', 'Operations', states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True, auto_join=True)
 
 
     # @api.depends('state')
