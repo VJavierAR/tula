@@ -15,7 +15,7 @@
                     <!--<field name="limite_credito_sucursal" attrs="{'invisible': [('type', '!=', 'delivery')]}" />-->
                     <field name="correoCobranza"/>
                     <field name="correoFac"/>
-                    <field name="numeroDeposito"  />
+                    <field name="numeroDeposito" attrs="{'invisible': [('numeroUnico', '=', False)]}" />
                     <field name="numeroUnico"  />
                 </xpath>
                 <xpath expr="//field[@name='property_payment_term_id']" position="attributes">

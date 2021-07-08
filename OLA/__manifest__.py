@@ -24,6 +24,7 @@
         'views/sale_order_view.xml',
         'views/product_codigos_view.xml',
         'views/sale_order_line_view.xml',
+        'views/account_payment.xml',
         'wizard/stock_picking_wizard_view.xml',
         'wizard/sale_order_wizard_view.xml',
         'views/templates.xml',

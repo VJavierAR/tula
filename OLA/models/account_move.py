@@ -126,3 +126,19 @@ class AccountMove(models.Model):
                             'message': message
                         }
                     }
+
+
+class ACCOUNT_PAYMENT(models.Model):
+    _inherit = 'account.payment'
+
+    def get_num_deposito(self):
+        if self.partner_id.numeroUnico:
+            self.numeroDeposito = self.partner_id.numeroDeposito
+
+    numeroDeposito = fields.Char(
+        string="Número de deposito",
+        store=False,
+        default=lambda self: self.get_num_deposito()
+    )
+
+
