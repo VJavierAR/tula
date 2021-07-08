@@ -97,7 +97,8 @@ class Reparaciones(models.Model):
             i=0
             for r in vals['operations']:
                 r[2]['order_id']=result.id
-                del r[2]['sale_line_id']
+                if('sale_line_id' in r[2]):
+                    del r[2]['sale_line_id']
                 sl=self.env['sale.order.line'].create(r[2])
                 result.operations[0].write({'sale_line_id':sl.id})
                 i=i+1
@@ -105,8 +106,10 @@ class Reparaciones(models.Model):
             i=0
             for r in vals['fees_lines']:
                 r[2]['order_id']=result.id
-                del r[2]['tecnico']
-                del r[2]['sale_line_id']
+                if('tecnico' in r[2]):
+                    del r[2]['tecnico']
+                if('sale_line_id' in r[2]):
+                    del r[2]['sale_line_id']
                 sl=self.env['sale.order.line'].create(r[2])
                 result.fees_lines[0].write({'sale_line_id':sl.id})
                 i=i+1
