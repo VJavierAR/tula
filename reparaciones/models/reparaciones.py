@@ -100,5 +100,6 @@ class Reparaciones(models.Model):
         if('fees_lines' in vals):
             for r in vals['fees_lines']:
                 r[2]['order_id']=result.id
+                del r[2]['tecnico']
                 sl=self.env['sale.order.line'].create(r[2])
         return result
