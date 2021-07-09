@@ -285,9 +285,9 @@ class RepairLine(models.Model):
              #   return {'warning': warning}
             #else:
             self.price_unit = price
-            
+
     def unlink(self):
-        if(self.order_id.state in ['sale','done'])
+        if(self.order_id.state in ['sale','done']):
             raise UserError(_('You can not remove an order line once the sales order is confirmed.\nYou should rather set the quantity to 0.'))
         else:
             self.sale_line_id.unlink()
@@ -358,7 +358,7 @@ class RepairFee(models.Model):
         self._onchange_product_uom()
 
     def unlink(self):
-        if(self.order_id.state in ['sale','done'])
+        if(self.order_id.state in ['sale','done']):
             raise UserError(_('You can not remove an order line once the sales order is confirmed.\nYou should rather set the quantity to 0.'))
         else:
             self.sale_line_id.unlink()
