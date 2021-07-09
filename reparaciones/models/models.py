@@ -3,7 +3,7 @@
 from odoo import models, fields, api,_
 from odoo.exceptions import AccessError, UserError, ValidationError
 from collections import defaultdict
-
+import datetime
 class RepairLine(models.Model):
     _name = 'repair.product'
     _description = 'Repair Product'
@@ -140,7 +140,7 @@ class RepairLine(models.Model):
             if line.order_id.commitment_date:
                 date = line.order_id.commitment_date
             else:
-                date = line._expected_date()
+                date = datetime.datetime.now()
             grouped_lines[(line.warehouse_id.id, date)] |= line
 
         treated = self.browse()
