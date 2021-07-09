@@ -310,21 +310,21 @@ class RepairFee(models.Model):
     tecnico=fields.Many2one(comodel_name='res.users',string='Tecnico')
     sale_line_id=fields.Many2one('sale.order.line')
     
-    @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id')
+    @api.depends('price_unit', 'order_id', 'product_uom_qty', 'product_id')
     def _compute_price_subtotal(self):
         for fee in self:
             taxes = fee.tax_id.compute_all(fee.price_unit, fee.repair_id.pricelist_id.currency_id, fee.product_uom_qty, fee.product_id, fee.repair_id.partner_id)
             fee.price_subtotal = taxes['total_excluded']
 
-    @api.onchange('repair_id', 'product_id', 'product_uom_qty')
+    @api.onchange('order_id', 'product_id', 'product_uom_qty')
     def onchange_product_id(self):
         """ On change of product it sets product quantity, tax account, name,
         uom of product, unit price and price subtotal. """
         if not self.product_id:
             return
 
-        partner = self.repair_id.partner_id
-        pricelist = self.repair_id.pricelist_id
+        partner = self.order_id.partner_id
+        pricelist = self.order_id.pricelist_id
 
         if partner and self.product_id:
             fp = partner.property_account_position_id
@@ -333,7 +333,7 @@ class RepairFee(models.Model):
                 pass
                 #fp_id = self.env['account.fiscal.position'].get_fiscal_position(partner.id, delivery_id=self.repair_id.address_id.id)
                 #fp = self.env['account.fiscal.position'].browse(fp_id)
-            taxes = self.product_id.taxes_id.filtered(lambda x: x.company_id == self.repair_id.company_id)
+            taxes = self.product_id.taxes_id.filtered(lambda x: x.company_id == self.order_id.company_id)
             self.tax_id = fp.map_tax(taxes, self.product_id, partner).ids
         if self.product_id:
             if partner:
@@ -366,8 +366,8 @@ class RepairFee(models.Model):
 
     @api.onchange('product_uom')
     def _onchange_product_uom(self):
-        partner = self.repair_id.partner_id
-        pricelist = self.repair_id.pricelist_id
+        partner = self.order_id.partner_id
+        pricelist = self.order_id.pricelist_id
         if pricelist and self.product_id:
             price = pricelist.get_product_price(self.product_id, self.product_uom_qty, partner, uom_id=self.product_uom.id)
             #if price is False:
