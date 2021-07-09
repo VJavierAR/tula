@@ -203,13 +203,13 @@ class RepairLine(models.Model):
             raise ValidationError(_("Serial number is required for operation line with product '%s'") % (line.product_id.name))
 
     #@api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id', 'repair_id.invoice_method')
-    @api.depends('price_unit', 'repair_id', 'product_uom_qty', 'product_id')
+    @api.depends('price_unit', 'order_id', 'product_uom_qty', 'product_id')
     def _compute_price_subtotal(self):
         for line in self:
-            taxes = line.tax_id.compute_all(line.price_unit, line.repair_id.pricelist_id.currency_id, line.product_uom_qty, line.product_id, line.repair_id.partner_id)
+            taxes = line.tax_id.compute_all(line.price_unit, line.order_id.pricelist_id.currency_id, line.product_uom_qty, line.product_id, line.order_id.partner_id)
             line.price_subtotal = taxes['total_excluded']
 
-    @api.onchange('type', 'repair_id')
+    @api.onchange('type', 'order_id')
     def onchange_operation_type(self):
         """ On change of operation type it sets source location, destination location
         and to invoice field.
@@ -222,7 +222,7 @@ class RepairLine(models.Model):
             self.location_dest_id = False
         elif self.type == 'add':
             self.onchange_product_id()
-            args = self.repair_id.company_id and [('company_id', '=', self.repair_id.company_id.id)] or []
+            args = self.order_id.company_id and [('company_id', '=', self.order_id.company_id.id)] or []
             warehouse = self.env['stock.warehouse'].search(args, limit=1)
             self.location_id = warehouse.lot_stock_id
             self.location_dest_id = self.env['stock.location'].search([('usage', '=', 'production')], limit=1).id
@@ -232,12 +232,12 @@ class RepairLine(models.Model):
             self.location_id = self.env['stock.location'].search([('usage', '=', 'production')], limit=1).id
             self.location_dest_id = self.env['stock.location'].search([('scrap_location', '=', True)], limit=1).id
 
-    @api.onchange('repair_id', 'product_id', 'product_uom_qty')
+    @api.onchange('order_id', 'product_id', 'product_uom_qty')
     def onchange_product_id(self):
         """ On change of product it sets product quantity, tax account, name,
         uom of product, unit price and price subtotal. """
-        partner = self.repair_id.partner_id
-        pricelist = self.repair_id.pricelist_id
+        partner = self.order_id.partner_id
+        pricelist = self.order_id.pricelist_id
         if not self.product_id or not self.product_uom_qty:
             return
         if self.product_id:
@@ -259,7 +259,7 @@ class RepairLine(models.Model):
                     pass
                     #fp_id = self.env['account.fiscal.position'].get_fiscal_position(partner.id, delivery_id=self.repair_id.address_id.id)
                     #fp = self.env['account.fiscal.position'].browse(fp_id)
-                taxes = self.product_id.taxes_id.filtered(lambda x: x.company_id == self.repair_id.company_id)
+                taxes = self.product_id.taxes_id.filtered(lambda x: x.company_id == self.order_id.company_id)
                 self.tax_id = fp.map_tax(taxes, self.product_id, partner).ids
             warning = False
             #if not pricelist:
@@ -273,8 +273,8 @@ class RepairLine(models.Model):
 
     @api.onchange('product_uom')
     def _onchange_product_uom(self):
-        partner = self.repair_id.partner_id
-        pricelist = self.repair_id.pricelist_id
+        partner = self.order_id.partner_id
+        pricelist = self.order_id.pricelist_id
         if pricelist and self.product_id and self.type != 'remove':
             price = pricelist.get_product_price(self.product_id, self.product_uom_qty, partner, uom_id=self.product_uom.id)
             #if price is False:
@@ -313,7 +313,7 @@ class RepairFee(models.Model):
     @api.depends('price_unit', 'order_id', 'product_uom_qty', 'product_id')
     def _compute_price_subtotal(self):
         for fee in self:
-            taxes = fee.tax_id.compute_all(fee.price_unit, fee.repair_id.pricelist_id.currency_id, fee.product_uom_qty, fee.product_id, fee.repair_id.partner_id)
+            taxes = fee.tax_id.compute_all(fee.price_unit, fee.order_id.pricelist_id.currency_id, fee.product_uom_qty, fee.product_id, fee.order_id.partner_id)
             fee.price_subtotal = taxes['total_excluded']
 
     @api.onchange('order_id', 'product_id', 'product_uom_qty')
