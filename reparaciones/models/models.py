@@ -25,19 +25,19 @@ class RepairLine(models.Model):
     move_id = fields.Many2one('stock.move', 'Inventory Move',copy=False, readonly=True)
     #lot_id = fields.Many2one('stock.production.lot', 'Lot/Serial')
     state = fields.Selection([('draft', 'Draft'),('confirmed', 'Confirmed'),('done', 'Done'),('cancel', 'Cancelled')], 'Status', default='draft',copy=False, readonly=True, required=True,help='The status of a repair line is set automatically to the one of the linked repair order.')
-    # product_type = fields.Selection(related='product_id.type')
-    # virtual_available_at_date = fields.Float(compute='_compute_qty_at_date')
-    # scheduled_date = fields.Datetime(compute='_compute_qty_at_date')
-    # free_qty_today = fields.Float(compute='_compute_qty_at_date')
-    # qty_available_today = fields.Float(compute='_compute_qty_at_date')
-    # warehouse_id = fields.Many2one('stock.warehouse', compute='_compute_qty_at_date')
-    # qty_to_deliver = fields.Float(compute='_compute_qty_to_deliver')
-    # is_mto = fields.Boolean(compute='_compute_is_mto')
-    # display_qty_widget = fields.Boolean(compute='_compute_qty_to_deliver')
-    # qty_delivered = fields.Float('Delivered Quantity', copy=False, compute='_compute_qty_delivered', inverse='_inverse_qty_delivered', compute_sudo=True, store=True, digits='Product Unit of Measure', default=0.0)
-    # customer_lead = fields.Float(
-    #     'Lead Time', required=True, default=0.0,
-    #     help="Number of days between the order confirmation and the shipping of the products to the customer")
+    product_type = fields.Selection(related='product_id.type')
+    virtual_available_at_date = fields.Float(compute='_compute_qty_at_date')
+    scheduled_date = fields.Datetime(compute='_compute_qty_at_date')
+    free_qty_today = fields.Float(compute='_compute_qty_at_date')
+    qty_available_today = fields.Float(compute='_compute_qty_at_date')
+    warehouse_id = fields.Many2one('stock.warehouse', compute='_compute_qty_at_date')
+    qty_to_deliver = fields.Float(compute='_compute_qty_to_deliver')
+    is_mto = fields.Boolean(default=False)
+    display_qty_widget = fields.Boolean(compute='_compute_qty_to_deliver')
+    qty_delivered = fields.Float('Delivered Quantity', copy=False, compute='_compute_qty_delivered', compute_sudo=True, store=True, digits='Product Unit of Measure', default=0.0)
+    customer_lead = fields.Float(
+        'Lead Time', required=True, default=0.0,
+        help="Number of days between the order confirmation and the shipping of the products to the customer")
 
     # @api.depends('qty_delivered_method', 'qty_delivered_manual', 'analytic_line_ids.so_line', 'analytic_line_ids.unit_amount', 'analytic_line_ids.product_uom_id')
     # def _compute_qty_delivered(self):
@@ -110,66 +110,66 @@ class RepairLine(models.Model):
     #         else:
     #             line.qty_delivered_manual = 0.0
 
-    # @api.depends('product_id', 'product_uom_qty', 'qty_delivered', 'state', 'product_uom')
-    # def _compute_qty_to_deliver(self):
-    #     """Compute the visibility of the inventory widget."""
-    #     for line in self:
-    #         line.qty_to_deliver = line.product_uom_qty - line.qty_delivered
-    #         if line.state == 'draft' and line.product_type == 'product' and line.product_uom and line.qty_to_deliver > 0:
-    #             line.display_qty_widget = True
-    #         else:
-    #             line.display_qty_widget = False
+    @api.depends('product_id', 'product_uom_qty', 'qty_delivered', 'state', 'product_uom')
+    def _compute_qty_to_deliver(self):
+        """Compute the visibility of the inventory widget."""
+        for line in self:
+            line.qty_to_deliver = line.product_uom_qty - line.qty_delivered
+            if line.state == 'draft' and line.product_type == 'product' and line.product_uom and line.qty_to_deliver > 0:
+                line.display_qty_widget = True
+            else:
+                line.display_qty_widget = False
 
-    # @api.depends('product_id', 'customer_lead', 'product_uom_qty', 'product_uom', 'repair_id.warehouse_id', 'repair_id.commitment_date')
-    # def _compute_qty_at_date(self):
-    #     """ Compute the quantity forecasted of product at delivery date. There are
-    #     two cases:
-    #      1. The quotation has a commitment_date, we take it as delivery date
-    #      2. The quotation hasn't commitment_date, we compute the estimated delivery
-    #         date based on lead time"""
-    #     qty_processed_per_product = defaultdict(lambda: 0)
-    #     grouped_lines = defaultdict(lambda: self.env['sale.order.line'])
-    #     # We first loop over the SO lines to group them by warehouse and schedule
-    #     # date in order to batch the read of the quantities computed field.
-    #     for line in self:
-    #         if not (line.product_id and line.display_qty_widget):
-    #             continue
-    #         line.warehouse_id = line.repair_id.warehouse_id
-    #         if line.repair_id.commitment_date:
-    #             date = line.repair_id.commitment_date
-    #         else:
-    #             date = line._expected_date()
-    #         grouped_lines[(line.warehouse_id.id, date)] |= line
+    @api.depends('product_id', 'customer_lead', 'product_uom_qty', 'product_uom', 'order_id.warehouse_id', 'order_id.commitment_date')
+    def _compute_qty_at_date(self):
+        """ Compute the quantity forecasted of product at delivery date. There are
+        two cases:
+         1. The quotation has a commitment_date, we take it as delivery date
+         2. The quotation hasn't commitment_date, we compute the estimated delivery
+            date based on lead time"""
+        qty_processed_per_product = defaultdict(lambda: 0)
+        grouped_lines = defaultdict(lambda: self.env['sale.order.line'])
+        # We first loop over the SO lines to group them by warehouse and schedule
+        # date in order to batch the read of the quantities computed field.
+        for line in self:
+            if not (line.product_id and line.display_qty_widget):
+                continue
+            line.warehouse_id = line.repair_id.warehouse_id
+            if line.order_id.commitment_date:
+                date = line.repair_id.commitment_date
+            else:
+                date = line._expected_date()
+            grouped_lines[(line.warehouse_id.id, date)] |= line
 
-    #     treated = self.browse()
-    #     for (warehouse, scheduled_date), lines in grouped_lines.items():
-    #         product_qties = lines.mapped('product_id').with_context(to_date=scheduled_date, warehouse=warehouse).read([
-    #             'qty_available',
-    #             'free_qty',
-    #             'virtual_available',
-    #         ])
-    #         qties_per_product = {
-    #             product['id']: (product['qty_available'], product['free_qty'], product['virtual_available'])
-    #             for product in product_qties
-    #         }
-    #         for line in lines:
-    #             line.scheduled_date = scheduled_date
-    #             qty_available_today, free_qty_today, virtual_available_at_date = qties_per_product[line.product_id.id]
-    #             line.qty_available_today = qty_available_today - qty_processed_per_product[line.product_id.id]
-    #             line.free_qty_today = free_qty_today - qty_processed_per_product[line.product_id.id]
-    #             line.virtual_available_at_date = virtual_available_at_date - qty_processed_per_product[line.product_id.id]
-    #             if line.product_uom and line.product_id.uom_id and line.product_uom != line.product_id.uom_id:
-    #                 line.qty_available_today = line.product_id.uom_id._compute_quantity(line.qty_available_today, line.product_uom)
-    #                 line.free_qty_today = line.product_id.uom_id._compute_quantity(line.free_qty_today, line.product_uom)
-    #                 line.virtual_available_at_date = line.product_id.uom_id._compute_quantity(line.virtual_available_at_date, line.product_uom)
-    #             qty_processed_per_product[line.product_id.id] += line.product_uom_qty
-    #         treated |= lines
-    #     remaining = (self - treated)
-    #     remaining.virtual_available_at_date = False
-    #     remaining.scheduled_date = False
-    #     remaining.free_qty_today = False
-    #     remaining.qty_available_today = False
-    #     remaining.warehouse_id = False
+        treated = self.browse()
+        for (warehouse, scheduled_date), lines in grouped_lines.items():
+            product_qties = lines.mapped('product_id').with_context(to_date=scheduled_date, warehouse=warehouse).read([
+                'qty_available',
+                'free_qty',
+                'virtual_available',
+            ])
+            qties_per_product = {
+                product['id']: (product['qty_available'], product['free_qty'], product['virtual_available'])
+                for product in product_qties
+            }
+            for line in lines:
+                line.scheduled_date = scheduled_date
+                qty_available_today, free_qty_today, virtual_available_at_date = qties_per_product[line.product_id.id]
+                line.qty_available_today = qty_available_today - qty_processed_per_product[line.product_id.id]
+                line.free_qty_today = free_qty_today - qty_processed_per_product[line.product_id.id]
+                line.virtual_available_at_date = virtual_available_at_date - qty_processed_per_product[line.product_id.id]
+                if line.product_uom and line.product_id.uom_id and line.product_uom != line.product_id.uom_id:
+                    line.qty_available_today = line.product_id.uom_id._compute_quantity(line.qty_available_today, line.product_uom)
+                    line.free_qty_today = line.product_id.uom_id._compute_quantity(line.free_qty_today, line.product_uom)
+                    line.virtual_available_at_date = line.product_id.uom_id._compute_quantity(line.virtual_available_at_date, line.product_uom)
+                qty_processed_per_product[line.product_id.id] += line.product_uom_qty
+            treated |= lines
+        remaining = (self - treated)
+        remaining.virtual_available_at_date = False
+        remaining.scheduled_date = False
+        remaining.free_qty_today = False
+        remaining.qty_available_today = False
+        remaining.warehouse_id = False
 
     # @api.depends('product_id', 'repair_id.warehouse_id', 'product_id.route_ids')
     # def _compute_is_mto(self):
