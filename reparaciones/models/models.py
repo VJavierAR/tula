@@ -293,6 +293,11 @@ class RepairLine(models.Model):
             self.sale_line_id.unlink()
         return super(RepairLine, self).unlink()
 
+    def write(self,values):
+        if(self.order_id):
+            self.order_id.write(values)
+        return super(RepairLine,self).write(values)
+
 class RepairFee(models.Model):
     _name = 'repair.service'
     _description = 'Reparaciones Services'
@@ -363,6 +368,11 @@ class RepairFee(models.Model):
         else:
             self.sale_line_id.unlink()
         return super(RepairFee, self).unlink()
+        
+    def write(self,values):
+        if(self.order_id):
+            self.order_id.write(values)
+        return super(RepairFee,self).write(values)
 
     @api.onchange('product_uom')
     def _onchange_product_uom(self):
