@@ -130,7 +130,7 @@ class RepairLine(models.Model):
          2. The quotation hasn't commitment_date, we compute the estimated delivery
             date based on lead time"""
         qty_processed_per_product = defaultdict(lambda: 0)
-        grouped_lines = defaultdict(lambda: self.env['sale.order.line'])
+        grouped_lines = defaultdict(lambda: self.env['repair.product'])
         # We first loop over the SO lines to group them by warehouse and schedule
         # date in order to batch the read of the quantities computed field.
         for line in self:
