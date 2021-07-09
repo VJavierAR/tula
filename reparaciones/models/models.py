@@ -40,23 +40,23 @@ class RepairLine(models.Model):
         help="Number of days between the order confirmation and the shipping of the products to the customer")
 
     qty_delivered_method=fields.Selection([('manual','manual'),('analytic','analytic')],default='analytic')
-    # @api.depends('qty_delivered_method', 'qty_delivered_manual', 'analytic_line_ids.so_line', 'analytic_line_ids.unit_amount', 'analytic_line_ids.product_uom_id')
-    # def _compute_qty_delivered(self):
-    #     """ This method compute the delivered quantity of the SO lines: it covers the case provide by sale module, aka
-    #         expense/vendor bills (sum of unit_amount of AAL), and manual case.
-    #         This method should be overridden to provide other way to automatically compute delivered qty. Overrides should
-    #         take their concerned so lines, compute and set the `qty_delivered` field, and call super with the remaining
-    #         records.
-    #     """
-    #     # compute for analytic lines
-    #     lines_by_analytic = self.filtered(lambda sol: sol.qty_delivered_method == 'analytic')
-    #     mapping = lines_by_analytic._get_delivered_quantity_by_analytic([('amount', '<=', 0.0)])
-    #     for so_line in lines_by_analytic:
-    #         so_line.qty_delivered = mapping.get(so_line.id or so_line._origin.id, 0.0)
-    #     # compute for manual lines
-    #     for line in self:
-    #         if line.qty_delivered_method == 'manual':
-    #             line.qty_delivered = line.qty_delivered_manual or 0.0
+    @api.depends('qty_delivered_method', 'qty_delivered_manual', 'analytic_line_ids.so_line', 'analytic_line_ids.unit_amount', 'analytic_line_ids.product_uom_id')
+    def _compute_qty_delivered(self):
+        """ This method compute the delivered quantity of the SO lines: it covers the case provide by sale module, aka
+            expense/vendor bills (sum of unit_amount of AAL), and manual case.
+            This method should be overridden to provide other way to automatically compute delivered qty. Overrides should
+            take their concerned so lines, compute and set the `qty_delivered` field, and call super with the remaining
+            records.
+        """
+        # compute for analytic lines
+        lines_by_analytic = self.filtered(lambda sol: sol.qty_delivered_method == 'analytic')
+        mapping = lines_by_analytic._get_delivered_quantity_by_analytic([('amount', '<=', 0.0)])
+        for so_line in lines_by_analytic:
+            so_line.qty_delivered = mapping.get(so_line.id or so_line._origin.id, 0.0)
+        # compute for manual lines
+        for line in self:
+            if line.qty_delivered_method == 'manual':
+                line.qty_delivered = line.qty_delivered_manual or 0.0
 
 
 
