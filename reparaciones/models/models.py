@@ -40,6 +40,8 @@ class RepairLine(models.Model):
         help="Number of days between the order confirmation and the shipping of the products to the customer")
 
     qty_delivered_method=fields.Selection([('manual','manual'),('analytic','analytic')],default='analytic')
+    qty_delivered_manual=fields.Float(compute='_compute_qty_delivered')
+    
     @api.depends('qty_delivered_method', 'qty_delivered_manual', 'analytic_line_ids.so_line', 'analytic_line_ids.unit_amount', 'analytic_line_ids.product_uom_id')
     def _compute_qty_delivered(self):
         """ This method compute the delivered quantity of the SO lines: it covers the case provide by sale module, aka
