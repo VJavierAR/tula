@@ -136,9 +136,9 @@ class RepairLine(models.Model):
         for line in self:
             if not (line.product_id and line.display_qty_widget):
                 continue
-            line.warehouse_id = line.repair_id.warehouse_id
+            line.warehouse_id = line.order_id.warehouse_id
             if line.order_id.commitment_date:
-                date = line.repair_id.commitment_date
+                date = line.order_id.commitment_date
             else:
                 date = line._expected_date()
             grouped_lines[(line.warehouse_id.id, date)] |= line
