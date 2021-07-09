@@ -291,7 +291,7 @@ class RepairLine(models.Model):
             raise UserError(_('You can not remove an order line once the sales order is confirmed.\nYou should rather set the quantity to 0.'))
         else:
             self.sale_line_id.unlink()
-        return super(RepairFee, self).unlink()
+        return super(RepairLine, self).unlink()
 
 class RepairFee(models.Model):
     _name = 'repair.service'
