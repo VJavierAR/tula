@@ -2,7 +2,7 @@
 
 from odoo import models, fields, api,_
 from odoo.exceptions import AccessError, UserError, ValidationError
-
+from collections import defaultdict
 
 class RepairLine(models.Model):
     _name = 'repair.product'
