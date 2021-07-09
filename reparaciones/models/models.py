@@ -8,7 +8,7 @@ class RepairLine(models.Model):
     _name = 'repair.product'
     _description = 'Repair Product'
     name = fields.Text('Description', required=True)
-    repair_id = fields.Many2one('sale.order', 'Repair Order Reference',index=True, ondelete='cascade')
+    order_id = fields.Many2one('sale.order', 'Repair Order Reference',index=True, ondelete='cascade')
     type = fields.Selection([('add', 'Add'),('remove', 'Remove')], 'Type', default='add', required=True)
     product_id = fields.Many2one('product.product', 'Product', required=True)
     invoiced = fields.Boolean('Invoiced', copy=False, readonly=True)
@@ -296,7 +296,7 @@ class RepairLine(models.Model):
 class RepairFee(models.Model):
     _name = 'repair.service'
     _description = 'Reparaciones Services'
-    repair_id = fields.Many2one('sale.order', 'Repair Order Reference',index=True, ondelete='cascade', required=True)
+    order_id = fields.Many2one('sale.order', 'Repair Order Reference',index=True, ondelete='cascade', required=True)
     name = fields.Text('Description', index=True, required=True)
     product_id = fields.Many2one('product.product', 'Product')
     product_uom_qty = fields.Float('Quantity', digits='Product Unit of Measure', required=True, default=1.0)
