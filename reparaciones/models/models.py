@@ -34,11 +34,12 @@ class RepairLine(models.Model):
     qty_to_deliver = fields.Float(compute='_compute_qty_to_deliver')
     is_mto = fields.Boolean(default=False)
     display_qty_widget = fields.Boolean(compute='_compute_qty_to_deliver')
-    qty_delivered = fields.Float('Delivered Quantity', copy=False, compute='_compute_qty_delivered', compute_sudo=True, store=True, digits='Product Unit of Measure', default=0.0)
+    qty_delivered = fields.Float('Delivered Quantity', copy=False, compute='_compute_qty_delivered', inverse='_inverse_qty_delivered', compute_sudo=True, store=True, digits='Product Unit of Measure', default=0.0)
     customer_lead = fields.Float(
         'Lead Time', required=True, default=0.0,
         help="Number of days between the order confirmation and the shipping of the products to the customer")
 
+    qty_delivered_method=fields.Selection([('manual','manual'),('analytic','analytic')],default='analytic')
     # @api.depends('qty_delivered_method', 'qty_delivered_manual', 'analytic_line_ids.so_line', 'analytic_line_ids.unit_amount', 'analytic_line_ids.product_uom_id')
     # def _compute_qty_delivered(self):
     #     """ This method compute the delivered quantity of the SO lines: it covers the case provide by sale module, aka
@@ -98,17 +99,17 @@ class RepairLine(models.Model):
 
     #     return result
 
-    # @api.onchange('qty_delivered')
-    # def _inverse_qty_delivered(self):
-    #     """ When writing on qty_delivered, if the value should be modify manually (`qty_delivered_method` = 'manual' only),
-    #         then we put the value in `qty_delivered_manual`. Otherwise, `qty_delivered_manual` should be False since the
-    #         delivered qty is automatically compute by other mecanisms.
-    #     """
-    #     for line in self:
-    #         if line.qty_delivered_method == 'manual':
-    #             line.qty_delivered_manual = line.qty_delivered
-    #         else:
-    #             line.qty_delivered_manual = 0.0
+    @api.onchange('qty_delivered')
+    def _inverse_qty_delivered(self):
+        """ When writing on qty_delivered, if the value should be modify manually (`qty_delivered_method` = 'manual' only),
+            then we put the value in `qty_delivered_manual`. Otherwise, `qty_delivered_manual` should be False since the
+            delivered qty is automatically compute by other mecanisms.
+        """
+        for line in self:
+            if line.qty_delivered_method == 'manual':
+                line.qty_delivered_manual = line.qty_delivered
+            else:
+                line.qty_delivered_manual = 0.0
 
     @api.depends('product_id', 'product_uom_qty', 'qty_delivered', 'state', 'product_uom')
     def _compute_qty_to_deliver(self):
