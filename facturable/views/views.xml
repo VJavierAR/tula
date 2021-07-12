@@ -9,7 +9,6 @@
               <xpath expr="//form[1]/sheet[1]/field[@name='payment_term_id']" position="before">
                 <field name="promocion" />
                 </xpath>
-            </field>
 
 
 
