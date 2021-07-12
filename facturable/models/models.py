@@ -184,8 +184,7 @@ class ProductTmplUp(models.Model):
         for record in self:
             if(len(record.product_variant_ids)==1):
                 if(record.promocion):
-                    record.product_variant_ids[0].write({'promocion':True})
-                    _logger.info('hola')
+                    self.env['product.product'].browse(record.product_variant_ids.ids).write({'promocion':True})
 
 
 
