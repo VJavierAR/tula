@@ -1,28 +1,28 @@
 <odoo>
     <data>
-<record id="reporte_seguimiento" model="mail.template">
-           
-           <field name="name">Notificación</field>
-           <field name="model_id" ref="account.model_account_move"/>
-           <field name="email_from">${(object.partner_id.correoFac |safe)}</field>
-<!--
-           <field name="report_template" ref="account_followup.report_followup_print_all"/>
--->
-           <field name="subject">Reporte de seguimiento </field>
+        <record id="reporte_seguimiento" model="mail.template">
 
-           <field name="auto_delete" eval="False"/>
+            <field name="name">Notificación</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="email_from">${(object.partner_id.correoFac |safe)}</field>
+            <!--
+                       <field name="report_template" ref="account_followup.report_followup_print_all"/>
+            -->
+            <field name="subject">Reporte de seguimiento</field>
 
-           <field name="body_html">
+            <field name="auto_delete" eval="False"/>
 
-            <![CDATA[
+            <field name="body_html">
+
+                <![CDATA[
                 <br/>
-                <p>Dear ${object.partner_id.name}, it seems that some of your payments stay unpaid</p>
+                <p>Estimado ${object.partner_id.name}, se entregan facturas tramitadas</p>
                 <br/>
                  ]]>
 
-           </field>
- <field name="report_template" ref="reporte_de_seguimiento"/>
+            </field>
+            <field name="report_template" ref="reporte_de_seguimiento"/>
 
-       </record>
+        </record>
     </data>
 </odoo>

@@ -36,6 +36,7 @@
         'views/account_move_view.xml',
         'views/account_move_mail.xml',
         'wizard/pagos_wizard.xml',
+        'views/res_partner_view.xml',
     ],
     'css': ['static/src/css/ribbon.css'],
     # only loaded in demonstration mode

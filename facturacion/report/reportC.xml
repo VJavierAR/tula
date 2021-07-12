@@ -5,7 +5,7 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
-                    <h2 style="color: #af5d1e;">Reporte de seguimiento</h2>
+                    <h2 style="color: #af5d1e;">Tramite</h2>
 
                     <br>Esimado/a<t t-esc="docs.partner_id.name"/>,
                     </br>
@@ -81,7 +81,7 @@
                             <div class="page">
                                 <h2 style="color: #af5d1e;">
                                     <span t-if="o.type == 'out_invoice' and o.state == 'posted'">Factura Electrónica</span>
-                                    <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Boorrador de Factura Electrónica</span>
+                                    <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Borrador de Factura Electrónica</span>
                                     <span t-if="o.type == 'out_invoice' and o.state == 'cancel'">Factura Electrónica Cancelada
                                     </span>
                                     <span t-if="o.type == 'out_refund'">Credit Note</span>
