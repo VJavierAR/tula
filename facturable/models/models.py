@@ -179,6 +179,19 @@ class ProductTmplUp(models.Model):
     _inherit='product.template'
     promocion=fields.Boolean('Promocion')
 
+    @api.onchange('product_variant_ids')
+    def chec(self):
+        for record in self:
+            if(len(record.product_variant_ids)==1):
+                if(record.promocion):
+                    record.product_variant_ids.write({'promocion':True})
+
+
+
 class ProductUp(models.Model):
     _inherit='product.product'
     promocion=fields.Boolean('Promocion')
+
+
+
+
