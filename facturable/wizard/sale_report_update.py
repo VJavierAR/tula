@@ -13,6 +13,9 @@ class SaleReportUpdate(models.TransientModel):
 
 
 	def run(self):
+		pi=env['stock.picking'].search([['state','in',('waiting','confirmed')]],order='scheduled_date asc')
+		for pick in pi:
+			pi.action_assign()
 		action = self.env.ref('sale.action_order_report_all').read()[0]
 		sl=self.env['sale.order.line'].search([['qty_invoiced','=',0]])
 		for sa in sl:
