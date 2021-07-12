@@ -27,6 +27,7 @@
         'fleet',
         'sale_stock',
         'sale_management',
+        'sales_team',
     ],
 
     # always loaded
