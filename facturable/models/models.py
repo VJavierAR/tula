@@ -181,4 +181,4 @@ class ProductTmplUp(models.Model):
 
 class ProductUp(models.Model):
     _inherit='product.product'
-    promocion=fields.Boolean(related='product_tmpl_id.promocion')
+    promocion=fields.Boolean('Promocion')
