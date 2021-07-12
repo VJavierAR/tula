@@ -14,7 +14,7 @@ class RepairLine(models.Model):
     invoiced = fields.Boolean('Invoiced', copy=False, readonly=True)
     price_unit = fields.Float('Unit Price', required=True, digits='Product Price')
     price_subtotal = fields.Float('Subtotal', compute='_compute_price_subtotal', store=True, digits=0)
-    tax_id = fields.Many2many('account.tax', 'repair_operation_line_tax', 'repair_operation_line_id', 'tax_id', 'Taxes')
+    tax_id = fields.Many2many('account.tax', 'repair_operation_line2_tax', 'repair_operation_line2_id', 'tax_id', 'Taxes')
     product_uom_qty = fields.Float('Quantity', default=1.0,digits='Product Unit of Measure', required=True)
     product_uom = fields.Many2one('uom.uom', 'Product Unit of Measure',required=True, domain="[('category_id', '=', product_uom_category_id)]")
     product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id')
