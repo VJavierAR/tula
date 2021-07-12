@@ -193,6 +193,9 @@ class Cierre(models.Model):
             #    [('create_date', '>=', '2020-08-10 00:00:00'), ('create_date', '<=', inicio_dia), ('create_uid', '=', cierre.user_id.id), ('incluir', '=', False)])
             if pagos:
                 todos_pagos = pagos
+                m=payment.search([['cierre_id','=',cierre.id]])
+                if(len(m)>0):
+                    m.write({'cierre_id':False,'incluir':False})
                 #todos_pagos |= pagos_hoy_olvidados
                 todos_pagos.write({'cierre_id': cierre.id, 'incluir': False})
                 pagos.write({'incluir': True})
