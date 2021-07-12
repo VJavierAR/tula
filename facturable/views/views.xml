@@ -6,9 +6,9 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
 
-              <xpath expr="//form[1]/sheet[1]/field[@name='payment_term_id']" position="before">
-                <field name="promocion" />
-                </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+              <field name="promocion"/>
+            </xpath>
 
 
 
@@ -19,8 +19,21 @@
                 </xpath>
             </field>
           </record>
+
+
+
+
+
+
+
+
+
+
       
-      
+
+
+
+
         <record model="ir.ui.view" id="purchase_order_form_view_update_facturable">
         <field name="name">purchase.order.form.view.update.facturable</field>
             <field name="model">purchase.order</field>
@@ -29,7 +42,8 @@
         <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='order_line']/tree[1]/field[@name='product_qty']" position="after">
     <field name="facturable" invisible='1'/>
   </xpath>
-            </field>
+</field>
+
       </record>
       
       
