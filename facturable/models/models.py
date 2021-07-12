@@ -179,7 +179,7 @@ class ProductTmplUp(models.Model):
     _inherit='product.template'
     promocion=fields.Boolean('Promocion')
 
-    @api.onchange('product_variant_ids')
+    @api.onchange('product_variant_ids','promocion')
     def chec(self):
         for record in self:
             if(len(record.product_variant_ids)==1):
