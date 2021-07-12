@@ -47,7 +47,7 @@ class fact(models.Model):
         
 class fact(models.Model):
     _inherit = 'sale.order'
-
+    promocion=fields.Boolean('Promocion')
 
     @api.onchange('order_line')
     def check(self):
@@ -174,3 +174,11 @@ class fact3(models.Model):
             sa._get_invoice_qty()
             sa.f()
         return lines
+
+class ProductTmplUp(models.Model):
+    _inherit='product.template'
+    promocion=fields.Boolean('Promocion')
+
+class ProductUp(models.Model):
+    _inherit='product.product'
+    promocion=fields.Boolean(related='product_tmpl_id.promocion')
