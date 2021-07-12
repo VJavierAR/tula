@@ -4,7 +4,8 @@ from odoo import models, fields, api,_
 from odoo.exceptions import AccessError, UserError, ValidationError
 from collections import defaultdict
 import datetime
-class RepairLine(models.Model):
+
+class RepairProduct(models.Model):
     _name = 'repair.product'
     _description = 'Repair Product'
     name = fields.Text('Description', required=True)
@@ -300,7 +301,7 @@ class RepairLine(models.Model):
             self.sale_line_id.write(values)
         return super(RepairLine,self).write(values)
 
-class RepairFee(models.Model):
+class RepairService(models.Model):
     _name = 'repair.service'
     _description = 'Reparaciones Services'
     order_id = fields.Many2one('sale.order', 'Repair Order Reference',index=True, ondelete='cascade', required=True)
