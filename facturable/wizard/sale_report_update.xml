@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_procurement_compute_wizard" model="ir.ui.view">
+        <field name="name">Report</field>
+        <field name="model">sale.report.update</field>
+        <field name="arch" type="xml">
+            <form string="Parameters">
+                <p>
+                Se actulizaran las ordenes de ventas.
+                </p>
+                <footer>
+                    <button name="run" string="Actulizar" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sale_report_update" model="ir.actions.act_window">
+        <field name="name">Report</field>
+        <field name="res_model">sale.report.update</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="sale.menu_report_product_all"
+        name="Sales"
+        action="action_sale_report_update"
+        parent="sale.menu_sale_report"
+        sequence="1"/>
+
+</odoo>
