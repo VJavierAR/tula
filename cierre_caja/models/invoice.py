@@ -274,13 +274,13 @@ class Cierre(models.Model):
         for li in lines:
             total=total+li.amount_untaxed
             for liin in li.invoice_line_ids:
-                descuento=descuento+((liin.price_unit*liin.quantity)-(liin.price_subtotal*liin.quantity))
+                descuento=descuento+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
             iva=iva+(li.amount_total-li.amount_untaxed)
         lines2=self.env['account.move'].search(['&','&','&',['invoice_date','>',ayer],['invoice_date','<',hoy],['state','=','posted'],['type','=','out_invoice']])
         for li in lines2:
             total2=total2+li.amount_untaxed
             for liin in li.invoice_line_ids:
-                descuento2=descuento2+((liin.price_unit*liin.quantity)-(liin.price_subtotal*liin.quantity))
+                descuento2=descuento2+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
             iva2=iva2+(li.amount_total-li.amount_untaxed)
         data=[]
         data.append(['Ventas',total,total2,total+total2])
