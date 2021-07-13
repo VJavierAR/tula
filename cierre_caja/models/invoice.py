@@ -281,7 +281,7 @@ class Cierre(models.Model):
             total2=total2+li.amount_untaxed
             for liin in li.invoice_line_ids:
                 descuento2=descuento2+((liin.price_unit*liin.quantity)-(liin.price_subtotal*liin.quantity))
-            iva2=iva+(li.amount_total-li.amount_untaxed)
+            iva2=iva2+(li.amount_total-li.amount_untaxed)
         data=[]
         data.append(['Ventas',total,total2,total+total2])
         data.append(['Descuento',descuento,descuento2,descuento+descuento2])
