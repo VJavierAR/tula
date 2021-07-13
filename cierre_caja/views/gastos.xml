@@ -282,16 +282,16 @@
                         <t t-foreach="pagosA" t-as="l">
                             <tr>
                                 <td>
-                                    <span t-field="l[0]"/>
+                                    <span t-raw="l[0]"/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-field="l[1]"/>
+                                    <span t-raw="l[1]"/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-field="l[2]"/>
+                                    <span t-raw="l[2]"/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-field="l[3]"/>
+                                    <span t-raw="l[3]"/>
                                 </td>
                             </tr>
                         </t>
