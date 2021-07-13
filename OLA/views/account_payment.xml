@@ -8,8 +8,11 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='communication']" position="after">
-                    <field name="numeroDeposito" attrs="{'readonly': [('numeroUnico', '=', True)]}" />
-                    <field name="numeroUnico" />
+                    <field name="numeroDeposito" attrs="{'readonly': [('numeroUnico', '=', True)],
+                                                        'invisible': ['|', ('payment_type', '=', 'transfer'),
+                                                                           ('partner_type', '=', 'supplier')]}" />
+                    <field name="numeroUnico" attrs="{'invisible': ['|', ('payment_type', '=', 'transfer'),
+                                                                         ('partner_type', '=', 'supplier')]}" />
                 </xpath>
 
                 <xpath expr="//button[@name='post']" position="attributes">

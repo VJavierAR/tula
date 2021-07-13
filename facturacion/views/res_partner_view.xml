@@ -9,24 +9,24 @@
 
                 <xpath expr="//page[@name='sales_purchases']" position="after">
                     <page string="Tramites" >
-                        <group>
-                            <field name="historal_fac_tramitadas" readonly="1">
-                                <tree>
-                                    <field name="factura" />
-                                    <field name="tramite_file" />
-                                </tree>
-                                <form>
+
+                        <field name="historal_fac_tramitadas" readonly="1">
+                            <tree>
+                                <field name="factura" />
+                                <field name="tramite_file" />
+                            </tree>
+                            <form>
+                                <group>
                                     <group>
-                                        <group>
-                                            <field name="factura" />
-                                        </group>
-                                        <group>
-                                            <field name="tramite_file" />
-                                        </group>
+                                        <field name="factura" />
                                     </group>
-                                </form>
-                            </field>
-                        </group>
+                                    <group>
+                                        <field name="tramite_file" />
+                                    </group>
+                                </group>
+                            </form>
+                        </field>
+
                     </page>
                 </xpath>
 

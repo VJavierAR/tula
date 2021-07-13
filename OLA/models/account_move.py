@@ -159,7 +159,8 @@ class ACCOUNT_PAYMENT(models.Model):
             existe = self.env['account.payment'].search(
                 [
                     ('numeroDeposito', '=', self.numeroDeposito),
-                    ('partner_id', '=', self.partner_id.id)
+                    ('partner_id', '=', self.partner_id.id),
+                    ('id', '!=', self.id)
                 ]
             )
             if existe:
