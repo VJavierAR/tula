@@ -141,6 +141,7 @@ class Cierre(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     monto_cierre_acumulado=fields.Float('Monto Cierre Acumulado',compute='compute_monto_cierre_acumulado')
     monto_cierre_sin=fields.Float()
+    monto_cierre_diferencia=fields.Float('Monto a abonar')
 
     def compute_monto_cierre_acumulado(self):
         fecha=fields.Datetime.now()
@@ -175,8 +176,11 @@ class Cierre(models.Model):
                     raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.monto_cierre_acumulado))
                 else:
                     cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
-            else:
+            if(cierre.diferencia-cierre.monto_cierre_diferencia>0):
+                raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.diferencia))
+            if(cierre.diferencia-cierre.monto_cierre_diferencia<=0):
                 cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
+
     def get_payments(self):
         payment_env = self.env['account.payment']
         for cierre in self:
