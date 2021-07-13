@@ -12,7 +12,7 @@ class Crm_l(models.Model):
     _inherit = 'crm.lead'
     no_referencia = fields.Char()
     no_acto = fields.Char(string='Número de acto', store=True)
-    fecha_acto = fields.Datetime()
+    fecha_acto = fields.Text() # fields.Datetime()
     conexis = fields.Boolean(default=False)
     contacto=fields.Char(string='Contacto Adicional', store=True)
     telefono=fields.Char(string='Teléfono', store=True)
@@ -43,7 +43,8 @@ class Crm_l(models.Model):
                     filtered_values2 = list(filter(lambda v: 'Fecha/Hora de Cierre de recepción de ofertas: ' in v, d))
                     if(len(filtered_values2)>0):
                         date_time_str = filtered_values2[0].replace('Fecha/Hora de Cierre de recepción de ofertas: ','').replace('Hora: ','')
-                        date_time_obj = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S') + timedelta(hours=6)
+                        # date_time_obj = datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S') + timedelta(hours=6)
+                        date_time_obj = date_time_str
                         # date_time_acto = pytz.utc.localize(datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')).astimezone(user_tz)
                         # _logger.info("date_time_obj: " + str(date_time_obj))
                         # _logger.info("date_time_acto: " + str(date_time_acto))
@@ -96,7 +97,8 @@ class Crm_l(models.Model):
                     fecha=False
                     if(len(da)>0):
                         Fec = da[0].replace('Fecha y Hora de Apertura de Propuestas:	','').replace('- ','')
-                        fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=6)
+                        # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=5)
+                        fecha = Fec
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
                         # date_time_acto = pytz.utc.localize(fecha).astimezone(user_tz)
 
