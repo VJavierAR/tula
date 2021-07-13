@@ -141,7 +141,7 @@ class Cierre(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     monto_cierre_acumulado=fields.Float('Monto Cierre Acumulado',compute='compute_monto_cierre_acumulado')
     monto_cierre_sin=fields.Float()
-    monto_cierre_diferencia=fields.Float('Monto a abonar')
+    monto_cierre_diferencia=fields.Float('Monto abonar')
 
     def compute_monto_cierre_acumulado(self):
         fecha=fields.Datetime.now()
