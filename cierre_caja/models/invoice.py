@@ -264,7 +264,7 @@ class Cierre(models.Model):
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         hoy_temp=fecha+relativedelta(days=1)
         hoy=datetime(hoy_temp.year, hoy_temp.month, hoy_temp.day)
-        lines=self.env['account.move.line'].search(['|','&',['write_date','>=',prime_day_of_month],['write_date','<',ayer],['parent_state','=','posted']])
+        lines=self.env['account.move'].search(['|','&',['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['state','=','posted']])
         total=0
         descuento=0
         iva=0
@@ -275,7 +275,7 @@ class Cierre(models.Model):
             total=total+(li.price_unit*li.quantity)
             descuento=descuento+((li.price_unit*li.quantity)-(li.price_subtotal*li.quantity))
             iva=iva+(li.price_tax*li.quantity)
-        lines2=self.env['account.move.line'].search(['|','&',['write_date','>',ayer],['write_date','<',hoy],['parent_state','=','posted']])
+        lines2=self.env['account.move'].search(['|','&',['invoice_date','>',ayer],['invoice_date','<',hoy],['state','=','posted']])
         for li in lines2:
             total2=total2+(li.price_unit*li.quantity)
             descuento2=descuento2+((li.price_unit*li.quantity)-(li.price_subtotal*li.quantity))
