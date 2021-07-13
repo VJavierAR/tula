@@ -312,7 +312,7 @@ class RepairService(models.Model):
     product_uom = fields.Many2one('uom.uom', 'Product Unit of Measure', required=True, domain="[('category_id', '=', product_uom_category_id)]")
     product_uom_category_id = fields.Many2one(related='product_id.uom_id.category_id')
     price_subtotal = fields.Float('Subtotal', compute='_compute_price_subtotal', store=True, digits=0)
-    tax_id = fields.Many2many('account.tax', 'repair_fee_line_tax', 'repair_fee_line_id', 'tax_id', 'Taxes')
+    tax_id = fields.Many2many('account.tax',relation = 'tax_repair_service_rel', column1 = 'id1', column2 = 'id2', string = 'Taxes')
     invoice_line_id = fields.Many2one('account.move.line', 'Invoice Line', copy=False, readonly=True)
     invoiced = fields.Boolean('Invoiced', copy=False, readonly=True)
     tecnico=fields.Many2one(comodel_name='res.users',string='Tecnico')
