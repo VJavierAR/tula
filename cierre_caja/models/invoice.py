@@ -286,6 +286,27 @@ class Cierre(models.Model):
         data.append(['Impuestos',iva,iva2,iva+iva2])
         data.append(['Total',total-descuento+iva,total2-descuento2+iva2,total-descuento+iva+(total2-descuento2+iva2)])
         return data
+    
+
+
+
+    def getPagosAll(self):
+        fecha=fields.Datetime.now()
+        ayer=datetime(fecha.year, fecha.month, fecha.day)
+        prime_day_of_month=datetime(fecha.year, fecha.month, 1)
+        last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
+        hoy_temp=fecha+relativedelta(days=1)
+        hoy=datetime(hoy_temp.year, hoy_temp.month, hoy_temp.day)
+        lines=self.env['account.payment'].search(['|','&',['write_date','>=',prime_day_of_month],['write_date','<',ayer],['payment_type','!=','outbound']])
+        lines2=self.env['account.payment'].search(['|','&',['write_date','>',ayer],['write_date','<',hoy],['payment_type','!=','outbound']])
+        j=self.env['account.journal'].search([])
+        data=[]
+        for jo in j:
+            ayer=sum(lines.filtered(lambda x:x.journal_id.id==jo.id).mapped('amount'))
+            hoy=sum(lines2.filtered(lambda x:x.journal_id.id==jo.id).mapped('amount'))
+            data.append([jo.name,str(ayer),str(hoy),str(hoy+ayer)])
+        return data
+
 class CierreConf(models.Model):
     _name = "cierre.conf"
 

@@ -270,27 +270,28 @@
                             </tr>
                         </t>
                     </table>
+                    <t t-set="pagosA" t-value="o.getPagosAll()"/>
                     <h3>Desglose de pagos por diario</h3>
                     <table class="table table-bordered">
                         <tr>
                             <th>Diario de Pago</th>
                             <th>Monto Ayer</th>
-                            <th>Monto Sistema</th>
+                            <th>Monto Hoy</th>
                             <th>Monto Acumulado</th>
                         </tr>
-                        <t t-foreach="o.desglose_pagos" t-as="l">
+                        <t t-foreach="pagosA" t-as="l">
                             <tr>
                                 <td>
-                                    <span t-field="l.name"/>
+                                    <span t-field="l[0]"/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-field="l.monto_acumulado"/>
+                                    <span t-field="l[1]"/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-field="l.monto_calculado"/>
+                                    <span t-field="l[2]"/>
                                 </td>
                                 <td class="text-right">
-                                    <span t-field="l.monto_final"/>
+                                    <span t-field="l[3]"/>
                                 </td>
                             </tr>
                         </t>
@@ -298,6 +299,7 @@
                      <t t-set="pagos" t-value="o.get_pagos()"/>
                      <t t-set="facturas" t-value="o.get_facturas()"/>
                      <t t-set="ventas" t-value="o.get_ventas()"/>
+ 
                      <h3>Desglose de pagos acumulado</h3>
                      <table class="table table-bordered">
                         <tr>
