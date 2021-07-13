@@ -264,7 +264,7 @@ class Cierre(models.Model):
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         hoy_temp=fecha+relativedelta(days=1)
         hoy=datetime(hoy_temp.year, hoy_temp.month, hoy_temp.day)
-        lines=self.env['account.move'].search(['|','&',['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['state','=','posted']])
+        lines=self.env['account.move'].search(['|','&','&',['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['state','=','posted'],['type','=','out_invoice']])
         total=0
         descuento=0
         iva=0
@@ -276,7 +276,7 @@ class Cierre(models.Model):
             for liin in li.invoice_line_ids:
                 descuento=descuento+((liin.price_unit*liin.quantity)-(liin.price_subtotal*liin.quantity))
             iva=iva+(li.amount_total-li.amount_untaxed)
-        lines2=self.env['account.move'].search(['|','&',['invoice_date','>',ayer],['invoice_date','<',hoy],['state','=','posted']])
+        lines2=self.env['account.move'].search(['|','&','&',['invoice_date','>',ayer],['invoice_date','<',hoy],['state','=','posted'],['type','=','out_invoice']])
         for li in lines2:
             total2=total2+li.amount_untaxed
             for liin in li.invoice_line_ids:
@@ -286,7 +286,7 @@ class Cierre(models.Model):
         data.append(['Ventas',total,total2,total+total2])
         data.append(['Descuento',descuento,descuento2,descuento+descuento2])
         data.append(['Impuestos',iva,iva2,iva+iva2])
-        data.append(['Total',total-descuento+iva,total2-descuento2+iva2,total-descuento+iva+(total2-descuento2+iva2)])
+        data.append(['Total',total-descuento+iva,total2-descuento2+iva2,(total-descuento+iva)+(total2-descuento2+iva2)])
         return data
     
 
