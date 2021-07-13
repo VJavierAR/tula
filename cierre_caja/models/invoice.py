@@ -272,14 +272,14 @@ class Cierre(models.Model):
         descuento2=0
         iva2=0
         for li in lines:
-            total=total+(li.price_unit*li.product_uom_qty)
-            descuento=descuento+((li.price_unit*li.product_uom_qty)-(li.price_subtotal*li.product_uom_qty))
-            iva=iva+(li.price_tax*li.product_uom_qty)
-        lines2=self.env['sale.order.line'].search(['|','&',['write_date','>',ayer],['write_date','<',hoy],['state','=','sale']])
+            total=total+(li.price_unit*li.quantity)
+            descuento=descuento+((li.price_unit*li.quantity)-(li.price_subtotal*li.quantity))
+            iva=iva+(li.price_tax*li.quantity)
+        lines2=self.env['account.move.line'].search(['|','&',['write_date','>',ayer],['write_date','<',hoy],['state','=','sale']])
         for li in lines2:
-            total2=total2+(li.price_unit*li.product_uom_qty)
-            descuento2=descuento2+((li.price_unit*li.product_uom_qty)-(li.price_subtotal*li.product_uom_qty))
-            iva2=iva2+(li.price_tax*li.product_uom_qty)
+            total2=total2+(li.price_unit*li.quantity)
+            descuento2=descuento2+((li.price_unit*li.quantity)-(li.price_subtotal*li.quantity))
+            iva2=iva2+(li.price_tax*li.quantity)
         data=[]
         data.append(['Ventas',total,total2,total+total2])
         data.append(['Descuento',descuento,descuento2,descuento+descuento2])
