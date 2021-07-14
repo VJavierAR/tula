@@ -13,7 +13,7 @@
                         <field name="historal_fac_tramitadas" readonly="1">
                             <tree>
                                 <field name="factura" />
-                                <field name="tramite_file" />
+                                <field name="tramite_file" widget="many2many_binary"/>
                             </tree>
                             <form>
                                 <group>
