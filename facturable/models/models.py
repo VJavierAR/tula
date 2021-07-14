@@ -50,7 +50,7 @@ class fact(models.Model):
     def changePro(self):
         for record in self:
             if(record.product_id.id):
-                if(record.check==True record.product_id.promocion==False):
+                if(record.check==True and record.product_id.promocion==False):
                     raise UserError('No se puede agregar el producto dado que no cuenta con promocion')              
 
 class fact(models.Model):
