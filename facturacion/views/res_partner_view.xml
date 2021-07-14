@@ -21,7 +21,7 @@
                                         <field name="factura" />
                                     </group>
                                     <group>
-                                        <field name="tramite_file" />
+                                        <field name="tramite_file" widget="many2many_binary" />
                                     </group>
                                 </group>
                             </form>
