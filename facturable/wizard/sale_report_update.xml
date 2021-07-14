@@ -10,7 +10,7 @@
                 </p>
                 <footer>
                     <button name="run" string="Actulizar" type="object" class="btn-primary"/>
-                    <button string="Cancel" class="btn-secondary" name='cancel' />
+                    <button string="Cancel" class="btn-secondary" type="object" name='cancel' />
                 </footer>
             </form>
         </field>
