@@ -78,7 +78,7 @@
                                     <span t-field="o.partner_id.vat"/>
                                 </div>
                             </t>
-                            <div class="page">
+                            <div class="page" style="page-break-after: always;">
                                 <h2 style="color: #af5d1e;">
                                     <span t-if="o.type == 'out_invoice' and o.state == 'posted'">Factura Electrónica</span>
                                     <span t-if="o.type == 'out_invoice' and o.state == 'draft'">Borrador de Factura Electrónica</span>
