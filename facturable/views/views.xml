@@ -10,7 +10,7 @@
               <field name="promocion"/>
             </xpath>
             <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']" position="attributes">
-
+              <attribute name="context">{'default_check':promocion}</attribute>
             </xpath>
 
 
@@ -18,7 +18,7 @@
                 <field name="cantidad_facturable" readonly='1'/>
                 <field name="facturable" readonly='1'/>
                 <field name="check" invisible='1'/>
-                  <attribute name="context">{'default_check':promocion}</attribute>
+                  
                 </xpath>
             </field>
           </record>
