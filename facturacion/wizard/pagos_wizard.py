@@ -58,7 +58,7 @@ class TestReport(TransientModel):
         self.date_from = ''
         self.subject = 'Reporte de seguimiento .'
         self.body = "<br>Estimado  " + str(
-            self.move_ids[0].partner_id.name) + ",</br>, se entregan facturas tramitadas."
+            self.move_ids[0].partner_id.name) + ",</br>Se entregan facturas tramitadas."
         self.attachment_ids = [(6, 0, [a.id])]
 
     def mensaje(self):
@@ -67,14 +67,15 @@ class TestReport(TransientModel):
         mail_template = self.env.ref('facturacion.reporte_seguimiento')
         clientes = []
         for move in self.move_ids:
-            clientes.append(move.partner_id.id)
-            move.write({'tramite': 'tramitadas'})
             if move.partner_id.id not in clientes:
                 self.env['facturas.tramites'].create({
                     'tramite_file': self.attachment_ids,
                     'factura': move.id,
                     'clientes': move.partner_id
                 })
+            clientes.append(move.partner_id.id)
+            move.write({'tramite': 'tramitadas'})
+
         finalL = set(clientes)
         cli = self.env['res.partner']
 
