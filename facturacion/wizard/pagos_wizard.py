@@ -71,7 +71,7 @@ class TestReport(TransientModel):
                 self.env['facturas.tramites'].create({
                     'tramite_file': self.attachment_ids,
                     'factura': move.id,
-                    'clientes': move.partner_id
+                    'clientes': move.partner_id.id
                 })
             clientes.append(move.partner_id.id)
             move.write({'tramite': 'tramitadas'})
