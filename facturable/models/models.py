@@ -3,6 +3,7 @@
 from odoo import models, fields, api
 import logging, ast
 _logger = logging.getLogger(__name__)
+from odoo.exceptions import UserError
 
 class fact(models.Model):
     _inherit = 'sale.order.line'
@@ -44,7 +45,14 @@ class fact(models.Model):
                 valor=record.product_uom_qty
             record.cantidad_facturable=valor
             record.facturable=valor*record.price_reduce
-        
+
+    @api.onchange('product_id')
+    def changePro(self):
+        for record in self:
+            if(record.product_id.id):
+                if(record.check==True record.product_id.promocion==False):
+                    raise UserError('No se puede agregar el producto dado que no cuenta con promocion')              
+
 class fact(models.Model):
     _inherit = 'sale.order'
     promocion=fields.Boolean('Promocion')
