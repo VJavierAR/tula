@@ -410,8 +410,8 @@
         <field name="arch" type="xml">
 
              <field name="journal_id" position="after">
-                     <field name="medio_pago"/>
-                     <field name="tipo_pago" />
+                     <field name="medio_pago" required="True"/>
+                     <field name="tipo_pago" required="True"/>
              </field>
 
         </field>

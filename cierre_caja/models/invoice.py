@@ -10,7 +10,7 @@ class AccountPayment(models.Model):
 
     cierre_id = fields.Many2one('cierre.caja')
     incluir = fields.Boolean('Incluir', default=False)
-    tipo_pago=fields.Selection([('Contado','Contado'),('Credito','Credito')],default='Credito',required=True)
+    tipo_pago=fields.Selection([('Contado','Contado'),('Credito','Credito')],default='Credito')
 
     def get_tipo_pago(self):
         m=[]
@@ -21,7 +21,7 @@ class AccountPayment(models.Model):
             m.append(a)
         return m
     
-    medio_pago = fields.Selection(get_tipo_pago, string='Medio Pago',required=True)
+    medio_pago = fields.Selection(get_tipo_pago, string='Medio Pago')
 
 
 
