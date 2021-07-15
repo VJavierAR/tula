@@ -24,7 +24,6 @@ class AccountPayment(models.Model):
     medio_pago = fields.Selection(get_tipo_pago, string='Medio Pago')
 
 
-
 class CierreLineas(models.Model):
     _name = "cierre.caja.lineas"
 
