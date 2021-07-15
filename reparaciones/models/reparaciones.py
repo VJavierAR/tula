@@ -17,7 +17,7 @@ class Reparaciones(models.Model):
     check=fields.Boolean(default=False)
     operations = fields.One2many('repair.product', 'order_id', 'Parts', states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True, auto_join=True)
     fees_lines = fields.One2many('repair.service', 'order_id', 'Operations', states={'cancel': [('readonly', True)], 'done': [('readonly', True)]}, copy=True, auto_join=True)
-    tipo_reparacion=fields.Selection([('pintura','Taller Pintura'),('industrial','Taller Industrial'),('servicio','Taller Servicio'),('web','WEB')])
+    tipo_reparacion=fields.Selection([('pintura','Taller Pintura'),('industrial','Taller Industrial'),('servicio','Taller Servicio'),('web','WEB')],required=True)
 
     # @api.depends('state')
     def conf(self):
