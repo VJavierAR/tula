@@ -1109,7 +1109,7 @@
                     <widget name="qty_at_date_widget" width="20px"/>
                 </xpath>
             
-            <!--<form position="inside">
+            <form position="inside">
                 <field name="is_taxcloud" invisible="1"/>
                 <field name="is_taxcloud_configured" invisible="1"/>
                 </form>
@@ -1130,7 +1130,7 @@
                 <div class="oe_right" attrs="{'invisible': [('is_taxcloud', '=', False)]}">
                     <button name="validate_taxes_on_sales_order" string="Update taxes" type="object"/>
                 </div>
-            </xpath>-->
+            </xpath>
 
 
 

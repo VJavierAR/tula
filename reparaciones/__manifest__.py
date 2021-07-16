@@ -28,6 +28,7 @@
         'sale_stock',
         'sale_management',
         'sales_team',
+        'sale_account_taxcloud',
     ],
 
     # always loaded
