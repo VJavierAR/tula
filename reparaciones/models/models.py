@@ -294,12 +294,12 @@ class RepairProduct(models.Model):
             raise UserError(_('You can not remove an order line once the sales order is confirmed.\nYou should rather set the quantity to 0.'))
         else:
             self.sale_line_id.unlink()
-        return super(RepairLine, self).unlink()
+        return super(RepairProduct, self).unlink()
 
     def write(self,values):
         if(self.sale_line_id):
             self.sale_line_id.write(values)
-        return super(RepairLine,self).write(values)
+        return super(RepairProduct,self).write(values)
 
 class RepairService(models.Model):
     _name = 'repair.service'
@@ -370,12 +370,12 @@ class RepairService(models.Model):
             raise UserError(_('You can not remove an order line once the sales order is confirmed.\nYou should rather set the quantity to 0.'))
         else:
             self.sale_line_id.unlink()
-        return super(RepairFee, self).unlink()
+        return super(RepairService, self).unlink()
 
     def write(self,values):
         if(self.sale_line_id):
             self.sale_line_id.write(values)
-        return super(RepairFee,self).write(values)
+        return super(RepairService,self).write(values)
 
     @api.onchange('product_uom')
     def _onchange_product_uom(self):
