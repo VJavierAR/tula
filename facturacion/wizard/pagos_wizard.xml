@@ -28,7 +28,7 @@
                 </group>
 
                 <group>
-                    <field name="alerta_check" readonly="1" />
+                    <field name="alerta_check" readonly="0" force_save="1"/>
                     <field name="alerta" readonly="1" attrs="{'invisible': ['alerta_check', '=', False]}"/>
                 </group>
 

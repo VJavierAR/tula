@@ -35,6 +35,7 @@ class TestReport(TransientModel):
         default=False
     )
     alerta = fields.Text(
+        string=""
     )
 
     def _default_move_ids(self):
