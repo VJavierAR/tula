@@ -91,10 +91,9 @@ class TestReport(TransientModel):
         pal = ''
         re = []
         mail_template = self.env.ref('facturacion.reporte_seguimiento')
-
+        tramite_seq = self.env['ir.sequence'].next_by_code('tramite.sequence') or ''
         clientes = []
         for move in self.move_ids:
-            tramite_seq = self.env['ir.sequence'].next_by_code('tramite.sequence') or ''
             move.write({
                 'tramite': 'tramitadas',
                 'tramite_seq': tramite_seq
