@@ -34,7 +34,7 @@
 
                 <footer>
                     <button name="mensaje" string="mandar " type="object" class="oe_highlight" attrs="{'invisible': [['alerta_check', '=', True]]}"/>
-                    
+
                     <button string="Cancelar" class="oe_link" special="cancel"/>
                 </footer>
             </form>
