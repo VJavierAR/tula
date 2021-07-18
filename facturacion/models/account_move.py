@@ -8,6 +8,13 @@ _logger = logging.getLogger(__name__)
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    tramite = fields.Char(
-        string='Estado Tramite'        
+    tramite = fields.Selection(
+        string='Estado Tramite',
+        selection=[('tramitadas', 'tramitadas')]
+    )
+
+    tramite_seq = fields.Char(
+        string="Secuencia de tramite",
+        readonly=True,
+        copy=False,
     )

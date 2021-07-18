@@ -74,7 +74,12 @@ class TestReport(TransientModel):
                     'clientes': move.partner_id.id
                 })
             clientes.append(move.partner_id.id)
-            move.write({'tramite': 'tramitadas'})
+            tramite_seq = self.env['ir.sequence'].next_by_code('tramite.sequence') or ''
+            move.write({
+                'tramite': 'tramitadas',
+                'tramite_seq': tramite_seq
+            })
+
 
         finalL = set(clientes)
         cli = self.env['res.partner']

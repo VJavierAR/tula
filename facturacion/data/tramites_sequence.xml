@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Sequences for tramites -->
+        <record id="seq_tramite" model="ir.sequence">
+            <field name="name">Tramites Sequence</field>
+            <field name="code">tramite.sequence</field>
+            <field name="prefix">Tramite</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"></field>
+        </record>
+
+    </data>
+</odoo>

@@ -37,6 +37,7 @@
         'views/account_move_mail.xml',
         'wizard/pagos_wizard.xml',
         'views/res_partner_view.xml',
+        'data/tramites_sequence.xml',
     ],
     'css': ['static/src/css/ribbon.css'],
     # only loaded in demonstration mode

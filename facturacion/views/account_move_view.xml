@@ -7,7 +7,8 @@
             <field name="arch" type="xml">
                 <!--<xpath expr="//form[1]/sheet[1]/group[1]/group[1]/field[@name='partner_id']" position="after">-->
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="tramite"/>
+                    <field name="tramite" readonly="1"/>
+                    <field name="tramite_seq" invisible="1" readonly="1" />
                 </xpath>
 
 
@@ -19,6 +20,20 @@
                             attrs="{'invisible': [('tramite', '!=', 'tramitadas')] }"
                             style="display:inline-block; width:20%; padding:10px;"
                             />
+                </xpath>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_invoice_tree_update">
+            <field name="name">view.invoice.tree.update</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="tramite" optional="show" readonly="1"/>
+                    <field name="tramite_seq" invisible="1" readonly="1" />
                 </xpath>
 
             </field>
