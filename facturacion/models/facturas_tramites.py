@@ -26,3 +26,8 @@ class Tramites(models.Model):
         store=True,
         track_visibility='onchange'
     )
+
+    tramite_seq = fields.Char(
+        string='Tramite',
+        related='factura.tramite_seq'
+    )

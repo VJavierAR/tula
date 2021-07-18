@@ -12,12 +12,15 @@
 
                         <field name="historal_fac_tramitadas" readonly="1">
                             <tree>
+                                <field name="tramite_seq" readonly="1"/>
                                 <field name="factura" />
                                 <field name="tramite_file" widget="many2many_binary"/>
+
                             </tree>
                             <form>
                                 <group>
                                     <group>
+                                        <field name="tramite_seq" readonly="1"/>
                                         <field name="factura" />
                                     </group>
                                     <group>
