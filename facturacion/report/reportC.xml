@@ -5,11 +5,12 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
+                    <br></br>
                     <h2 style="color: #af5d1e;"><t t-esc="docs.tramite_seq"/></h2>
 
-                    <br>Esimado/a<t t-esc="docs.partner_id.name"/>,
+                    <br>Esimado/a <t t-esc="docs.partner_id.name"/>,
                     </br>
-                    A continuación puede ver la lista de facturas que están tramitadas.
+                    a continuación puede ver la lista de facturas que están tramitadas.
                     <t t-set="suma" t-value="0"/>
                     <table class="table table-striped table-sm o_main_table">
                         <thead>
