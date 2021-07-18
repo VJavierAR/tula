@@ -29,6 +29,14 @@ class TestReport(TransientModel):
     subject = fields.Char(string='subject', store=True)
     attachment_ids = fields.Many2many('ir.attachment', string="attachment", store=True)
 
+    alerta_check = fields.Boolean(
+        string="¿Existen alertas?",
+        store=True,
+        default=False
+    )
+    alerta = fields.Text(
+    )
+
     def _default_move_ids(self):
         return self.env['account.move'].browse(self.env.context.get('active_ids'))
 
@@ -41,38 +49,31 @@ class TestReport(TransientModel):
 
     @api.onchange('date_from')
     def _archivo_a(self):
-        pdf = self.env.ref('facturacion.reporte_seguimiento')
-
-        pdf = self.env.ref('facturacion.reporte_de_seguimiento').sudo().render_qweb_pdf([self.move_ids[0].id])[0]
-        a = self.env['ir.attachment'].create({
-            'name': "reporteSeguimiento.pdf",
-            'type': 'binary',
-            'res_id': self.move_ids[0].id,
-            'res_model': 'account.correo',
-            'datas': base64.b64encode(pdf),
-            'mimetype': 'application/x-pdf',
-
-        })
-
         ids_clientes = self.move_ids.mapped('partner_id.id')
-
         resultado = all(element == ids_clientes[0] for element in ids_clientes)
-
         if not resultado:
             mensaje = 'No se permite generar tramite de distintos clientes.' \
                       '\nFavor de seleccionar facturas del mismo cliente.'
-            res['warning'] = {
-                'title': _('Alerta'),
-                'message': _(mensaje)
-            }
-            return res
+            self.alerta_check = True
+            self.alerta = mensaje
+        else:
+            pdf = self.env.ref('facturacion.reporte_seguimiento')
+            pdf = self.env.ref('facturacion.reporte_de_seguimiento').sudo().render_qweb_pdf([self.move_ids[0].id])[0]
+            a = self.env['ir.attachment'].create({
+                'name': "reporteSeguimiento.pdf",
+                'type': 'binary',
+                'res_id': self.move_ids[0].id,
+                'res_model': 'account.correo',
+                'datas': base64.b64encode(pdf),
+                'mimetype': 'application/x-pdf',
 
-        self.date_to = str(self.move_ids[0].partner_id.correoFac)
-        self.date_from = ''
-        self.subject = 'Reporte de seguimiento .'
-        self.body = "<br>Estimado  " + str(
-            self.move_ids[0].partner_id.name) + ",</br>Se entregan facturas tramitadas."
-        self.attachment_ids = [(6, 0, [a.id])]
+            })
+            self.date_to = str(self.move_ids[0].partner_id.correoFac)
+            self.date_from = ''
+            self.subject = 'Reporte de seguimiento .'
+            self.body = "<br>Estimado  " + str(
+                self.move_ids[0].partner_id.name) + ",</br>Se entregan facturas tramitadas."
+            self.attachment_ids = [(6, 0, [a.id])]
 
     def mensaje(self):
         pal = ''

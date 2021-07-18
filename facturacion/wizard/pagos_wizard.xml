@@ -16,20 +16,24 @@
 
 
                 <field name="date_from" invisible="1"/>
-                <field name="subject"/>
-                <field name="date_to"/>
+                <field name="subject" attrs="{'invisible': ['alerta_check', '=', True]}"/>
+                <field name="date_to" attrs="{'invisible': ['alerta_check', '=', True]}"/>
 
-                <field name="body" widget="html"/>
-                <group col="4">
+                <field name="body" widget="html" attrs="{'invisible': ['alerta_check', '=', True]}"/>
+                <group col="4" attrs="{'invisible': ['alerta_check', '=', True]}">
                     <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1"
                            colspan="2"/>
 
                     <!--<field name="template_id" options="{'no_create': True}" context="{'default_model': model, 'default_body_html': body, 'default_subject': subject}"/>-->
                 </group>
 
+                <group>
+                    <field name="alerta_check" readonly="1" />
+                    <field name="alerta" readonly="1" attrs="{'invisible': ['alerta_check', '=', False]}"/>
+                </group>
 
                 <footer>
-                    <button name="mensaje" string="mandar " type="object" class="oe_highlight"/>
+                    <button name="mensaje" string="mandar " type="object" class="oe_highlight" attrs="{'invisible': ['alerta_check', '=', True]}"/>
                     or
                     <button string="Cancel" class="oe_link" special="cancel"/>
                 </footer>
