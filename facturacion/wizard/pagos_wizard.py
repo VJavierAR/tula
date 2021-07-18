@@ -55,13 +55,13 @@ class TestReport(TransientModel):
         ids_clientes = self.move_ids.mapped('partner_id.id')
         resultado = all(element == ids_clientes[0] for element in ids_clientes)
         if not resultado:
-            mensaje += 'No se permite generar tramite de distintos clientes.' \
-                      '\nFavor de seleccionar facturas del mismo cliente.'
+            mensaje += 'No se permite generar tramite de distintos clientes, ' \
+                      'favor de seleccionar facturas del mismo cliente.\n\n'
             aletra_global = True
         fac_tramitadas = self.move_ids.mapped('tramite')
         for estado in fac_tramitadas:
             if str(estado) == 'tramitadas':
-                mensaje += '\n\nUna factura seleccionada ya fue tramitada, favor de seleccionar facturas no tramitadas.'
+                mensaje += 'Una factura seleccionada ya fue tramitada, favor de seleccionar facturas no tramitadas.\n\n'
                 aletra_global = True
                 break
 
