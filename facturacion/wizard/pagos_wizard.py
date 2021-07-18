@@ -31,7 +31,7 @@ class TestReport(TransientModel):
 
     alerta_check = fields.Boolean(
         string="¿Existen alertas?",
-        store=True,
+        # store=True,
         default=False
     )
     alerta = fields.Text(
