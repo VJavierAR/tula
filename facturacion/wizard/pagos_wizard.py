@@ -65,20 +65,34 @@ class TestReport(TransientModel):
         pal = ''
         re = []
         mail_template = self.env.ref('facturacion.reporte_seguimiento')
+
         clientes = []
         for move in self.move_ids:
-            if move.partner_id.id not in clientes:
-                self.env['facturas.tramites'].create({
-                    'tramite_file': self.attachment_ids,
-                    'factura': move.id,
-                    'clientes': move.partner_id.id
-                })
-            clientes.append(move.partner_id.id)
             tramite_seq = self.env['ir.sequence'].next_by_code('tramite.sequence') or ''
             move.write({
                 'tramite': 'tramitadas',
                 'tramite_seq': tramite_seq
             })
+            clientes.append(move.partner_id.id)
+
+        reporte_seq = self.env['ir.attachment'].create({
+            'name': "reporteSeguimiento.pdf",
+            'type': 'binary',
+            'res_id': self.move_ids[0].id,
+            'res_model': 'account.correo',
+            'datas': base64.b64encode(pdf),
+            'mimetype': 'application/x-pdf',
+        })
+
+        clientes_repetidos = []
+        for move in self.move_ids:
+            if move.partner_id.id not in clientes_repetidos:
+                self.env['facturas.tramites'].create({
+                    'tramite_file': [(6, 0, [reporte_seq.id])], # self.attachment_ids,
+                    'factura': move.id,
+                    'clientes': move.partner_id.id
+                })
+            clientes_repetidos.append(move.partner_id.id)
 
 
         finalL = set(clientes)
@@ -89,7 +103,7 @@ class TestReport(TransientModel):
             vals = {
                 'email_to': self.date_to,
                 'body_html': self.body,
-                'attachment_ids': self.attachment_ids,
+                'attachment_ids': [(6, 0, [reporte_seq.id])], # self.attachment_ids,
                 'subject': self.subject
             }
             mail_id = self.env['mail.mail'].create(vals)
