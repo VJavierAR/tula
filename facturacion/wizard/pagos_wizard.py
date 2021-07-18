@@ -75,6 +75,7 @@ class TestReport(TransientModel):
             })
             clientes.append(move.partner_id.id)
 
+        pdf = self.env.ref('facturacion.reporte_de_seguimiento').sudo().render_qweb_pdf([self.move_ids[0].id])[0]
         reporte_seq = self.env['ir.attachment'].create({
             'name': "reporteSeguimiento.pdf",
             'type': 'binary',
