@@ -28,14 +28,14 @@
                 </group>
 
                 <group>
-                    <field name="alerta_check" readonly="0" force_save="1"/>
+                    <field name="alerta_check" readonly="1" force_save="1"/>
                     <field name="alerta" readonly="1" attrs="{'invisible': [['alerta_check', '=', False]]}"/>
                 </group>
 
                 <footer>
                     <button name="mensaje" string="mandar " type="object" class="oe_highlight" attrs="{'invisible': [['alerta_check', '=', True]]}"/>
                     or
-                    <button string="Cancel" class="oe_link" special="cancel"/>
+                    <button string="Cancelar" class="oe_link" special="cancel"/>
                 </footer>
             </form>
         </field>
