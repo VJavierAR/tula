@@ -54,6 +54,19 @@ class TestReport(TransientModel):
 
         })
 
+        ids_clientes = self.move_ids.mapped('partner_id.id')
+
+        resultado = all(element == ids_clientes[0] for element in ids_clientes)
+
+        if not resultado:
+            mensaje = 'No se permite generar tramite de distintos clientes.' \
+                      '\nFavor de seleccionar facturas del mismo cliente.'
+            res['warning'] = {
+                'title': _('Alerta'),
+                'message': _(mensaje)
+            }
+            return res
+
         self.date_to = str(self.move_ids[0].partner_id.correoFac)
         self.date_from = ''
         self.subject = 'Reporte de seguimiento .'
