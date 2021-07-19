@@ -325,8 +325,8 @@ class Iniciativa2Oportunidad(models.TransientModel):
         result = super(Iniciativa2Oportunidad, self).action_apply()
 
         _logger.info("result: " + str(result))
-        _logger.info("result.res_id: " + str(result.res_id))
-        id_oportunidad = result.res_id
+        _logger.info("result.res_id: " + str(result['res_id']))
+        id_oportunidad = result['res_id']
         oportunidad = self.env['model.name'].search([('id', '=', id_oportunidad)])
         oportunidad.test()
         _logger.info("oportunidad: " + str(oportunidad))
