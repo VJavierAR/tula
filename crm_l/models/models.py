@@ -195,28 +195,128 @@ class Crm_l(models.Model):
         rec = super(Crm_l, self).create(vals)      
         return rec
 
-
     def write(self, values):
-        if('date_deadline' in values):
+        if 'date_deadline' in values:
             _logger.info(values['date_deadline'])
-            fecha =datetime.strptime(values['date_deadline'], '%Y-%m-%d')    
-            dia=fecha.day
-            mes=mes=months[fecha.month-1]
+            fecha = datetime.strptime(values['date_deadline'], '%Y-%m-%d')
+            dia = fecha.day
+            mes = mes=months[fecha.month-1]
             if(dia>15):
-                values['quincena']='2.ª quincena '+str(mes)+' '+str(fecha.year)
+                values['quincena'] = '2.ª quincena '+str(mes)+' '+str(fecha.year)
             else:
-                values['quincena']='1.ª quincena '+str(mes)+' '+str(fecha.year)
+                values['quincena'] = '1.ª quincena '+str(mes)+' '+str(fecha.year)
+        if 'type' in values:
+            values = self.cambia_tipo(values)
         res = super(Crm_l, self).write(values)
-
-        if self.description:
-            self.test()
-
         return res
 
-    @api.onchange('type')
-    def cambia_tipo(self):
+    def cambia_tipo(self, values):
         if self.description:
-            self.test()
+            d = self.description.splitlines()
+            if 'CONNEXIS' in self.description:
+                # listo1
+                nombre = d[d.index('Objeto Contractual:') + 1] if ('Objeto Contractual:' in self.description) else ''
+                # listo2
+                filtered_values = list(filter(lambda v: 'Presupuesto:' in v, d))
+                if len(filtered_values) > 0:
+                    if '[B./]' not in filtered_values[0]:
+                        value = d[d.index('Presupuesto:') + 1].replace('[B./]', '').replace(',', '').replace(' ',
+                                                                                                             '') if (
+                                    'Presupuesto:' in record.description) else '0'
+                    if '[B./]' in filtered_values[0]:
+                        value = filtered_values[0].replace('Presupuesto: ', '').replace('[B./]', '').replace(',',
+                                                                                                             '').replace(
+                            ' ', '') if (len(filtered_values)) > 0 else 0
+
+                # listo3
+                filtered_values2 = list(filter(lambda v: 'Fecha/Hora de Cierre de recepción de ofertas: ' in v, d))
+                if len(filtered_values2) > 0:
+                    date_time_str = filtered_values2[0].replace('Fecha/Hora de Cierre de recepción de ofertas: ',
+                                                                '').replace('Hora: ', '')
+                    date_time_obj = date_time_str
+
+                if len(filtered_values2) == 0:
+                    date_time_obj = False
+
+                # listo4
+                p = d[d.index('No. de Proceso:') + 1] if ('No. de Proceso:' in self.description) else ''
+                # listo5
+                values3_temp = list(filter(lambda v: 'Contacto Institucional: ' in v, d))
+                filtered_values3 = values3_temp if (len(values3_temp) > 0) else list(
+                    filter(lambda v: 'Contacto institucional: ' in v, d))
+                if len(filtered_values3) > 0:
+                    cad = filtered_values3[0].replace('Contacto Institucional: ', '').split('Nombre:')[1].split(
+                        'Cargo:') if ('Cargo:' in filtered_values3[0]) else \
+                    filtered_values3[0].replace('Contacto Institucional: ', '').split('Nombre:')[1].split('Teléfono:')
+                    Nombre = cad[0]
+                    tem = cad[1].split('Teléfono:') if ('Cargo:' in filtered_values3[0]) else cad
+                    temp2 = tem[1].split('Correo:')
+                    telefono = temp2[0]
+                    correo = temp2[1]
+                if len(filtered_values3) == 0:
+                    Nombre = ''
+                    telefono = ''
+                    correo = ''
+                # listo6
+                e = d[d.index('Enlace al sistema de compras oficial:') + 1] if (
+                            'Enlace al sistema de compras oficial:' in self.description) else ''
+                values['name'] = nombre
+                values['expected_revenue'] = float(value)
+                values['contact_name'] = Nombre
+                values['phone'] = telefono
+                values['email_from'] = correo
+                values['email_cc'] = correo
+                values['correo_conexis'] = correo
+                values['website'] = e
+                values['fecha_acto'] = date_time_obj
+
+                values['no_referencia'] = p
+                values['no_acto'] = p
+                # values['mobile']=telefono
+                values['contacto'] = Nombre
+                values['telefono'] = telefono
+                values['website_conexis'] = e
+                values['conexis'] = True
+                values['source_id'] = self.env.ref('crm_l.conexis_id').id
+            if 'PANAMA COMPRA' in self.description:
+                na = list(filter(lambda v: 'Nombre del Acto:' in v, d))
+                name = na[0].split('Nombre del Acto:')[1] if (len(na) > 0) else ''
+                pri = list(filter(lambda v: 'Precio Referencia:	B/. ' in v, d))
+                price = float(pri[0].split('Precio Referencia:	B/. ')[1].replace(',', '')) if (len(pri) > 0) else 0
+                da = list(filter(lambda v: 'Fecha y Hora de Apertura de Propuestas:	' in v, d))
+                fecha = False
+                if len(da) > 0:
+                    Fec = da[0].replace('Fecha y Hora de Apertura de Propuestas:	', '').replace('- ', '')
+                    fecha = Fec
+
+                nu = list(filter(lambda v: 'Número:	' in v, d))
+                numero = nu[0].split('Número:	')[1] if (len(nu) > 0) else ''
+                URL = 'https://www.panamacompra.gob.pa/Inicio/#!/'
+                nom_c = list(filter(lambda v: 'Nombre:	' in v, d))
+                nombre = nom_c[0].split('Nombre:	')[1] if (len(nom_c) > 0) else ''
+                tel = list(filter(lambda v: 'Teléfono:' in v, d))
+                telefono = tel[0].split('Teléfono:')[1] if (len(tel) > 0) else ''
+                corr = list(filter(lambda v: 'Correo Electrónico:' in v, d))
+                correo = corr[0].split('Correo Electrónico:')[1] if (len(corr) > 0) else ''
+                values['name'] = name.replace('\t', '')
+                values['expected_revenue'] = float(price)
+                values['contact_name'] = nombre.replace('\t', '')
+                values['phone'] = telefono.replace('\t', '')
+                values['telefono'] = telefono.replace('\t', '')
+                values['contacto'] = nombre.replace('\t', '')
+                # values['mobile']=telefono.replace('\t','')
+                values['email_from'] = correo.replace('\t', '')
+                values['email_cc'] = correo.replace('\t', '')
+                values['correo_conexis'] = correo.replace('\t', '')
+                values['website'] = URL
+                values['website_conexis'] = URL
+                values['fecha_acto'] = fecha
+                values['no_referencia'] = numero
+                values['no_acto'] = numero
+                values['source_id'] = self.env.ref('crm_l.panama_id').id
+                values['conexis'] = True
+
+        return values
 
 """
 class Iniciativa2Oportunidad(models.TransientModel):
