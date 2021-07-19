@@ -298,7 +298,10 @@ class RepairProduct(models.Model):
 
     def write(self,values):
         if(self.sale_line_id):
-            self.sale_line_id.write(values)
+            v=values
+            if('sale_line_id' in v):
+                del v['sale_line_id']
+            self.sale_line_id.write(v)
         return super(RepairProduct,self).write(values)
 
 class RepairService(models.Model):
@@ -374,7 +377,10 @@ class RepairService(models.Model):
 
     def write(self,values):
         if(self.sale_line_id):
-            self.sale_line_id.write(values)
+            v=values
+            if('sale_line_id' in v):
+                del v['sale_line_id']
+            self.sale_line_id.write(v)
         return super(RepairService,self).write(values)
 
     @api.onchange('product_uom')
