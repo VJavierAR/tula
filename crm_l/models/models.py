@@ -3,6 +3,7 @@ from odoo import models, fields, api
 from datetime import datetime, timedelta
 import pytz
 import logging, ast
+import re
 
 _logger = logging.getLogger(__name__)
 months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
@@ -30,6 +31,10 @@ class Crm_l(models.Model):
             if record.description:
                 d=record.description.splitlines()
                 if('CONNEXIS' in record.description):
+                    _logger.info("d: " + str(d))
+                    regex = re.compile("^Institución contratante ")
+                    idxs = [i for i, item in enumerate(d) if re.search(regex, item)]
+                    institucion_contratante = d[idxs[0] + 1] if('Institución contratante (' in record.description) else ''
                     #listo1
                     nombre=d[d.index('Objeto Contractual:')+1] if('Objeto Contractual:' in record.description) else ''
                     #listo2
@@ -89,12 +94,15 @@ class Crm_l(models.Model):
                     record['website_conexis'] = e
                     record['conexis']=True
                     record['source_id']=self.env.ref('crm_l.conexis_id').id
-                if('PANAMA COMPRA' in record.description):
+                    record['partner_name'] = institucion_contratante
+
+                if 'PANAMA COMPRA' in record.description:
                     na=list(filter(lambda v: 'Nombre del Acto:' in v, d))
                     name=na[0].split('Nombre del Acto:')[1] if(len(na)>0) else ''
                     pri=list(filter(lambda v: 'Precio Referencia:	B/. ' in v, d))
                     price=float(pri[0].split('Precio Referencia:	B/. ')[1].replace(',','')) if(len(pri)>0) else 0
                     da=list(filter(lambda v: 'Fecha y Hora de Apertura de Propuestas:	' in v, d))
+
                     fecha=False
                     if(len(da)>0):
                         Fec = da[0].replace('Fecha y Hora de Apertura de Propuestas:	','').replace('- ','')
@@ -105,13 +113,17 @@ class Crm_l(models.Model):
 
                     nu=list(filter(lambda v: 'Número:	' in v, d))
                     numero=nu[0].split('Número:	')[1] if(len(nu)>0) else ''
-                    URL='https://www.panamacompra.gob.pa/Inicio/#!/'
+                    URL = 'https://www.panamacompra.gob.pa/Inicio/#!/'
                     nom_c=list(filter(lambda v: 'Nombre:	' in v, d))
                     nombre=nom_c[0].split('Nombre:	')[1] if(len(nom_c)>0) else ''
                     tel=list(filter(lambda v: 'Teléfono:' in v, d))
                     telefono=tel[0].split('Teléfono:')[1] if(len(tel)>0) else ''
                     corr=list(filter(lambda v: 'Correo Electrónico:' in v, d))
                     correo=corr[0].split('Correo Electrónico:')[1] if(len(corr)>0) else ''
+
+                    entidad = list(filter(lambda v: 'Entidad:' in v, d))
+                    nom_empresa = entidad[0].split('Entidad:')[1] if (len(entidad) > 0) else ''
+
                     record['name']=name.replace('\t','')
                     record['expected_revenue']=float(price)
                     record['contact_name']=nombre.replace('\t','')
@@ -129,7 +141,8 @@ class Crm_l(models.Model):
                     record['no_acto'] = numero
                     record['source_id']=self.env.ref('crm_l.panama_id').id
                     record['conexis'] = True
-                    
+                    record['partner_name'] = nom_empresa
+
     @api.onchange('partner_id')
     def cambia_cliente(self):
         if self._origin.email_from:
