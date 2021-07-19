@@ -205,8 +205,7 @@ class Crm_l(models.Model):
                 values['quincena'] = '2.ª quincena '+str(mes)+' '+str(fecha.year)
             else:
                 values['quincena'] = '1.ª quincena '+str(mes)+' '+str(fecha.year)
-        if 'type' in values:
-            values = self.cambia_tipo(values)
+
         res = super(Crm_l, self).write(values)
         return res
 
@@ -318,6 +317,20 @@ class Crm_l(models.Model):
 
         return values
 
+    def convert_opportunity(self, partner_id, user_ids=False, team_id=False):
+        customer = False
+        if partner_id:
+            customer = self.env['res.partner'].browse(partner_id)
+        for lead in self:
+            if not lead.active or lead.probability == 100:
+                continue
+            vals = lead._convert_opportunity_data(customer, team_id)
+            vals = self.cambia_tipo(vals)
+            _logger.info("valssss:::     " + str(vals))
+            lead.write(vals)
+
+        if user_ids or team_id:
+            self.handle_salesmen_assignment(user_ids, team_id)
 """
 class Iniciativa2Oportunidad(models.TransientModel):
     _inherit = 'crm.lead2opportunity.partner'
