@@ -206,9 +206,11 @@ class Crm_l(models.Model):
                 values['quincena']='2.ª quincena '+str(mes)+' '+str(fecha.year)
             else:
                 values['quincena']='1.ª quincena '+str(mes)+' '+str(fecha.year)
+        res = super(Crm_l, self).write(values)
+
         if self.description:
             self.test()
-        res = super(Crm_l, self).write(values)
+
         return res
 
     @api.onchange('type')
