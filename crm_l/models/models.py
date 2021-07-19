@@ -7,6 +7,7 @@ import logging, ast
 _logger = logging.getLogger(__name__)
 months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
 
+
 # licitaciones@promed-sa.com / contraseña: jaxpa
 class Crm_l(models.Model):
     _inherit = 'crm.lead'
@@ -207,3 +208,20 @@ class Crm_l(models.Model):
                 values['quincena']='1.ª quincena '+str(mes)+' '+str(fecha.year)
         res = super(Crm_l, self).write(values)
         return res
+
+    @api.onchange('type')
+    def cambia_tipo(self):
+        if self.description:
+            self.test()
+
+"""
+class Iniciativa2Oportunidad(models.TransientModel):
+    _inherit = 'crm.lead2opportunity.partner'
+
+    def action_apply(self):
+        result = super(Iniciativa2Oportunidad, self).action_apply()
+
+
+
+        return result
+"""
