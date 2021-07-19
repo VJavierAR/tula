@@ -1,56 +1,71 @@
 <odoo>
-  <data>
-      
-      
-<record model="ir.ui.view" id="crm_lead_update">
-<field name="name">crm.lead.update</field>
-    <field name="model">crm.lead</field>
-    <field name="inherit_id" ref="crm.crm_lead_view_form"/>
-    <field name="arch" type="xml">
-        <xpath expr="//field[@name='date_deadline']" position="before">
-            <field name="fecha_acto" string='Fecha acto' groups='crm_l.group_crm_licitacion'/>
-            <field name="no_referencia" string='Número de Acto Público' groups='crm_l.group_crm_licitacion'/>
-            <field name="no_acto" force_save="1" attrs="{'readonly': 1}" invisible='1'/>
-        </xpath>
-          <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='lead_partner']/field[@name='partner_id']" position="before">
-            <field name="expected_revenue" class="oe_inline" widget="monetary" options="{'currency_field': 'company_currency'}"/>
-          </xpath>
-          <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='lead_priority']/field[@name='priority']" position="before">
-              <field name="fecha_acto" string="Fecha acto" groups='crm_l.group_crm_licitacion'/>
-              <field name="no_referencia" string="Número de Acto Público" groups='crm_l.group_crm_licitacion'/>
-              <field name="no_acto" force_save="1" attrs="{'readonly': 1}" invisible='1'/>
-              <field name="contacto" readonly='1' attrs="{'invisible': [('contacto', '=', False)]}"/>
-              <field name="telefono" readonly='1' attrs="{'invisible': [('telefono', '=', False)]}"/>
-              <field name="website_conexis" readonly='1' attrs="{'invisible': [('website_conexis', '=', False)]}"/>
-              <field name="correo_conexis" readonly='1' attrs="{'invisible': [('website_conexis', '=', False)]}"/>
-              <field name="email_cc" groups='crm_l.group_crm_licitacion'/>
-          </xpath>
-          <xpath expr="//field[@name='lost_reason']" position="before">
-              <field name="contacto" readonly='1' attrs="{'invisible': [('contacto', '=', False)]}"/>
-              <field name="telefono" readonly='1' attrs="{'invisible': [('telefono', '=', False)]}"/>
-              <field name="website_conexis" readonly='1' attrs="{'invisible': [('website_conexis', '=', False)]}"/>
-              <field name="correo_conexis" readonly='1' attrs="{'invisible': [('website_conexis', '=', False)]}"/>
-              <field name="email_cc" groups='crm_l.group_crm_licitacion'/>
-          </xpath>
-    </field>
- </record>
+    <data>
 
 
-<record model="ir.ui.view" id="view_crml_case_opportunities_filter_update">
-    <field name="name">view.crml.case.opportunities.filter.update</field>
-    <field name="model">crm.lead</field>
-    <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
-    <field name="arch" type="xml">
-        <xpath expr="//search" position="inside">
-            <separator/>
-            <filter string="Fecha de cierre previsto e ingresos estimados"
-                    name="quincena"
-                    context="{'group_by':'quincena'}"
-                    groups='contactos_conexion.group_fecha_de_cierre_previsto'/>
-            <separator/>
-        </xpath>
-    </field>
-</record>
+        <record model="ir.ui.view" id="crm_lead_update">
+            <field name="name">crm.lead.update</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_deadline']" position="before">
+                    <field name="fecha_acto" string='Fecha acto' groups='crm_l.group_crm_licitacion'/>
+                    <field name="no_referencia" string='Número de Acto Público' groups='crm_l.group_crm_licitacion'/>
+                    <field name="no_acto" force_save="1" attrs="{'readonly': 1}" invisible='1'/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='lead_partner']/field[@name='partner_id']"
+                       position="before">
+                    <field name="expected_revenue" class="oe_inline" widget="monetary"
+                           options="{'currency_field': 'company_currency'}"/>
+                </xpath>
+                <xpath expr="//form[1]/sheet[1]/group[1]/group[@name='lead_priority']/field[@name='priority']"
+                       position="before">
+                    <field name="fecha_acto" string="Fecha acto" groups='crm_l.group_crm_licitacion'/>
+                    <field name="no_referencia" string="Número de Acto Público" groups='crm_l.group_crm_licitacion'/>
+                    <field name="no_acto" force_save="1" attrs="{'readonly': 1}" invisible='1'/>
+                    <field name="contacto" readonly='1' attrs="{'invisible': [('contacto', '=', False)]}"/>
+                    <field name="telefono" readonly='1' attrs="{'invisible': [('telefono', '=', False)]}"/>
+                    <field name="website_conexis" readonly='1'
+                           attrs="{'invisible': [('website_conexis', '=', False)]}"/>
+                    <field name="correo_conexis" readonly='1' attrs="{'invisible': [('website_conexis', '=', False)]}"/>
+                    <field name="email_cc" groups='crm_l.group_crm_licitacion'/>
+                </xpath>
+                <xpath expr="//field[@name='lost_reason']" position="before">
+                    <field name="contacto" readonly='1' attrs="{'invisible': [('contacto', '=', False)]}"/>
+                    <field name="telefono" readonly='1' attrs="{'invisible': [('telefono', '=', False)]}"/>
+                    <field name="website_conexis" readonly='1'
+                           attrs="{'invisible': [('website_conexis', '=', False)]}"/>
+                    <field name="correo_conexis" readonly='1' attrs="{'invisible': [('website_conexis', '=', False)]}"/>
+                    <field name="email_cc" groups='crm_l.group_crm_licitacion'/>
+                </xpath>
 
-</data>
+                <xpath expr="//button[@string='Mark Lost'][1]" position="attributes">
+                    <attribute name="attrs">{'invisible': [('active', '=', False),('probability', '&lt;', 100)]}</attribute>
+                </xpath>
+
+                <xpath expr="//button[@name='action_set_lost']" position="attributes">
+                    <attribute name="attrs">{'invisible': 1}</attribute>
+                </xpath>
+
+
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_crml_case_opportunities_filter_update">
+            <field name="name">view.crml.case.opportunities.filter.update</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <separator/>
+                    <filter string="Fecha de cierre previsto e ingresos estimados"
+                            name="quincena"
+                            context="{'group_by':'quincena'}"
+                            groups='contactos_conexion.group_fecha_de_cierre_previsto'/>
+                    <separator/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
 </odoo>
