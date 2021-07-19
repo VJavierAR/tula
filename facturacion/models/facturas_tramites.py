@@ -28,6 +28,6 @@ class Tramites(models.Model):
     )
 
     tramite_seq = fields.Char(
-        string='Tramite',
+        string='Tramite secuencia',
         related='factura.tramite_seq'
     )
