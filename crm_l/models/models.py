@@ -323,13 +323,11 @@ class Iniciativa2Oportunidad(models.TransientModel):
 
     def action_apply(self):
         result = super(Iniciativa2Oportunidad, self).action_apply()
-
-        _logger.info("result: " + str(result))
-        _logger.info("result.res_id: " + str(result['res_id']))
+        # _logger.info("result: " + str(result))
+        # _logger.info("result.res_id: " + str(result['res_id']))
         id_oportunidad = result['res_id']
         oportunidad = self.env['crm.lead'].search([('id', '=', id_oportunidad)])
         oportunidad.test()
-        _logger.info("oportunidad: " + str(oportunidad))
-
+        # _logger.info("oportunidad: " + str(oportunidad))
         return result
 
