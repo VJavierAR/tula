@@ -38,7 +38,7 @@
                     <field name="email_cc" groups='crm_l.group_crm_licitacion'/>
                 </xpath>
 
-                <xpath expr="//form[1]/header[1]/button[2]" position="attributes">
+                <xpath expr="//form[1]/header[1]/button[3]" position="attributes">
                     <attribute name="attrs">{'invisible': [('active', '=', False),('probability', '&lt;', 100)]}</attribute>
                 </xpath>
 
