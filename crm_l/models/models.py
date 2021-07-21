@@ -30,8 +30,9 @@ class Crm_l(models.Model):
         for record in self:
             if record.description:
                 d=record.description.splitlines()
+                _logger.info("d: " + str(d))
                 if('CONNEXIS' in record.description):
-                    _logger.info("d: " + str(d))
+                    
                     regex = re.compile("^Institución contratante ")
                     idxs = [i for i, item in enumerate(d) if re.search(regex, item)]
                     institucion_contratante = d[idxs[0] + 1] if('Institución contratante (' in record.description) else ''
@@ -101,7 +102,8 @@ class Crm_l(models.Model):
                     name=na[0].split('Nombre del Acto:')[1] if(len(na)>0) else ''
                     pri=list(filter(lambda v: 'Precio Referencia:	B/. ' in v, d))
                     price=float(pri[0].split('Precio Referencia:	B/. ')[1].replace(',','')) if(len(pri)>0) else 0
-                    da=list(filter(lambda v: 'Fecha y Hora de Apertura de Propuestas:	' in v, d))
+                    # da=list(filter(lambda v: 'Fecha y Hora de Apertura de Propuestas:	' in v, d))
+                    da = list(filter(lambda v: 'Fecha de Publicación:' in v, d))
 
                     fecha=False
                     if(len(da)>0):
