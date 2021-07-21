@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
 
             <xpath expr="//field[@name='payment_term_id']" position="after">
-              <field name="promocion" attrs="{'readonly':[('promocion','=',True)]}"/>
+              <field name="promocion" attrs="{'invisible':[('promocion','=',True)]}"/>
             </xpath>
             <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']" position="attributes">
               <attribute name="context">{'default_check':promocion}</attribute>
