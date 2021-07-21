@@ -55,7 +55,7 @@ class fact(models.Model):
 
 class fact(models.Model):
     _inherit = 'sale.order'
-    promocion=fields.Boolean('Promocion')
+    promocion=fields.Boolean('Promocion',store=True)
 
     @api.onchange('order_line')
     def check(self):
