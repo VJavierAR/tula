@@ -1,0 +1,75 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="res_partner_form_view_update">
+            <field name="name">res.partner.form.update</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="limite_credito" attrs="{'invisible': [('company_type', '!=', 'company')], 'readonly': 1}" />
+                    <field name="limite_credito_conglomerado" attrs="{'invisible': [('company_type', '!=', 'company')], 'readonly': 1}" />
+                    <field name="colchon_credito" attrs="{'invisible': [('company_type', '!=', 'company')], 'readonly': 1}" />
+
+                    <!--<field name="limite_credito_sucursal" attrs="{'invisible': [('type', '!=', 'delivery')]}" />-->
+                </xpath>
+                <xpath expr="//field[@name='property_payment_term_id']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_partner_form_view_update_acceses_groups">
+            <field name="name">res.partner.form.update.acceses.groups</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="limites.res_partner_form_view_update"/>
+            <field name="groups_id" eval="[(6, 0, [ref('limites.group_confirm_sale_excede_limite_credito')])]" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='limite_credito']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='limite_credito_conglomerado']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='colchon_credito']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='property_payment_term_id']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_partner_form_view_update_descuento">
+            <field name="name">res.partner.form.update.descuento</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="limite_de_descuento" readonly="1"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_partner_form_view_update_acceses_groups_descuento">
+            <field name="name">res.partner.form.update.acceses.groups.descuento</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="limites.res_partner_form_view_update_descuento"/>
+            <field name="groups_id" eval="[(6, 0, [ref('limites.group_confirm_sale_excede_descuento')])]" />
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='limite_de_descuento']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>
