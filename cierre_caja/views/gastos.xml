@@ -410,9 +410,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='journal_id']" position="after">
                 <field name="partner_type" invisible='1'/>
-                <field name="is_internal_transfer" invisible='1'/>
+                <field name="payment_type" invisible='1'/>
                 <field name="medio_pago" required="True"/>
-                <field name="tipo_pago" attrs="{'required':[('is_internal_transfer','!=',True),('partner','=','customer')],'invisible':[('is_internal_transfer','!=',True),('partner','=','customer')]}" />
+                <field name="tipo_pago" attrs="{'required':[('payment_type','!=','transfer'),('partner','=','customer')],'invisible':[('payment_type','=','transfer'),('partner','!=','customer')]}" />
             </xpath>
         </field>
       </record>
