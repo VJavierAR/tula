@@ -412,7 +412,7 @@
                 <field name="partner_type" invisible='1'/>
                 <field name="payment_type" invisible='1'/>
                 <field name="medio_pago" required="True"/>
-                <field name="tipo_pago" attrs="{'required':[('payment_type','!=','transfer'),('partner_type','=','customer')],'invisible':[('payment_type','=','transfer'),('partner_type','!=','customer')]}" />
+                <field name="tipo_pago" attrs="{'required':[('payment_type','!=','transfer'),('partner_type','=','customer')],'invisible':['|',('payment_type','=','transfer'),('partner_type','!=','customer')]}" />
             </xpath>
         </field>
       </record>
