@@ -231,9 +231,9 @@ class Cierre(models.Model):
         acumulado=self.env['account.payment'].search([['payment_date','>=',prime_day_of_month],['payment_date','<',ayer]])
         hoy=self.env['account.payment'].search([['payment_date','=',fecha]])
         data=[]
-        data.append(['Contado',sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount')),sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount')),sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))])
-        data.append(['Abonos Recibidos',sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))])
-        data.append(['Total Depositos',sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')),sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))])
+        data.append(['Contado',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount')))])
+        data.append(['Abonos Recibidos',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')))])
+        data.append(['Total Depositos',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')))])
         return data
 
 
@@ -251,9 +251,9 @@ class Cierre(models.Model):
         #contado_hoy=
         #credito_acumulado=
         #contado_acumulado=
-        data.append(['Ventas Contado',sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')),sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')),sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))])
-        data.append(['Ventas Credito',sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total')),sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total')),sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))])
-        data.append(['Total Ventas',sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')),sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')),sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))])
+        data.append(['Ventas Contado',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')))])
+        data.append(['Ventas Credito',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total')))])
+        data.append(['Total Ventas',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')))])
         return data
 
     def get_ventas(self):
@@ -282,10 +282,10 @@ class Cierre(models.Model):
                 descuento2=descuento2+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
             iva2=iva2+(li.amount_total-li.amount_untaxed)
         data=[]
-        data.append(['Ventas',total,total2,total+total2])
-        data.append(['Descuento',descuento,descuento2,descuento+descuento2])
-        data.append(['Impuestos',iva,iva2,iva+iva2])
-        data.append(['Total',total-descuento+iva,total2-descuento2+iva2,(total-descuento+iva)+(total2-descuento2+iva2)])
+        data.append(['Ventas',"{0:.2f}".format(total),"{0:.2f}".format(total2),"{0:.2f}".format(total+total2)])
+        data.append(['Descuento',"{0:.2f}".format(descuento),"{0:.2f}".format(descuento2),"{0:.2f}".format(descuento+descuento2)])
+        data.append(['Impuestos',"{0:.2f}".format(iva),"{0:.2f}".format(iva2),"{0:.2f}".format(iva+iva2)])
+        data.append(['Total',"{0:.2f}".format(total-descuento+iva),"{0:.2f}".format(total2-descuento2+iva2),"{0:.2f}".format((total-descuento+iva)+(total2-descuento2+iva2))])
         return data
     
 
@@ -305,7 +305,7 @@ class Cierre(models.Model):
         for jo in j:
             ayer=sum(lines.filtered(lambda x:x.journal_id.id==jo.id).mapped('amount'))
             hoy=sum(lines2.filtered(lambda x:x.journal_id.id==jo.id).mapped('amount'))
-            data.append([jo.name,str(ayer),str(hoy),str(hoy+ayer)])
+            data.append([jo.name,"{0:.2f}".format(ayer),"{0:.2f}".format(hoy),"{0:.2f}".format(hoy+ayer)])
         return data
 
 class CierreConf(models.Model):
