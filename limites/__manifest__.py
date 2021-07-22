@@ -29,12 +29,12 @@
 
     # always loaded
     'data': [
-        'security/security.xml',
-        'security/ir.model.access.csv',
         'wizard/sale_order_wizard_view.xml',
         'views/res_partner_view.xml',
         'views/sale_order_view.xml',
         'views/sale_order_line_view.xml',
+        'security/security.xml',
+        'security/ir.model.access.csv',
     ],
     # only loaded in demonstration mode
     'demo': [
