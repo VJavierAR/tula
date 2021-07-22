@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_limites_limites,limites.limites,model_limites_limites,base.group_user,1,1,1,1
-access_sale_confirm_limite_credito,access.confirm.sale.excede.limite.credito,limites.model_sale_order_alerta_limite_credito,group_confirm_sale_excede_limite_credito,1,1,1,1
-access_sale_order_alerta_descuento,access.sale.order.alerta.descuento,limites.model_sale_order_alerta_descuento,base.group_user,1,1,1,1
+access_sale_confirm_limite_credito,access.confirm.sale.excede.limite.credito,model_sale_order_alerta_limite_credito,group_confirm_sale_excede_limite_credito,1,1,1,1
+access_sale_order_alerta_descuento,access.sale.order.alerta.descuento,model_sale_order_alerta_descuento,base.group_user,1,1,1,1
