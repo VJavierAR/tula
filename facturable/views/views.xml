@@ -53,7 +53,19 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="account_move_update_form_view">
+            <field name="name">account.move.form.update</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
 
+                <xpath expr="//field[@name='state']" position="before">
+                    <field name="solicitud"  invisible='1'/>
+                    <field name="promocion"  />
+                </xpath>
+
+            </field>
+        </record>
 
 
 
