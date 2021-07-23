@@ -12,6 +12,15 @@ class AccountPayment(models.Model):
     cierre_id = fields.Many2one('cierre.caja')
     incluir = fields.Boolean('Incluir', default=False)
     tipo_pago=fields.Selection([('Contado','Contado'),('Credito','Credito')],default='Credito')
+    monto_moneda=fields.Float('Monto')
+
+    @api.onchange('currency_id')
+    def actulizaMonneda(self):
+        for rec in self:
+            rec.monto_moneda=rec.amount
+            moneda=self.company_id.currency_id.id
+            if(rec.currency_id.id!=moneda):
+                rec.monto_moneda=(rec.amount/rec.currency_id.rate)
 
     def get_tipo_pago(self):
         m=[]
@@ -53,7 +62,7 @@ class CierreLineas(models.Model):
         
         for line in self:
             pagos = line.cierre_id.pagos_hoy
-            line.monto_calculado = sum(pagos.filtered(lambda p: p.journal_id == line.name).mapped('amount'))
+            line.monto_calculado = sum(pagos.filtered(lambda p: p.journal_id == line.name).mapped('monto_moneda'))
             line.diferencia = line.monto_calculado - line.monto_reportado
     
     @api.depends('name')
@@ -79,7 +88,7 @@ class CierreLineas2(models.Model):
         
         for line in self:
             pagos = line.cierre_id.pagos_hoy
-            line.monto_calculado = sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name and p.payment_type=='inbound').mapped('amount'))-sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name and p.payment_type=='outbound').mapped('amount'))
+            line.monto_calculado = sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name and p.payment_type=='inbound').mapped('monto_moneda'))-sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name and p.payment_type=='outbound').mapped('monto_moneda'))
             line.diferencia = line.monto_calculado - line.monto_reportado
 
 class Cierre(models.Model):
@@ -191,6 +200,8 @@ class Cierre(models.Model):
 
             pagos = payment_env.search(
                 [('create_date', '>=', cierre.name), ('create_date', '<=', cierre_dia), ('create_uid', '=', cierre.user_id.id), ('state', 'not in', ('draft', 'cancelled')), ('partner_type', '=', 'customer'), ('payment_type', 'in', ('inbound', 'outbound')),('journal_id.quitar_diario','=',False)])
+            for p in pagos.filtered(lambda x:x.monto_moneda==0):
+                p.actulizaMonneda()
             #pagos |= payment_env.search(
             #    [('create_date', '>=', '2020-08-10 00:00:00'), ('create_date', '<=', inicio_dia), ('create_uid', '=', cierre.user_id.id), ('incluir', '=', True)])
             #pagos_hoy_olvidados = payment_env.search(
