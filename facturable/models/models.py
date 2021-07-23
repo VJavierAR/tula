@@ -98,7 +98,7 @@ class facturas(models.Model):
 
     def buscar(self):
         for record in self:
-            s=self.env['sale.order'].search(['name','=',record.invoice_origin])
+            s=self.env['sale.order'].search([['name','=',record.invoice_origin]])
             record['solicitud']=s
 
 class fact3(models.Model):
