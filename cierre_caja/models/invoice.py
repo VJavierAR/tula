@@ -63,7 +63,7 @@ class CierreLineas(models.Model):
         for line in self:
             pagos = line.cierre_id.pagos_hoy
             line.monto_calculado = sum(pagos.filtered(lambda p: p.journal_id == line.name).mapped('monto_moneda'))
-            line.diferencia = line.monto_calculado - line.monto_reportado
+            line.diferencia = round((line.monto_calculado - line.monto_reportado),2)
     
     @api.depends('name')
     def compute_monto_final(self):
