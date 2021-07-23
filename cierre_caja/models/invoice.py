@@ -63,7 +63,7 @@ class CierreLineas(models.Model):
         for line in self:
             pagos = line.cierre_id.pagos_hoy
             line.monto_calculado = sum(pagos.filtered(lambda p: p.journal_id == line.name).mapped('monto_moneda'))
-            line.diferencia = round((line.monto_calculado - line.monto_reportado),2)
+            line.diferencia = line.monto_calculado - line.monto_reportado
     
     @api.depends('name')
     def compute_monto_final(self):
@@ -119,7 +119,7 @@ class Cierre(models.Model):
             if cierre.state == 'draft':
                 cierre.diferencia = 0
             else:
-                cierre.diferencia = cierre.monto_cierre_calculado - cierre.monto_cierre
+                cierre.diferencia = round((cierre.monto_cierre_calculado - cierre.monto_cierre),2)
                 
     @api.onchange('user_id')
     def calcular_apertura(self):
