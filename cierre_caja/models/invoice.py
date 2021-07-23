@@ -308,8 +308,10 @@ class Cierre(models.Model):
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         hoy_temp=fecha+relativedelta(days=1)
         hoy=datetime(hoy_temp.year, hoy_temp.month, hoy_temp.day)
-        lines=self.env['account.payment'].search(['|','&',['write_date','>=',prime_day_of_month],['write_date','<',ayer],['payment_type','!=','outbound']])
-        lines2=self.env['account.payment'].search(['|','&',['write_date','>',ayer],['write_date','<',hoy],['payment_type','!=','outbound']])
+        lines=self.env['account.payment'].search([['payment_date','>=',prime_day_of_month],['payment_date','<',ayer]])
+        lines2=self.env['account.payment'].search([['payment_date','=',fecha]])
+        lines=lines.filtered(lambda x:x.payment_type!='outbound')
+        lines2=lines2.filtered(lambda x:x.payment_type!='outbound')
         j=self.env['account.journal'].search([])
         data=[]
         for jo in j:
