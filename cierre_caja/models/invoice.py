@@ -245,9 +245,9 @@ class Cierre(models.Model):
         acumulado=acumulado.filtered(lambda x:x.payment_type!='outbound')
         hoy=hoy.filtered(lambda x:x.payment_type!='outbound')
         data=[]
-        data.append(['Contado',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount')))])
-        data.append(['Abonos Recibidos',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')))])
-        data.append(['Total Depositos',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')))])
+        data.append(['Contado',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda')))])
+        data.append(['Abonos Recibidos',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda')))])
+        data.append(['Total Depositos',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda')))])
         return data
 
 
@@ -315,8 +315,8 @@ class Cierre(models.Model):
         j=self.env['account.journal'].search([])
         data=[]
         for jo in j:
-            ayer=sum(lines.filtered(lambda x:x.journal_id.id==jo.id).mapped('amount'))
-            hoy=sum(lines2.filtered(lambda x:x.journal_id.id==jo.id).mapped('amount'))
+            ayer=sum(lines.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
+            hoy=sum(lines2.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
             data.append([jo.name,"{0:.2f}".format(ayer),"{0:.2f}".format(hoy),"{0:.2f}".format(hoy+ayer)])
         return data
 
