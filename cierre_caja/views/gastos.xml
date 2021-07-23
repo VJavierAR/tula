@@ -276,6 +276,26 @@
                     <table class="table table-bordered">
                         <tr>
                             <th>Diario de Pago</th>
+                            <th>Monto Sistema</th>
+                            <!--th>Monto Reportado</th-->
+                        </tr>
+                        <t t-foreach="o.desglose_pagos" t-as="l">
+                            <tr>
+                                <td>
+                                    <span t-field="l.name"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="l.monto_calculado"/>
+                                </td>
+                                <!--td class="text-right">
+                                    <span t-field="l.monto_reportado"/>
+                                </td-->
+                            </tr>
+                        </t>
+                    </table>
+                    <!--<table class="table table-bordered">
+                        <tr>
+                            <th>Diario de Pago</th>
                             <th>Monto Ayer</th>
                             <th>Monto Hoy</th>
                             <th>Monto Acumulado</th>
@@ -296,7 +316,7 @@
                                 </td>
                             </tr>
                         </t>
-                    </table>
+                    </table>-->
                      <t t-set="pagos" t-value="o.get_pagos()"/>
                      <t t-set="facturas" t-value="o.get_facturas()"/>
                      <t t-set="ventas" t-value="o.get_ventas()"/>
