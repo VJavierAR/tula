@@ -18,6 +18,7 @@ class SaleReportUpdate(models.TransientModel):
 		#	pi.action_assign()
 		action = self.env.ref('sale_enterprise.sale_report_action_dashboard').read()[0]
 		sl=self.env['sale.order.line'].search([['qty_invoiced','=',0],['facturable','=',0]])
+		_logger.info('REGISTROS:'+str(len(sl)))
 		for sa in sl:
 			sl.f()
 		return action

@@ -91,7 +91,15 @@ class facturable(models.Model):
 
 
 
+class facturas(models.Model):
+    _inherit = 'account.move'
+    solicitud=fields.Many2one('sale.order',compute='buscar')
+    promocion=fields.Boolean(related='solicitud.promocion')
 
+    def buscar(self):
+        for record in self:
+            s=self.env['sale.order'].search(['name','=',record.origin])
+            record['solicitud']=s
 
 class fact3(models.Model):
     _inherit = 'account.move.line'
