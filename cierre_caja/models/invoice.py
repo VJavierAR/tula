@@ -242,6 +242,8 @@ class Cierre(models.Model):
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         acumulado=self.env['account.payment'].search([['payment_date','>=',prime_day_of_month],['payment_date','<',ayer]])
         hoy=self.env['account.payment'].search([['payment_date','=',fecha]])
+        acumulado=acumulado.filtered(lambda x:x.payment_type!='outbound')
+        hoy=hoy.filtered(lambda x:x.payment_type!='outbound')
         data=[]
         data.append(['Contado',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('amount')))])
         data.append(['Abonos Recibidos',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('amount')))])
@@ -259,10 +261,6 @@ class Cierre(models.Model):
         hoy=self.env['account.move'].search([['invoice_date','=',fecha],['type','=','out_invoice']])
         data=[]
         inmediato=self.env.ref('account.account_payment_term_immediate')
-        #credito_hoy=
-        #contado_hoy=
-        #credito_acumulado=
-        #contado_acumulado=
         data.append(['Ventas Contado',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')))])
         data.append(['Ventas Credito',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total')))])
         data.append(['Total Ventas',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')))])
