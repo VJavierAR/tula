@@ -96,7 +96,7 @@
         <field name="name">cierre.caja</field>
         <field name="model">cierre.caja</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree default_order='name desc'>
                 <field name="name" />
                 <field name="date_closed" />
                 <field name="monto_apertura"/>
