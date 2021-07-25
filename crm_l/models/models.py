@@ -123,7 +123,7 @@ class Crm_l(models.Model):
                     corr = list(filter(lambda v: 'Correo Electrónico:' in v, d))
                     correo=corr[0].split('Correo Electrónico:')[1] if(len(corr) > 0) else ''
 
-                    entidad = list(filter(lambda v: 'Entidad:' in v, d))
+                    entidad = list(filter(lambda v: 'Unidad De Compra:' in v, d))
                     nom_empresa = entidad[0].split('Unidad De Compra:')[1] if (len(entidad) > 0) else ''
 
                     record['name']=name.replace('\t','')
