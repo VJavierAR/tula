@@ -159,7 +159,7 @@ class Crm_l(models.Model):
         # fecha = pytz.utc.localize(datetime.now()).astimezone(user_tz)
         fecha_ultimo_cambio = self._origin.write_date
         fecha = datetime.now()
-        if not self.conexis and abs((fecha - self.write_date).days) >= 180:
+        if not self.conexis and abs((fecha - self.write_date).days) > 180:
             display_msg = "Marcado como perdido al exceder 180 días sin cambios.<br/>Fecha de último cambio: " + \
                           str(self._origin.write_date) + "<br/>Fecha en que se marca como perdida: " + \
                           str(fecha.strftime("%m-%d-%Y"))
@@ -171,7 +171,7 @@ class Crm_l(models.Model):
                     self.id) + ";")
             self.env.cr.commit()
 
-        elif self.conexis and abs((fecha - self.write_date).days) >= 15:
+        elif self.conexis and abs((fecha - self.write_date).days) > 15:
             display_msg = "Marcado como perdido al exceder 15 días sin cambios y ser cargada por Connexis o " \
                           "Panamacompra.<br/>Fecha de último cambio: " + str(self._origin.write_date) + \
                           "<br/>Fecha en que se marca como perdida: " + str(fecha.strftime("%m-%d-%Y"))
