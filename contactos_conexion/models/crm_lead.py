@@ -85,9 +85,9 @@ class CRM(models.Model):
         _logger.info("write_date: " + str(write_date))
         date_1 = (datetime.datetime.strptime(write_date, '%d-%m-%Y %H:%M:%S') + relativedelta(days=+ 15))
         _logger.info("date_1: " + str(date_1))
-        self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
         self.conexis = True
-
+        self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
+        
     def agrega_meses_write_date(self):
         date_1 = (datetime.datetime.strptime(self.write_date.strftime("%m-%d-%Y %H:%M:%S"),
                                              '%m-%d-%Y %H:%M:%S') + relativedelta(days=+ 180))
@@ -99,7 +99,7 @@ class CRM(models.Model):
                                              '%m-%d-%Y %H:%M:%S') + relativedelta(days=- 15))
         _logger.info("date_1: " + str(date_1))
         self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
-        
+
 
 """
 class CRMWizard(models.TransientModel):
