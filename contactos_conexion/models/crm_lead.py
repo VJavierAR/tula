@@ -82,8 +82,10 @@ class CRM(models.Model):
 
     def agrega_dias_write_date(self):
         self.conexis = True
-        date_1 = (datetime.datetime.strptime(self.write_date.strftime("%m-%d-%Y %H:%M:%S"),
-                                             '%m-%d-%Y %H:%M:%S') + relativedelta(days=+ 15))
+        write_date = self.write_date.strftime("%m-%d-%Y %H:%M:%S")
+        _logger.info("write_date: " + str(write_date))
+        _logger.info("write_date + 15: " + str(write_date + 15))
+        date_1 = (datetime.datetime.strptime(write_date, '%m-%d-%Y %H:%M:%S') + relativedelta(days=+ 15))
         _logger.info("date_1: " + str(date_1))
         self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
         self.env.cr.commit()
