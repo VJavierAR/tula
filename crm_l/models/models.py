@@ -104,16 +104,24 @@ class Crm_l(models.Model):
                     price = float(pri[0].split('Precio Referencia:	B/. ')[1].replace(',','')) if(len(pri)>0) else 0
 
                     # da=list(filter(lambda v: 'Fecha y Hora de Apertura de Propuestas:	' in v, d))
-                    da = list(filter(lambda v: 'Fecha de Publicación:' in v, d))
+                    da = list(filter(lambda v: 'Fecha y Hora Presentación de Propuestas:' in v, d))
+                    fecha_segundo_caso = list(
+                        filter(lambda v: 'Fecha y Hora Maxima de Recepción de expresiones de Interes:' in v, d))
+
                     _logger.info("da: " + str(da))
+                    _logger.info("fecha_segundo_caso: " + str(da))
                     fecha = False
                     if len(da) > 0:
-                        Fec = da[0].replace('Fecha y Hora de Apertura de Propuestas:	', '').replace('- ', '')
+                        # Fec = da[0].replace('Fecha y Hora Presentación de Propuestas:\t', '').replace('- ', '')
+                        Fec = da[0].replace('Fecha y Hora Presentación de Propuestas:\t', '')
                         _logger.info("Fec: " + str(Fec))
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=5)
                         fecha = Fec
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
                         # date_time_acto = pytz.utc.localize(fecha).astimezone(user_tz)
+                    elif len(fecha_segundo_caso) > 0:
+                        Fec = da[0].replace('Fecha y Hora Maxima de Recepción de expresiones de Interes:\t', '')
+                        fecha = Fec
 
                     nu = list(filter(lambda v: 'Número:	' in v, d))
                     numero = nu[0].split('Número:	')[1] if(len(nu) > 0) else ''
