@@ -109,7 +109,7 @@ class Crm_l(models.Model):
                         filter(lambda v: 'Fecha y Hora Maxima de Recepción de expresiones de Interes:' in v, d))
 
                     _logger.info("da: " + str(da))
-                    _logger.info("fecha_segundo_caso: " + str(da))
+                    _logger.info("fecha_segundo_caso: " + str(fecha_segundo_caso))
                     fecha = False
                     if len(da) > 0:
                         # Fec = da[0].replace('Fecha y Hora Presentación de Propuestas:\t', '').replace('- ', '')
