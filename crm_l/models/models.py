@@ -164,7 +164,13 @@ class Crm_l(models.Model):
                           str(self._origin.write_date) + "<br/>Fecha en que se marca como perdida: " + \
                           str(fecha.strftime("%m-%d-%Y"))
             self.message_post(body=display_msg)
-            self.write({'active': False, 'probability': 0})
+            motivo_de_perdida = self.env['crm.lost.reason'].search([('name', '=', 'GRUPO DE NEGOCIO (GN) NO CONFIRMÓ')])
+            motivo_de_perdida_id = motivo_de_perdida[0].id if len(motivo_de_perdida) > 0 else None
+            self.write({
+                'active': False,
+                'probability': 0,
+                'lost_reason': motivo_de_perdida_id
+            })
             self.env.cr.commit()
             self.env.cr.execute(
                 "update crm_lead set write_date = '" + str(fecha_ultimo_cambio) + "' where  id = " + str(
@@ -176,7 +182,13 @@ class Crm_l(models.Model):
                           "Panamacompra.<br/>Fecha de último cambio: " + str(self._origin.write_date) + \
                           "<br/>Fecha en que se marca como perdida: " + str(fecha.strftime("%m-%d-%Y"))
             self.message_post(body=display_msg)
-            self.write({'active': False, 'probability': 0})
+            motivo_de_perdida = self.env['crm.lost.reason'].search([('name', '=', 'GRUPO DE NEGOCIO (GN) NO CONFIRMÓ')])
+            motivo_de_perdida_id = motivo_de_perdida[0].id if len(motivo_de_perdida) > 0 else None
+            self.write({
+                'active': False,
+                'probability': 0,
+                'lost_reason': motivo_de_perdida_id
+            })
             self.env.cr.commit()
             self.env.cr.execute(
                 "update crm_lead set write_date = '" + str(fecha_ultimo_cambio) + "' where  id = " + str(
