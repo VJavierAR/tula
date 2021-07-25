@@ -81,13 +81,13 @@ class CRM(models.Model):
             self.tiempo_en_ganar_dias = tiempo_en_ganar
 
     def agrega_dias_write_date(self):
-        self.conexis = True
-        write_date = self._origin.write_date.strftime("%d-%m-%Y %H:%M:%S")
+        write_date = self.write_date.strftime("%d-%m-%Y %H:%M:%S")
         _logger.info("write_date: " + str(write_date))
         date_1 = (datetime.datetime.strptime(write_date, '%d-%m-%Y %H:%M:%S') + relativedelta(days=+ 15))
         _logger.info("date_1: " + str(date_1))
         self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
         self.env.cr.commit()
+        self.conexis = True
 
     def agrega_meses_write_date(self):
         date_1 = (datetime.datetime.strptime(self.write_date.strftime("%m-%d-%Y %H:%M:%S"),
