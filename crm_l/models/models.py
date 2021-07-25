@@ -29,9 +29,9 @@ class Crm_l(models.Model):
 
         for record in self:
             if record.description:
-                d=record.description.splitlines()
+                d = record.description.splitlines()
                 _logger.info("d: " + str(d))
-                if('CONNEXIS' in record.description):
+                if 'CONNEXIS' in record.description:
                     
                     regex = re.compile("^Institución contratante ")
                     idxs = [i for i, item in enumerate(d) if re.search(regex, item)]
@@ -56,27 +56,27 @@ class Crm_l(models.Model):
                         # _logger.info("date_time_obj: " + str(date_time_obj))
                         # _logger.info("date_time_acto: " + str(date_time_acto))
 
-                    if(len(filtered_values2)==0):
+                    if len(filtered_values2) == 0:
                         date_time_obj = False
 
                     #listo4
-                    p=d[d.index('No. de Proceso:')+1] if('No. de Proceso:' in record.description) else ''
+                    p = d[d.index('No. de Proceso:')+1] if('No. de Proceso:' in record.description) else ''
                     #listo5
-                    values3_temp=list(filter(lambda v: 'Contacto Institucional: ' in v, d))
+                    values3_temp = list(filter(lambda v: 'Contacto Institucional: ' in v, d))
                     filtered_values3 = values3_temp if(len(values3_temp)>0) else list(filter(lambda v: 'Contacto institucional: ' in v, d))
-                    if(len(filtered_values3)>0):
-                        cad=filtered_values3[0].replace('Contacto Institucional: ','').split('Nombre:')[1].split('Cargo:') if('Cargo:' in filtered_values3[0]) else filtered_values3[0].replace('Contacto Institucional: ','').split('Nombre:')[1].split('Teléfono:')
-                        Nombre=cad[0]
-                        tem=cad[1].split('Teléfono:') if('Cargo:' in filtered_values3[0]) else cad
-                        temp2=tem[1].split('Correo:')
-                        telefono=temp2[0]
-                        correo=temp2[1]
-                    if(len(filtered_values3)==0):
-                        Nombre=''
-                        telefono=''
-                        correo=''
+                    if len(filtered_values3) > 0:
+                        cad = filtered_values3[0].replace('Contacto Institucional: ','').split('Nombre:')[1].split('Cargo:') if('Cargo:' in filtered_values3[0]) else filtered_values3[0].replace('Contacto Institucional: ','').split('Nombre:')[1].split('Teléfono:')
+                        Nombre = cad[0]
+                        tem = cad[1].split('Teléfono:') if('Cargo:' in filtered_values3[0]) else cad
+                        temp2 = tem[1].split('Correo:')
+                        telefono = temp2[0]
+                        correo = temp2[1]
+                    if len(filtered_values3) == 0:
+                        Nombre = ''
+                        telefono = ''
+                        correo = ''
                     #listo6
-                    e=d[d.index('Enlace al sistema de compras oficial:')+1] if('Enlace al sistema de compras oficial:' in record.description) else ''
+                    e = d[d.index('Enlace al sistema de compras oficial:')+1] if('Enlace al sistema de compras oficial:' in record.description) else ''
                     record['name']=nombre
                     record['expected_revenue']=float(value)
                     record['contact_name']=Nombre
@@ -124,7 +124,7 @@ class Crm_l(models.Model):
                     correo=corr[0].split('Correo Electrónico:')[1] if(len(corr)>0) else ''
 
                     entidad = list(filter(lambda v: 'Entidad:' in v, d))
-                    nom_empresa = entidad[0].split('Entidad:')[1] if (len(entidad) > 0) else ''
+                    nom_empresa = entidad[0].split('Unidad De Compra:')[1] if (len(entidad) > 0) else ''
 
                     record['name']=name.replace('\t','')
                     record['expected_revenue']=float(price)
