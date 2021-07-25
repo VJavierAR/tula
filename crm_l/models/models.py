@@ -98,16 +98,18 @@ class Crm_l(models.Model):
                     record['partner_name'] = institucion_contratante
 
                 if 'PANAMA COMPRA' in record.description:
-                    na=list(filter(lambda v: 'Nombre del Acto:' in v, d))
-                    name=na[0].split('Nombre del Acto:')[1] if(len(na)>0) else ''
-                    pri=list(filter(lambda v: 'Precio Referencia:	B/. ' in v, d))
-                    price=float(pri[0].split('Precio Referencia:	B/. ')[1].replace(',','')) if(len(pri)>0) else 0
+                    na = list(filter(lambda v: 'Nombre del Acto:' in v, d))
+                    name = na[0].split('Nombre del Acto:')[1] if(len(na)>0) else ''
+                    pri = list(filter(lambda v: 'Precio Referencia:	B/. ' in v, d))
+                    price = float(pri[0].split('Precio Referencia:	B/. ')[1].replace(',','')) if(len(pri)>0) else 0
+
                     # da=list(filter(lambda v: 'Fecha y Hora de Apertura de Propuestas:	' in v, d))
                     da = list(filter(lambda v: 'Fecha de Publicación:' in v, d))
-
-                    fecha=False
-                    if(len(da)>0):
-                        Fec = da[0].replace('Fecha y Hora de Apertura de Propuestas:	','').replace('- ','')
+                    _logger.info("da: " + str(da))
+                    fecha = False
+                    if len(da) > 0:
+                        Fec = da[0].replace('Fecha y Hora de Apertura de Propuestas:	', '').replace('- ', '')
+                        _logger.info("Fec: " + str(Fec))
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=5)
                         fecha = Fec
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
