@@ -55,7 +55,7 @@ class SaleOrder(models.Model):
             task_existe_cliente = {
                 "NO_CIA": self.partner_id.no_cia or "",
                 "GRUPO": self.partner_id.grupo or "",
-                "NO_CLIENTE": self.partner_id.no_cliente or ""
+                "NO_CLIENTE": self.partner_id.codigo_naf or ""
             }
             # Si el cliente no tiene codigo naf
             if self.partner_id.id and not self.partner_id.codigo_naf:
@@ -168,7 +168,7 @@ class SaleOrder(models.Model):
                         task = {
                             "no_cia": self.partner_id.no_cia or "",
                             "grupo": self.partner_id.grupo or "",
-                            "no_cliente": self.partner_id.no_cliente or "",
+                            "no_cliente": self.partner_id.codigo_naf or "",
                             "telefono_fijo": self.partner_id.phone or "",
                             "telefono_celular": self.partner_id.mobile or "",
                             "email": self.partner_id.email or "",
@@ -184,7 +184,7 @@ class SaleOrder(models.Model):
                             task = {
                                 "NO_CIA": self.partner_id.no_cia or "",
                                 "GRUPO": self.partner_id.grupo or "",
-                                "NO_CLIENTE": self.partner_id.no_cliente or ""
+                                "NO_CLIENTE": self.partner_id.codigo_naf or ""
                             }
                             self.conect()
                             # Verificando límite de crédito
@@ -289,7 +289,7 @@ class SaleOrder(models.Model):
                             task = {
                                 "NO_CIA": self.partner_id.no_cia or "",
                                 "GRUPO": self.partner_id.grupo or "",
-                                "NO_CLIENTE": self.partner_id.no_cliente or ""
+                                "NO_CLIENTE": self.partner_id.codigo_naf or ""
                             }
                             limite_de_credito = self.limite_de_credito_cliente_naf(task=task)
 
@@ -366,7 +366,7 @@ class SaleOrder(models.Model):
                         task = {
                             "NO_CIA": self.partner_id.no_cia or "",
                             "GRUPO": self.partner_id.grupo or "",
-                            "NO_CLIENTE": self.partner_id.no_cliente or ""
+                            "NO_CLIENTE": self.partner_id.codigo_naf or ""
                         }
                         limite_de_credito = self.limite_de_credito_cliente_naf(task=task)
 
