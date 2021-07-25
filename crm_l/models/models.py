@@ -113,15 +113,15 @@ class Crm_l(models.Model):
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
                         # date_time_acto = pytz.utc.localize(fecha).astimezone(user_tz)
 
-                    nu=list(filter(lambda v: 'Número:	' in v, d))
-                    numero=nu[0].split('Número:	')[1] if(len(nu)>0) else ''
+                    nu = list(filter(lambda v: 'Número:	' in v, d))
+                    numero = nu[0].split('Número:	')[1] if(len(nu) > 0) else ''
                     URL = 'https://www.panamacompra.gob.pa/Inicio/#!/'
-                    nom_c=list(filter(lambda v: 'Nombre:	' in v, d))
-                    nombre=nom_c[0].split('Nombre:	')[1] if(len(nom_c)>0) else ''
-                    tel=list(filter(lambda v: 'Teléfono:' in v, d))
-                    telefono=tel[0].split('Teléfono:')[1] if(len(tel)>0) else ''
-                    corr=list(filter(lambda v: 'Correo Electrónico:' in v, d))
-                    correo=corr[0].split('Correo Electrónico:')[1] if(len(corr)>0) else ''
+                    nom_c = list(filter(lambda v: 'Nombre:	' in v, d))
+                    nombre = nom_c[0].split('Nombre:	')[1] if(len(nom_c) > 0) else ''
+                    tel = list(filter(lambda v: 'Teléfono:' in v, d))
+                    telefono = tel[0].split('Teléfono:')[1] if(len(tel)>0) else ''
+                    corr = list(filter(lambda v: 'Correo Electrónico:' in v, d))
+                    correo=corr[0].split('Correo Electrónico:')[1] if(len(corr) > 0) else ''
 
                     entidad = list(filter(lambda v: 'Entidad:' in v, d))
                     nom_empresa = entidad[0].split('Unidad De Compra:')[1] if (len(entidad) > 0) else ''
