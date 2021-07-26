@@ -120,7 +120,8 @@ class SaleOrder(models.Model):
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg,
-                                'tag_ids': (4, 1)
+                                # 'tag_ids': (4, 1),
+                                'team_id': 2
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
@@ -134,7 +135,8 @@ class SaleOrder(models.Model):
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg,
-                                'tag_ids': (4, 1)
+                                # 'tag_ids': (4, 1),
+                                'team_id': 2
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
@@ -157,7 +159,8 @@ class SaleOrder(models.Model):
                             'partner_id': self.partner_id.id,
                             'origen_sale': self.id,
                             'description': display_msg,
-                            'tag_ids': (4, 1)
+                            # 'tag_ids': (4, 1),
+                            'team_id': 2
                         })
                         generar_alerta = self.genera_alerta(mensaje=display_msg)
                         return generar_alerta
@@ -244,6 +247,11 @@ class SaleOrder(models.Model):
                             "email": self.partner_id.email or "",
                             "contacto": self.partner_id.name or ""
                         }
+                        display_msg = "Cliente no existe en NAF."
+                        display_msg += "<br/>Se verifico si existe el cliente en NAF al cumplir con las condiciones:"
+                        display_msg += "<br/><br/>- El registro del cliente en Odoo no tiene código NAF."
+                        display_msg += "<br/>- El plazo de pago no es de contado."
+                        self.message_post(body=display_msq)
 
                         resultado_al_actualizar = self.actualizar_cliente_naf(task=task)
                         # Si la actualización del cliente en sistema NAF fue exitosa entonces, informalo
@@ -257,7 +265,8 @@ class SaleOrder(models.Model):
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg,
-                                'tag_ids': (4, 1)
+                                # 'tag_ids': (4, 1),
+                                'team_id': 2
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
@@ -267,13 +276,13 @@ class SaleOrder(models.Model):
                             display_msg = "Error al actualizar cliente en NAF.</br>Mensaje: " + str(resultado_al_actualizar['error'])
                             self.message_post(body=display_msg)
 
-
                             self.env['helpdesk.ticket'].create({
                                 'name': 'Solicitud de creación de cliente',
                                 'partner_id': self.partner_id.id,
                                 'origen_sale': self.id,
                                 'description': display_msg,
-                                'tag_ids': (4, 1)
+                                # 'tag_ids': (4, 1),
+                                'team_id': 2
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
