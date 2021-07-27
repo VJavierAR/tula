@@ -259,11 +259,20 @@ class Cierre(models.Model):
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         acumulado=self.env['account.move'].search([['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['type','=','out_invoice']])
         hoy=self.env['account.move'].search([['invoice_date','=',fecha],['type','=','out_invoice']])
+        notas_acumulado=self.env['account.move'].search([['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['type','=','out_refund']])
+        notas_hoy=self.env['account.move'].search([['invoice_date','=',fecha],['type','=','out_refund']])
         data=[]
         inmediato=self.env.ref('account.account_payment_term_immediate')
-        data.append(['Ventas Contado',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed')))])
-        data.append(['Ventas Credito',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed')))])
-        data.append(['Total Ventas',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed')))])
+        contado_ayer=sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))
+        contado_hoy=sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))
+        credito_ayer=sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))
+        credito_hoy=sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))
+        notas_ayer=sum(notas_acumulado.mapped('amount_total_signed'))
+        notas_hoy1=sum(notas_hoy.mapped('amount_total_signed'))
+        data.append(['Ventas Contado',"{0:.2f}".format(contado_ayer),"{0:.2f}".format(contado_hoy),"{0:.2f}".format(contado_ayer+contado_hoy)])
+        data.append(['Ventas Credito',"{0:.2f}".format(credito_ayer),"{0:.2f}".format(credito_hoy),"{0:.2f}".format(credito_ayer+credito_hoy)])
+        data.append(['Notas Credito',"{0:.2f}".format(notas_ayer),"{0:.2f}".format(notas_hoy1),"{0:.2f}".format(notas_hoy1+notas_ayer)])
+        data.append(['Total Ventas',"{0:.2f}".format(contado_ayer+credito_ayer-notas_ayer),"{0:.2f}".format(contado_hoy+credito_hoy-notas_hoy1),"{0:.2f}".format(contado_ayer+credito_ayer-notas_ayer+contado_hoy+credito_hoy-notas_hoy1)])
         return data
 
     def get_ventas(self):
@@ -280,7 +289,7 @@ class Cierre(models.Model):
         total2=0
         descuento2=0
         iva2=0
-        moneda=self.company_id.currency_id.id
+        moneda=self.env.company_id.currency_id.id
         for li in lines:
             for liin in li.invoice_line_ids:
                 total=total+(liin.price_unit*liin.quantity)
