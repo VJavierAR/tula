@@ -2,6 +2,8 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+import logging, ast
+_logger = logging.getLogger(__name__)
 
 
 medio_pago_values = [('cheque', 'Cheque'), ('efectivo', 'Efectivo'), ('datafono', 'Datafono Local'), ('transferencia', 'Transferencia')]
