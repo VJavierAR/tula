@@ -294,6 +294,7 @@ class Cierre(models.Model):
         for li in lines:
             for liin in li.invoice_line_ids:
                 total=total+(liin.price_unit*liin.quantity)
+                _logger.info(str(liin.currency_id.id))
                 if(liin.currency_id.id!=moneda):
                     descuento=descuento+(((liin.price_unit*liin.quantity)-(liin.price_subtotal))/liin.currency_id.rate)
                 else:
