@@ -222,7 +222,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Fecha Impresión:</strong></td>
-                                    <td class="text-right"><span t-esc="datetime.datetime.now()"/></td>
+                                    <td class="text-right"><span t-esc="datetime.datetime.now().date()"/></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Monto Ingreso</strong></td>
