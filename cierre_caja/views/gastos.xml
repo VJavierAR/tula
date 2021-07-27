@@ -221,6 +221,10 @@
                                     <td class="text-right"><span t-field="o.name"/></td>
                                 </tr>
                                 <tr>
+                                    <td><strong>Fecha Impresión:</strong></td>
+                                    <td class="text-right"><span t-esc="datetime.datetime.now()"/></td>
+                                </tr>
+                                <tr>
                                     <td><strong>Monto Ingreso</strong></td>
                                     <td class="text-right"><span t-field="o.monto_apertura"/></td>
                                 </tr>
