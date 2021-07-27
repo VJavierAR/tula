@@ -274,7 +274,7 @@ class Cierre(models.Model):
         data.append(['Ventas Contado',"{0:.2f}".format(contado_ayer),"{0:.2f}".format(contado_hoy),"{0:.2f}".format(contado_ayer+contado_hoy)])
         data.append(['Ventas Credito',"{0:.2f}".format(credito_ayer),"{0:.2f}".format(credito_hoy),"{0:.2f}".format(credito_ayer+credito_hoy)])
         data.append(['Notas Credito',"{0:.2f}".format(notas_ayer),"{0:.2f}".format(notas_hoy1),"{0:.2f}".format(notas_hoy1+notas_ayer)])
-        data.append(['Total Ventas',"{0:.2f}".format(contado_ayer+credito_ayer-notas_ayer),"{0:.2f}".format(contado_hoy+credito_hoy-notas_hoy1),"{0:.2f}".format(contado_ayer+credito_ayer-notas_ayer+contado_hoy+credito_hoy-notas_hoy1)])
+        data.append(['Total Ventas',"{0:.2f}".format(contado_ayer+credito_ayer+notas_ayer),"{0:.2f}".format(contado_hoy+credito_hoy+notas_hoy1),"{0:.2f}".format(contado_ayer+credito_ayer+notas_ayer+contado_hoy+credito_hoy+notas_hoy1)])
         return data
 
     def get_ventas(self):
