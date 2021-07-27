@@ -306,7 +306,7 @@ class Cierre(models.Model):
         for li in lines2:
             for liin in li.invoice_line_ids:
                 total2=total2+(liin.price_unit*liin.quantity)
-                if(liin.currency_id.id!=moneda):
+                if(liin.currency_id.id!=moneda and liin.currency_id.id!=False):
                     descuento2=descuento2+(((liin.price_unit*liin.quantity)-(liin.price_subtotal))/liin.currency_id.rate)                    
                 else:
                     descuento2=descuento2+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
