@@ -261,9 +261,9 @@ class Cierre(models.Model):
         hoy=self.env['account.move'].search([['invoice_date','=',fecha],['type','=','out_invoice']])
         data=[]
         inmediato=self.env.ref('account.account_payment_term_immediate')
-        data.append(['Ventas Contado',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')))])
-        data.append(['Ventas Credito',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total')))])
-        data.append(['Total Ventas',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total')))])
+        data.append(['Ventas Contado',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed')))])
+        data.append(['Ventas Credito',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed')))])
+        data.append(['Total Ventas',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))+sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))+sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed')))])
         return data
 
     def get_ventas(self):
@@ -280,17 +280,26 @@ class Cierre(models.Model):
         total2=0
         descuento2=0
         iva2=0
+        moneda=self.company_id.currency_id.id
+            
+                rec.monto_moneda=(rec.amount/)
         for li in lines:
             for liin in li.invoice_line_ids:
                 total=total+(liin.price_unit*liin.quantity)
-                descuento=descuento+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
-            iva=iva+(li.amount_total-li.amount_untaxed)
+                if(liin.currency_id.id!=moneda):
+                    descuento=descuento+(((liin.price_unit*liin.quantity)-(liin.price_subtotal))/liin.currency_id.rate)
+                else:
+                    descuento=descuento+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
+            iva=iva+(li.amount_total_signed-li.amount_untaxed_signed)
         lines2=self.env['account.move'].search(['&','&',['invoice_date','=',fecha],['state','=','posted'],['type','=','out_invoice']])
         for li in lines2:
             for liin in li.invoice_line_ids:
                 total2=total2+(liin.price_unit*liin.quantity)
-                descuento2=descuento2+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
-            iva2=iva2+(li.amount_total-li.amount_untaxed)
+                if(liin.currency_id.id!=moneda):
+                    descuento2=descuento2+(((liin.price_unit*liin.quantity)-(liin.price_subtotal))/liin.currency_id.rate)                    
+                else:
+                    descuento2=descuento2+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
+            iva2=iva2+(li.amount_total_signed-li.amount_untaxed_signed)
         data=[]
         data.append(['Ventas',"{0:.2f}".format(total),"{0:.2f}".format(total2),"{0:.2f}".format(total+total2)])
         data.append(['Descuento',"{0:.2f}".format(descuento),"{0:.2f}".format(descuento2),"{0:.2f}".format(descuento+descuento2)])
