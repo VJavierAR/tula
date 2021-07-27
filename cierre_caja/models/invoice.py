@@ -253,7 +253,7 @@ class Cierre(models.Model):
 
 
     def get_facturas(self):
-        fecha=fields.Datetime.now()
+        fecha=self.name
         ayer=datetime(fecha.year, fecha.month, fecha.day)
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
@@ -267,7 +267,7 @@ class Cierre(models.Model):
         return data
 
     def get_ventas(self):
-        fecha=fields.Datetime.now()
+        fecha=self.name
         ayer=datetime(fecha.year, fecha.month, fecha.day)
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
@@ -302,7 +302,7 @@ class Cierre(models.Model):
 
 
     def getPagosAll(self):
-        fecha=fields.Datetime.now()
+        fecha=self.name
         ayer=datetime(fecha.year, fecha.month, fecha.day)
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
