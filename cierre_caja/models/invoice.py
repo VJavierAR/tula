@@ -312,7 +312,7 @@ class Cierre(models.Model):
         lines2=self.env['account.payment'].search([['payment_date','=',fecha]])
         lines=lines.filtered(lambda x:x.payment_type!='outbound')
         lines2=lines2.filtered(lambda x:x.payment_type!='outbound')
-        j=self.env['account.journal'].search([])
+        j=self.env['account.journal'].search([['type','not in',['purchase','general']]])
         data=[]
         for jo in j:
             ayer=sum(lines.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
