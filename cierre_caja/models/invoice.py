@@ -290,6 +290,7 @@ class Cierre(models.Model):
         descuento2=0
         iva2=0
         moneda=self.env.user.company_id.currency_id.id
+        _logger.info(str(moneda))
         for li in lines:
             for liin in li.invoice_line_ids:
                 total=total+(liin.price_unit*liin.quantity)
