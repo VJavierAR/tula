@@ -252,7 +252,7 @@ class SaleOrder(models.Model):
                         display_msg += "<br/>Se verifico si existe el cliente en NAF al cumplir con las condiciones:"
                         display_msg += "<br/><br/>- El registro del cliente en Odoo no tiene código NAF."
                         display_msg += "<br/>- El plazo de pago no es de contado."
-                        self.message_post(body=display_msq)
+                        self.message_post(body=display_msg)
 
                         resultado_al_actualizar = self.actualizar_cliente_naf(task=task)
                         # Si la actualización del cliente en sistema NAF fue exitosa entonces, informalo
@@ -525,7 +525,7 @@ class SaleOrder(models.Model):
             "auth": token,
         }
         _logger.info("crear_cliente_naf() token: " + token + "\n task: \n\n" + str(task))
-        resp = requests.get(url_crear_cliente_naf, json=task, headers=headers)
+        resp = requests.post(url_crear_cliente_naf, json=task, headers=headers)
         _logger.info("resp al crear: " + str(resp))
         if resp.status_code == status_code_correct or resp.status_code == status_code_cliente_existente or resp.status_code == status_code_error:
         # if resp.status_code == status_code_correct:
