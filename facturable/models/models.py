@@ -63,6 +63,13 @@ class fact(models.Model):
             if(o.qty_invoiced==0):
                 o.f()
 
+    @api.onchange('invoice_count')
+    def promo(self):
+        for record in self:
+            if(record.promocion):
+                for inv in record.invoice_ids:
+                    inv['solicitud']=record.id
+
 class facturable(models.Model):
     _inherit = 'purchase.order.line'
     facturable=fields.Float('Facturable',compute='full',default=0)
@@ -96,10 +103,10 @@ class facturas(models.Model):
     solicitud=fields.Many2one('sale.order',compute='buscar')
     promocion=fields.Boolean(related='solicitud.promocion',string='Promocion',store=True)
 
-    def buscar(self):
-        for record in self:
-            s=self.env['sale.order'].search([['name','=',record.invoice_origin]])
-            record['solicitud']=s
+    #def buscar(self):
+    #    for record in self:
+    #        s=self.env['sale.order'].search([['name','=',record.invoice_origin]])
+    #        record['solicitud']=s
 
 class fact3(models.Model):
     _inherit = 'account.move.line'
