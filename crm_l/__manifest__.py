@@ -2,7 +2,9 @@
 {
     'name': "crmL",
 
-    'summary': """CRM""",
+    'summary': """
+        Versión 1.0
+        """,
 
     'description': """
         Carga de Informacion usando sistema Connexis para licitaciones en crm
