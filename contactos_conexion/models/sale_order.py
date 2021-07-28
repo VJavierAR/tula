@@ -122,7 +122,7 @@ class SaleOrder(models.Model):
                                 'origen_sale': self.id,
                                 'description': display_msg,
                                 # 'tag_ids': (4, 1),
-                                'team_id': 2
+                                # 'team_id': 2
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
@@ -137,7 +137,7 @@ class SaleOrder(models.Model):
                                 'origen_sale': self.id,
                                 'description': display_msg,
                                 # 'tag_ids': (4, 1),
-                                'team_id': 2
+                                # 'team_id': 2
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
@@ -161,7 +161,7 @@ class SaleOrder(models.Model):
                             'origen_sale': self.id,
                             'description': display_msg,
                             # 'tag_ids': (4, 1),
-                            'team_id': 2
+                            # 'team_id': 2
                         })
                         generar_alerta = self.genera_alerta(mensaje=display_msg)
                         return generar_alerta
@@ -267,7 +267,7 @@ class SaleOrder(models.Model):
                                 'origen_sale': self.id,
                                 'description': display_msg,
                                 # 'tag_ids': (4, 1),
-                                'team_id': 2
+                                #'team_id': 2
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
@@ -283,7 +283,7 @@ class SaleOrder(models.Model):
                                 'origen_sale': self.id,
                                 'description': display_msg,
                                 # 'tag_ids': (4, 1),
-                                'team_id': 2
+                                # 'team_id': 2
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
