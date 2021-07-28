@@ -457,5 +457,22 @@
                 </xpath>
             </field>
         </record>
+
+
+      <record id="account_move_inherit" model="ir.ui.view">
+        <field name="name">account.move</field>
+        <field name="model">account.move</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_invoice_register_payment']" position="attributes">
+                <attribute name="context">{'default_tipo_pago': 'Contado'}</attribute>
+            </xpath>
+        </field>
+      </record>
+
+
+
+
   </data>
 </odoo>
