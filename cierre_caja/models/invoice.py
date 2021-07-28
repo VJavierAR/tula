@@ -181,7 +181,12 @@ class Cierre(models.Model):
     def set_closed(self):
         fecha=fields.Datetime.now()
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
+        tresdiasmenos=self.name+relativedelta(days=-3)
+        inmediato=self.env.ref('account.account_payment_term_immediate')
+        facturas=self.env['account.move'].search([['invoice_date','<',tresdiasmenos],['invoice_payment_term_id','=',inmediato.id],['amount_residual_signed','!=',0]])
         for cierre in self:
+            if(facturas.mapped('id')!=[]):
+                raise UserError('No se puede cerrar dado que existen facturas de contado sin pagar: '+str(facturas.mapped('name')).replace('[','').replace(']',''))
             if(fecha.day==last_date_of_month.day):
                 if(cierre.monto_cierre_acumulado!=0):
                     raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.monto_cierre_acumulado))
