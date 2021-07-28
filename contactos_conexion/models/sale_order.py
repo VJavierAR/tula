@@ -83,7 +83,7 @@ class SaleOrder(models.Model):
                         if pazo_de_pago_cliente and pazo_de_pago_cliente != 1:
                             tipo_cliente = 2
                         task = {
-                            "tipo_cliente": tipo_cliente or "",
+                            "tipo_cliente": tipo_cliente,
                             "id_crm": self.partner_id.id or "",
                             "nombre": self.partner_id.name or "",
                             "cedula": self.partner_id.cedula or "",
@@ -267,7 +267,7 @@ class SaleOrder(models.Model):
                                 'origen_sale': self.id,
                                 'description': display_msg,
                                 # 'tag_ids': (4, 1),
-                                #'team_id': 2
+                                # 'team_id': 2
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
