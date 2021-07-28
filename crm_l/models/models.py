@@ -187,7 +187,7 @@ class Crm_l(models.Model):
                     self.id) + ";")
             self.env.cr.commit()
 
-        elif self.conexis and abs((fecha - self.write_date).days) >= 15:
+        elif self.conexis and abs((fecha - self.write_date).days) > 15:
             display_msg = "Marcado como perdido al exceder 15 días sin cambios y ser cargada por Connexis o " \
                           "Panamacompra.<br/>Fecha de último cambio: " + str(self._origin.write_date) + \
                           "<br/>Fecha en que se marca como perdida: " + str(fecha.strftime("%m-%d-%Y"))
