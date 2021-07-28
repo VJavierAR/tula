@@ -52,6 +52,7 @@ class SaleOrder(models.Model):
     def action_confirm_validacion(self):
         # Si proviene de una oportunidad
         if self.opportunity_id.id:
+            _logger.info('Proviene de una oportunidad')
             task_existe_cliente = {
                 "NO_CIA": self.partner_id.no_cia or "",
                 "GRUPO": self.partner_id.grupo or "",
@@ -361,15 +362,19 @@ class SaleOrder(models.Model):
 
             # Si el cliente tiene código NAF entonces, verifica el plazo de pago
             else:
+                _logger.info('Si el cliente tiene código NAF entonces, verifica el plazo de pago')
                 # Si el plazo de pago es de contado
                 if self.payment_term_id.id and self.payment_term_id.id == 1:
                     _logger.info("validar que el pago no sea en cheque, solo tarjeta y efectivo")
 
                 # Si el plazo de pago no es de contado entonces, verifica si el cliente esta activo en Odoo
                 else:
+                    _logger.info('Si el plazo de pago no es de contado entonces, verifica si el cliente esta activo en Odoo')
                     # Si el cliente esta activo en Odoo entonces, consulta límite de crédito y saldo de cliente en
                     # sistema NAF para actualizar estos datos
                     if self.partner_id.active:
+                        _logger.info(
+                            'verificando límite de credito y saldo de cliente')
                         self.conect()
                         # verificando límite de credito y saldo de cliente
                         task = {
