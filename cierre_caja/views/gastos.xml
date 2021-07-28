@@ -324,6 +324,7 @@
                      <t t-set="pagos" t-value="o.get_pagos()"/>
                      <t t-set="facturas" t-value="o.get_facturas()"/>
                      <t t-set="ventas" t-value="o.get_ventas()"/>
+                     <t t-set="facturasSinPago" t-value="o.getFacturasSinPago()"/>
  
                      <h3>Desglose de pagos acumulado</h3>
                      <table class="table table-bordered">
@@ -401,6 +402,37 @@
                             </tr>
                         </t>
                      </table>
+                     
+                    <h3>Facturas Abiertas</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Numero</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                        </tr>
+                        <t t-foreach="facturasSinPago" t-as="fa">
+                            <tr>
+                                <td>
+                                    <span t-raw="fa[0]"/>
+                                </td>
+                                <td >
+                                    <span t-raw="fa[1]"/>
+                                </td>
+                                <td >
+                                    <span t-raw="fa[2]"/>
+                                </td>
+                                <td >
+                                    <span t-raw="fa[3]"/>
+                                </td>
+                            </tr>
+                        </t>
+                     </table>
+
+
+
+
+
 
                 </div>
             </t>
