@@ -525,7 +525,7 @@ class SaleOrder(models.Model):
             "auth": token,
         }
         _logger.info("crear_cliente_naf() token: " + token + "\n task: \n\n" + str(task))
-        resp = requests.post(url_crear_cliente_naf, json=task, headers=headers)
+        resp = requests.post(url_crear_cliente_naf, json=task, headers=headers, verify=False)
         _logger.info("resp al crear: " + str(resp))
         if resp.status_code == status_code_correct or resp.status_code == status_code_cliente_existente or resp.status_code == status_code_error:
         # if resp.status_code == status_code_correct:
@@ -553,7 +553,6 @@ class SaleOrder(models.Model):
                 }
         else:
             _logger.info("Error al realizar petición resp.status_code: " + str(resp.status_code))
-            _logger.info("Error al realizar petición resp.message: " + str(resp.message))
             return {
                 'error': str(resp.status_code)
             }
