@@ -63,7 +63,7 @@ class fact(models.Model):
             if(o.qty_invoiced==0):
                 o.f()
 
-    @api.onchange('invoice_count')
+    @api.onchange('invoice_count','invoice_ids')
     def promo(self):
         for record in self:
             if(record.promocion):
