@@ -87,7 +87,7 @@ class SaleOrder(models.Model):
                             "id_crm": self.partner_id.id or "",
                             "nombre": self.partner_id.name or "",
                             "cedula": self.partner_id.cedula or "",
-                            "direccion": self.opportunity_id.street or "asdasd",
+                            "direccion": self.opportunity_id.street or "",
                             "telefono_fijo": self.opportunity_id.phone or "",
                             "telefono_celular": self.opportunity_id.mobile or "",
                             "email": self.opportunity_id.email_from or "",
@@ -553,6 +553,7 @@ class SaleOrder(models.Model):
                 }
         else:
             _logger.info("Error al realizar petición resp.status_code: " + str(resp.status_code))
+            _logger.info("Error al realizar petición resp.message: " + str(resp.message))
             return {
                 'error': str(resp.status_code)
             }
