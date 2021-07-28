@@ -113,7 +113,7 @@ class SaleOrder(models.Model):
                         resultado_al_crear = self.crear_cliente_naf(task=task)
                         # Si al crear cliente en NAF, el sistema responde que existe entonces, informa en chatter
                         if 'existe' in resultado_al_crear:
-                            _logger.info("Ya existe e cliente actualizalo: " + resultado_al_crear)
+                            _logger.info("Ya existe e cliente actualizalo: " + str(resultado_al_crear))
                             display_msg = "Se intento crear cliente en NAF pero se genero la siguiente alerta: <br/>- " + str(resultado_al_crear['existe'])
                             self.message_post(body=display_msg)
                             self.env['helpdesk.ticket'].create({
