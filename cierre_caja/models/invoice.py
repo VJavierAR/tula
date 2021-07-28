@@ -183,7 +183,7 @@ class Cierre(models.Model):
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         tresdiasmenos=self.name+relativedelta(days=-3)
         inmediato=self.env.ref('account.account_payment_term_immediate')
-        facturas=self.env['account.move'].search([['invoice_date','<',tresdiasmenos],['invoice_payment_term_id','=',inmediato.id],['amount_residual_signed','!=',0]])
+        facturas=self.env['account.move'].search([['invoice_date','<',tresdiasmenos],['invoice_payment_term_id','=',inmediato.id],['amount_residual_signed','!=',0],['state','=','posted'],['type','=','out_invoice']])
         for cierre in self:
             if(facturas.mapped('id')!=[]):
                 raise UserError('No se puede cerrar dado que existen facturas de contado sin pagar: '+str(facturas.mapped('name')).replace('[','').replace(']',''))
@@ -343,6 +343,14 @@ class Cierre(models.Model):
             ayer=sum(lines.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
             hoy=sum(lines2.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
             data.append([jo.name,"{0:.2f}".format(ayer),"{0:.2f}".format(hoy),"{0:.2f}".format(hoy+ayer)])
+        return data
+
+    def getFacturasSinPago(self):
+        inmediato=self.env.ref('account.account_payment_term_immediate')
+        facturas=self.env['account.move'].search([['invoice_payment_term_id','=',inmediato.id],['amount_residual_signed','!=',0],['state','=','posted'],['type','=','out_invoice']])
+        data=[]
+        for f in facturas:
+            data.append([f.name,f.partner_id.name,f.invoice_date,"{0:.2f}".format(f.amount_residual_signed)])
         return data
 
 class CierreConf(models.Model):
