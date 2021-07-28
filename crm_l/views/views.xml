@@ -36,6 +36,7 @@
                            attrs="{'invisible': [('website_conexis', '=', False)]}"/>
                     <field name="correo_conexis" readonly='1' attrs="{'invisible': [('website_conexis', '=', False)]}"/>
                     <field name="email_cc" groups='crm_l.group_crm_licitacion'/>
+                    <field name="conexis" />
                 </xpath>
 
                 <xpath expr="//button[@name='314']" position="attributes"><!--709 314-->
