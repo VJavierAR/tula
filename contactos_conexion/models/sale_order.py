@@ -570,7 +570,7 @@ class SaleOrder(models.Model):
             _logger.info(json_respuesta)
             if int(json_respuesta['status_code']) == status_code_correct:
                 return {
-                    'limite': int(json_respuesta['limite'])
+                    'limite': float(json_respuesta['limite'])
                 }
             elif int(json_respuesta['status_code']) == status_code_cliente_existente:
                 _logger.info("Cliente no existe, mensaje: " + str(json_respuesta['message']))
