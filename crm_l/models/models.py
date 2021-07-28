@@ -125,7 +125,7 @@ class Crm_l(models.Model):
 
                     nu = list(filter(lambda v: 'Número:	' in v, d))
                     numero = nu[0].split('Número:	')[1] if(len(nu) > 0) else ''
-                    URL = 'https://www.panamacompra.gob.pa/Inicio/#!/'
+                    URL = 'https://www.panamacompra.gob.pa/Inicio/#!/vistaPreviaCP?NumLc=' + str(na) # 'https://www.panamacompra.gob.pa/Inicio/#!/'  
                     nom_c = list(filter(lambda v: 'Nombre:	' in v, d))
                     nombre = nom_c[0].split('Nombre:	')[1] if(len(nom_c) > 0) else ''
                     tel = list(filter(lambda v: 'Teléfono:' in v, d))
