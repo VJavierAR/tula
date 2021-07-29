@@ -2,7 +2,7 @@ from odoo import api, models, tools
 
 import logging
 import threading
-
+import datetime
 _logger = logging.getLogger(__name__)
 
 
@@ -17,7 +17,7 @@ class SaleReportUpdate(models.TransientModel):
 		#for pick in pi:
 		#	pi.action_assign()
 		action = self.env.ref('sale_enterprise.sale_report_action_dashboard').read()[0]
-		sl=self.env['sale.order.line'].search([['qty_invoiced','=',0],['facturable','=',0]])
+		sl=self.env['sale.order.line'].search([['qty_invoiced','=',0],['facturable','=',0],['write_date','=',datetime.datetime.now().date()]],limit=500)
 		_logger.info('REGISTROS:'+str(len(sl)))
 		for sa in sl:
 			sl.f()
