@@ -223,7 +223,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Fecha Impresión:</strong></td>
-                                    <td class="text-right"><span t-raw="FechaImp"/></td>
+                                    <td class="text-right"><span t-raw="datetime.datetime.now()"/></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Monto Ingreso</strong></td>
