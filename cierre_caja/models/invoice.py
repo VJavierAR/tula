@@ -193,9 +193,9 @@ class Cierre(models.Model):
                     raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.monto_cierre_acumulado))
                 else:
                     cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
-            if(cierre.diferencia-cierre.monto_cierre_diferencia>0):
+            if(cierre.diferencia-cierre.monto_cierre_diferencia!=0):
                 raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.diferencia))
-            if(cierre.diferencia-cierre.monto_cierre_diferencia<=0):
+            if(cierre.diferencia-cierre.monto_cierre_diferencia==0):
                 cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
 
     def get_payments(self):
