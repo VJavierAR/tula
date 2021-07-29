@@ -207,6 +207,7 @@
                     <h2>Detalle de ingreso de caja</h2>
                     <div class="row">
                         <div class="col-12">
+                             <t t-set="FechaImp" t-value="o.getFecha"/>
                             <table class="table">
                                 <tr>
                                     <td><strong>ID de Ingreso</strong></td>
@@ -222,7 +223,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Fecha Impresión:</strong></td>
-                                    <td class="text-right"><span t-esc="datetime.datetime.now().date()"/></td>
+                                    <td class="text-right"><span t-raw="FechaImp"/></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Monto Ingreso</strong></td>

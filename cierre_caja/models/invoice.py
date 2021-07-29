@@ -1,7 +1,8 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
+from datetime import datetime, timedelta
+import pytz
 import logging, ast
 _logger = logging.getLogger(__name__)
 
@@ -353,6 +354,10 @@ class Cierre(models.Model):
         for f in facturas:
             data.append([f.name,f.partner_id.name,f.invoice_date,"{0:.2f}".format(f.amount_residual_signed)])
         return data
+    def getFecha(self):
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        date_time_acto = pytz.utc.localize(datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')).astimezone(user_tz)
+        return str(date_time_acto)
 
 class CierreConf(models.Model):
     _name = "cierre.conf"
