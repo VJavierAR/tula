@@ -154,6 +154,7 @@ class Cierre(models.Model):
     monto_cierre_sin=fields.Float()
     monto_cierre_diferencia=fields.Float('Monto abonar')
 
+    @api.depends('diferencia')
     def compute_monto_cierre_acumulado(self):
         fecha=fields.Datetime.now()
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
