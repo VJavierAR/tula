@@ -90,7 +90,7 @@ class CierreLineas2(models.Model):
         
         for line in self:
             pagos = line.cierre_id.pagos_hoy
-            line.monto_calculado = sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name and p.payment_type=='inbound').mapped('monto_moneda'))-sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name and p.payment_type=='outbound').mapped('monto_moneda'))
+            line.monto_calculado = sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name and p.payment_type=='inbound').mapped('monto_moneda'))+sum(pagos.filtered(lambda p: p.medio_pago == line.internal_name and p.payment_type=='outbound').mapped('monto_moneda'))
             line.diferencia = line.monto_calculado - line.monto_reportado
 
 class Cierre(models.Model):
