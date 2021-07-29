@@ -44,7 +44,7 @@
                                         <field name="partner_id" readonly="1"/>
                                         <field name="payment_date" readonly="1"/>
                                         <field name="create_date" readonly="1"/>
-                                        <field name="amount" sum="Total" readonly="1"/>
+                                        <!--<field name="amount" sum="Total" readonly="1"/>-->
                                         <field name="monto_moneda" sum="Total" string="Monto moneda empresa" readonly="1"/>
                                         <field name="incluir" readonly="0" invisible="1"/>
                                     </tree>
