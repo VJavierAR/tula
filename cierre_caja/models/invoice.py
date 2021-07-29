@@ -19,10 +19,10 @@ class AccountPayment(models.Model):
     @api.onchange('currency_id')
     def actulizaMonneda(self):
         for rec in self:
-            rec.monto_moneda=rec.amount
+            rec.monto_moneda=rec.amount if(rec.payment_type!='outbound') else -rec.amount
             moneda=self.company_id.currency_id.id
             if(rec.currency_id.id!=moneda):
-                rec.monto_moneda=(rec.amount/rec.currency_id.rate)
+                rec.monto_moneda=(rec.amount/rec.currency_id.rate) if(rec.payment_type!='outbound') else -(rec.amount/rec.currency_id.rate)
 
     def get_tipo_pago(self):
         m=[]
