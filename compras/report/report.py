@@ -25,7 +25,7 @@ class MovimientosXlsx(models.AbstractModel):
         for obj in account:
             sheet.write(i, 0, str(i-3), bold)
             sheet.write(i, 1, obj.date.strftime("%Y/%m/%d"), bold)
-            nombre=obj.name.replace('Factura ','').split('-') if(obj.name) else []
+            nombre=obj.name.replace('Factura ','').split('-') if(obj.invoice_ref) else []
             sheet.write(i, 2, nombre[0] if(nombre!=[] and len(nombre)>1) else obj.name, bold)
             sheet.write(i, 3, nombre[1] if(nombre!=[] and len(nombre)>1) else obj.name, bold)
             #sheet.write(i, 2, '', bold)
@@ -38,7 +38,7 @@ class MovimientosXlsx(models.AbstractModel):
             sheet.write(i, 9, obj.amount_untaxed if(obj.tipo=='4') else 0, money)
             sheet.write(i, 10, obj.amount_untaxed if(obj.tipo=='5') else 0, money)
             iva=obj.line_ids.filtered(lambda x:x.account_id.code=='112101')
-            idp=obj.line_ids.filtered(lambda x:x.account_id.code=='531031')
+            idp=obj.line_ids.filtered(lambda x:x.account_id.code=='531031' and x.name in ['IDP R','IDP S'])
             sheet.write(i, 11,iva[0].debit if(len(iva)>0) else 0, money)
             sheet.write(i, 12,idp[0].debit if(len(idp)>0) else 0, money)
             sheet.write(i, 13, obj.amount_untaxed, money)
