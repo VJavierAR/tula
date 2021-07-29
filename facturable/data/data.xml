@@ -11,6 +11,22 @@
         <field name="model_id" ref="sale.model_sale_order_line" />
         <field name="state">code</field>
         <field name="code">
+p=env['sale.order.line'].search([['qty_invoiced','=',0],['facturable','=',0]])
+for pi in p:
+    pi.f()</field>
+    </record>
+
+
+    <record id="ir_cron_check_facturable_v2" model="ir.cron">
+        <field name="name">Check Facturable All</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field eval="False" name="doall"/>
+        <field eval="True" name="active"/>
+        <field name="model_id" ref="sale.model_sale_order_line" />
+        <field name="state">code</field>
+        <field name="code">
 p=env['sale.order.line'].search([['qty_invoiced','=',0]])
 for pi in p:
     pi.f()</field>
