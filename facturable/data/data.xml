@@ -22,7 +22,7 @@ for pi in p:
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
-        <field name="nextcall" eval="datetime.now(pytz.timezone('CR')).strftime('%Y-%m-%d 23:59:59')"/>
+        <field name="nextcall" eval="datetime.now(pytz.timezone('UTC')).strftime('%Y-%m-%d 05:59:59')"/>
         <field eval="False" name="doall"/>
         <field eval="True" name="active"/>
         <field name="model_id" ref="sale.model_sale_order_line" />
