@@ -67,10 +67,10 @@ class Codigos(models.Model):
     cliente = fields.Many2one(
         comodel_name='res.partner',
         string='Cliente',
-        track_visibility='onchange'
+        # track_visibility='onchange'
     )
     codigo_producto = fields.Text(
         string="Código de producto",
         store=True,
-        track_visibility='onchange'
+        # track_visibility='onchange'
     )
