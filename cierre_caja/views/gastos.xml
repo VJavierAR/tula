@@ -278,26 +278,6 @@
                     </table>
                     <t t-set="pagosA" t-value="o.getPagosAll()"/>
                     <h3>Desglose de pagos por diario</h3>
-                    <!--<table class="table table-bordered">
-                        <tr>
-                            <th>Diario de Pago</th>
-                            <th>Monto Sistema</th>-->
-                            <!--th>Monto Reportado</th-->
-                     <!--   </tr>
-                        <t t-foreach="o.desglose_pagos" t-as="l">
-                            <tr>
-                                <td>
-                                    <span t-field="l.name"/>
-                                </td>
-                                <td class="text-right">
-                                    <span t-field="l.monto_calculado"/>
-                                </td>-->
-                                <!--td class="text-right">
-                                    <span t-field="l.monto_reportado"/>
-                                </td-->
-                            <!--</tr>
-                        </t>
-                    </table>-->
                     <table class="table table-bordered">
                         <tr>
                             <th>Diario de Pago</th>
@@ -326,6 +306,39 @@
                             </tr>
                         </t>
                     </table>
+                    <t t-set="pagosO" t-value="o.getPagosOtros()"/>
+                    <h3>Otros pagos</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Diario de Pago</th>
+                            <th>Monto Ayer</th>
+                            <th>Monto Hoy Deber</th>
+                            <th>Monto Hoy Haber</th>
+                            <th>Total</th>
+                        </tr>
+                        <t t-foreach="pagosO" t-as="l">
+                            <tr>
+                                <td>
+                                    <span t-raw="l[0]"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-raw="l[1]"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-raw="l[2]"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-raw="l[3]"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-raw="l[4]"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+
+
+
                      <t t-set="pagos" t-value="o.get_pagos()"/>
                      <t t-set="facturas" t-value="o.get_facturas()"/>
                      <t t-set="ventas" t-value="o.get_ventas()"/>
