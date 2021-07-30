@@ -364,6 +364,20 @@ class Cierre(models.Model):
             data.append([jo.name,"{:,}".format(ayer),"{:,}".format(hoy_deber),"{:,}".format(hoy_haber),"{:,}".format(ayer-hoy_deber+hoy_haber)])
         return data
 
+    def getPagosOtros(self):
+        fecha=self.name
+        j=self.env['account.journal'].search([['type','not in',['purchase','general','sale']],['quitar_diario','=',True]])
+        facturas_ayer=self.env['account.move'].search([['invoice_date','<',fecha],['state','=','posted']])
+        facturas_hoy=self.env['account.move'].search([['invoice_date','=',fecha],['state','=','posted']])
+        for jo in j:
+            ayer=sum(facturas_ayer.filtered(lambda x:x.journal_id.id==jo.id).mapped('amount_total_signed'))
+            hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_invoice' and x.journal_id.id==j.id).line_ids.mapped('credit')))
+            hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_refund' and x.journal_id.id==j.id).line_ids.mapped('debit')))
+            data.append([jo.name,"{:,}".format(ayer),"{:,}".format(hoy_deber),"{:,}".format(hoy_haber),"{:,}".format(ayer-hoy_deber+hoy_haber)])
+        return data
+
+
+
     def getFacturasSinPago(self):
         inmediato=self.env.ref('account.account_payment_term_immediate')
         facturas=self.env['account.move'].search([['invoice_payment_term_id','=',inmediato.id],['amount_residual_signed','!=',0],['state','=','posted'],['type','=','out_invoice']])
