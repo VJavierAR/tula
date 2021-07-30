@@ -364,8 +364,8 @@ class Cierre(models.Model):
         facturas_hoy=self.env['account.move.line'].search([['date','=',fecha],['move_id.state', '=', 'posted']])
         for jo in j:
             ayer=sum(facturas_ayer.filtered(lambda x:x.account_id==jo.default_debit_account_id.id or x.account_id==jo.default_credit_account_id.id).mapped('balance'))
-            hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.account_id==jo.default_credit_account_id.id).line_ids.mapped('credit')))
-            hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.account_id==jo.default_debit_account_id.id).line_ids.mapped('debit')))
+            hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.account_id==jo.default_credit_account_id.id).mapped('credit')))
+            hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.account_id==jo.default_debit_account_id.id).mapped('debit')))
             data.append([jo.name,"{:,}".format(ayer),"{:,}".format(hoy_deber),"{:,}".format(hoy_haber),"{:,}".format(ayer-hoy_deber+hoy_haber)])
         return data
 
@@ -377,8 +377,8 @@ class Cierre(models.Model):
         facturas_hoy=self.env['account.move.line'].search([['date','=',fecha],['move_id.state', '=', 'posted']])
         for jo in j:
             ayer=sum(facturas_ayer.filtered(lambda x:x.account_id==jo.default_debit_account_id.id or x.account_id==jo.default_credit_account_id.id).mapped('balance'))
-            hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.account_id==jo.default_credit_account_id.id).line_ids.mapped('credit')))
-            hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.account_id==jo.default_debit_account_id.id).line_ids.mapped('debit')))
+            hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.account_id==jo.default_credit_account_id.id).mapped('credit')))
+            hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.account_id==jo.default_debit_account_id.id).mapped('debit')))
             data.append([jo.name,"{:,}".format(ayer),"{:,}".format(hoy_deber),"{:,}".format(hoy_haber),"{:,}".format(ayer-hoy_deber+hoy_haber)])
         return data
 
