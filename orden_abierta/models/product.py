@@ -36,12 +36,19 @@ class ProductTemplate(models.Model):
             codigos_producto = self.env['product.codigos'].search([])
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
-            recs = self.search(['|', '|', '|', '|',
-                                ('name', operator, name),
-                                ('default_code', operator, name),
-                                ('barcode', operator, name),
-                                ('id', 'in', codigos_producto)
-                                ] + args, limit=limit)
+            if codigos_producto:
+                recs = self.search(['|', '|', '|', '|',
+                                    ('name', operator, name),
+                                    ('default_code', operator, name),
+                                    ('barcode', operator, name),
+                                    ('id', 'in', codigos_producto)
+                                    ] + args, limit=limit)
+            else:
+                recs = self.search(['|', '|', '|', '|',
+                                    ('name', operator, name),
+                                    ('default_code', operator, name),
+                                    ('barcode', operator, name),
+                                    ] + args, limit=limit)
             global codigo_buscado
             codigo_buscado = name.lower()
             for rec in recs:
@@ -70,12 +77,19 @@ class ProductProduct(models.Model):
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
             _logger.info("codigos_producto filtro: " + str(codigos_producto))
-            recs = self.search(['|', '|', '|', '|',
-                                ('name', operator, name),
-                                ('default_code', operator, name),
-                                ('barcode', operator, name),
-                                ('id', 'in', codigos_producto)
-                                ] + args, limit=limit)
+            if codigos_producto:
+                recs = self.search(['|', '|', '|', '|',
+                                    ('name', operator, name),
+                                    ('default_code', operator, name),
+                                    ('barcode', operator, name),
+                                    ('id', 'in', codigos_producto)
+                                    ] + args, limit=limit)
+            else:
+                recs = self.search(['|', '|', '|', '|',
+                                    ('name', operator, name),
+                                    ('default_code', operator, name),
+                                    ('barcode', operator, name),
+                                    ] + args, limit=limit)
             global codigo_buscado
             codigo_buscado = name.lower()
             for rec in recs:
