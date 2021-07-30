@@ -273,7 +273,7 @@ class Cierre(models.Model):
         data=[]
         inmediato=self.env.ref('account.account_payment_term_immediate')
         contado_ayer=sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))
-        contado_hoy=sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))
+        contado_hoy=sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id==inmediato.id).mapped('amount_total_signed'))
         credito_ayer=sum(acumulado.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))
         credito_hoy=sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))
         notas_ayer=sum(notas_acumulado.mapped('amount_total_signed'))
