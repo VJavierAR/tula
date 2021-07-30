@@ -66,8 +66,10 @@ class ProductProduct(models.Model):
         recs = self.browse()
         if not recs:
             codigos_producto = self.env['product.codigos'].search([])
+            _logger.info("codigos_producto: " + str(codigos_producto))
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
+            _logger.info("codigos_producto filtro: " + str(codigos_producto))
             recs = self.search(['|', '|', '|', '|',
                                 ('name', operator, name),
                                 ('default_code', operator, name),
