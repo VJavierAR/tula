@@ -122,7 +122,7 @@ class Cierre(models.Model):
             if cierre.state == 'draft':
                 cierre.diferencia = 0
             else:
-                cierre.diferencia = round((cierre.monto_cierre_calculado - cierre.monto_cierre),2)
+                cierre.diferencia = round((cierre.monto_cierre_calculado - cierre.monto_cierre-cierre.monto_cierre_diferencia),2)
                 
     @api.onchange('user_id')
     def calcular_apertura(self):
@@ -157,11 +157,11 @@ class Cierre(models.Model):
 
     @api.depends('diferencia')
     def compute_monto_cierre_acumulado(self):
-        fecha=fields.Datetime.now()
+        fecha=self.name
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
-        data=self.search([['name','>=',prime_day_of_month],['name','<=',last_date_of_month],['user_id','=',self.user_id.id]])
-        self.monto_cierre_acumulado=sum(data.mapped('diferencia'))
+        data=self.search([['name','>=',prime_day_of_month],['name','<=',fecha],['user_id','=',self.user_id.id]])
+        self.monto_cierre_acumulado=sum(data.mapped('monto_cierre_diferencia'))
 
 
     def print_report(self):
@@ -194,9 +194,9 @@ class Cierre(models.Model):
                     raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.monto_cierre_acumulado))
                 else:
                     cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
-            if(cierre.diferencia-cierre.monto_cierre_diferencia!=0):
+            if(cierre.diferencia!=0):
                 raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.diferencia))
-            if(cierre.diferencia-cierre.monto_cierre_diferencia==0):
+            if(cierre.diferencia==0):
                 cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
 
     def get_payments(self):
@@ -249,7 +249,7 @@ class Cierre(models.Model):
         ayer=datetime(fecha.year, fecha.month, fecha.day)
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
-        acumulado=self.env['account.payment'].search([['payment_date','>=',prime_day_of_month],['payment_date','<',ayer]])
+        acumulado=self.env['account.payment'].search([['payment_date','>=',prime_day_of_month],['payment_date','<',fecha]])
         hoy=self.env['account.payment'].search([['payment_date','=',fecha]])
         acumulado=acumulado.filtered(lambda x:x.payment_type!='outbound')
         hoy=hoy.filtered(lambda x:x.payment_type!='outbound')
@@ -292,6 +292,10 @@ class Cierre(models.Model):
         hoy_temp=fecha+relativedelta(days=1)
         hoy=datetime(hoy_temp.year, hoy_temp.month, hoy_temp.day)
         lines=self.env['account.move'].search(['&','&','&',['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['state','=','posted'],['type','=','out_invoice']])
+        notas_acumulado=self.env['account.move'].search([['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['type','=','out_refund']])
+        notas_hoy=self.env['account.move'].search([['invoice_date','=',fecha],['type','=','out_refund']])        
+        notas_ayer=sum(notas_acumulado.mapped('amount_total_signed'))
+        notas_hoy1=sum(notas_hoy.mapped('amount_total_signed'))
         total=0
         descuento=0
         iva=0
@@ -299,7 +303,6 @@ class Cierre(models.Model):
         descuento2=0
         iva2=0
         moneda=self.env.user.company_id.currency_id.id
-        _logger.info(str(moneda))
         for li in lines:
             for liin in li.invoice_line_ids:
                 total=total+(liin.price_unit*liin.quantity)
@@ -319,6 +322,8 @@ class Cierre(models.Model):
                     descuento2=descuento2+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
             iva2=iva2+(li.amount_total_signed-li.amount_untaxed_signed)
         data=[]
+        total=total+notas_ayer
+        total2=total2+notas_hoy1
         data.append(['Ventas',"{0:.2f}".format(total),"{0:.2f}".format(total2),"{0:.2f}".format(total+total2)])
         data.append(['Descuento',"{0:.2f}".format(descuento),"{0:.2f}".format(descuento2),"{0:.2f}".format(descuento+descuento2)])
         data.append(['Impuestos',"{0:.2f}".format(iva),"{0:.2f}".format(iva2),"{0:.2f}".format(iva+iva2)])
@@ -339,7 +344,7 @@ class Cierre(models.Model):
         lines2=self.env['account.payment'].search([['payment_date','=',fecha]])
         lines=lines.filtered(lambda x:x.payment_type!='outbound')
         lines2=lines2.filtered(lambda x:x.payment_type!='outbound')
-        j=self.env['account.journal'].search([['type','not in',['purchase','general']]])
+        j=self.env['account.journal'].search([['type','not in',['purchase','general','sale']],['quitar_diario','=',False]])
         data=[]
         for jo in j:
             ayer=sum(lines.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
