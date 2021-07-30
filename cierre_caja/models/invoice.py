@@ -254,9 +254,9 @@ class Cierre(models.Model):
         acumulado=acumulado.filtered(lambda x:x.payment_type!='outbound')
         hoy=hoy.filtered(lambda x:x.payment_type!='outbound')
         data=[]
-        data.append(['Contado',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda')))])
-        data.append(['Abonos Recibidos',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda')))])
-        data.append(['Total Depositos',"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{0:.2f}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{0:.2f}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda')))])
+        data.append(['Contado',"{:,}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))),"{:,}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))),"{:,}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda')))])
+        data.append(['Abonos Recibidos',"{:,}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{:,}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{:,}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda')))])
+        data.append(['Total Depositos',"{:,}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{:,}".format(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))),"{:,}".format(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda')))])
         return data
 
 
@@ -278,10 +278,10 @@ class Cierre(models.Model):
         credito_hoy=sum(hoy.filtered(lambda x:x.invoice_payment_term_id.id!=inmediato.id).mapped('amount_total_signed'))
         notas_ayer=sum(notas_acumulado.mapped('amount_total_signed'))
         notas_hoy1=sum(notas_hoy.mapped('amount_total_signed'))
-        data.append(['Ventas Contado',"{0:.2f}".format(contado_ayer),"{0:.2f}".format(contado_hoy),"{0:.2f}".format(contado_ayer+contado_hoy)])
-        data.append(['Ventas Credito',"{0:.2f}".format(credito_ayer),"{0:.2f}".format(credito_hoy),"{0:.2f}".format(credito_ayer+credito_hoy)])
-        data.append(['Notas Credito',"{0:.2f}".format(notas_ayer),"{0:.2f}".format(notas_hoy1),"{0:.2f}".format(notas_hoy1+notas_ayer)])
-        data.append(['Total Ventas',"{0:.2f}".format(contado_ayer+credito_ayer+notas_ayer),"{0:.2f}".format(contado_hoy+credito_hoy+notas_hoy1),"{0:.2f}".format(contado_ayer+credito_ayer+notas_ayer+contado_hoy+credito_hoy+notas_hoy1)])
+        data.append(['Ventas Contado',"{:,}".format(contado_ayer),"{:,}".format(contado_hoy),"{:,}".format(contado_ayer+contado_hoy)])
+        data.append(['Ventas Credito',"{:,}".format(credito_ayer),"{:,}".format(credito_hoy),"{:,}".format(credito_ayer+credito_hoy)])
+        data.append(['Notas Credito',"{:,}".format(notas_ayer),"{:,}".format(notas_hoy1),"{:,}".format(notas_hoy1+notas_ayer)])
+        data.append(['Total Ventas',"{:,}".format(contado_ayer+credito_ayer+notas_ayer),"{:,}".format(contado_hoy+credito_hoy+notas_hoy1),"{:,}".format(contado_ayer+credito_ayer+notas_ayer+contado_hoy+credito_hoy+notas_hoy1)])
         return data
 
     def get_ventas(self):
@@ -324,10 +324,10 @@ class Cierre(models.Model):
         data=[]
         total=total+notas_ayer
         total2=total2+notas_hoy1
-        data.append(['Ventas',"{0:.2f}".format(total),"{0:.2f}".format(total2),"{0:.2f}".format(total+total2)])
-        data.append(['Descuento',"{0:.2f}".format(descuento),"{0:.2f}".format(descuento2),"{0:.2f}".format(descuento+descuento2)])
-        data.append(['Impuestos',"{0:.2f}".format(iva),"{0:.2f}".format(iva2),"{0:.2f}".format(iva+iva2)])
-        data.append(['Total',"{0:.2f}".format(total-descuento+iva),"{0:.2f}".format(total2-descuento2+iva2),"{0:.2f}".format((total-descuento+iva)+(total2-descuento2+iva2))])
+        data.append(['Ventas',"{:,}".format(total),"{:,}".format(total2),"{:,}".format(total+total2)])
+        data.append(['Descuento',"{:,}".format(descuento),"{:,}".format(descuento2),"{:,}".format(descuento+descuento2)])
+        data.append(['Impuestos',"{:,}".format(iva),"{:,}".format(iva2),"{:,}".format(iva+iva2)])
+        data.append(['Total',"{:,}".format(total-descuento+iva),"{:,}".format(total2-descuento2+iva2),"{:,}".format((total-descuento+iva)+(total2-descuento2+iva2))])
         return data
     
 
@@ -349,7 +349,7 @@ class Cierre(models.Model):
         for jo in j:
             ayer=sum(lines.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
             hoy=sum(lines2.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
-            data.append([jo.name,"{0:.2f}".format(ayer),"{0:.2f}".format(hoy),"{0:.2f}".format(hoy+ayer)])
+            data.append([jo.name,"{:,}".format(ayer),"{:,}".format(hoy),"{:,}".format(hoy+ayer)])
         return data
 
     def getFacturasSinPago(self):
@@ -357,12 +357,11 @@ class Cierre(models.Model):
         facturas=self.env['account.move'].search([['invoice_payment_term_id','=',inmediato.id],['amount_residual_signed','!=',0],['state','=','posted'],['type','=','out_invoice']])
         data=[]
         for f in facturas:
-            data.append([f.name,f.partner_id.name,f.invoice_date,"{0:.2f}".format(f.amount_residual_signed)])
+            data.append([f.name,f.partner_id.name,f.invoice_date,"{:,}".format(f.amount_residual_signed)])
         return data
     def getFecha(self):
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
-        date_time_acto = pytz.utc.localize(datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')).astimezone(user_tz)
-        _logger.info(date_time_acto)
+        date_time_acto = pytz.utc.localize(datetime.strptime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')).astimezone(user_tz)
         return str(date_time_acto)
 
 class CierreConf(models.Model):
