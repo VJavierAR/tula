@@ -362,7 +362,7 @@ class Cierre(models.Model):
     def getFecha(self):
         user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
         date_time_acto = pytz.utc.localize(datetime.now()).astimezone(user_tz)
-        return str(date_time_acto.strftime("%m/%d/%Y %I:%M"))
+        return str(date_time_acto.strftime("%m/%d/%Y %H:%M"))
 
 class CierreConf(models.Model):
     _name = "cierre.conf"
