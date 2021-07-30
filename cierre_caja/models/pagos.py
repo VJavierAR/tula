@@ -7,14 +7,14 @@ _logger = logging.getLogger(__name__)
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
-    @api.onchange('journal_id')
-    def checkPago(self):
-        conf_usuario = self.env["cierre.conf"].search([('user_id', '=', self.env.user.id)], limit=1)
-        for record in self:
-            _logger.info(record.journal_id.id)
-            if(record.journal_id.id!=False):
-                if record.journal_id.id not in conf_usuario.journal_ids.ids:
-                    raise UserError('Usted no puede registrar pagos en este diario.')
+    # @api.onchange('journal_id')
+    # def checkPago(self):
+    #     conf_usuario = self.env["cierre.conf"].search([('user_id', '=', self.env.user.id)], limit=1)
+    #     for record in self:
+    #         _logger.info(record.journal_id.id)
+    #         if(record.journal_id.id!=False):
+    #             if record.journal_id.id not in conf_usuario.journal_ids.ids:
+    #                 raise UserError('Usted no puede registrar pagos en este diario.')
 
     def validar_caja(self, journal_id, conf_usuario):
         cierre_env = self.env['cierre.caja']
@@ -39,17 +39,21 @@ class AccountPayment(models.Model):
                     self.validar_caja(vl['journal_id'], conf_usuario)
         return super(AccountPayment, self).create(vals_list)
 
-    # def write(self, vals):
-    #     conf_usuario = self.env["cierre.conf"].search([('user_id', '=', self.env.user.id)], limit=1)
-    #     payment_type = vals.get('payment_type', self[0].payment_type)
-    #     if conf_usuario and payment_type != 'transfer':
-    #         if 'journal_id' in vals:
-    #             if self[0].payment_type in ('inbound', 'outbound') and self[0].partner_type == 'customer':
-    #                 self.validar_caja(vals['journal_id'], conf_usuario)
-    #         else:
-    #             if self[0].payment_type in ('inbound', 'outbound') and self[0].partner_type == 'customer':
-    #                 self.validar_caja(self[0].journal_id.id, conf_usuario)
-    #     return super(AccountPayment, self).write(vals)
+    def write(self, vals):
+        conf_usuario = self.env["cierre.conf"].search([('user_id', '=', self.env.user.id)], limit=1)
+        #payment_type = vals.get('payment_type', self[0].payment_type)
+        payment_type=vals['payment_type'] if('payment_type' in vals) else self.payment_type
+        partner_type=vals['partner_type'] if('partner_type' in vals) else self.partner_type
+        if conf_usuario and payment_type != 'transfer':
+            if 'journal_id' in vals:
+                if payment_type in ('inbound', 'outbound') and partner_type == 'customer':
+                    self.validar_caja(vals['journal_id'], conf_usuario)
+            else:
+                if payment_type in ('inbound', 'outbound') and partner_type == 'customer':
+                    self.validar_caja(self.journal_id.id, conf_usuario)
+        return super(AccountPayment, self).write(vals)
+
+
 class Diarios(models.Model):
     _inherit='account.journal'
     quitar_diario=fields.Boolean()
