@@ -359,8 +359,8 @@ class Cierre(models.Model):
         facturas_hoy=self.env['account.move'].search([['invoice_date','=',fecha],['state','=','posted']])
         for jo in j:
             ayer=sum(facturas_ayer.filtered(lambda x:x.journal_id.id==jo.id).mapped('amount_total_signed'))
-            hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_invoice' and x.journal_id.id==j.id).line_ids.mapped('credit')))
-            hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_refund' and x.journal_id.id==j.id).line_ids.mapped('debit')))
+            hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_invoice' and x.journal_id.id==jo.id).line_ids.mapped('credit')))
+            hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_refund' and x.journal_id.id==jo.id).line_ids.mapped('debit')))
             data.append([jo.name,"{:,}".format(ayer),"{:,}".format(hoy_deber),"{:,}".format(hoy_haber),"{:,}".format(ayer-hoy_deber+hoy_haber)])
         return data
 
@@ -371,8 +371,8 @@ class Cierre(models.Model):
         facturas_hoy=self.env['account.move'].search([['invoice_date','=',fecha],['state','=','posted']])
         for jo in j:
             ayer=sum(facturas_ayer.filtered(lambda x:x.journal_id.id==jo.id).mapped('amount_total_signed'))
-            hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_invoice' and x.journal_id.id==j.id).line_ids.mapped('credit')))
-            hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_refund' and x.journal_id.id==j.id).line_ids.mapped('debit')))
+            hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_invoice' and x.journal_id.id==jo.id).line_ids.mapped('credit')))
+            hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_refund' and x.journal_id.id==jo.id).line_ids.mapped('debit')))
             data.append([jo.name,"{:,}".format(ayer),"{:,}".format(hoy_deber),"{:,}".format(hoy_haber),"{:,}".format(ayer-hoy_deber+hoy_haber)])
         return data
 
