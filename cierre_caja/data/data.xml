@@ -5,6 +5,7 @@
         <field name="name">Check payments</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
+        <field name="nextcall" eval="datetime.now(pytz.timezone('UTC')).strftime('%Y-%m-%d 04:59:59')"/>
         <field name="numbercall">-1</field>
         <field eval="False" name="doall"/>
         <field eval="True" name="active"/>
