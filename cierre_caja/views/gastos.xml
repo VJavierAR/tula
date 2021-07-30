@@ -207,7 +207,7 @@
                     <h2>Detalle de ingreso de caja</h2>
                     <div class="row">
                         <div class="col-12">
-                             <t t-set="FechaImp" t-value="o.getFecha"/>
+                             <t t-set="FechaImp" t-value="o.getFecha()"/>
                             <table class="table">
                                 <tr>
                                     <td><strong>ID de Ingreso</strong></td>
