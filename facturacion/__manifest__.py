@@ -44,4 +44,5 @@
     'demo': [
         'demo/demo.xml',
     ],
+    'active': False
 }
