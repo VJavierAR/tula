@@ -366,7 +366,7 @@ class Cierre(models.Model):
             ayer=sum(facturas_ayer.filtered(lambda x:x.account_id.id==jo.default_debit_account_id.id or x.account_id.id==jo.default_credit_account_id.id).mapped('balance'))
             hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.account_id.id==jo.default_credit_account_id.id).mapped('credit')))
             hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.account_id.id==jo.default_debit_account_id.id).mapped('debit')))
-            data.append([jo.name,"{:,}".format(round(ayer,2)),"{:,}".format(round(hoy_deber,2)),"{:,}".format(round(hoy_haber,2)),"{:,}".format(round(ayer-hoy_deber+hoy_haber,2))])
+            data.append([jo.name,"{:,}".format(round(ayer,2)),"{:,}".format(round(hoy_deber,2)),"{:,}".format(round(hoy_haber,2)),"{:,}".format(round(ayer+hoy_deber-hoy_haber,2))])
         return data
 
     def getPagosOtros(self):
@@ -379,7 +379,7 @@ class Cierre(models.Model):
             ayer=sum(facturas_ayer.filtered(lambda x:x.account_id.id==jo.default_debit_account_id.id or x.account_id.id==jo.default_credit_account_id.id).mapped('balance'))
             hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.account_id.id==jo.default_credit_account_id.id).mapped('credit')))
             hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.account_id.id==jo.default_debit_account_id.id).mapped('debit')))
-            data.append([jo.name,"{:,}".format(round(ayer,2)),"{:,}".format(round(hoy_deber,2)),"{:,}".format(round(hoy_haber,2)),"{:,}".format(round(ayer-hoy_deber+hoy_haber,2))])
+            data.append([jo.name,"{:,}".format(round(ayer,2)),"{:,}".format(round(hoy_deber,2)),"{:,}".format(round(hoy_haber,2)),"{:,}".format(round(ayer+hoy_deber-hoy_haber,2))])
         return data
 
 
