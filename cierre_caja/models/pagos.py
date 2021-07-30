@@ -6,6 +6,13 @@ from datetime import datetime, timedelta
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
+    @api.onchange('journal_id')
+    def checkPago(self):
+        conf_usuario = self.env["cierre.conf"].search([('user_id', '=', self.env.user.id)], limit=1)
+        for record in self:
+            if record.journal_id.id not in conf_usuario.journal_ids.ids:
+                raise UserError('Usted no puede registrar pagos en este diario.')
+
     def validar_caja(self, journal_id, conf_usuario):
         cierre_env = self.env['cierre.caja']
         journal_env = self.env['account.journal']
