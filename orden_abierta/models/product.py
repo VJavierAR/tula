@@ -14,6 +14,7 @@ import json
 _logger = logging.getLogger(__name__)
 
 codigos_buscados_lista = []
+codigo_buscado = ""
 
 
 class Partner(models.Model):
