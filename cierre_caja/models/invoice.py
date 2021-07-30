@@ -353,6 +353,7 @@ class Cierre(models.Model):
     #     return data
 
     def getPagosAll(self):
+        data=[]
         fecha=self.name
         j=self.env['account.journal'].search([['type','not in',['purchase','general','sale']],['quitar_diario','=',False]])
         facturas_ayer=self.env['account.move'].search([['invoice_date','<',fecha],['state','=','posted']])
@@ -365,6 +366,7 @@ class Cierre(models.Model):
         return data
 
     def getPagosOtros(self):
+        data=[]
         fecha=self.name
         j=self.env['account.journal'].search([['type','not in',['purchase','general','sale']],['quitar_diario','=',True]])
         facturas_ayer=self.env['account.move'].search([['invoice_date','<',fecha],['state','=','posted']])
