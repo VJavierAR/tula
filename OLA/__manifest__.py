@@ -30,7 +30,7 @@
         'views/templates.xml',
         #'wizard/pagos_wizard.xml',
     ],
-    'installable': True,
+    'installable': False,
     'application': True,
     'auto_install': False,
     'active': False
