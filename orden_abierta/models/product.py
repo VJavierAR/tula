@@ -30,12 +30,15 @@ class Partner(models.Model):
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
         global codigos_buscados_lista
         # codigos_buscados_lista = []
+        _logger.log("name: " + str(name))
         args = args or []
         recs = self.browse()
         if not recs:
             codigos_producto = self.env['product.codigos'].search([])
+            _logger.log("codigos_producto: " + str(codigos_producto))
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
+            _logger.log("codigos_producto: " + str(codigos_producto))
             recs = self.search(['|', '|', '|', '|',
                                 ('name', operator, name),
                                 ('default_code', operator, name),
@@ -43,6 +46,7 @@ class Partner(models.Model):
                                 ('barcode', operator, name),
                                 ('id', 'in', codigos_producto)
                                 ] + args, limit=limit)
+            _logger.log("recs: " + str(recs))
             global codigo_buscado
             codigo_buscado = name.lower()
             for rec in recs:
