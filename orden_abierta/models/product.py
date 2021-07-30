@@ -32,14 +32,13 @@ class ProductTemplate(models.Model):
         # codigos_buscados_lista = []
         args = args or []
         recs = self.browse()
-        if not recs and name:
+        if not recs:
             codigos_producto = self.env['product.codigos'].search([])
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
             recs = self.search(['|', '|', '|', '|',
                                 ('name', operator, name),
                                 ('default_code', operator, name),
-                                ('codigo_producto_cliente', operator, name),
                                 ('barcode', operator, name),
                                 ('id', 'in', codigos_producto)
                                 ] + args, limit=limit)
@@ -65,14 +64,13 @@ class ProductProduct(models.Model):
         #codigos_buscados_lista = []
         args = args or []
         recs = self.browse()
-        if not recs and name:
+        if not recs:
             codigos_producto = self.env['product.codigos'].search([])
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
             recs = self.search(['|', '|', '|', '|',
                                 ('name', operator, name),
                                 ('default_code', operator, name),
-                                ('codigo_producto_cliente', operator, name),
                                 ('barcode', operator, name),
                                 ('id', 'in', codigos_producto)
                                 ] + args, limit=limit)
