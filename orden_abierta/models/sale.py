@@ -18,4 +18,5 @@ class SaleOrderOrdenAbierta(models.Model):
     _inherit = 'sale.order'
     _description = 'Orden abierta'
 
-    conf
+    def conf(self):
+        self.action_confirm()
