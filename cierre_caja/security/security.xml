@@ -5,6 +5,9 @@
         <record model="res.groups" id="group_cierre_caja">
             <field name="name">Cierre de caja</field>
         </record>
+        <record model="res.groups" id="group_cierre_caja_sin">
+            <field name="name">Cierre de caja sin restricción</field>
+        </record>
         <!--Rules-->
         <record id="cierre_caja_comp_rule" model="ir.rule">
             <field name="name">Cierre caja Company</field>
