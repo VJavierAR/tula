@@ -302,8 +302,9 @@
                         <tr>
                             <th>Diario de Pago</th>
                             <th>Monto Ayer</th>
-                            <th>Monto Hoy</th>
-                            <th>Monto Acumulado</th>
+                            <th>Monto Hoy Deber</th>
+                            <th>Monto Hoy Haber</th>
+                            <th>Total</th>
                         </tr>
                         <t t-foreach="pagosA" t-as="l">
                             <tr>
@@ -318,6 +319,9 @@
                                 </td>
                                 <td class="text-right">
                                     <span t-raw="l[3]"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-raw="l[4]"/>
                                 </td>
                             </tr>
                         </t>

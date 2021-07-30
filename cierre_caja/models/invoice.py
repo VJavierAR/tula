@@ -333,23 +333,35 @@ class Cierre(models.Model):
 
 
 
+    # def getPagosAll(self):
+    #     fecha=self.name
+    #     ayer=datetime(fecha.year, fecha.month, fecha.day)
+    #     prime_day_of_month=datetime(fecha.year, fecha.month, 1)
+    #     last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
+    #     hoy_temp=fecha+relativedelta(days=1)
+    #     hoy=datetime(hoy_temp.year, hoy_temp.month, hoy_temp.day)
+    #     lines=self.env['account.payment'].search([['payment_date','>=',prime_day_of_month],['payment_date','<',fecha]])
+    #     lines2=self.env['account.payment'].search([['payment_date','=',fecha]])
+    #     lines=lines.filtered(lambda x:x.payment_type!='outbound')
+    #     lines2=lines2.filtered(lambda x:x.payment_type!='outbound')
+    #     j=self.env['account.journal'].search([['type','not in',['purchase','general','sale']],['quitar_diario','=',False]])
+    #     data=[]
+    #     for jo in j:
+    #         ayer=sum(lines.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
+    #         hoy=sum(lines2.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
+    #         data.append([jo.name,"{:,}".format(ayer),"{:,}".format(hoy),"{:,}".format(hoy+ayer)])
+    #     return data
+
     def getPagosAll(self):
         fecha=self.name
-        ayer=datetime(fecha.year, fecha.month, fecha.day)
-        prime_day_of_month=datetime(fecha.year, fecha.month, 1)
-        last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
-        hoy_temp=fecha+relativedelta(days=1)
-        hoy=datetime(hoy_temp.year, hoy_temp.month, hoy_temp.day)
-        lines=self.env['account.payment'].search([['payment_date','>=',prime_day_of_month],['payment_date','<',fecha]])
-        lines2=self.env['account.payment'].search([['payment_date','=',fecha]])
-        lines=lines.filtered(lambda x:x.payment_type!='outbound')
-        lines2=lines2.filtered(lambda x:x.payment_type!='outbound')
         j=self.env['account.journal'].search([['type','not in',['purchase','general','sale']],['quitar_diario','=',False]])
-        data=[]
+        facturas_ayer=self.env['account.move'].search([['invoice_date','<',fecha],['state','=','posted']])
+        facturas_hoy=self.env['account.move'].search([['invoice_date','=',fecha],['state','=','posted']])
         for jo in j:
-            ayer=sum(lines.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
-            hoy=sum(lines2.filtered(lambda x:x.journal_id.id==jo.id).mapped('monto_moneda'))
-            data.append([jo.name,"{:,}".format(ayer),"{:,}".format(hoy),"{:,}".format(hoy+ayer)])
+            ayer=sum(facturas_ayer.filtered(lambda x:x.journal_id.id==jo.id).mapped('amount_total_signed'))
+            hoy_haber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_invoice' and x.journal_id.id==j.id).line_ids.mapped('credit')))
+            hoy_deber=(sum(facturas_hoy.filtered(lambda x:x.type=='out_refund' and x.journal_id.id==j.id).line_ids.mapped('debit')))
+            data.append([jo.name,"{:,}".format(ayer),"{:,}".format(hoy_deber),"{:,}".format(hoy_haber),"{:,}".format(ayer-hoy_deber+hoy_haber)])
         return data
 
     def getFacturasSinPago(self):
