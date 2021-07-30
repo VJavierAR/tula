@@ -164,13 +164,7 @@ class ACCOUNT_PAYMENT(models.Model):
                 ]
             )
             if existe:
-                return {
-                        # 'value': {},
-                        'warning': {
-                            'title': 'Alerta',
-                            'message': "El numero de deposito ya existe"
-                        }
-                    }
+                raise UserError(_("El numero de deposito ya existe."))
         self.post()
 
 
