@@ -49,6 +49,7 @@ class ProductTemplate(models.Model):
                                     ('default_code', operator, name),
                                     ('barcode', operator, name),
                                     ] + args, limit=limit)
+            """
             global codigo_buscado
             codigo_buscado = name.lower()
             for rec in recs:
@@ -59,6 +60,7 @@ class ProductTemplate(models.Model):
                             'codigo_buscado': codigo_buscado
                         }
                     )
+            """
         return recs.name_get()
 
 
@@ -90,6 +92,7 @@ class ProductProduct(models.Model):
                                     ('default_code', operator, name),
                                     ('barcode', operator, name),
                                     ] + args, limit=limit)
+            """
             global codigo_buscado
             codigo_buscado = name.lower()
             for rec in recs:
@@ -100,6 +103,7 @@ class ProductProduct(models.Model):
                             'codigo_buscado': codigo_buscado
                         }
                     )
+            """
         return recs.name_get()
 
 
