@@ -30,10 +30,9 @@ class ProductTemplate(models.Model):
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
         global codigos_buscados_lista
         # codigos_buscados_lista = []
-        _logger.log("name: " + str(name))
         args = args or []
         recs = self.browse()
-        if not recs:
+        if not recs and name:
             codigos_producto = self.env['product.codigos'].search([])
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
@@ -66,7 +65,7 @@ class ProductProduct(models.Model):
         #codigos_buscados_lista = []
         args = args or []
         recs = self.browse()
-        if not recs:
+        if not recs and name:
             codigos_producto = self.env['product.codigos'].search([])
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
