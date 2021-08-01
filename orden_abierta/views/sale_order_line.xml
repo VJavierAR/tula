@@ -11,7 +11,7 @@
                     <field name="codigo_cliente" readonly="1" optional="show"/>
                     <field name="fecha_programada" optional="show"/>
                     <field name="codigo_alterno" optional="show"/>
-                    <field name="cantidad_reservada" optional="show"/>
+                    <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
                     <field name="order_partner_id" invisible="1"/>
                     <field name="order_id" invisible="1"/>
                 </xpath>
