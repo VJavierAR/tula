@@ -5,7 +5,9 @@
             <field name="name">sale.ordenes.directas</field>
             <field name="model">sale.order.line</field>
             <field name="arch" type="xml">
-                <tree string="Ordenes directas" create="0" delete="0" edit="1" editable="top">
+                <tree string="Ordenes directas" create="0" delete="0" edit="1" multi_edit="1">
+                    <field name="order_id"/>
+                    <field name="order_partner_id" />
                     <field name="product_id" readonly="1"/>
                     <field name="default_code_product" readonly="1"/>
                     <field name="codigo_cliente" readonly="1"/>
@@ -30,6 +32,7 @@
             <field name="name">Ordenes directas</field>
             <field name="res_model">sale.order.line</field>
             <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_ordenes_directas': 1}</field>
             <field name="view_id" ref="view_orden_directa"/>
         </record>
 
@@ -37,6 +40,24 @@
                   parent="sale.sale_order_menu"
                   sequence="5"
                   action='ordenes_directas'/>
+
+         <record model="ir.ui.view" id="view_search_inherit_quotation_filter_update">
+            <field name="name">view.search.inherit.quotation.filter.update</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <!--<field name=""/>-->
+                    <separator/>
+                    <filter string="Ordenenes directas"
+                            name="ordenes_directas"
+                            domain="[('fecha_programada', '!=', False)]"
+                            />
+                    <separator/>
+
+                </xpath>
+            </field>
+        </record>
 
     </data>
 </odoo>
