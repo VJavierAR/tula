@@ -10,15 +10,18 @@
                     <field name="codigo_cliente" />
                     <field name="pedido_cliente" />
                     <field name="fecha_programada" />
+                    <field name="order_partner_id" invisible="0"/>
                 </xpath>
 
-                <!--
+
                 <xpath expr="//button[@name='action_confirm']" position="attributes">
                     <attribute name="name">conf</attribute>
                 </xpath>
+                <!--
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']" position="attributes">
+                    <attribute name="context">{'default_order_partner_id': partner_id}</attribute>
+                </xpath>
                 -->
-
-
 
 
             </field>
