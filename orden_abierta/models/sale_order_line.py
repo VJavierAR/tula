@@ -34,10 +34,6 @@ class SaleOrderLineOrdenAbierta(models.Model):
         string="Referencia interna",
         related="product_id.default_code"
     )
-    description_product = fields.Text(
-        string="Descripción",
-        related="product_id.description"
-    )
 
     @api.onchange('product_id')
     def cambia_producto(self):
@@ -52,7 +48,6 @@ class SaleOrderLineOrdenAbierta(models.Model):
             ordenes = self.env['sale.order'].search(
                 [
                     ('state', 'in', estados_no_aprobados),
-                    ('order_line', '=', True),
                     ('es_orden_abierta', '=', True)
                 ])
             cantidad_dispobible = self.product_id.qty_available
@@ -61,4 +56,8 @@ class SaleOrderLineOrdenAbierta(models.Model):
                 for linea in orden.order_line:
                     if linea.product_id.id == self.product_id.id:
                         cantidad_reservada_suma += linea.product_uom_qty
-            self.cantidad_reservada = cantidad_dispobible - cantidad_reservada_suma
+
+            if cantidad_reservada_suma > 0:
+                self.cantidad_reservada = cantidad_dispobible - cantidad_reservada_suma
+            else:
+                self.cantidad_reservada = 0

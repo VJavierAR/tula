@@ -19,8 +19,7 @@ class SaleOrderOrdenAbierta(models.Model):
     _description = 'Orden abierta'
 
     es_orden_abierta = fields.Boolean(
-        string="¿Es odern abierta?",
-        default=False
+        string="¿Es odern abierta?"
     )
 
     def conf(self):
@@ -36,11 +35,8 @@ class SaleOrderOrdenAbierta(models.Model):
 
     @api.onchange('order_line')
     def cambian_lineas(self):
-        es_abierta = False
-        estado_antes = self.state
         if self.order_line:
             for linea in self.order_line:
                 if linea.fecha_programada:
                     self.es_orden_abierta = True
-                    es_abierta = True
                     break
