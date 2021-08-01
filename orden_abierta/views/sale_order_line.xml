@@ -16,6 +16,11 @@
                     <field name="order_id" invisible="1"/>
                 </xpath>
 
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='price_subtotal']" position="after">
+                    <field name="confirma_venta_directa" force_save="1" optional="show"/>
+                </xpath>
+
+
 
                 <xpath expr="//button[@name='action_confirm']" position="attributes">
                     <attribute name="name">conf</attribute>

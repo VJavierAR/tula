@@ -19,20 +19,27 @@ class SaleOrderLineOrdenAbierta(models.Model):
     _description = 'línea de pedido orden abierta'
 
     codigo_cliente = fields.Text(
-        string="Código cliente"
+        string="Código cliente",
+        copy=True
     )
     fecha_programada = fields.Date(
-        string="Programación",
+        string="Programación"
     )
     codigo_alterno = fields.Text(
-        string="Código alterno"
+        string="Código alterno",
+        copy=True
     )
     cantidad_reservada = fields.Text(
-        string="Cantidad reservada"
+        string="Cantidad reservada",
+        copy=True
     )
     default_code_product = fields.Char(
         string="Referencia interna",
         related="product_id.default_code"
+    )
+    confirma_venta_directa = fields.Boolean(
+        string="Confirma venta directa",
+        default=False
     )
 
     @api.onchange('product_id')
@@ -61,3 +68,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
                 self.cantidad_reservada = cantidad_dispobible - cantidad_reservada_suma
             else:
                 self.cantidad_reservada = 0
+
+    @api.multi
+    def dup_line_to_order(self, order_id=None):
+        return self.copy(default={'order_id': order_id})
