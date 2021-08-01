@@ -40,7 +40,7 @@ class ProductTemplate(models.Model):
                       ('barcode', operator, name),
                       ('id', 'in', codigos_producto)
                       ] + args
-        recs = self.env['product.template'].search(domain, limit=limit)
+        recs = self.search(domain, limit=limit)
         return recs.name_get()
 
 
@@ -61,7 +61,7 @@ class ProductProduct(models.Model):
                       ('barcode', operator, name),
                       ('id', 'in', codigos_producto)
                       ] + args
-        recs = self.env['product.template'].search(domain, limit=limit)
+        recs = self.search(domain, limit=limit)
         return recs.name_get()
 
 
