@@ -41,10 +41,10 @@
                   sequence="5"
                   action='ordenes_directas'/>
 
-         <record model="ir.ui.view" id="view_search_inherit_quotation_filter_update">
-            <field name="name">view.search.inherit.quotation.filter.update</field>
-            <field name="model">sale.order</field>
-            <field name="inherit_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+         <record model="ir.ui.view" id="view_sales_order_line_filter_update">
+            <field name="name">sale.order.line.select.update</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_sales_order_line_filter"/>
             <field name="arch" type="xml">
                 <xpath expr="//search" position="inside">
                     <!--<field name=""/>-->
@@ -55,6 +55,9 @@
                             />
                     <separator/>
 
+                </xpath>
+                <xpath expr="//search/group[1]" position="inside">
+                    <filter string="Cliente" name="cliente" domain="[]" context="{'group_by':'order_partner_id'}"/>
                 </xpath>
             </field>
         </record>
