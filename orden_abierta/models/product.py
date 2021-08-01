@@ -36,20 +36,13 @@ class ProductTemplate(models.Model):
             codigos_producto = self.env['product.codigos'].search([])
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
-            if len(codigos_producto) > 0:
-                recs = self.search(['|', '|', '|', '|',
-                                    ('name', operator, name),
-                                    ('default_code', operator, name),
-                                    ('barcode', operator, name),
-                                    ('id', 'in', codigos_producto)
-                                    ] + args, limit=limit)
-            else:
-                recs = self.search(['|', '|', '|', '|',
-                                    ('name', operator, name),
-                                    ('default_code', operator, name),
-                                    ('barcode', operator, name),
-                                    ] + args, limit=limit)
-            """
+            recs = self.search(['|', '|', '|', '|',
+                                ('name', operator, name),
+                                ('default_code', operator, name),
+                                ('codigo_producto_cliente', operator, name),
+                                ('barcode', operator, name),
+                                ('id', 'in', codigos_producto)
+                                ] + args, limit=limit)
             global codigo_buscado
             codigo_buscado = name.lower()
             for rec in recs:
@@ -60,7 +53,7 @@ class ProductTemplate(models.Model):
                             'codigo_buscado': codigo_buscado
                         }
                     )
-            """
+
         return recs.name_get()
 
 
@@ -70,31 +63,20 @@ class ProductProduct(models.Model):
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
         global codigos_buscados_lista
-        #codigos_buscados_lista = []
+        # codigos_buscados_lista = []
         args = args or []
         recs = self.browse()
         if not recs:
             codigos_producto = self.env['product.codigos'].search([])
-            _logger.info("codigos_producto: " + str(codigos_producto))
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
-            _logger.info("codigos_producto filtro: " + str(codigos_producto))
-            if len(codigos_producto) > 0:
-                recs = self.search(['|', '|', '|', '|',
-                                    ('name', operator, name),
-                                    ('default_code', operator, name),
-                                    ('barcode', operator, name),
-                                    ('id', 'in', codigos_producto)
-                                    ] + args, limit=limit)
-                _logger.info("recs 1:" + str(recs))
-            else:
-                recs = self.search(['|', '|', '|', '|',
-                                    ('name', operator, name),
-                                    ('default_code', operator, name),
-                                    ('barcode', operator, name),
-                                    ] + args, limit=limit)
-                _logger.info("recs 2:" + str(recs))
-            """
+            recs = self.search(['|', '|', '|', '|',
+                                ('name', operator, name),
+                                ('default_code', operator, name),
+                                ('codigo_producto_cliente', operator, name),
+                                ('barcode', operator, name),
+                                ('id', 'in', codigos_producto)
+                                ] + args, limit=limit)
             global codigo_buscado
             codigo_buscado = name.lower()
             for rec in recs:
@@ -105,7 +87,7 @@ class ProductProduct(models.Model):
                             'codigo_buscado': codigo_buscado
                         }
                     )
-            """
+
         return recs.name_get()
 
 
