@@ -21,6 +21,13 @@ class SaleOrderOrdenAbierta(models.Model):
     es_orden_abierta = fields.Boolean(
         string="¿Es odern abierta?"
     )
+    """
+    reservas = fields.One2many(
+        comodel_name='sale.order.reservas',
+        inverse_name='sale_id',
+        string='Reservas'
+    )
+    """
 
     def conf(self):
         orden_abierta = False
