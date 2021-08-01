@@ -30,7 +30,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
     cantidad_reservada = fields.Text(
         string="Cantidad reservada"
     )
-    default_code_product = fields.Text(
+    default_code_product = fields.Char(
         string="Referencia interna",
         related="product_id.default_code"
     )
