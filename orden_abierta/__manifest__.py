@@ -30,7 +30,8 @@
     'data': [
         'security/ir.model.access.csv',
         'views/sale_order_line.xml',
-        'views/product_template.xml'
+        'views/product_template.xml',
+        'views/sale_order_directa.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
