@@ -26,6 +26,7 @@ class ProductTemplate(models.Model):
         string='Códigos de producto'
     )
 
+    """
     @api.model
     def name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
         args = args or []
@@ -35,14 +36,15 @@ class ProductTemplate(models.Model):
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
             domain = ['|', '|', '|',
-                ('name', operator, name),
-                ('default_code', operator, name),
-                ('barcode', operator, name),
-                ('id', 'in', codigos_producto)
+                      ('name', operator, name),
+                      ('default_code', operator, name),
+                      ('barcode', operator, name),
+                      ('id', 'in', codigos_producto)
             ]
         recs = self.search(domain, limit=limit)
         return recs.name_get()
-
+    """
+    
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
@@ -62,7 +64,7 @@ class ProductProduct(models.Model):
                       ('default_code', operator, name),
                       ('barcode', operator, name),
                       ('id', 'in', codigos_producto)
-                      ]
+            ]
         _logger.info("domain: " + str(domain))
         recs = self.search(domain, limit=limit)
         _logger.info("recs: " + str(recs))
