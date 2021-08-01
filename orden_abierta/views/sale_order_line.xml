@@ -7,11 +7,11 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_id']" position="after">
-                    <field name="default_code" readonly="1" />
+                    <field name="default_code_product" readonly="1" />
                     <field name="codigo_cliente" readonly="1" />
                     <field name="fecha_programada" />
                     <field name="codigo_alterno" />
-                    <field name="description" />
+                    <field name="description_product" />
                     <field name="order_partner_id" invisible="1"/>
                 </xpath>
 
@@ -28,7 +28,9 @@
                     <attribute name="context">{'default_order_partner_id': partner_id}</attribute>
                 </xpath>
 
-
+                <xpath xpr="//field[@name='validity_date']" position="before">
+                    <field name="es_orden_abierta" readonly="1" />
+                </xpath>
 
             </field>
         </record>

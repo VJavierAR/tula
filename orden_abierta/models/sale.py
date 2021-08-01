@@ -18,5 +18,29 @@ class SaleOrderOrdenAbierta(models.Model):
     _inherit = 'sale.order'
     _description = 'Orden abierta'
 
+    es_orden_abierta = fields.Boolean(
+        string="¿Es odern abierta?",
+        default=False
+    )
+
     def conf(self):
-        self.action_confirm()
+        orden_abierta = False
+        for line in self.order_line:
+            if line.fecha_programada:
+                orden_abierta = True
+                break
+        if orden_abierta:
+            self.es_orden_abierta = True
+        else:
+            self.action_confirm()
+
+    @api.onchange('order_line')
+    def cambian_lineas(self):
+        es_abierta = False
+        estado_antes = self.state
+        if self.order_line:
+            for linea in self.order_line:
+                if linea.fecha_programada:
+                    self.es_orden_abierta = True
+                    es_abierta = True
+                    break
