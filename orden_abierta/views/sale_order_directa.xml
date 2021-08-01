@@ -20,7 +20,7 @@
                     <field name="tax_id" readonly="1"/>
                     <field name="discount" readonly="1"/>
                     <field name="price_subtotal" readonly="1"/>
-                    <field name="confirma_venta_diecta" readonly="0"/>
+                    <field name="confirma_venta_directa" readonly="0"/>
                     <field name="linea_confirmada" readonly="1"/>
                 </tree>
             </field>
