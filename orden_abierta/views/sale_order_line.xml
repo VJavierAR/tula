@@ -28,7 +28,7 @@
                     <attribute name="context">{'default_order_partner_id': partner_id}</attribute>
                 </xpath>
 
-                <xpath xpr="//field[@name='validity_date']" position="before">
+                <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="es_orden_abierta" readonly="1" />
                 </xpath>
 
