@@ -49,6 +49,8 @@ class SaleOrderOrdenAbierta(models.Model):
                     conteo_lineas_confirmadas += 1
             if conteo_lineas_confirmadas == len(self.order_line.ids):
                 self.state = 'sale'
+            if len(sale_directa.order_line):
+                sale_directa.unlink()
             display_msg = "Se genero orden directa con las líneas sin fecha programada: <br/>Orden generada: " + sale_directa.name
             self.message_post(body=display_msg)
             sale_directa.action_confirm()
