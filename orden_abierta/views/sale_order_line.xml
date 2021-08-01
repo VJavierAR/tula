@@ -12,14 +12,13 @@
                     <field name="fecha_programada" />
                 </xpath>
 
+                <!--
                 <xpath expr="//button[@name='action_confirm']" position="attributes">
                     <attribute name="name">conf</attribute>
-                    <!--<attribute name="attrs">{'invisible': ['|', ('state', 'not in', ['sent']), ('bloqueo_limite_credito', '=', True)] }</attribute>-->
-                    <attribute name="invisible">1</attribute>
                 </xpath>
+                -->
 
 
-                
 
 
             </field>
