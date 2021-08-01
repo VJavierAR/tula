@@ -28,31 +28,19 @@ class ProductTemplate(models.Model):
 
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-        global codigos_buscados_lista
-        # codigos_buscados_lista = []
         args = args or []
-        recs = self.browse()
-        if not recs:
+        domain = []
+        if name:
             codigos_producto = self.env['product.codigos'].search([])
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
-            recs = self.search(['|', '|', '|', '|',
-                                ('name', operator, name),
-                                ('default_code', operator, name),
-                                ('barcode', operator, name),
-                                ('id', 'in', codigos_producto)
-                                ] + args, limit=limit)
-            global codigo_buscado
-            codigo_buscado = name.lower()
-            for rec in recs:
-                if codigo_buscado:
-                    codigos_buscados_lista.append(
-                        {
-                            'id_producto': rec.id,
-                            'codigo_buscado': codigo_buscado
-                        }
-                    )
-
+            domain = ['|', '|', '|', '|',
+                ('name', operator, name),
+                ('default_code', operator, name),
+                ('barcode', operator, name),
+                ('id', 'in', codigos_producto)
+            ] + args
+        recs = self.search(domain, limit=limit)
         return recs.name_get()
 
 
@@ -61,31 +49,19 @@ class ProductProduct(models.Model):
 
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
-        global codigos_buscados_lista
-        # codigos_buscados_lista = []
         args = args or []
-        recs = self.browse()
-        if not recs:
+        domain = []
+        if name:
             codigos_producto = self.env['product.codigos'].search([])
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
-            recs = self.search(['|', '|', '|', '|',
-                                ('name', operator, name),
-                                ('default_code', operator, name),
-                                ('barcode', operator, name),
-                                ('id', 'in', codigos_producto)
-                                ] + args, limit=limit)
-            global codigo_buscado
-            codigo_buscado = name.lower()
-            for rec in recs:
-                if codigo_buscado:
-                    codigos_buscados_lista.append(
-                        {
-                            'id_producto': rec.id,
-                            'codigo_buscado': codigo_buscado
-                        }
-                    )
-
+            domain = ['|', '|', '|', '|',
+                      ('name', operator, name),
+                      ('default_code', operator, name),
+                      ('barcode', operator, name),
+                      ('id', 'in', codigos_producto)
+                      ] + args
+        recs = self.search(domain, limit=limit)
         return recs.name_get()
 
 
