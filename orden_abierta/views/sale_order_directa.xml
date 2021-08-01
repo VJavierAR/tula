@@ -53,11 +53,15 @@
                             name="ordenes_directas"
                             domain="[('fecha_programada', '!=', False)]"
                             />
+                    <filter string="Fecha programada"
+                            name="fecha_programada"
+                            />
                     <separator/>
 
                 </xpath>
                 <xpath expr="//search/group[1]" position="inside">
-                    <filter string="Cliente" name="cliente" domain="[]" context="{'group_by':'order_partner_id'}"/>
+                    <filter string="Cliente" name="cliente_group" domain="[]" context="{'group_by':'order_partner_id'}"/>
+                    <filter string="Fecha programada" name="fecha_programada_group" domain="[]" context="{'group_by':'fecha_programada'}"/>
                 </xpath>
             </field>
         </record>
