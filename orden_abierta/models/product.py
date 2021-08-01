@@ -34,7 +34,7 @@ class ProductTemplate(models.Model):
             codigos_producto = self.env['product.codigos'].search([])
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
-            domain = ['|', '|', '|', '|',
+            domain = ['|', '|', '|',
                 ('name', operator, name),
                 ('default_code', operator, name),
                 ('barcode', operator, name),
@@ -58,12 +58,12 @@ class ProductProduct(models.Model):
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
             _logger.info("codigos_producto: " + str(codigos_producto))
-            domain = ['|', '|', '|', '|',
+            domain = ['|', '|', '|',
                       ('name', operator, name),
                       ('default_code', operator, name),
                       ('barcode', operator, name),
                       ('id', 'in', codigos_producto)
-                      ] 
+                      ] + args
         recs = self.search(domain, limit=limit)
         _logger.info("recs: " + str(recs))
         return recs.name_get()
