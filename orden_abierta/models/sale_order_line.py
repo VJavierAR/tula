@@ -32,5 +32,5 @@ class SaleOrderLineOrdenAbierta(models.Model):
     def cambia_producto(self):
         if self.product_id.id:
             for codigo in self.product_id.codigos_de_producto:
-                if self.order_partner_id.id == codigo.cliente:
+                if self.order_partner_id.id == codigo.cliente.id:
                     self.codigo_cliente = codigo.codigo_producto
