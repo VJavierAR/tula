@@ -18,14 +18,14 @@ class SaleOrderLineOrdenAbierta(models.Model):
     _inherit = 'sale.order.line'
     _description = 'línea de pedido orden abierta'
 
+    codigo_cliente = fields.Text(
+        string="Código cliente"
+    )
     fecha_programada = fields.Date(
         string="Fecha programada",
     )
-    pedido_cliente = fields.Text(
-        string="Pedido cliente"
-    )
-    codigo_cliente = fields.Text(
-        string="Código cliente"
+    codigo_alterno = fields.Text(
+        string="Código alterno"
     )
 
     @api.onchange('product_id')
