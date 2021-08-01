@@ -63,6 +63,7 @@ class ProductProduct(models.Model):
                       ('id', 'in', codigos_producto)
                       ] + args
         recs = self.search(domain, limit=limit)
+        _logger.info("recs: " + str(recs))
         return recs.name_get()
 
 
