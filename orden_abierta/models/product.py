@@ -53,6 +53,7 @@ class ProductProduct(models.Model):
         domain = []
         if name:
             codigos_producto = self.env['product.codigos'].search([])
+            _logger.info("all codigos_producto: " + str(codigos_producto))
             codigos_producto = codigos_producto.filtered(
                 lambda codigo: name.lower() == codigo.codigo_producto.lower()).mapped('producto_id.id')
             _logger.info("codigos_producto: " + str(codigos_producto))
@@ -61,7 +62,8 @@ class ProductProduct(models.Model):
                       ('default_code', operator, name),
                       ('barcode', operator, name),
                       ('id', 'in', codigos_producto)
-                      ]
+                      ] + args
+        _logger.info("domain: " + str(domain))
         recs = self.search(domain, limit=limit)
         _logger.info("recs: " + str(recs))
         return recs.name_get()
