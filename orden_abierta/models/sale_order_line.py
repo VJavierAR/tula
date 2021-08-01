@@ -22,7 +22,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
         string="Código cliente"
     )
     fecha_programada = fields.Date(
-        string="Fecha programada",
+        string="Programación",
     )
     codigo_alterno = fields.Text(
         string="Código alterno"
