@@ -69,6 +69,6 @@ class SaleOrderLineOrdenAbierta(models.Model):
             else:
                 self.cantidad_reservada = 0
 
-    @api.multi
+    # @api.multi
     def dup_line_to_order(self, order_id=None):
         return self.copy(default={'order_id': order_id})
