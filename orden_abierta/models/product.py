@@ -39,7 +39,6 @@ class ProductTemplate(models.Model):
             recs = self.search(['|', '|', '|', '|',
                                 ('name', operator, name),
                                 ('default_code', operator, name),
-                                ('codigo_producto_cliente', operator, name),
                                 ('barcode', operator, name),
                                 ('id', 'in', codigos_producto)
                                 ] + args, limit=limit)
@@ -73,7 +72,6 @@ class ProductProduct(models.Model):
             recs = self.search(['|', '|', '|', '|',
                                 ('name', operator, name),
                                 ('default_code', operator, name),
-                                ('codigo_producto_cliente', operator, name),
                                 ('barcode', operator, name),
                                 ('id', 'in', codigos_producto)
                                 ] + args, limit=limit)
