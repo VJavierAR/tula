@@ -27,7 +27,7 @@ class ProductTemplate(models.Model):
     )
 
     @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+    def name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
         args = args or []
         domain = []
         if name:
@@ -39,7 +39,7 @@ class ProductTemplate(models.Model):
                 ('default_code', operator, name),
                 ('barcode', operator, name),
                 ('id', 'in', codigos_producto)
-            ] 
+            ]
         recs = self.search(domain, limit=limit)
         return recs.name_get()
 
@@ -48,7 +48,7 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     @api.model
-    def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
+    def name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
         args = args or []
         domain = []
         if name:
