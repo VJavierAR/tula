@@ -31,6 +31,7 @@ class SaleOrderOrdenAbierta(models.Model):
 
     def conf(self):
         orden_abierta = self.es_orden_abierta
+        conteo_lineas_confirmadas = 0
         if orden_abierta:
             sale_directa = self.env['sale.order'].create({
                 'partner_id': self.partner_id.id,
@@ -41,9 +42,13 @@ class SaleOrderOrdenAbierta(models.Model):
             })
             id_sale_directa = sale_directa.id
             for line in self.order_line:
-                if line.confirma_venta_directa or not line.fecha_programada:
+                if (line.confirma_venta_directa or not line.fecha_programada) and not line.linea_confirmada:
                     line.dup_line_to_order(order_id=id_sale_directa)
-                    # line.order_id = id_sale_directa
+                    line.linea_confirmada = True
+                if line.linea_confirmada:
+                    conteo_lineas_confirmadas += 1
+            if conteo_lineas_confirmadas == len(self.order_line.ids):
+                self.state = 'sale'
             display_msg = "Se genero orden directa con las líneas sin fecha programada: <br/>Orden generada: " + sale_directa.name
             self.message_post(body=display_msg)
             sale_directa.action_confirm()

@@ -41,6 +41,10 @@ class SaleOrderLineOrdenAbierta(models.Model):
         string="Confirma venta directa",
         default=False
     )
+    linea_confirmada = fields.Boolean(
+        string="Línea confirmada",
+        default=False
+    )
 
     @api.onchange('product_id')
     def cambia_producto(self):
