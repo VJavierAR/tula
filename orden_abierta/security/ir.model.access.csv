@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_product_codigos,product.codigos,model_product_codigos,,1,1,1,1
+access_sale_notificacion_orden_abierta,access.noticiacion.orden.abierta,orden_abierta.model_sale_order,group_noticiacion_orden_abierta,1,1,1,1

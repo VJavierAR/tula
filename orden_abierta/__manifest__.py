@@ -28,11 +28,13 @@
 
     # always loaded
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/sale_order_line.xml',
         'views/product_template.xml',
         'views/sale_order_directa.xml',
         'wizard/sale_order_directa_view.xml',
+        'data/data.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
