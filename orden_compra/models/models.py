@@ -17,7 +17,7 @@ class Factura(models.Model):
 			context = dict(self.env.context)
 			tipo=context['default_type']
 			if(tipo=='in_invoice'):
-				orden=self.env['purchase.order'].create({'partner_id':self.partner_id.id,'picking_type_id':almacen.in_type_id.id})
+				orden=self.env['purchase.order'].create({'partner_id':self.partner_id.id,'picking_type_id':self.almacen.in_type_id.id})
 				for inv in self.invoice_line_ids:
 					prod=dict()
 					prod['product_id']=inv.product_id.id
