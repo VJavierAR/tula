@@ -7,7 +7,7 @@
       <field name="inherit_id" ref="account.view_move_form"/>
       <field name="arch" type="xml">
           <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='company_id']" position="after">
-    <field name="almacen" attrs="{'invisible': ['|',['type','!=','out_invoice'],['type','!=','out_refund']]}"/>
+    <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['type','=','in_invoice']]}"/>
   </xpath>
 
 
