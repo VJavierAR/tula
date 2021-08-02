@@ -5,6 +5,7 @@ from email.utils import formataddr
 from odoo.exceptions import UserError, RedirectWarning
 from odoo import exceptions, _
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 import logging, ast
 import pytz
 import base64
@@ -71,7 +72,8 @@ class SaleOrderOrdenAbierta(models.Model):
 
     def cron_orden_abierta(self):
         genero_html = False
-        today_date = datetime.today().strftime("%m-%d-%Y")
+        today_date = datetime.today().strftime("%Y-%m-%d")
+        today_date = '2021-08-01'
         _logger.info('today_date: ' + str(today_date))
         usuarios_a_notificar = self.env['res.groups'].sudo().search(
             [("name", "=", "Notificaciones de ordenes abiertas")]).mapped('users.id')
@@ -83,19 +85,21 @@ class SaleOrderOrdenAbierta(models.Model):
             ('es_orden_abierta', '=', True),
         ])
 
-        conpany_email = None
+        company_email = ""
         html = "Ordenes abiertas para ser entregadas hoy: "
         for pedido_abierto in pedidos_de_venta:
-            conpany_email = pedido_abierto.conpany_id.email
+            company_email = pedido_abierto.company_id.email
             for linea in pedido_abierto.order_line:
-                if linea.fecha_programada == today_date:
+                _logger.info("linea.fecha_programada: " + str(linea.fecha_programada) + " today_date: " + str(today_date) + "pedido_abierto: " + pedido_abierto.name)
+                if str(linea.fecha_programada) == str(today_date):
                     html += pedido_abierto.name + "<br/>"
                     genero_html = True
 
         if genero_html:
+            _logger.info("listoooooooooooo")
             template_correo = self.env.ref('orden_abierta.notify_orden_abierta_email_template')
             mail = template_correo.generate_email(self.id)
             mail['email_to'] = str(usuarios_a_notificar_correo).replace('[', '').replace(']', '').replace('\'', '')
             mail['body_html'] = html
-            mail['email_from'] = conpany_email
+            mail['email_from'] = company_email
             self.env['mail.mail'].create(mail).send()
