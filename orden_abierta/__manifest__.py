@@ -24,6 +24,7 @@
         'base',
         'sale',
         'product',
+        'stock'
     ],
 
     # always loaded
