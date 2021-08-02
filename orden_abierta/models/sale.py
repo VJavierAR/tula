@@ -70,6 +70,17 @@ class SaleOrderOrdenAbierta(models.Model):
                     self.es_orden_abierta = True
                     break
 
+    @api.model
+    def create(self, vals):
+        if 'order_line' in vals:
+            lineas = vals['order_line']
+            for linea in lineas:
+                if 'fecha_programada' in linea[2] and linea[2]['fecha_programada']:
+                    vals['es_orden_abierta'] = True
+
+        result = super(SaleOrderOrdenAbierta, self).create(vals)
+        return result
+
     def cron_orden_abierta(self):
         genero_html = False
         today_date = datetime.today().strftime("%Y-%m-%d")
