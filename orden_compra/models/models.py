@@ -1,18 +1,30 @@
 # -*- coding: utf-8 -*-
 
-# from odoo import models, fields, api
+from odoo import models, fields, api
 
 
-# class orden_compra(models.Model):
-#     _name = 'orden_compra.orden_compra'
-#     _description = 'orden_compra.orden_compra'
+class Factura(models.Model):
+	_inherit='account.move'
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+
+
+
+class LinesFactura(models.Model):
+	_inherit='account.move.line'
+	costo=fields.Float(related='product_id.standard_price')
+	precio=fields.Float(related='product_id.lst_price')
+
+
+
+
+
+
+class Almacen(models.Model):
+	_inherit='stock.warehouse'
+	auto_recepcion=fields.Boolean()
+	stock_visible=fields.Boolean()
+
+
+class Company(models.Model):
+	_inherit='res.company'
+	order_compra=fields.Boolean()
