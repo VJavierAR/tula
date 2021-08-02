@@ -7,6 +7,7 @@ _logger = logging.getLogger(__name__)
 
 class Factura(models.Model):
 	_inherit='account.move'
+	almacen=fields.Many2one('stock.warehouse')
 
 
 	def action_post(self):
@@ -16,9 +17,16 @@ class Factura(models.Model):
 			context = dict(self.env.context)
 			tipo=context['default_type']
 			if(tipo=='in_invoice'):
+				orden=self.env['purchase.order'].create({'partner_id':self.partner_id.id,'picking_type_id':almacen.in_type_id.id})
 				for inv in self.invoice_line_ids:
-					_logger.info(inv.id)
-					_logger.info(str(inv.default_get(('product_id','id'))))
+					prod=dict()
+					prod['product_id']=inv.product_id.id
+					prod['product_qty']=inv.quantity
+					prod['name']=inv.name
+					pro['price_unit']=inv.price_unit
+					prod['tax_ids']=inv.tax_ids.mapped('id')
+					prod['order_id']=orden.id
+					self.env['purchase.order.line'].create(prod)
 			del context['default_type']
 			self = self.with_context(context)
 		return self.post()
