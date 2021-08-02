@@ -16,7 +16,8 @@ class Factura(models.Model):
 			context = dict(self.env.context)
 			tipo=context['default_type']
 			if(tipo=='in_invoice'):
-				_logger.info(str(self.invoice_line_ids.default_get()))
+				for inv in self.invoice_line_ids:
+					_logger.info(str(inv.default_get(('product_id'))))
 			del context['default_type']
 			self = self.with_context(context)
 		return self.post()
