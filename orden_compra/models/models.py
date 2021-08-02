@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+import logging, ast
+_logger = logging.getLogger(__name__)
 
 
 class Factura(models.Model):
