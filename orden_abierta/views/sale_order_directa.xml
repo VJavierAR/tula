@@ -51,7 +51,7 @@
                     <separator/>
                     <filter string="Ordenenes directas"
                             name="ordenes_directas"
-                            domain="[('fecha_programada', '!=', False)]"
+                            domain="[('fecha_programada', '!=', False), ('linea_confirmada', '=', False)]"
                             />
                     <filter string="Fecha programada"
                             name="fecha_programada"
