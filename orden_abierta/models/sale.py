@@ -55,7 +55,7 @@ class SaleOrderOrdenAbierta(models.Model):
                 display_msg = "No se genero orden directa al no tener lineas que confirmar"
                 self.message_post(body=display_msg)
             else:
-                display_msg = "Se genero orden directa con las líneas sin fecha programada: <br/>Orden generada: " + sale_directa.name
+                display_msg = "Se genero orden directa con las líneas: <br/>Orden generada: " + sale_directa.name
                 self.message_post(body=display_msg)
                 sale_directa.action_confirm()
         else:
