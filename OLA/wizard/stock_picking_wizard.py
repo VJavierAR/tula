@@ -10,12 +10,12 @@ class StockPickingPrint(models.TransientModel):
     picking = fields.Many2one('stock.picking')
     def button_print(self):
         user_id = self.env['res.users'].search([('user_pin', '=', self.user_pin)], limit=1)
-        if self.env.user.id == user_id.id:
+        if user_id.mapped('user_pin')!=[]:
             if self.picking.state != 'done':
                 self.picking.state = 'printed'
                 if self.picking.state == 'assigned':
                     self.picking.show_validate=True
-            self.picking.user_print_id = self.env.user.id
+            self.picking.user_print_id = user_id.id
             self.env['registro.operation'].create({'usuario':user_id.id,'operacion':'Impresión','rel_id':self.picking.id})
             return self.picking.do_print_picking()
         else:
@@ -30,8 +30,8 @@ class StockPickingValidate(models.TransientModel):
     
     def button_validate(self):
         user_id = self.env['res.users'].search([('user_pin', '=', self.user_pin)], limit=1)
-        if self.env.user.id == user_id.id:
-            self.picking.user_validate_id = self.env.user.id
+        if user_id.mapped('user_pin')!=[]:
+            self.picking.user_validate_id = user_id.id
             self.env['registro.operation'].create({'usuario':user_id.id,'operacion':'Validación picking','rel_id':self.picking.id})
             # picking.message_post(body=("Validación realizada."))
             return self.picking.button_validate(True)
