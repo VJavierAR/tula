@@ -16,7 +16,7 @@ class Factura(models.Model):
 			context = dict(self.env.context)
 			tipo=context['default_type']
 			if(tipo=='in_invoice'):
-				_logger.info(str(context))
+				_logger.info(str(self.invoice_line_ids.default_get()))
 			del context['default_type']
 			self = self.with_context(context)
 		return self.post()
@@ -27,6 +27,8 @@ class LinesFactura(models.Model):
 	_inherit='account.move.line'
 	costo=fields.Float(related='product_id.standard_price')
 	precio=fields.Float(related='product_id.lst_price')
+	ultimo_provedor=fields.Many2one('res.partner')
+	ultimo_precio_compra=fields.Float()
 
 
 
