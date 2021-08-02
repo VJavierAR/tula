@@ -22,6 +22,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
     )
 
     def generar_orden(self):
+        mensajeTitulo = "Alerta"
         cliente_id = self.order_line_ids[0].order_partner_id.id
         for line in self.order_line_ids:
             if line.order_partner_id.id != cliente_id:
@@ -40,11 +41,11 @@ class OrdenAbiertaToDirecta(models.TransientModel):
                     'res_id': wiz.id,
                     'context': self.env.context,
                 }
-        
+
         sale_directa = self.env['sale.order'].create({
             'partner_id': cliente_id,
-            'company_id': self.order_line_ids[0].company_id.id,
-            'picking_policy': self.order_line_ids[0].picking_policy,
+            'company_id': self.order_line_ids[0].order_id.company_id.id,
+            'picking_policy': self.order_line_ids[0].order_id.picking_policy,
             # 'payment_term_id': self.payment_term_id.id
         })
         id_sale_directa = sale_directa.id
