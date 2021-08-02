@@ -70,7 +70,8 @@ class SaleOrderOrdenAbierta(models.Model):
                     break
 
     def cron_orden_abierta(self):
-        today_date = datetime.date.today().strftime("%m-%d-%Y %H:%M:%S")
+        genero_html = False
+        today_date = datetime.today().strftime("%m-%d-%Y")
         _logger.info('today_date: ' + str(today_date))
         usuarios_a_notificar = self.env['res.groups'].sudo().search(
             [("name", "=", "Notificaciones de ordenes abiertas")]).mapped('users.id')
@@ -82,14 +83,19 @@ class SaleOrderOrdenAbierta(models.Model):
             ('es_orden_abierta', '=', True),
         ])
 
+        conpany_email = None
         html = "Ordenes abiertas para ser entregadas hoy: "
         for pedido_abierto in pedidos_de_venta:
+            conpany_email = pedido_abierto.conpany_id.email
             for linea in pedido_abierto.order_line:
                 if linea.fecha_programada == today_date:
                     html += pedido_abierto.name + "<br/>"
-                    
-        template_correo = self.env.ref('orden_abierta.notify_orden_abierta_email_template')
-        mail = template_correo.generate_email(self.id)
-        mail['email_to'] = str(usuarios_a_notificar_correo).replace('[', '').replace(']', '').replace('\'', '')
-        mail['body_html'] = html
-        self.env['mail.mail'].create(mail).send()
+                    genero_html = True
+
+        if genero_html:
+            template_correo = self.env.ref('orden_abierta.notify_orden_abierta_email_template')
+            mail = template_correo.generate_email(self.id)
+            mail['email_to'] = str(usuarios_a_notificar_correo).replace('[', '').replace(']', '').replace('\'', '')
+            mail['body_html'] = html
+            mail['email_from'] = conpany_email
+            self.env['mail.mail'].create(mail).send()
