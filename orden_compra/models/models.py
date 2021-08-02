@@ -55,10 +55,9 @@ class Factura(models.Model):
 			move.mapped('line_ids.analytic_line_ids').unlink()
 		self.mapped('line_ids').remove_move_reconcile()
 		self.write({'state': 'draft','invoice_origin':''})
-		p=self.purchase_id.button_cancel()
+		self.purchase_id.button_cancel()
 		self.purchase_id.picking_ids.unlink()
 		self.purchase_id.unlink()
-		return p
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
