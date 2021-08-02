@@ -31,8 +31,8 @@ class Factura(models.Model):
 					p=self.env['purchase.order.line'].create(prod)
 					p.write({'invoice_lines':[(6,0,inv.mapped('id'))]})
 				orden.button_confirm()
-				_logger.info(self.id)
 				orden.write({'invoice_ids':[(6,0,self.mapped('id'))]})
+				_logger.info(orden.id)
 				self.write({'purchase_id':orden.id,'invoice_origin':orden.name})
 			del context['default_type']
 			self = self.with_context(context)
