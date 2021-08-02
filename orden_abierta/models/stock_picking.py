@@ -25,7 +25,7 @@ class StockPicking(models.Model):
             ('state', 'in', estados),
         ])
         usuarios = self.env['res.groups'].sudo().search(
-            [("name", "=", "Notificaciones de ordenes abiertas")])
+            [("name", "=", "Notificaciones de ordenes abiertas")]).mapped('users')
 
         for orden in ordenes_entrega:
             notification_ids = []
