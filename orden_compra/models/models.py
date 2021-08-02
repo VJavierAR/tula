@@ -54,7 +54,7 @@ class Factura(models.Model):
 			# We remove all the analytics entries for this journal
 			move.mapped('line_ids.analytic_line_ids').unlink()
 		self.mapped('line_ids').remove_move_reconcile()
-		self.purchase_id.button_cancel()
+		self.purchase_id.write({'state': 'cancel'})
 		self.write({'state': 'draft','invoice_origin':''})
 		for pi in self.purchase_id.picking_ids:
 			pi.unlink()
