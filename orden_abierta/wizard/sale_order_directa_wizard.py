@@ -22,12 +22,30 @@ class OrdenAbiertaToDirecta(models.TransientModel):
     )
 
     def generar_orden(self):
+        cliente_id = self.order_line_ids[0].order_partner_id.id
+        for line in self.order_line_ids:
+            if line.order_partner_id.id != cliente_id:
+                display_msg = "Una línea de pedido tiene diferente cliente"
+                wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
+                view = self.env.ref('orden_abierta.sale_order_alerta_view')
+                return {
+                    'name': _(mensajeTitulo),
+                    'type': 'ir.actions.act_window',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'sale.order.alerta',
+                    'views': [(view.id, 'form')],
+                    'view_id': view.id,
+                    'target': 'new',
+                    'res_id': wiz.id,
+                    'context': self.env.context,
+                }
+        
         sale_directa = self.env['sale.order'].create({
-            'partner_id': self.partner_id.id,
-            'company_id': self.company_id.id,
-            'picking_policy': self.picking_policy,
-            'date_order': self.date_order,
-            'payment_term_id': self.payment_term_id.id
+            'partner_id': cliente_id,
+            'company_id': self.order_line_ids[0].company_id.id,
+            'picking_policy': self.order_line_ids[0].picking_policy,
+            # 'payment_term_id': self.payment_term_id.id
         })
         id_sale_directa = sale_directa.id
         for line in self.order_line_ids:
