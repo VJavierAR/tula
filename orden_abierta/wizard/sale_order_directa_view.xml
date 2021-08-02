@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_genera_orden_directa" model="ir.actions.act_window">
+            <field name="name">Confirmar orden abierta</field>
+            <field name="res_model">orden.abierta.to.directa</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="sale.model_sale_order_line" />
+        </record>
+        <record id="view_activar_toner_form" model="ir.ui.view">
+            <field name="model">orden.abierta.to.directa</field>
+            <field name="arch" type="xml">
+                <form string="Generar orden directa">
+                    <h2>
+                        Se creara y confirmara la orden directa de las líneas seleccionadas.
+                    </h2>
+                    <footer>
+                        <button name="generar_orden" string="Crear orden directa" type="object" class="oe_highlight"/>
+                        <button string="Cerrar" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sale_order_alerta_view">
+            <field name="model">sale.order.alerta</field>
+            <field name="arch" type="xml">
+                <form string="Alerta">
+                    <field name="mensaje" readonly='1'/>
+                    <footer>
+                        <button special="cancel" string="Cerrar"  class="btn-secondary" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
