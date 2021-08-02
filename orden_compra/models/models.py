@@ -28,11 +28,12 @@ class Factura(models.Model):
 					prod['order_id']=orden.id
 					prod['product_uom']=inv.product_uom_id.id
 					prod['date_planned']=inv.date
-					self.env['purchase.order.line'].create(prod)
+					p=self.env['purchase.order.line'].create(prod)
+					p.write({'invoice_lines':[(6,0,inv.mapped('id'))]})
 				orden.button_confirm()
 				_logger.info(self.id)
 				orden.write({'invoice_ids':[(6,0,self.mapped('id'))]})
-				self.write({'purchase_id':orden.id,'origin':orden.name})
+				self.write({'purchase_id':orden.id,'invoice_origin':orden.name})
 			del context['default_type']
 			self = self.with_context(context)
 		return self.post()
