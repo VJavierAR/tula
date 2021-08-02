@@ -53,12 +53,12 @@ class Factura(models.Model):
 			    raise UserError(_('You cannot modify a posted entry of this journal because it is in strict mode.'))
 			# We remove all the analytics entries for this journal
 			move.mapped('line_ids.analytic_line_ids').unlink()
-		self.purchase_id.button_cancel()
+		p=self.purchase_id.button_cancel()
 		self.purchase_id.picking_ids.unlink()
 		self.purchase_id.unlink()
 		self.mapped('line_ids').remove_move_reconcile()
 		self.write({'state': 'draft','invoice_origin':''})
-
+		return p
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
