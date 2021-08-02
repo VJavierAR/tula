@@ -17,7 +17,7 @@ class Factura(models.Model):
 			context = dict(self.env.context)
 			tipo=context['default_type']
 			if(tipo=='in_invoice'):
-				orden=self.env['purchase.order'].create({'invoice_ids':self.mapped('id'),'partner_id':self.partner_id.id,'picking_type_id':self.almacen.in_type_id.id})
+				orden=self.env['purchase.order'].create({'partner_id':self.partner_id.id,'picking_type_id':self.almacen.in_type_id.id})
 				for inv in self.invoice_line_ids:
 					prod=dict()
 					prod['product_id']=inv.product_id.id
@@ -30,8 +30,9 @@ class Factura(models.Model):
 					prod['date_planned']=inv.date
 					self.env['purchase.order.line'].create(prod)
 				orden.button_confirm()
-				orden.write({'invoice_ids':[(4,self.id)]})
-				self.write({'purchase_id':orden.id})
+				_logger.info(self.id)
+				orden.write({'invoice_ids':[(6,0,self.mapped('id'))]})
+				self.write({'purchase_id':orden.id,'origin':orden.name})
 			del context['default_type']
 			self = self.with_context(context)
 		return self.post()
