@@ -14,7 +14,9 @@ class Factura(models.Model):
 			raise UserError(_("A payment journal entry generated in a journal configured to post entries only when payments are reconciled with a bank statement cannot be manually posted. Those will be posted automatically after performing the bank reconciliation."))
 		if self.env.context.get('default_type'):
 			context = dict(self.env.context)
-			_logger.info(context['default_type'])
+			tipo=context['default_type']
+			if(tipo=='in_invoice'):
+				_logger.info(str(context))
 			del context['default_type']
 			self = self.with_context(context)
 		return self.post()
