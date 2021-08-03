@@ -61,7 +61,10 @@
   <field name="model">purchase.order</field>
   <field name="inherit_id" ref="purchase.purchase_order_form"/>
   <field name="arch" type="xml">
-    <xpath expr="//button[@name='button_confirm']" position="attributes">
+    <xpath expr="//button[@id='bid_confirm']" position="attributes">
+      <attribute name="name">boton_confirmar</attribute>
+    </xpath>
+        <xpath expr="//button[@id='draft_confirm']" position="attributes">
       <attribute name="name">boton_confirmar</attribute>
     </xpath>
     
