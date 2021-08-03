@@ -55,6 +55,7 @@ class Factura(models.Model):
 			move.mapped('line_ids.analytic_line_ids').unlink()
 		self.mapped('line_ids').remove_move_reconcile()
 		self.write({'state': 'draft'})
+		tipo=self.type
 		if(tipo=='in_invoice' and self.company_id.orden_compra):
 			if(self.orden_compra.mapped('id')!=[]):
 				self.write({'invoice_origin':''})
