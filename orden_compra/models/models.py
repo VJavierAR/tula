@@ -72,6 +72,12 @@ class LinesFactura(models.Model):
 	ultimo_precio_compra=fields.Float()
 
 
+	@api.onchange('product_id')
+	def ultimoProvedor(self):
+		for record in self:
+			if(record.product_id.id!=False):
+				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id],order='date_planned desc',limit=1])
+				record['ultimo_provedor']=ultimo.order_id.partner_id.id
 
 
 
