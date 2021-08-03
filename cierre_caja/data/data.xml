@@ -12,7 +12,7 @@
         <field name="model_id" ref="account.model_account_payment" />
         <field name="state">code</field>
         <field name="code">
-pi=env['account.payment'].search([])
+pi=env['account.payment'].search([['monto_moneda','=',0]])
 for pick in pi:
   pi.actulizaMonneda()
 </field>
