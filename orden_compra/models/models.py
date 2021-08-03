@@ -30,13 +30,13 @@ class Factura(models.Model):
 					prod['date_planned']=inv.date
 					p=self.env['purchase.order.line'].create(prod)
 					p.write({'invoice_lines':[(6,0,inv.mapped('id'))]})
-				orden.boton_confirmar()
 				orden.write({'invoice_ids':[(6,0,self.mapped('id'))]})
 				self.write({'purchase_id':orden.id,'invoice_origin':orden.name,'orden_compra':orden.id})
 				orden._compute_invoice()
 			del context['default_type']
 			self = self.with_context(context)
-		return self.post()
+			self.post()
+			return orden.boton_confirmar()
 
 	def button_draft(self):
 		AccountMoveLine = self.env['account.move.line']
