@@ -30,7 +30,7 @@ class Factura(models.Model):
 					prod['date_planned']=inv.date
 					p=self.env['purchase.order.line'].create(prod)
 					p.write({'invoice_lines':[(6,0,inv.mapped('id'))]})
-				orden.button_confirm()
+				orden.boton_confirmar()
 				orden.write({'invoice_ids':[(6,0,self.mapped('id'))]})
 				self.write({'purchase_id':orden.id,'invoice_origin':orden.name,'orden_compra':orden.id})
 				orden._compute_invoice()
@@ -88,10 +88,34 @@ class Company(models.Model):
 class Compra(models.Model):
 	_inherit='purchase.order'
 
-	def button_approve(self, force=False):
-		self.write({'state': 'purchase', 'date_approve': fields.Datetime.now()})
-		self.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
-		_logger.info(str(self.picking_ids.mapped('id')))
-		return {}
+	def boton_confirmar(self):
+		self.button_confirm()
+		if(self.picking_type_id.warehouse_id.auto_recepcion):
+			sta = self.picking_ids.mapped('state')
+			for pi in self.picking_ids.filtered(lambda x:x.state!='cancel'):
+				if pi.state == 'assigned':
+					pi.action_confirm()
+					pi.move_lines._action_assign()
+					pi.action_assign()
+					return pi.button_validate()
+				if pi.state in ('waiting','confirmed'):
+					view = self.env.ref('orden_compra.purchase_order_alerta_view')
+					wiz = self.env['purchase.order.alerta'].create({'mensaje': 'Sin stock disponible'})
+					return {
+						'alerta': True,
+						'name': _('Alerta'),
+						'type': 'ir.actions.act_window',
+						'view_mode': 'form',
+						'res_model': 'purchase.order.alerta',
+						'views': [(view.id, 'form')],
+						'view_id': view.id,
+						'target': 'new',
+						'res_id': wiz.id,
+						'context': self.env.context,
+					}
 
+class AlertaDescuento(models.TransientModel):
+	_name = 'purchase.order.alerta'
+	_description = 'Alerta'
 
+	mensaje = fields.Text(string='Mensaje')
