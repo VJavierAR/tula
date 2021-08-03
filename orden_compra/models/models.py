@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 class Factura(models.Model):
 	_inherit='account.move'
 	almacen=fields.Many2one('stock.warehouse')
-
+	orden_compra=fields.Many2one('purchase.order')
 
 	def action_post(self):
 		if self.filtered(lambda x: x.journal_id.post_at == 'bank_rec').mapped('line_ids.payment_id').filtered(lambda x: x.state != 'reconciled'):
@@ -16,7 +16,7 @@ class Factura(models.Model):
 		if self.env.context.get('default_type'):
 			context = dict(self.env.context)
 			tipo=context['default_type']
-			if(tipo=='in_invoice' and self.company_id.order_compra):
+			if(tipo=='in_invoice' and self.company_id.orden_compra):
 				orden=self.env['purchase.order'].create({'partner_id':self.partner_id.id,'picking_type_id':self.almacen.in_type_id.id})
 				for inv in self.invoice_line_ids:
 					prod=dict()
@@ -32,8 +32,7 @@ class Factura(models.Model):
 					p.write({'invoice_lines':[(6,0,inv.mapped('id'))]})
 				orden.button_confirm()
 				orden.write({'invoice_ids':[(6,0,self.mapped('id'))]})
-				_logger.info(orden.id)
-				self.write({'purchase_id':orden.id,'invoice_origin':orden.name})
+				self.write({'purchase_id':orden.id,'invoice_origin':orden.name,'orden_compra':orden.id})
 				orden._compute_invoice()
 			del context['default_type']
 			self = self.with_context(context)
@@ -55,11 +54,14 @@ class Factura(models.Model):
 			# We remove all the analytics entries for this journal
 			move.mapped('line_ids.analytic_line_ids').unlink()
 		self.mapped('line_ids').remove_move_reconcile()
-		self.purchase_id.write({'state': 'cancel'})
-		self.write({'state': 'draft','invoice_origin':''})
-		for pi in self.purchase_id.picking_ids:
-			pi.unlink()
-		self.purchase_id.unlink()
+		self.write({'state': 'draft'})
+		if(tipo=='in_invoice' and self.company_id.orden_compra):
+			if(self.orden_compra.mapped('id')!=[]):
+				self.write({'invoice_origin':''})
+				for pi in self.orden_compra.picking_ids:
+					pi.unlink()
+				self.orden_compra.write({'state': 'cancel'})
+				self.orden_compra.unlink()
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
@@ -81,4 +83,15 @@ class Almacen(models.Model):
 
 class Company(models.Model):
 	_inherit='res.company'
-	order_compra=fields.Boolean()
+	orden_compra=fields.Boolean()
+
+class Compra(models.Model):
+	_inherit='purchase.order'
+
+	def button_approve(self, force=False):
+		self.write({'state': 'purchase', 'date_approve': fields.Datetime.now()})
+		self.filtered(lambda p: p.company_id.po_lock == 'lock').write({'state': 'done'})
+		_logger.info(str(self.picking_ids.mapped('id')))
+		return {}
+
+
