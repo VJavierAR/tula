@@ -37,5 +37,5 @@ class StockPicking(models.Model):
                 body='Se necesita validar orden',
                 message_type='notification',
                 subtype='mail.mt_comment',
-                author_id=1,
+                author_id=2,
                 notification_ids=notification_ids)
