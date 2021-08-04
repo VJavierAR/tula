@@ -75,8 +75,9 @@ class LinesFactura(models.Model):
 	nueva_utilidad=fields.Float(store=True)
 	utilida=fields.Float(store=True)
 	nuevo_costo=fields.Float(store=True)
+	nuevo_precio=fields.Float(store=True)
 
-	@api.depends('product_id')
+	@api.depends('product_id','price_unit','quantity')
 	def ultimoProvedor(self):
 		for record in self:
 			_logger.info(record.product_id.id!=False)
