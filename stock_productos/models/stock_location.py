@@ -18,7 +18,7 @@ class ProductTemplate(models.Model):
     _inherit = 'stock.location'
 
     mostrar_stock = fields.Boolean(
-        string="Consiltar Stock",
+        string="Consultar stock",
         default=False,
         company_dependent=True
     )

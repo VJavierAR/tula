@@ -25,12 +25,12 @@ class ProductTemplate(models.Model):
     def _compute_obten_stock_bodegas(self):
         for rec in self:
             info = ""
-            stock = rec.sudo().stock_quant_ids.filtered(
+            stock = rec.sudo().product_variant_id.stock_quant_ids.filtered(
                 lambda x:
                     x.company_id.id is not False and
                     x.quantity >= 0 and
                     x.location_id.usage == 'internal' and
-                    x.mostrar_stock is True
+                    x.location_id.mostrar_stock is True
             )
             for data in stock:
                 info += str(data.location_id.display_name) + ": " + str(data.quantity) + "\n"
