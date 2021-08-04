@@ -19,7 +19,7 @@
 
 
         <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]" position="after">
-                            <page string="Invoice Lines" attrs="{'invisible': ['|','|','|','|',('type', '=', 'entry'),('type', '=', 'out_invoice'),('type', '=','out_refund'),('type', '=','out_receipt'),('type', '=', 'in_receipt')]]}">
+                            <page string="Invoice Lines" attrs="{'invisible': ['|','|','|','|',('type', '=', 'entry'),('type', '=', 'out_invoice'),('type', '=','out_refund'),('type', '=','out_receipt'),('type', '=', 'in_receipt')]}">
                                 <field name="invoice_line_ids" widget="section_and_note_one2many" mode="tree,kanban" context="{'default_type': context.get('default_type'), 'journal_id': journal_id, 'default_partner_id': commercial_partner_id, 'default_currency_id': currency_id != company_currency_id and currency_id or False}">
                                     <tree string="Journal Items" default_order="sequence, date desc, move_name desc, id">
                                         <control>
