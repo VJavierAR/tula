@@ -70,7 +70,11 @@ class LinesFactura(models.Model):
 	precio=fields.Float(related='product_id.lst_price')
 	ultimo_provedor=fields.Many2one('res.partner')
 	ultimo_precio_compra=fields.Float()
-
+	stock_total=fields.Float()
+	stock_quant=fields.Many2many('stock.quant')
+	nueva_utilidad=fields.Float()
+	utilida=fields.Float()
+	nuevo_costo=fields.Float()
 
 	@api.onchange('product_id')
 	def ultimoProvedor(self):
@@ -78,8 +82,14 @@ class LinesFactura(models.Model):
 			if(record.product_id.id!=False):
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
 				record['ultimo_provedor']=ultimo.order_id.partner_id.id
-
-
+				wa=self.env['stock.warehouse'].search([['stock_visible','=',True]])
+				quant=self.env['stock.quant'].search([['location_id','in',wa.mapped('lot_stock_id.id')],['location_id.usage','=', 'internal']])
+				record['stock_quant']=[(5,0,0)]
+				record['stock_quant']=[(6,quant.mapped('id'))]
+				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
+				unidades=sum(cost.mapped('quantity'))+record.quantity
+				costos=sum(cost.mapped('value'))+record.price_unit
+				record['nuevo_costo']=costos/unidades if(unidades>0) else 0
 
 
 class Almacen(models.Model):
