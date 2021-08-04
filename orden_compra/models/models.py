@@ -78,21 +78,21 @@ class LinesFactura(models.Model):
 
 	@api.onchange('product_id')
 	def ultimoProvedor(self):
-		for record in self:
-			_logger.info(record.product_id.id!=False)
-			if(record.product_id.id!=False):
-				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
-				record['ultimo_provedor']=ultimo.order_id.partner_id.id
-				record['ultimo_precio_compra']=ultimo.price_unit
-				wa=self.env['stock.warehouse'].search([['stock_visible','=',True]])
-				quant=self.env['stock.quant'].search([['location_id','in',wa.mapped('lot_stock_id.id')],['product_id','=',record.product_id.id]])
-				record['stock_quant']=[(5,0,0)]
-				record['stock_quant']=[(6,0,quant.mapped('id'))]
-				record['stock_total']=sum(quant.mapped('quantity'))
-				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
-				unidades=sum(cost.mapped('quantity'))+record.quantity
-				costos=sum(cost.mapped('value'))+record.price_unit
-				record['nuevo_costo']=costos/unidades if(unidades>0) else 0
+		#for self in self:
+		_logger.info(self.product_id.id!=False)
+		if(self.product_id.id!=False):
+			ultimo=self.env['purchase.order.line'].search([['product_id','=',self.product_id.id]],order='date_planned desc',limit=1)
+			self.ultimo_provedor=ultimo.order_id.partner_id.id
+			self.ultimo_precio_compra=ultimo.price_unit
+			wa=self.env['stock.warehouse'].search([['stock_visible','=',True]])
+			quant=self.env['stock.quant'].search([['location_id','in',wa.mapped('lot_stock_id.id')],['product_id','=',self.product_id.id]])
+			self.stock_quant=[(5,0,0)]
+			self.stock_quant=[(6,0,quant.mapped('id'))]
+			self.stock_total=sum(quant.mapped('quantity'))
+			cost=self.env['stock.valuation.layer'].search([['product_id','=',self.product_id.id]])
+			unidades=sum(cost.mapped('quantity'))+self.quantity
+			costos=sum(cost.mapped('value'))+self.price_unit
+			self.nuevo_costo=costos/unidades if(unidades>0) else 0
 
 
 class Almacen(models.Model):
