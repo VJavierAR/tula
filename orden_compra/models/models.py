@@ -185,7 +185,7 @@ class LinesFactura(models.Model):
 					    move.date,
 					))
 
-		lines = super(AccountMoveLine, self).create(vals_list)
+		lines = super(LinesFactura, self).create(vals_list)
 
 		moves = lines.mapped('move_id')
 		if self._context.get('check_move_validity', True):
@@ -268,7 +268,7 @@ class LinesFactura(models.Model):
 			if not cleaned_vals:
 				continue
 
-			result |= super(AccountMoveLine, line).write(cleaned_vals)
+			result |= super(LinesFactura, line).write(cleaned_vals)
 
 			if not line.move_id.is_invoice(include_receipts=True):
 				continue
@@ -289,13 +289,13 @@ class LinesFactura(models.Model):
 				    quantity=to_write.get('quantity', line.quantity),
 				    discount=to_write.get('discount', line.discount),
 				))
-				result |= super(AccountMoveLine, line).write(to_write)
+				result |= super(LinesFactura, line).write(to_write)
 			elif any(field in cleaned_vals for field in BUSINESS_FIELDS):
 				to_write = line._get_price_total_and_subtotal()
 				to_write.update(line._get_fields_onchange_subtotal(
 				    price_subtotal=to_write['price_subtotal'],
 				))
-				result |= super(AccountMoveLine, line).write(to_write)
+				result |= super(LinesFactura, line).write(to_write)
 
 			# Check total_debit == total_credit in the related moves.
 			if self._context.get('check_move_validity', True):
