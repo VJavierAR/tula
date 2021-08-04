@@ -80,6 +80,7 @@ class LinesFactura(models.Model):
 	@api.depends('product_id','price_unit','quantity','nuevo_precio','nueva_utilidad')
 	def ultimoProvedor(self):
 		for record in self:
+			record['ultimo_provedor']=1
 			_logger.info(record.product_id.id!=False)
 			if(record.product_id.id!=False):
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
@@ -101,6 +102,7 @@ class LinesFactura(models.Model):
 				precio=record.precio if(record.nuevo_precio==0) else record.nuevo_precio
 				record['nuevo_precio']=(record.costo * nuevautil / 100) + record.costo
 				record['nueva_utilidad']=((record.precio-new_cost)/precio)*100
+
 
 
 #	@api.onchange('nueva_utilidad')
