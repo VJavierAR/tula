@@ -18,8 +18,8 @@
         </xpath>
 
 
-        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]" position="after">
-                            <page string="Invoice Lines" attrs="{'invisible': ['|','|','|','|',('type', '=', 'entry'),('type', '=', 'out_invoice'),('type', '=','out_refund'),('type', '=','out_receipt'),('type', '=', 'in_receipt')]}">
+        <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@id='invoice_tab']" position="after">
+<page string="Lines" attrs="{'invisible': ['|','|','|','|',('type','=','entry'),('type','=','out_invoice'),('type','=','out_refund'),('type','=','out_receipt'),('type','=','in_receipt')]}">
                                 <field name="invoice_line_ids" widget="section_and_note_one2many" mode="tree,kanban" context="{'default_type': context.get('default_type'), 'journal_id': journal_id, 'default_partner_id': commercial_partner_id, 'default_currency_id': currency_id != company_currency_id and currency_id or False}">
                                     <tree string="Journal Items" default_order="sequence, date desc, move_name desc, id">
                                         <control>
@@ -67,84 +67,6 @@
                                         <field name="account_internal_type" invisible="1"/>
                                         <field name="always_set_currency_id" invisible="1"/>
                                     </tree>
-                                    <kanban class="o_kanban_mobile">
-                                        <!-- Displayed fields -->
-                                        <field name="name"/>
-                                        <field name="product_id"/>
-                                        <field name="price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                        <field name="price_total" groups="account.group_show_line_subtotals_tax_included"/>
-                                        <field name="quantity"/>
-                                        <field name="product_uom_id" groups="uom.group_uom"/>
-                                        <field name="price_unit"/>
-                                        <field name="display_type"/>
-                                        <templates>
-                                            <t t-name="kanban-box">
-                                                <div t-attf-class="oe_kanban_card oe_kanban_global_click {{ record.display_type.raw_value ? 'o_is_' + record.display_type.raw_value : '' }}">
-                                                    <t t-if="!record.display_type.raw_value">
-                                                        <div class="row">
-                                                            <div class="col-2">
-                                                                <img t-att-src="kanban_image('product.product', 'image_128', record.product_id.raw_value)" t-att-title="record.product_id.value" t-att-alt="record.product_id.value" style="max-width: 100%;"/>
-                                                            </div>
-                                                            <div class="col-10">
-                                                                <strong>
-                                                                    <span>
-                                                                        <t t-esc="record.product_id.value"/>
-                                                                    </span>
-                                                                </strong>
-                                                                <div class="text-muted">
-                                                                    Quantity:
-                                                                    <t t-esc="record.quantity.value"/>
-                                                                    <t t-esc="record.product_uom_id.value"/>
-                                                                </div>
-                                                                <div class="text-muted">
-                                                                    Unit Price:
-                                                                    <t t-esc="record.price_unit.value"/>
-                                                                </div>
-                                                                <strong>
-                                                                    <span class="float-right text-right">
-                                                                        <t t-esc="record.price_subtotal.value" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                                                        <t t-esc="record.price_total.value" groups="account.group_show_line_subtotals_tax_included"/>
-                                                                    </span>
-                                                                </strong>
-                                                            </div>
-                                                        </div>
-                                                    </t>
-                                                    <t t-if="record.display_type.raw_value === 'line_section' || record.display_type.raw_value === 'line_note'">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <span>
-                                                                    <t t-esc="record.name.value"/>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </t>
-                                                </div>
-                                            </t>
-                                        </templates>
-
-                                        <!-- Others fields -->
-                                        <field name="partner_id" invisible="1"/>
-                                        <field name="amount_currency" invisible="1"/>
-                                        <field name="currency_id" invisible="1"/>
-                                        <field name="debit" invisible="1"/>
-                                        <field name="credit" invisible="1"/>
-                                        <field name="date" invisible="1"/>
-                                        <field name="date_maturity" invisible="1"/>
-
-                                        <field name="tax_line_id" invisible="1"/>
-                                        <field name="tax_repartition_line_id" invisible="1"/>
-                                        <field name="tag_ids" invisible="1"/>
-                                        <field name="tax_base_amount" invisible="1"/>
-                                        <field name="tax_exigible" invisible="1"/>
-                                        <field name="company_id" invisible="1"/>
-                                        <field name="company_currency_id" invisible="1"/>
-                                        <field name="recompute_tax_line" invisible="1" force_save="1"/>
-                                        <field name="display_type" force_save="1" invisible="1"/>
-                                        <field name="is_rounding_line" invisible="1"/>
-                                        <field name="exclude_from_invoice_tab" invisible="1"/>
-                                        <field name="account_internal_type" invisible="1"/>
-                                        <field name="always_set_currency_id" invisible="1"/>
-                                    </kanban>
                                     <form>
                                         <sheet>
                                             <field name="display_type" invisible="1"/>
