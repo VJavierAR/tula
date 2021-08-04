@@ -690,7 +690,7 @@
       <record id="facturas_update_action_view_order_tree" model="ir.actions.act_window.view">
           <field name="sequence" eval="1"/>
           <field name="view_mode">tree</field>
-          <field name="view_id" ref="account.invoice.tree"/>
+          <field name="view_id" ref="account.view_invoice_tree"/>
           <field name="act_window_id" ref="account.action_move_in_invoice_type"/>
       </record>
 
@@ -705,7 +705,7 @@
       <record id="facturas2_update_action_view_order_tree" model="ir.actions.act_window.view">
           <field name="sequence" eval="1"/>
           <field name="view_mode">tree</field>
-          <field name="view_id" ref="account.invoice.tree"/>
+          <field name="view_id" ref="account.view_invoice_tree"/>
           <field name="act_window_id" ref="account.action_move_in_refund_type"/>
       </record>
 
