@@ -68,7 +68,7 @@ class LinesFactura(models.Model):
 	_inherit='account.move.line'
 	costo=fields.Float(related='product_id.standard_price',store=True)
 	precio=fields.Float(related='product_id.lst_price',store=True)
-	ultimo_provedor=fields.Many2one('res.partner',store=True)
+	ultimo_provedor=fields.Many2one('res.partner',store=True,compute='ultimoProvedor')
 	ultimo_precio_compra=fields.Float(store=True)
 	stock_total=fields.Float(store=True)
 	stock_quant=fields.Many2many('stock.quant',store=True)
@@ -76,9 +76,10 @@ class LinesFactura(models.Model):
 	utilida=fields.Float(store=True)
 	nuevo_costo=fields.Float(store=True)
 
-	@api.onchange('product_id')
+	@api.depends('product_id')
 	def ultimoProvedor(self):
 		#for self in self:
+		self.ultimo_provedor=1
 		_logger.info(self.product_id.id!=False)
 		if(self.product_id.id!=False):
 			ultimo=self.env['purchase.order.line'].search([['product_id','=',self.product_id.id]],order='date_planned desc',limit=1)
@@ -93,6 +94,7 @@ class LinesFactura(models.Model):
 			unidades=sum(cost.mapped('quantity'))+self.quantity
 			costos=sum(cost.mapped('value'))+self.price_unit
 			self.nuevo_costo=costos/unidades if(unidades>0) else 0
+
 
 
 class Almacen(models.Model):
