@@ -86,6 +86,7 @@ class LinesFactura(models.Model):
 				quant=self.env['stock.quant'].search([['location_id','in',wa.mapped('lot_stock_id.id')],['location_id.usage','=', 'internal']])
 				record['stock_quant']=[(5,0,0)]
 				record['stock_quant']=[(6,quant.mapped('id'))]
+				record['stock_total']=sum(quant.mapped('quantity'))
 				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
 				unidades=sum(cost.mapped('quantity'))+record.quantity
 				costos=sum(cost.mapped('value'))+record.price_unit
