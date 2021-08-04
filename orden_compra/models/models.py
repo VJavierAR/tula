@@ -66,15 +66,15 @@ class Factura(models.Model):
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
-	costo=fields.Float(related='product_id.standard_price')
-	precio=fields.Float(related='product_id.lst_price')
-	ultimo_provedor=fields.Many2one('res.partner')
-	ultimo_precio_compra=fields.Float()
-	stock_total=fields.Float()
-	stock_quant=fields.Many2many('stock.quant')
-	nueva_utilidad=fields.Float()
-	utilida=fields.Float()
-	nuevo_costo=fields.Float()
+	costo=fields.Float(related='product_id.standard_price',store=True)
+	precio=fields.Float(related='product_id.lst_price',store=True)
+	ultimo_provedor=fields.Many2one('res.partner',store=True)
+	ultimo_precio_compra=fields.Float(store=True)
+	stock_total=fields.Float(store=True)
+	stock_quant=fields.Many2many('stock.quant',store=True)
+	nueva_utilidad=fields.Float(store=True)
+	utilida=fields.Float(store=True)
+	nuevo_costo=fields.Float(store=True)
 
 	@api.onchange('product_id')
 	def ultimoProvedor(self):
@@ -84,7 +84,7 @@ class LinesFactura(models.Model):
 				record['ultimo_provedor']=ultimo.order_id.partner_id.id
 				record['ultimo_precio_compra']=ultimo.price_unit
 				wa=self.env['stock.warehouse'].search([['stock_visible','=',True]])
-				quant=self.env['stock.quant'].search([['location_id','in',wa.mapped('lot_stock_id.id')],['location_id.usage','=', 'internal']])
+				quant=self.env['stock.quant'].search([['location_id','in',wa.mapped('lot_stock_id.id')],['product_id','=',record.product_id.id]])
 				record['stock_quant']=[(5,0,0)]
 				record['stock_quant']=[(6,0,quant.mapped('id'))]
 				record['stock_total']=sum(quant.mapped('quantity'))
