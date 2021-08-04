@@ -82,6 +82,7 @@ class LinesFactura(models.Model):
 			if(record.product_id.id!=False):
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
 				record['ultimo_provedor']=ultimo.order_id.partner_id.id
+				record['ultimo_precio_compra']=ultimo.price_unit
 				wa=self.env['stock.warehouse'].search([['stock_visible','=',True]])
 				quant=self.env['stock.quant'].search([['location_id','in',wa.mapped('lot_stock_id.id')],['location_id.usage','=', 'internal']])
 				record['stock_quant']=[(5,0,0)]
