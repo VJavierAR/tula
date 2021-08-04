@@ -686,6 +686,26 @@
             </field>
         </record>
 
+
+      <record id="facturas_update_action_view_order_form" model="ir.actions.act_window.view">
+          <field name="sequence" eval="3"/>
+          <field name="view_mode">form</field>
+          <field name="view_id" ref="orden_compra.view_move_form2"/>
+          <field name="act_window_id" ref="account.action_move_in_invoice_type"/>
+      </record>
+
+      <record id="facturas2_update_action_view_order_form" model="ir.actions.act_window.view">
+          <field name="sequence" eval="3"/>
+          <field name="view_mode">form</field>
+          <field name="view_id" ref="orden_compra.view_move_form2"/>
+          <field name="act_window_id" ref="account.action_move_in_refund_type"/>
+      </record>
+
+
+
+
+
+
 <record model="ir.ui.view" id="res_company_form_view_update">
     <field name="name">res.company.form.update</field>
     <field name="model">res.company</field>
