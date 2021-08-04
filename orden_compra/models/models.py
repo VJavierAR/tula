@@ -299,8 +299,7 @@ class LinesFactura(models.Model):
 
 			# Check total_debit == total_credit in the related moves.
 			if self._context.get('check_move_validity', True):
-			self.mapped('move_id')._check_balanced()
-
+				self.mapped('move_id')._check_balanced()
 			return result
 
 
