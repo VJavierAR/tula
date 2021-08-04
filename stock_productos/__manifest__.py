@@ -3,8 +3,7 @@
     'name': "stock_productos",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        Stock de productos en bodegas""",
 
     'description': """
         stock de productos en bodegas
@@ -36,4 +35,7 @@
     'demo': [
         'demo/demo.xml',
     ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
 }
