@@ -98,7 +98,6 @@ class LinesFactura(models.Model):
 				costos=sum(cost.mapped('value'))+(record.price_unit*record.quantity)
 				utilida=((record.precio-costos)/record.precio)*100 if(record.precio!=0) else 0
 				#record['utilida']=utilida
-				_logger.info('Costos:'+str(len(cost)))
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record['nuevo_costo']=new_cost
 				#nuevautil=record.utilida if(record.nueva_utilidad==0) else record.nueva_utilidad
