@@ -85,7 +85,7 @@ class LinesFactura(models.Model):
 	#	for record in self:
 	#		record['valorX']=1
 		if(self.product_id.id!=False):
-			ultimo=self.env['purchase.order.line.search([['product_id','=',self.product_id.id]],order='date_planned desc',limit=1)
+			ultimo=self.env['purchase.order.line'].search([['product_id','=',self.product_id.id]],order='date_planned desc',limit=1)
 			self.ultimo_provedor=ultimo.order_id.partner_id.id
 			self.ultimo_precio_compra=ultimo.price_unit
 			wa=self.env['stock.warehouse'].search([['stock_visible','=',True]])
