@@ -141,26 +141,22 @@ class LinesFactura(models.Model):
 #			if(record.product_id.id):
 #				if(record.nuevo_precio!=0):
 #					if(record.nueva_utilidad!=0):
-	@api.model_create_multi
-	def create(self, vals_list):
-		# OVERRIDE
-		ACCOUNTING_FIELDS = ('debit', 'credit', 'amount_currency')
-		BUSINESS_FIELDS = ('price_unit', 'quantity', 'discount', 'tax_ids')
+	# @api.model_create_multi
+	# def create(self, vals_list):
+	# 	for vals in vals_list:
+	# 		if('nuevo_precio' in vals or 'nueva_utilidad' in vals):
+	# 			product=self.env['product.product'].browse(vals['product_id'])
+	# 			product.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
+	# 	lines = super(LinesFactura, self).create(vals_list)
 
-		for vals in vals_list:
-			if('nuevo_precio' in vals or 'nueva_utilidad' in vals):
-				product=self.env['product.product'].browse(vals['product_id'])
-				product.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
-		lines = super(LinesFactura, self).create(vals_list)
-
-	def write(self, vals):
-		if('nueva_utilidad' in vals):
-			if('product_id' in vals):
-				product=self.env['product.product'].browse(vals['product_id'])
-				product.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
-			else:
-				self.product_id.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
-			super(LinesFactura, self).write(vals)
+	# def write(self, vals):
+	# 	if('nueva_utilidad' in vals):
+	# 		if('product_id' in vals):
+	# 			product=self.env['product.product'].browse(vals['product_id'])
+	# 			product.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
+	# 		else:
+	# 			self.product_id.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
+	# 		super(LinesFactura, self).write(vals)
 
 
 class Almacen(models.Model):
