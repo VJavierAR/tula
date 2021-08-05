@@ -16,6 +16,9 @@ class Factura(models.Model):
 		if self.env.context.get('default_type'):
 			context = dict(self.env.context)
 			tipo=context['default_type']
+			del context['default_type']
+			self = self.with_context(context)
+			self.post()
 			if(tipo=='in_invoice' and self.company_id.orden_compra):
 				orden=self.env['purchase.order'].create({'partner_id':self.partner_id.id,'picking_type_id':self.almacen.in_type_id.id})
 				for inv in self.invoice_line_ids:
@@ -33,10 +36,6 @@ class Factura(models.Model):
 				orden.write({'invoice_ids':[(6,0,self.mapped('id'))]})
 				self.write({'purchase_id':orden.id,'invoice_origin':orden.name,'orden_compra':orden.id})
 				orden._compute_invoice()
-			del context['default_type']
-			self = self.with_context(context)
-			self.post()
-			if(self.company_id.orden_compra):
 				return orden.boton_confirmar()
 
 	def button_draft(self):
