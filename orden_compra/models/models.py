@@ -223,7 +223,7 @@ class LinesFactura(models.Model):
 		# Check writing a deprecated account.
 		if account_to_write and account_to_write.deprecated:
 			raise UserError(_('You cannot use a deprecated account.'))
-		if('nuevo_precio' in vals or 'nueva_utilidad' in vals):
+		if('nueva_utilidad' in vals):
 			if('product_id' in vals):
 				product=self.env['product.product'].browse(vals['product_id'])
 				product.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
