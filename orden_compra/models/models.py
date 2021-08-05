@@ -68,19 +68,21 @@ class LinesFactura(models.Model):
 	_inherit='account.move.line'
 	costo=fields.Float(related='product_id.standard_price',store=True)
 	precio=fields.Float(related='product_id.lst_price',store=True)
-	ultimo_provedor=fields.Many2one('res.partner',store=True,compute='ultimoProvedor')
+	ultimo_provedor=fields.Many2one('res.partner',store=True)
 	ultimo_precio_compra=fields.Float(store=True)
 	stock_total=fields.Float(store=True)
 	stock_quant=fields.Many2many('stock.quant',store=True)
 	nueva_utilidad=fields.Float(store=True)
-	utilida=fields.Float(store=True)
+	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True)
 	nuevo_costo=fields.Float(store=True)
 	nuevo_precio=fields.Float(store=True)
+	valorX=fields.Float(compute='ultimoProvedor')
 
-	@api.depends('product_id','price_unit','quantity','nuevo_precio','nueva_utilidad')
+
+	@api.depends('product_id','price_unit','quantity')
 	def ultimoProvedor(self):
 		for record in self:
-			_logger.info(record.product_id.id!=False)
+			record['valorX']=1
 			if(record.product_id.id!=False):
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
 				record['ultimo_provedor']=ultimo.order_id.partner_id.id
@@ -97,11 +99,11 @@ class LinesFactura(models.Model):
 				record['utilida']=utilida
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record['nuevo_costo']=new_cost
-				nuevautil=record.utilida if(record.nueva_utilidad==0) else record.nueva_utilidad
-				newprice=(new_cost * nuevautil / 100) + new_cost
-				precio=record.precio if(record.nuevo_precio==0) else newprice
-				record['nuevo_precio']=newprice if(newprice!=0) else record.precio
-				record['nueva_utilidad']=((newprice-new_cost)/newprice)*100 if(precio!=0) else 0
+				#nuevautil=record.utilida if(record.nueva_utilidad==0) else record.nueva_utilidad
+				#newprice=(new_cost * nuevautil / 100) + new_cost
+				#precio=record.precio if(record.nuevo_precio==0) else newprice
+				#record['nuevo_precio']=newprice if(newprice!=0) else record.precio
+				#record['nueva_utilidad']=((newprice-new_cost)/newprice)*100 if(precio!=0) else 0
 
 
 #	@api.onchange('nueva_utilidad')
