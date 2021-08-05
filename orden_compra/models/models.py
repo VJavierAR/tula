@@ -95,12 +95,13 @@ class LinesFactura(models.Model):
 				costos=sum(cost.mapped('value'))+record.price_unit
 				utilida=((record.precio-costos)/record.precio)*100 if(record.precio!=0) else 0
 				record['utilida']=utilida
-				new_cost=costos/unidades if(unidades>0) else 0
+				new_cost=costos/unidades if(unidades>0) else record.costo
 				record['nuevo_costo']=new_cost
 				nuevautil=record.utilida if(record.nueva_utilidad==0) else record.nueva_utilidad
-				precio=record.precio if(record.nuevo_precio==0) else record.nuevo_precio
-				record['nuevo_precio']=(record.costo * nuevautil / 100) + record.costo
-				record['nueva_utilidad']=((record.precio-new_cost)/precio)*100 if(precio!=0) else 0
+				newprice=(new_cost * nuevautil / 100) + new_cost
+				precio=record.precio if(record.nuevo_precio==0) else newprice
+				record['nuevo_precio']=newprice if(newprice!=0) else record.precio
+				record['nueva_utilidad']=((newprice-new_cost)/newprice)*100 if(precio!=0) else 0
 
 
 #	@api.onchange('nueva_utilidad')
