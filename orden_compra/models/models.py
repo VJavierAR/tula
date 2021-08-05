@@ -76,8 +76,8 @@ class LinesFactura(models.Model):
 	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=False)
 	nuevo_costo=fields.Float(store=False)
 	nuevo_precio=fields.Float(store=False)
-	#valorX=fields.Float(compute='ultimoProvedor')
-	valorX=fields.Float()
+	valorX=fields.Float(compute='ultimoProvedor')
+	#valorX=fields.Float()
 
 
 	@api.onchange('product_id','price_unit','quantity')
