@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--Groups-->
+        <record model="res.groups" id="group_project_task_subscribe">
+            <field name="name">Seguidor en tareas</field>
+        </record>
+
+        <record model="ir.module.category" id="module_category_ola">
+            <field name="name">Pedido de ventas</field>
+            <field name="description">Permisos para autorizar pedido de ventas</field>
+        </record>
+        <record id="group_confirm_sale_excede_limite_credito" model="res.groups">
+            <field name="name">Confirma pedido de venta que excede límite de crédito</field>
+            <field name="category_id" ref="module_category_ola"/>
+        </record>
+        <record id="group_confirm_sale_excede_descuento" model="res.groups">
+            <field name="name">Confirma pedido de venta que excede descuento</field>
+            <field name="category_id" ref="module_category_ola"/>
+        </record>
+
+    </data>
+</odoo>
