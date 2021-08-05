@@ -76,13 +76,13 @@ class LinesFactura(models.Model):
 	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True)
 	nuevo_costo=fields.Float(store=True)
 	nuevo_precio=fields.Float(store=True)
-	valorX=fields.Float(compute='ultimoProvedor')
+	#valorX=fields.Float(compute='ultimoProvedor')
 
 
-	@api.depends('product_id','price_unit','quantity')
+	@api.onchange('product_id','price_unit','quantity')
 	def ultimoProvedor(self):
 		for record in self:
-			record['valorX']=1
+			#record['valorX']=1
 			if(record.product_id.id!=False):
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
 				record['ultimo_provedor']=ultimo.order_id.partner_id.id
