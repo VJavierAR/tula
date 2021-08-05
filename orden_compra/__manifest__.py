@@ -20,15 +20,16 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','purchase','stock','OLA','sale','contacts'],
+    'depends': ['base','account','purchase','stock','OLA'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/views.xml'
+        'views/views.xml',
+        'views/templates.xml',
     ],
-        'installable': True,
-    'application': True,
-    'auto_install': False,
     # only loaded in demonstration mode
+    'demo': [
+        'demo/demo.xml',
+    ],
 }

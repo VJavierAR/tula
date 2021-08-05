@@ -68,20 +68,18 @@ class LinesFactura(models.Model):
 	_inherit='account.move.line'
 	costo=fields.Float(related='product_id.standard_price',store=True)
 	precio=fields.Float(related='product_id.lst_price',store=True)
-	ultimo_provedor=fields.Many2one('res.partner',store=True)
+	ultimo_provedor=fields.Many2one('res.partner',store=True,compute='ultimoProvedor')
 	ultimo_precio_compra=fields.Float(store=True)
 	stock_total=fields.Float(store=True)
 	stock_quant=fields.Many2many('stock.quant',store=True)
 	nueva_utilidad=fields.Float(store=True)
-	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True)
+	utilida=fields.Float(store=True)
 	nuevo_costo=fields.Float(store=True)
 	nuevo_precio=fields.Float(store=True)
-	datosX=fields.Float(compute='ultimoProvedor')
 
 	@api.depends('product_id','price_unit','quantity','nuevo_precio','nueva_utilidad')
 	def ultimoProvedor(self):
 		for record in self:
-			record['datosX']=1
 			_logger.info(record.product_id.id!=False)
 			if(record.product_id.id!=False):
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
@@ -93,17 +91,17 @@ class LinesFactura(models.Model):
 				record['stock_quant']=[(6,0,quant.mapped('id'))]
 				record['stock_total']=sum(quant.mapped('quantity'))
 				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
-				#utilida=((record.precio-cost)/record.precio)*100
-				#record['utilida']=utilida
 				unidades=sum(cost.mapped('quantity'))+record.quantity
 				costos=sum(cost.mapped('value'))+record.price_unit
-				new_cost=costos/unidades if(unidades>0) else 0
+				utilida=((record.precio-costos)/record.precio)*100 if(record.precio!=0) else 0
+				record['utilida']=utilida
+				new_cost=costos/unidades if(unidades>0) else record.costo
 				record['nuevo_costo']=new_cost
 				nuevautil=record.utilida if(record.nueva_utilidad==0) else record.nueva_utilidad
-				precio=record.precio if(record.nuevo_precio==0) else record.nuevo_precio
-				record['nuevo_precio']=(record.costo * nuevautil / 100) + record.costo
-				record['nueva_utilidad']=((record.precio-new_cost)/precio)*100
-
+				newprice=(new_cost * nuevautil / 100) + new_cost
+				precio=record.precio if(record.nuevo_precio==0) else newprice
+				record['nuevo_precio']=newprice if(newprice!=0) else record.precio
+				record['nueva_utilidad']=((newprice-new_cost)/newprice)*100 if(precio!=0) else 0
 
 
 #	@api.onchange('nueva_utilidad')
@@ -225,7 +223,7 @@ class LinesFactura(models.Model):
 		# Check writing a deprecated account.
 		if account_to_write and account_to_write.deprecated:
 			raise UserError(_('You cannot use a deprecated account.'))
-		if('nuevo_precio' in vals or 'nueva_utilidad' in vals):
+		if('nueva_utilidad' in vals):
 			if('product_id' in vals):
 				product=self.env['product.product'].browse(vals['product_id'])
 				product.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
@@ -307,7 +305,6 @@ class LinesFactura(models.Model):
 			if self._context.get('check_move_validity', True):
 				self.mapped('move_id')._check_balanced()
 			return result
-
 
 class Almacen(models.Model):
 	_inherit='stock.warehouse'
