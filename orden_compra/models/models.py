@@ -66,16 +66,16 @@ class Factura(models.Model):
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
-	costo=fields.Float(related='product_id.standard_price',store=False)
-	precio=fields.Float(related='product_id.lst_price',store=False)
-	ultimo_provedor=fields.Many2one('res.partner',store=False)
-	ultimo_precio_compra=fields.Float(store=False)
-	stock_total=fields.Float(store=False)
-	stock_quant=fields.Many2many('stock.quant',store=False)
-	nueva_utilidad=fields.Float(store=False)
-	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=False)
-	nuevo_costo=fields.Float(store=False)
-	nuevo_precio=fields.Float(store=False)
+	costo=fields.Float(related='product_id.standard_price',store=True)
+	precio=fields.Float(related='product_id.lst_price',store=True)
+	ultimo_provedor=fields.Many2one('res.partner',store=True)
+	ultimo_precio_compra=fields.Float(store=True)
+	stock_total=fields.Float(store=True)
+	stock_quant=fields.Many2many('stock.quant',store=True)
+	nueva_utilidad=fields.Float(store=True)
+	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True)
+	nuevo_costo=fields.Float(store=True)
+	nuevo_precio=fields.Float(store=True)
 	valorX=fields.Float(compute='ultimoProvedor')
 	#valorX=fields.Float()
 
