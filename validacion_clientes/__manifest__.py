@@ -29,6 +29,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         # 'views/crm_views.xml',
+        'views/helpdesk_ticket_views.xml'
         'views/views.xml',
         'views/templates.xml',
     ],
