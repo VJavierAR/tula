@@ -225,8 +225,11 @@ class LinesFactura(models.Model):
 		if account_to_write and account_to_write.deprecated:
 			raise UserError(_('You cannot use a deprecated account.'))
 		if('nuevo_precio' in vals or 'nueva_utilidad' in vals):
-			product=self.env['product.product'].browse(vals['product_id'])
-			product.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
+			if('product_id' in vals):
+				product=self.env['product.product'].browse(vals['product_id'])
+				product.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
+			else:
+				self.product_id.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
 		# when making a reconciliation on an existing liquidity journal item, mark the payment as reconciled
 		for line in self:
 			if line.parent_state == 'posted':
