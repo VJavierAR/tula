@@ -66,40 +66,40 @@ class Factura(models.Model):
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
-	costo=fields.Float(related='product_id.standard_price')
-	precio=fields.Float(related='product_id.lst_price')
-	ultimo_provedor=fields.Many2one('res.partner')
-	ultimo_precio_compra=fields.Float()
-	stock_total=fields.Float()
-	stock_quant=fields.Many2many('stock.quant')
-	nueva_utilidad=fields.Float()
-	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta')
-	nuevo_costo=fields.Float()
-	nuevo_precio=fields.Float()
+	costo=fields.Float(related='product_id.standard_price',store=True)
+	precio=fields.Float(related='product_id.lst_price',store=True)
+	ultimo_provedor=fields.Many2one('res.partner',store=True)
+	ultimo_precio_compra=fields.Float(store=True)
+	stock_total=fields.Float(store=True)
+	stock_quant=fields.Many2many('stock.quant',store=True)
+	nueva_utilidad=fields.Float(store=True)
+	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True)
+	nuevo_costo=fields.Float(store=True)
+	nuevo_precio=fields.Float(store=True)
 	#valorX=fields.Float(compute='ultimoProvedor')
 	valorX=fields.Float()
 
 
 	@api.onchange('product_id','price_unit','quantity')
 	def ultimoProvedor(self):
-	#	for record in self:
-	#		record['valorX']=1
-		if(self.product_id.id!=False):
-			ultimo=self.env['purchase.order.line'].search([['product_id','=',self.product_id.id]],order='date_planned desc',limit=1)
-			self.ultimo_provedor=ultimo.order_id.partner_id.id
-			self.ultimo_precio_compra=ultimo.price_unit
-			wa=self.env['stock.warehouse'].search([['stock_visible','=',True]])
-			quant=self.env['stock.quant'].search([['location_id','in',wa.mapped('lot_stock_id.id')],['product_id','=',self.product_id.id]])
-			self.stock_quant=[(5,0,0)]
-			self.stock_quant=[(6,0,quant.mapped('id'))]
-			self.stock_total=sum(quant.mapped('quantity'))
-			cost=self.env['stock.valuation.layer'].search([['product_id','=',self.product_id.id]])
-			unidades=sum(cost.mapped('quantity'))+self.quantity
-			costos=sum(cost.mapped('value'))+(self.price_unit*self.quantity)
-			utilida=((self.precio-costos)/self.precio)*100 if(self.precio!=0) else 0
-			self.utilida=utilida
-			new_cost=costos/unidades if(unidades>0) else self.costo
-			self.nuevo_costo=new_cost
+		for record in self:
+			record['valorX']=1
+			if(record.product_id.id!=False):
+				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
+				record['ultimo_provedor']=ultimo.order_id.partner_id.id
+				record['ultimo_precio_compra']=ultimo.price_unit
+				wa=self.env['stock.warehouse'].search([['stock_visible','=',True]])
+				quant=self.env['stock.quant'].search([['location_id','in',wa.mapped('lot_stock_id.id')],['product_id','=',record.product_id.id]])
+				record['stock_quant']=[(5,0,0)]
+				record['stock_quant']=[(6,0,quant.mapped('id'))]
+				record['stock_total']=sum(quant.mapped('quantity'))
+				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
+				unidades=sum(cost.mapped('quantity'))+record.quantity
+				costos=sum(cost.mapped('value'))+(record.price_unit*record.quantity)
+				utilida=((record.precio-costos)/record.precio)*100 if(record.precio!=0) else 0
+				record['utilida']=utilida
+				new_cost=costos/unidades if(unidades>0) else record.costo
+				record['nuevo_costo']=new_cost
 				#nuevautil=record.utilida if(record.nueva_utilidad==0) else record.nueva_utilidad
 				#newprice=(new_cost * nuevautil / 100) + new_cost
 				#precio=record.precio if(record.nuevo_precio==0) else newprice
