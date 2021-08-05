@@ -79,7 +79,7 @@ class LinesFactura(models.Model):
 	valorX=fields.Float(compute='ultimoProvedor')
 
 
-	@api.onchange('product_id','price_unit','quantity')
+	@api.depends('product_id','price_unit','quantity')
 	def ultimoProvedor(self):
 		for record in self:
 			record['valorX']=1
