@@ -36,7 +36,8 @@ class Factura(models.Model):
 			del context['default_type']
 			self = self.with_context(context)
 			self.post()
-			return orden.boton_confirmar()
+			if(self.company_id.orden_compra):
+				return orden.boton_confirmar()
 
 	def button_draft(self):
 		AccountMoveLine = self.env['account.move.line']
