@@ -91,10 +91,10 @@ class LinesFactura(models.Model):
 				record['stock_quant']=[(6,0,quant.mapped('id'))]
 				record['stock_total']=sum(quant.mapped('quantity'))
 				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
-				utilida=((record.precio-cost)/record.precio)*100
-				record['utilida']=utilida
 				unidades=sum(cost.mapped('quantity'))+record.quantity
 				costos=sum(cost.mapped('value'))+record.price_unit
+				utilida=((record.precio-costos)/record.precio)*100
+				record['utilida']=utilida
 				new_cost=costos/unidades if(unidades>0) else 0
 				record['nuevo_costo']=new_cost
 				nuevautil=record.utilida if(record.nueva_utilidad==0) else record.nueva_utilidad
