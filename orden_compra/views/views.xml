@@ -482,14 +482,14 @@
                                                 <field name="currency_id" invisible="1"/>
                                               </group>
                                               <group>
-                                                  <field name='utilida' />
-                                                  <field name='precio'/>
-                                                  <field name='costo'/>
-                                                  <field name='nuevo_costo' />
+                                                  <field name='utilida' readonly='1' force_save='1'/>
+                                                  <field name='precio'  readonly='1' force_save='1'/>
+                                                  <field name='costo'  readonly='1' force_save='1'/>
+                                                  <field name='nuevo_costo'  readonly='1' force_save='1'/>
                                                   <field name='nueva_utilidad' />
                                                   <field name='nuevo_precio' />
-                                                  <field name='ultimo_precio_compra' />
-                                                  <field name='ultimo_provedor' />
+                                                  <field name='ultimo_precio_compra'  readonly='1' force_save='1'/>
+                                                  <field name='ultimo_provedor'  readonly='1' force_save='1'/>
                                               </group>
                                               <group>
                                                 <field name='stock_total' readonly='1'/>
