@@ -135,7 +135,7 @@ class LinesFactura(models.Model):
 		super(LinesFactura, self).create(vals_list)
 	
 	def write(self,vals):
-		utilida=vals['utilida'] if('utilida' in vals) else self.utilida
+		utilidad=vals['utilida'] if('utilida' in vals) else self.utilida
 		if('nueva_utilidad' in vals and vals['nueva_utilidad']!=utilida):
 			if('product_id' in vals):
 				p=self.env['product_id'].browse(vals['product_id'])
