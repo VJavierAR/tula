@@ -115,6 +115,10 @@ class LinesFactura(models.Model):
 	def create(self,vals):
 		_logger.info(str(vals))
 		super(LinesFactura, self).create(vals)
+	
+	def write(self,vals):
+		_logger.info(str(vals))
+		super(LinesFactura, self).write(vals)
 
 
 class Almacen(models.Model):
