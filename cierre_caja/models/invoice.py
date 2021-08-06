@@ -227,9 +227,9 @@ class Cierre(models.Model):
                 #todos_pagos |= pagos_hoy_olvidados
                 for todos in todos_pagos:
                     todos.write({'cierre_id': cierre.id, 'incluir': False})
-                pagos.write({'incluir': True})
-
-                cierre.write({'pagos_hoy': pagos,}) # 'pagos_hoy_olvidados': pagos_hoy_olvidados})
+                for p in pagos:
+                    p.write({'incluir': True})
+                cierre.write({'pagos_hoy': pagos}) # 'pagos_hoy_olvidados': pagos_hoy_olvidados})
 
     def dummy_bottom(self):
 
