@@ -137,7 +137,7 @@ class LinesFactura(models.Model):
 	def write(self,vals):
 		for line in self:
 			utilidad=vals['utilida'] if('utilida' in vals) else line.utilida
-			if('nueva_utilidad' in vals and vals['nueva_utilidad']!=utilida):
+			if('nueva_utilidad' in vals and vals['nueva_utilidad']!=utilidad):
 				if('product_id' in vals):
 					p=self.env['product_id'].browse(vals['product_id'])
 					p.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
