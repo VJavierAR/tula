@@ -18,7 +18,14 @@ class Factura(models.Model):
 			tipo=context['default_type']
 			del context['default_type']
 			self = self.with_context(context)
-			self.post()
+			if(tipo!='in_invoice'):
+				self.post()
+			if(tipo=='in_invoice'):
+				produ=self.invoice_line_ids.mapped('product_id')
+				if(len(self.invoice_line_ids)!=len(produ)):
+					raise UserError(_('Faltan productos en las lineas de Factura'))
+				else:
+					self.post()
 			if(tipo=='in_invoice' and self.company_id.orden_compra):
 				orden=self.env['purchase.order'].create({'partner_id':self.partner_id.id,'picking_type_id':self.almacen.in_type_id.id})
 				for inv in self.invoice_line_ids:
@@ -77,15 +84,6 @@ class LinesFactura(models.Model):
 	nuevo_costo=fields.Float(store=True,readonly=True)
 	nuevo_precio=fields.Float(store=True,readonly=True)
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
-	type = fields.Selection(selection=[
-	        ('entry', 'Journal Entry'),
-	        ('out_invoice', 'Customer Invoice'),
-	        ('out_refund', 'Customer Credit Note'),
-	        ('in_invoice', 'Vendor Bill'),
-	        ('in_refund', 'Vendor Credit Note'),
-	        ('out_receipt', 'Sales Receipt'),
-	        ('in_receipt', 'Purchase Receipt'),
-	    ], string='Type', store=True)
 
 	@api.onchange('product_id','price_unit','quantity')
 	def _ultimoProvedor(self):
