@@ -73,7 +73,7 @@ class LinesFactura(models.Model):
 	stock_total=fields.Float(store=True,readonly=True)
 	stock_quant=fields.Many2many('stock.quant',store=True,readonly=True)
 	nueva_utilidad=fields.Float(store=True)
-	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,,readonly=True)
+	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,readonly=True)
 	nuevo_costo=fields.Float(store=True,readonly=True)
 	nuevo_precio=fields.Float(store=True,readonly=True)
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
