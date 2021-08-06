@@ -105,7 +105,7 @@ class LinesFactura(models.Model):
 				#precio=record.precio if(record.nuevo_precio==0) else newprice
 				#record.nuevo_precio=newprice if(newprice!=0) else record.precio
 				record.nuevo_precio=record.precio
-				record.nueva_utilidad=((record.precio-new_cost)/record.precio)*100 if(record.precio>0) else 0
+				record.nueva_utilidad=record.utilida
 
 	@api.onchange('nueva_utilidad')
 	def nuevaUtil(self):
