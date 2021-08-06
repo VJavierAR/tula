@@ -225,7 +225,8 @@ class Cierre(models.Model):
                 if(len(m)>0):
                     m.write({'cierre_id':False,'incluir':False})
                 #todos_pagos |= pagos_hoy_olvidados
-                todos_pagos.write({'cierre_id': cierre.id, 'incluir': False})
+                for toods in todos_pagos:
+                    todos.write({'cierre_id': cierre.id, 'incluir': False})
                 pagos.write({'incluir': True})
 
                 cierre.write({'pagos_hoy': pagos,}) # 'pagos_hoy_olvidados': pagos_hoy_olvidados})
