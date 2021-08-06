@@ -602,12 +602,14 @@
       <field name="model">account.move</field>
       <field name="inherit_id" ref="account.view_move_form"/>
       <field name="arch" type="xml">
-        <xpath expr="//form[1]/sheet[1]/field[@name='partner_id']" position="attributes">
+        <xpath expr="//form[1]/sheet[1]/group[1]/group[1]/field[@name='partner_id']" position="attributes">
             <attribute name="attrs">{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))],'required': [['type','=','in_invoice']]}</attribute>
         </xpath>
+
         <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='company_id']" position="after">
           <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['type','=','in_invoice']]}"/>
         </xpath>
+
         <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='invoice_line_ids']/tree[1]/field[@name='tax_ids']" position="after">
               <field name='valorX' invisible='1'/>
               <field name='utilida' attrs="{'invisible': [['type','!=','in_invoice']]}"/>
@@ -621,7 +623,6 @@
               <field name='stock_total' attrs="{'invisible': [['type','!=','in_invoice']]}"/>
               <field name="stock_quant" attrs="{'invisible': [['type','!=','in_invoice']]}"/>
         </xpath>
-
 
     </field>
 </record>
