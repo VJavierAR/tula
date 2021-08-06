@@ -79,7 +79,7 @@ class LinesFactura(models.Model):
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
 
 
-	@api.onchange('product_id','price_unit','quantity','nueva_utilidad')
+	@api.onchange('product_id','price_unit','quantity')
 	def _ultimoProvedor(self):
 		for record in self:
 			record.valorX=1
@@ -99,21 +99,27 @@ class LinesFactura(models.Model):
 				#record.utilida=utilida
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record.nuevo_costo=new_cost
-				newprice=(new_cost *record.utilida / 100) + new_cost
-				record.nueva_utilidad=((newprice-new_cost)/newprice)*100 if(newprice!=0) else 0
+				#newprice=(new_cost *record.utilida / 100) + new_cost
 				#nuevautil=record.utilida if(record.nueva_utilidad==0) else record.nueva_utilidad
 				#newprice=(new_cost * nuevautil / 100) + new_cost
 				#precio=record.precio if(record.nuevo_precio==0) else newprice
-				record.nuevo_precio=newprice if(newprice!=0) else record.precio
-				
+				#record.nuevo_precio=newprice if(newprice!=0) else record.precio
+				record.nuevo_precio=record.precio
+				record.nueva_utilidad=((record.precio-new_cost)/record.precio)*100 if(record.precio>0) else 0
+
+	@api.onchange('nueva_utilidad')
+	def nuevaUtil(self):
+		for record in self:
+			if(record.product_id.id):
+				if(record.nuevo_precio!=0):
+					if(record.nueva_utilidad!=0):
+						newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+						record.nuevo_precio=newprice
+						#record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)/newprice)*100 if(newprice!=0) else 0
 
 
-#	@api.onchange('nueva_utilidad')
-#	def nuevaUtil(self):
-#		for record in self:
-#			if(record.product_id.id):
-#				if(record.nuevo_precio!=0):
-#					if(record.nueva_utilidad!=0):
+
+
 	def create(self,vals_list):
 		_logger.info(str(vals))
 		super(LinesFactura, self).create(vals_list)
