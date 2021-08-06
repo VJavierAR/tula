@@ -209,6 +209,16 @@
                                         </control>
 
                                         <!-- Displayed fields -->
+                                                  <field name='valorX' invisible='1'/>
+                                                  <field name='utilida' invisible='1'/>
+                                                  <field name='precio' invisible='1'/>
+                                                  <field name='costo' invisible='1'/>
+                                                  <field name='nuevo_costo' invisible='1'/>
+                                                  <field name='nueva_utilidad' invisible='1'/>
+                                                  <field name='nuevo_precio' invisible='1'/>
+                                                  <field name='ultimo_precio_compra' invisible='1'/>
+                                                  <field name='ultimo_provedor' invisible='1'/>
+                                                  <field name='stock_total' invisible='1' />
                                         <field name="sequence" widget="handle"/>
                                         <field name="move_name" invisible="1"/>
                                         <field name="product_id"
@@ -365,14 +375,15 @@
                                                 <field name="currency_id" invisible="1"/>
                                               </group>
                                               <group>
-                                                  <field name='utilida' force_save='1'/>
-                                                  <field name='precio' force_save='1'/>
-                                                  <field name='costo' force_save='1'/>
-                                                  <field name='nuevo_costo' force_save='1'/>
-                                                  <field name='nueva_utilidad' force_save='1'/>
-                                                  <field name='nuevo_precio' force_save='1'/>
-                                                  <field name='ultimo_precio_compra' force_save='1'/>
-                                                  <field name='ultimo_provedor' force_save='1'/>
+                                                <field name='valorX' invisible='1'/>
+                                                  <field name='utilida' />
+                                                  <field name='precio'/>
+                                                  <field name='costo'/>
+                                                  <field name='nuevo_costo' />
+                                                  <field name='nueva_utilidad' />
+                                                  <field name='nuevo_precio' />
+                                                  <field name='ultimo_precio_compra' />
+                                                  <field name='ultimo_provedor' />
                                               </group>
                                               <group>
                                                 <field name='stock_total' />
