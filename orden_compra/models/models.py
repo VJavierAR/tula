@@ -128,6 +128,12 @@ class LinesFactura(models.Model):
 
 	def create(self,vals_list):
 		_logger.info(str(vals_list))
+		for vals in vals_list:
+			if('nueva_utilidad' in vals):
+				if('product_id' in vals):
+					p=self.env['product_id'].browse(vals['product_id'])
+					_logger.info(p.x_studio_utilidad_precio_de_venta)
+
 		super(LinesFactura, self).create(vals_list)
 	
 	def write(self,vals):
