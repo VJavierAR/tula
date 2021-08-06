@@ -223,7 +223,8 @@ class Cierre(models.Model):
                 todos_pagos = pagos
                 m=payment_env.search([['cierre_id','=',cierre.id]])
                 if(len(m)>0):
-                    m.write({'cierre_id':False,'incluir':False})
+                    for mi in m:
+                        mi.write({'cierre_id':False,'incluir':False})
                 #todos_pagos |= pagos_hoy_olvidados
                 for todos in todos_pagos:
                     todos.write({'cierre_id': cierre.id, 'incluir': False})
