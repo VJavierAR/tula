@@ -100,7 +100,7 @@ class LinesFactura(models.Model):
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record.nuevo_costo=new_cost
 				newprice=(new_cost *record.utilida / 100) + new_cost
-				#record.nueva_utilidad=((newprice-new_cost)/newprice)*100 if(precio!=0) else 0
+				record.nueva_utilidad=((newprice-new_cost)/newprice)*100 if(newprice!=0) else 0
 				#nuevautil=record.utilida if(record.nueva_utilidad==0) else record.nueva_utilidad
 				#newprice=(new_cost * nuevautil / 100) + new_cost
 				#precio=record.precio if(record.nuevo_precio==0) else newprice
