@@ -229,7 +229,7 @@ class Cierre(models.Model):
                     todos.write({'cierre_id': cierre.id, 'incluir': False})
                 for p in pagos:
                     p.write({'incluir': True})
-                cierre.write({'pagos_hoy': pagos,}) # 'pagos_hoy_olvidados': pagos_hoy_olvidados})
+                #cierre.write({'pagos_hoy': pagos,}) # 'pagos_hoy_olvidados': pagos_hoy_olvidados})
 
     def dummy_bottom(self):
 
