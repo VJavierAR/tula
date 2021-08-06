@@ -73,14 +73,14 @@ class Factura(models.Model):
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
-	costo=fields.Float(related='product_id.standard_price',store=True,readonly=True, check_company=True)
-	precio=fields.Float(related='product_id.lst_price',store=True,readonly=True, check_company=True)
+	costo=fields.Float(related='product_id.standard_price',store=True,readonly=True,company_dependent=True,check_company=True)
+	precio=fields.Float(related='product_id.lst_price',store=True,readonly=True, company_dependent=True,check_company=True)
 	ultimo_provedor=fields.Many2one('res.partner',store=True,readonly=True)
 	ultimo_precio_compra=fields.Float(store=True,readonly=True)
 	stock_total=fields.Float(store=True,readonly=True)
 	stock_quant=fields.Many2many('stock.quant',store=True,readonly=True)
 	nueva_utilidad=fields.Float(store=True)
-	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,readonly=True, check_company=True)
+	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,readonly=True, company_dependent=True,check_company=True)
 	nuevo_costo=fields.Float(store=True,readonly=True)
 	nuevo_precio=fields.Float(store=True,readonly=True)
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
