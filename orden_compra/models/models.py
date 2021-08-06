@@ -121,7 +121,7 @@ class LinesFactura(models.Model):
 
 
 	def create(self,vals_list):
-		_logger.info(str(vals))
+		_logger.info(str(vals_list))
 		super(LinesFactura, self).create(vals_list)
 	
 	def write(self,vals):
