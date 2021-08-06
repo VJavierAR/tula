@@ -77,7 +77,15 @@ class LinesFactura(models.Model):
 	nuevo_costo=fields.Float(store=True,readonly=True)
 	nuevo_precio=fields.Float(store=True,readonly=True)
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
-
+	type = fields.Selection(selection=[
+	        ('entry', 'Journal Entry'),
+	        ('out_invoice', 'Customer Invoice'),
+	        ('out_refund', 'Customer Credit Note'),
+	        ('in_invoice', 'Vendor Bill'),
+	        ('in_refund', 'Vendor Credit Note'),
+	        ('out_receipt', 'Sales Receipt'),
+	        ('in_receipt', 'Purchase Receipt'),
+	    ], string='Type', store=True)
 
 	@api.onchange('product_id','price_unit','quantity')
 	def _ultimoProvedor(self):

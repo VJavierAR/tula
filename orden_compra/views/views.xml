@@ -611,6 +611,7 @@
         </xpath>
 
         <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='invoice_line_ids']/tree[1]/field[@name='tax_ids']" position="after">
+              <field name='type' invisible='1'/>
               <field name='valorX' invisible='1'/>
               <field name='utilida' attrs="{'invisible': [['type','!=','in_invoice']]}"/>
               <field name='precio' attrs="{'invisible': [['type','!=','in_invoice']]}"/>
