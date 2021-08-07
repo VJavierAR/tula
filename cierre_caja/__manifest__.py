@@ -6,7 +6,7 @@
     'author': "Cesar Lopez Robredo",
     'website': "cesarlopez173@yahoo.com.mx",
     'category': 'Accounting',
-    'version': '2.0',
+    'version': '1.0',
     'depends': ['base', 'account'],
     'data': [
         'security/security.xml',
@@ -14,5 +14,5 @@
         'views/gastos.xml',
         'data/data.xml',
     ],
-    
+
 }
