@@ -14,5 +14,8 @@
         'views/gastos.xml',
         'data/data.xml',
     ],
+        'installable': True,
+    'application': True,
+    'auto_install': False,
 
 }
