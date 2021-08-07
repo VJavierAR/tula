@@ -122,7 +122,8 @@ class Cierre(models.Model):
             if cierre.state == 'draft':
                 cierre.diferencia = 0
             else:
-                cierre.diferencia = round((cierre.monto_cierre_calculado - cierre.monto_cierre-cierre.monto_cierre_diferencia),2)
+                cierre.diferencia = round((cierre.monto_cierre_calculado - cierre.monto_cierre),2)
+                #cierre.diferencia = round((cierre.monto_cierre_calculado - cierre.monto_cierre-cierre.monto_cierre_diferencia),2)
                 
     @api.onchange('user_id')
     def calcular_apertura(self):
@@ -151,17 +152,17 @@ class Cierre(models.Model):
 
     notas = fields.Text('Notas')
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
-    monto_cierre_acumulado=fields.Float('Monto Cierre Acumulado',compute='compute_monto_cierre_acumulado')
+    #monto_cierre_acumulado=fields.Float('Monto Cierre Acumulado',compute='compute_monto_cierre_acumulado')
     monto_cierre_sin=fields.Float()
-    monto_cierre_diferencia=fields.Float('Monto abonar')
+    #monto_cierre_diferencia=fields.Float('Monto abonar')
 
-    @api.depends('diferencia')
-    def compute_monto_cierre_acumulado(self):
-        fecha=self.name
-        prime_day_of_month=datetime(fecha.year, fecha.month, 1)
-        last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
-        data=self.search([['name','>=',prime_day_of_month],['name','<=',fecha],['user_id','=',self.user_id.id]])
-        self.monto_cierre_acumulado=sum(data.mapped('monto_cierre_diferencia'))
+    # @api.depends('diferencia')
+    # def compute_monto_cierre_acumulado(self):
+    #     fecha=self.name
+    #     prime_day_of_month=datetime(fecha.year, fecha.month, 1)
+    #     last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
+    #     data=self.search([['name','>=',prime_day_of_month],['name','<=',fecha],['user_id','=',self.user_id.id]])
+    #     self.monto_cierre_acumulado=sum(data.mapped('monto_cierre_diferencia'))
 
 
     def print_report(self):
@@ -191,11 +192,11 @@ class Cierre(models.Model):
             if self.env.user.id not in U:
                 if(facturas.mapped('id')!=[]):
                     raise UserError('No se puede cerrar dado que existen facturas de contado sin pagar: '+str(facturas.mapped('name')).replace('[','').replace(']',''))
-                if(fecha.day==last_date_of_month.day):
-                    if(cierre.monto_cierre_acumulado!=0):
-                        raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.monto_cierre_acumulado))
-                    else:
-                        cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
+                #if(fecha.day==last_date_of_month.day):
+                #    if(cierre.monto_cierre_acumulado!=0):
+                #        raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.monto_cierre_acumulado))
+                #    else:
+                #        cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
                 if(cierre.diferencia!=0):
                     raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.diferencia))
                 if(cierre.diferencia==0):
