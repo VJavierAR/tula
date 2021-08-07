@@ -23,5 +23,11 @@
     width: 90px !important;
 }
 .account_line_edit [data-name="account_id"] {
-    width: 100px !important;
+    width: 130px !important;
+}
+.account_line_edit [data-name="tax_ids"] {
+    width: 120px !important;
+}
+.account_line_edit [data-name="ultimo_provedor"] {
+    width: 120px !important;
 }
