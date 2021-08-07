@@ -14,11 +14,14 @@
     width: 190px !important;
 }*/
 .account_line_edit [data-name="product_id"] {
-    width: 300px !important;
+    width: 200px !important;
 }
 .account_line_edit [data-name="name"] {
-    width: 300px !important;
+    width: 200px !important;
 }
 .account_line_edit [data-name="product_uom_qty"] {
-    width: 93px !important;
+    width: 90px !important;
+}
+.account_line_edit [data-name="account_id"] {
+    width: 100px !important;
 }
