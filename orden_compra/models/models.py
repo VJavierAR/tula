@@ -126,25 +126,25 @@ class LinesFactura(models.Model):
 
 
 
-	def create(self,vals_list):
-		for vals in vals_list:
-			if('nueva_utilidad' in vals and vals['nueva_utilidad']!=vals['utilida']):
-				if('product_id' in vals and vals['product_id']!=False):
-					p=self.env['product_id'].browse(vals['product_id'])
-					p.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
-		super(LinesFactura, self).create(vals_list)
+	# def create(self,vals_list):
+	# 	for vals in vals_list:
+	# 		if('nueva_utilidad' in vals and vals['nueva_utilidad']!=vals['utilida']):
+	# 			if('product_id' in vals and vals['product_id']!=False):
+	# 				p=self.env['product_id'].browse(vals['product_id'])
+	# 				p.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
+	# 	super(LinesFactura, self).create(vals_list)
 	
-	def write(self,vals):
-		for line in self:
-			utilidad=vals['utilida'] if('utilida' in vals) else line.utilida
-			if('nueva_utilidad' in vals and vals['nueva_utilidad']!=utilidad):
-				if('product_id' in vals):
-					p=self.env['product_id'].browse(vals['product_id'])
-					p.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
-				else:
-					p=self.product_id
-					p.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
-			super(LinesFactura, line).write(vals)
+	# def write(self,vals):
+	# 	for line in self:
+	# 		utilidad=vals['utilida'] if('utilida' in vals) else line.utilida
+	# 		if('nueva_utilidad' in vals and vals['nueva_utilidad']!=utilidad):
+	# 			if('product_id' in vals):
+	# 				p=self.env['product_id'].browse(vals['product_id'])
+	# 				p.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
+	# 			else:
+	# 				p=self.product_id
+	# 				p.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
+	# 		super(LinesFactura, line).write(vals)
 
 
 class Almacen(models.Model):
