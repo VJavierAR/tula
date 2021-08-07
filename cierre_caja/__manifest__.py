@@ -3,10 +3,10 @@
     'name': "Modulo de cierre de caja",
     'summary': """Modulo de cierre de caja""",
     'description': """Modulo de cierre de caja""",
-    'author': "Grupo OLA SA",
-    'website': "https://grupoola.odoo.com",
-    'category': 'general',
-    'version': '1.0',
+    'author': "Cesar Lopez Robredo",
+    'website': "cesarlopez173@yahoo.com.mx",
+    'category': 'Accounting',
+    'version': '2.0',
     'depends': ['base', 'account'],
     'data': [
         'security/security.xml',
@@ -14,4 +14,5 @@
         'views/gastos.xml',
         'data/data.xml',
     ],
+    
 }
