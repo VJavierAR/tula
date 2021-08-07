@@ -26,8 +26,8 @@
                             <field name="monto_cierre_calculado" string='Monto Registrado'/>
                             <field name="monto_cierre" string='Monto Reportado' readonly='1'/>
                             <field name="diferencia" readonly='1'/>
-                            <field name="monto_cierre_diferencia" />
-                            <field name="monto_cierre_acumulado" readonly='1'/>
+                            <field name="monto_cierre_diferencia" invisible='1' />
+                            <field name="monto_cierre_acumulado" readonly='1' invisible='1'/>
                             <field name="date_closed" attrs="{'invisible': [('date_closed', '=', False)]}" readonly="1"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="user_id" invisible="1"/>
