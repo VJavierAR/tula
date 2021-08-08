@@ -62,7 +62,7 @@ class StockPicking(models.Model):
                 )
 
     def cron_notificacion_salidas(self):
-        estados = ['assigned']
+        estados = ['confirmed', 'assigned']
         ordenes_entrega = self.search([
             ('state', 'in', estados),
         ])
