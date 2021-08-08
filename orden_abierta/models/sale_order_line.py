@@ -78,8 +78,9 @@ class SaleOrderLineOrdenAbierta(models.Model):
             # Mensaje inventario actual
             cantidad_a_vender = self.product_uom_qty
             cantidad_prevista = self.product_id.virtual_available
+            cantidad_entrada = self.product_id.incoming_qty
             cantidad_pedidos_abiertos = cantidad_reservada_suma
-            cantidad_disponible_cantidad_pa = cantidad_disponible - cantidad_pedidos_abiertos
+            cantidad_disponible_menos_cantidad_pa = cantidad_disponible - cantidad_pedidos_abiertos
             if cantidad_a_vender > cantidad_disponible_cantidad_pa:
                 nombre_producto = self.product_id.name
                 almacenes_stock = self.product_id.stock_quant_ids.filtered(
@@ -94,8 +95,12 @@ class SaleOrderLineOrdenAbierta(models.Model):
                 mensaje = "Planea vender " + str(
                     cantidad_a_vender) + " de " + nombre_producto + " pero solo tiene " + str(cantidad_disponible)
                 mensaje += " en los siguientes almacenes:\nAlmacén: cantidad" + nombre_almacen + "\n\n"
-                mensaje += "Existen " + str(cantidad_disponible_cantidad_pa)
-                mensaje += " disponibles (Cantidad a mano, menos la cantidad de pedidos abiertos)."
+                mensaje += "Existen " + str(cantidad_disponible_menos_cantidad_pa)
+                mensaje += " disponibles (Cantidad a mano, menos la cantidad de pedidos abiertos).\n\n"
+                mesnaje += "Cantidad requerida: " + str(cantidad_a_vender) + "\n"
+                mesnaje += "Cantidad a mano: " + str(cantidad_dispobible) + "\n"
+                mesnaje += "Cantidad a prevista: " + str(cantidad_prevista) + "\n"
+                mesnaje += "Total cantidad en tránsito: " + str(cantidad_entrada) + "\n"
                 return {
                     'warning': {
                         'title': _('Inventario actual!'),
