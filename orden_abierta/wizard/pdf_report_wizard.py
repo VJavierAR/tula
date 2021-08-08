@@ -33,4 +33,4 @@ class PdfReport(TransientModel):
             'model': 'sale.order',
             'form': orden.read()[0]
         }
-        return self.env.ref('orden_abierta.reporte_de_lista_empaques').report_action(orden)
+        return self.env.ref('orden_abierta.reporte_de_lista_empaques').report_action(orden, data=data)
