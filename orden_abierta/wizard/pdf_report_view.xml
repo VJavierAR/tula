@@ -6,10 +6,11 @@
             <field name="model">pdf.report</field>
             <field name="arch" type="xml">
                 <form string="Lista empaque">
-
+                    <field name="sale_id" invisible="0" />
                     <field name='pdfReporte' string=' ' force_save='1' widget='pdf_viewer' />
 
                     <footer>
+                        <button name="imprimir" string="Imprimir" class="oe_highlight"/>
                         <button special="cancel" string="Cerrar" class="oe_highlight"/>
                     </footer>
 

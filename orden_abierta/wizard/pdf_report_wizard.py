@@ -25,4 +25,12 @@ class PdfReport(TransientModel):
         store=True
     )
 
-
+    def imprimir(self):
+        orden = self.env['sale.order'].search([
+            ('id', '=', self.sale_id)
+        ])
+        data = {
+            'model': 'sale.order',
+            'form': orden.read()[0]
+        }
+        return self.env.ref('orden_abierta.reporte_de_lista_empaques').report_action(self, data=data)
