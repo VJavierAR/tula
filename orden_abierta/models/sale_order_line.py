@@ -80,7 +80,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
             self.cantidad_reservada = 0
 
     def mensaje_inventario_actual(self):
-        mensaje = "Plane vender " self.
+        mensaje = "Plane vender "
 
     # @api.multi
     def dup_line_to_order(self, order_id=None):
