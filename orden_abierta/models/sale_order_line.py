@@ -81,7 +81,9 @@ class SaleOrderLineOrdenAbierta(models.Model):
             cantidad_entrada = self.product_id.incoming_qty
             cantidad_pedidos_abiertos = cantidad_reservada_suma
             cantidad_disponible_menos_cantidad_pa = cantidad_disponible - cantidad_pedidos_abiertos
+            _logger.info("cantidad_a_vender: " + str(cantidad_a_vender) + " > cantidad_disponible_menos_cantidad_pa:" + str(cantidad_disponible_menos_cantidad_pa))
             if cantidad_a_vender > cantidad_disponible_cantidad_pa:
+
                 nombre_producto = self.product_id.name
                 almacenes_stock = self.product_id.stock_quant_ids.filtered(
                     lambda x:
