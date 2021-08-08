@@ -55,23 +55,32 @@ class SaleOrderLineOrdenAbierta(models.Model):
                     self.codigo_cliente = codigo.codigo_producto
 
             # Cantidad reservada
-            estados_no_aprobados = ['draft', 'sent']
-            ordenes = self.env['sale.order'].search(
-                [
-                    ('state', 'in', estados_no_aprobados),
-                    ('es_orden_abierta', '=', True)
-                ])
-            cantidad_dispobible = self.product_id.qty_available
-            cantidad_reservada_suma = 0
-            for orden in ordenes:
-                for linea in orden.order_line:
-                    if linea.product_id.id == self.product_id.id:
-                        cantidad_reservada_suma += linea.product_uom_qty
+            self.cantidad_reservada()
 
-            if cantidad_reservada_suma > 0:
-                self.cantidad_reservada = cantidad_dispobible - cantidad_reservada_suma
-            else:
-                self.cantidad_reservada = 0
+            # Mensaje inventario actual
+            self.mensaje_inventario_actual()
+
+    def cantidad_reservada(self):
+        estados_no_aprobados = ['draft', 'sent']
+        ordenes = self.env['sale.order'].search(
+            [
+                ('state', 'in', estados_no_aprobados),
+                ('es_orden_abierta', '=', True)
+            ])
+        cantidad_dispobible = self.product_id.qty_available
+        cantidad_reservada_suma = 0
+        for orden in ordenes:
+            for linea in orden.order_line:
+                if linea.product_id.id == self.product_id.id:
+                    cantidad_reservada_suma += linea.product_uom_qty
+
+        if cantidad_reservada_suma > 0:
+            self.cantidad_reservada = cantidad_dispobible - cantidad_reservada_suma
+        else:
+            self.cantidad_reservada = 0
+
+    def mensaje_inventario_actual(self):
+        mensaje = "Plane vender " self.
 
     # @api.multi
     def dup_line_to_order(self, order_id=None):
