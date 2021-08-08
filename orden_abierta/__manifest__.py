@@ -35,6 +35,9 @@
         'views/product_template.xml',
         'views/sale_order_directa.xml',
         'wizard/sale_order_directa_view.xml',
+        'wizard/pdf_report_view.xml',
+        'report/reportes.xml',
+        'report/lista_empaques.xml',
         'data/data.xml',
     ],
     # only loaded in demonstration mode

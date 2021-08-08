@@ -22,6 +22,10 @@ class SaleOrderLineOrdenAbierta(models.Model):
         string="Código cliente",
         copy=True
     )
+    pedido_cliente = fields.Text(
+        string="Pedido cliente",
+        copy=True
+    )
     fecha_programada = fields.Date(
         string="Programación"
     )
@@ -46,7 +50,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
         default=False
     )
 
-    @api.onchange('product_id')
+    @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
         if self.product_id.id:
             # Obtiene código de cliente
@@ -80,9 +84,9 @@ class SaleOrderLineOrdenAbierta(models.Model):
             cantidad_prevista = self.product_id.virtual_available
             cantidad_entrada = self.product_id.incoming_qty
             cantidad_pedidos_abiertos = cantidad_reservada_suma
-            cantidad_disponible_menos_cantidad_pa = cantidad_disponible - cantidad_pedidos_abiertos
+            cantidad_disponible_menos_cantidad_pa = cantidad_dispobible - cantidad_pedidos_abiertos
             _logger.info("cantidad_a_vender: " + str(cantidad_a_vender) + " > cantidad_disponible_menos_cantidad_pa:" + str(cantidad_disponible_menos_cantidad_pa))
-            if cantidad_a_vender > cantidad_disponible_cantidad_pa:
+            if cantidad_a_vender > cantidad_disponible_menos_cantidad_pa:
 
                 nombre_producto = self.product_id.name
                 almacenes_stock = self.product_id.stock_quant_ids.filtered(
@@ -95,14 +99,14 @@ class SaleOrderLineOrdenAbierta(models.Model):
                 for data in almacenes_stock:
                     nombre_almacen += str(data.location_id.display_name) + ": " + str(data.quantity) + "\n"
                 mensaje = "Planea vender " + str(
-                    cantidad_a_vender) + " de " + nombre_producto + " pero solo tiene " + str(cantidad_disponible)
-                mensaje += " en los siguientes almacenes:\nAlmacén: cantidad" + nombre_almacen + "\n\n"
+                    cantidad_a_vender) + " de " + nombre_producto + " pero solo tiene " + str(cantidad_dispobible)
+                mensaje += " en los siguientes almacenes:\nAlmacén: cantidad\n" + nombre_almacen + "\n"
                 mensaje += "Existen " + str(cantidad_disponible_menos_cantidad_pa)
                 mensaje += " disponibles (Cantidad a mano, menos la cantidad de pedidos abiertos).\n\n"
-                mesnaje += "Cantidad requerida: " + str(cantidad_a_vender) + "\n"
-                mesnaje += "Cantidad a mano: " + str(cantidad_dispobible) + "\n"
-                mesnaje += "Cantidad a prevista: " + str(cantidad_prevista) + "\n"
-                mesnaje += "Total cantidad en tránsito: " + str(cantidad_entrada) + "\n"
+                mensaje += "Cantidad requerida: " + str(cantidad_a_vender) + "\n"
+                mensaje += "Cantidad a mano: " + str(cantidad_dispobible) + "\n"
+                mensaje += "Cantidad a prevista: " + str(cantidad_prevista) + "\n"
+                mensaje += "Total cantidad en tránsito: " + str(cantidad_entrada) + "\n"
                 return {
                     'warning': {
                         'title': _('Inventario actual!'),
@@ -113,3 +117,24 @@ class SaleOrderLineOrdenAbierta(models.Model):
     # @api.multi
     def dup_line_to_order(self, order_id=None):
         return self.copy(default={'order_id': order_id})
+
+    def lista_empaque(self):
+        idExternoReporte = 'orden_abierta.report_lista_empaques'
+        pdf = self.env.ref(idExternoReporte).sudo().render_qweb_pdf([self.id])[0]
+        wiz = self.env['pdf.report'].create({
+            'sale_id': self.id
+        })
+        wiz.pdfReporte = base64.encodestring(pdf)
+        view = self.env.ref('orden_abierta.view_pdf_report')
+        return {
+            'name': _('Lista empaque'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'pdf.report',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'res_id': wiz.id,
+            'context': self.env.context,
+        }

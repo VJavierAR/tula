@@ -20,4 +20,6 @@ class Partner(models.Model):
     referencia_interna = fields.Text(
         string="Referencia interna"
     )
-
+    horario_de_entrega = fields.Datetime(
+        string="Horario de entrega"
+    )

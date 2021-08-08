@@ -9,6 +9,7 @@
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_id']" position="after">
                     <field name="default_code_product" readonly="1" optional="show"/>
                     <field name="codigo_cliente" readonly="1" optional="show"/>
+                    <field name="pedido_cliente" optional="show"/>
                     <field name="fecha_programada" optional="show"/>
                     <field name="codigo_alterno" optional="show"/>
                     <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
@@ -37,6 +38,10 @@
 
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="es_orden_abierta" readonly="1" force_save="1" />
+                </xpath>
+
+                <xpath expr="//header/" position="inside">
+                    <button name="lista_empaque" string="Lista empaque" type="object" />
                 </xpath>
 
             </field>

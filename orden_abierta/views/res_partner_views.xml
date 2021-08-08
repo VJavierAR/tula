@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="res_partner_form_view_update">
+            <field name="name">res.partner.form.update</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='property_payment_term_id']" position="after">
+                    <field name="horario_de_entrega" />
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

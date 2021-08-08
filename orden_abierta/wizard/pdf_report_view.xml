@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_pdf_report" >
+            <field name="model">pdf.report</field>
+            <field name="arch" type="xml">
+                <form string="Lista empaque">
+
+                    <field name='pdfReporte' string=' ' force_save='1' widget='pdf_viewer' />
+
+                    <footer>
+                        <button special="cancel" string="Cerrar" class="oe_highlight"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
