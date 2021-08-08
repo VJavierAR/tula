@@ -2,7 +2,7 @@
 <odoo>
 
 	<report id='reporte_de_lista_empaques'
-		    string='Reporte lista de empaques'
+		    string='Reporte lista de empaque'
 		    model='sale.order'
 		    report_type='qweb-pdf'
 		    name='orden_abierta.lista_empaques'

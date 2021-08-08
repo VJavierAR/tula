@@ -41,7 +41,7 @@
                 </xpath>
 
                 <xpath expr="//form/header" position="inside">
-                    <button name="lista_empaque" string="Lista empaque" type="object" />
+                    <button name="get_lista_empaque" string="Lista empaque" type="object" />
                 </xpath>
 
             </field>

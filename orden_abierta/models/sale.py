@@ -114,3 +114,24 @@ class SaleOrderOrdenAbierta(models.Model):
             mail['body_html'] = html
             mail['email_from'] = company_email
             self.env['mail.mail'].create(mail).send()
+
+    def get_lista_empaque(self):
+        idExternoReporte = 'orden_abierta.reporte_de_lista_empaques'
+        pdf = self.env.ref(idExternoReporte).sudo().render_qweb_pdf([self.id])[0]
+        wiz = self.env['pdf.report'].create({
+            'sale_id': self.id
+        })
+        wiz.pdfReporte = base64.encodestring(pdf)
+        view = self.env.ref('orden_abierta.view_pdf_report')
+        return {
+            'name': _('Lista empaque'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'pdf.report',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'res_id': wiz.id,
+            'context': self.env.context,
+        }

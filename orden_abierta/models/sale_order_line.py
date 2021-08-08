@@ -117,24 +117,3 @@ class SaleOrderLineOrdenAbierta(models.Model):
     # @api.multi
     def dup_line_to_order(self, order_id=None):
         return self.copy(default={'order_id': order_id})
-
-    def lista_empaque(self):
-        idExternoReporte = 'orden_abierta.report_lista_empaques'
-        pdf = self.env.ref(idExternoReporte).sudo().render_qweb_pdf([self.id])[0]
-        wiz = self.env['pdf.report'].create({
-            'sale_id': self.id
-        })
-        wiz.pdfReporte = base64.encodestring(pdf)
-        view = self.env.ref('orden_abierta.view_pdf_report')
-        return {
-            'name': _('Lista empaque'),
-            'type': 'ir.actions.act_window',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'pdf.report',
-            'views': [(view.id, 'form')],
-            'view_id': view.id,
-            'target': 'new',
-            'res_id': wiz.id,
-            'context': self.env.context,
-        }
