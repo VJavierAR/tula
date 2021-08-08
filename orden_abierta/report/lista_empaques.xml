@@ -260,6 +260,8 @@
                                 <p t-field="doc.signed_by"/>
                             </div>
                         </div>
+
+                        <!--
                         <div t-if="doc.sale_order_option_ids and doc.state in ['draft', 'sent']">
                             <t t-set="has_option_discount"
                                t-value="any(doc.sale_order_option_ids.filtered(lambda o: o.discount != 0.0))"/>
@@ -302,7 +304,7 @@
                                 </tbody>
                             </table>
                         </div>
-
+                        -->
 
                         <div class="oe_structure"/>
 
