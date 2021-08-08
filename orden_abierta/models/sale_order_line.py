@@ -55,12 +55,12 @@ class SaleOrderLineOrdenAbierta(models.Model):
                     self.codigo_cliente = codigo.codigo_producto
 
             # Cantidad reservada
-            self.cantidad_reservada()
+            self.obtener_cantidad_reservada()
 
             # Mensaje inventario actual
             self.mensaje_inventario_actual()
 
-    def cantidad_reservada(self):
+    def obtener_cantidad_reservada(self):
         estados_no_aprobados = ['draft', 'sent']
         ordenes = self.env['sale.order'].search(
             [
