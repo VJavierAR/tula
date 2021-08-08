@@ -6,7 +6,7 @@
 		    model='sale.order'
 		    report_type='qweb-pdf'
 		    name='orden_abierta.lista_empaques'
-		    file='lista.empaques' />
+		    file='orden_abierta.lista_empaques' />
 
 
 </odoo>
