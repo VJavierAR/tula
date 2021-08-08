@@ -53,7 +53,7 @@ class StockPicking(models.Model):
                 subtype="mail.mt_comment",
             )
 
-        result = super(StockPicking, self).create(vals)
+        result = super(StockPicking, self).write(vals)
         return result
 
     @api.onchange('state')
