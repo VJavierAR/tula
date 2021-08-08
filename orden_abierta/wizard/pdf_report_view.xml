@@ -10,7 +10,7 @@
                     <field name='pdfReporte' string=' ' force_save='1' widget='pdf_viewer' />
 
                     <footer>
-                        <button name="imprimir" string="Imprimir" class="oe_highlight"/>
+                        <button name="imprimir" string="Imprimir" type="object" class="oe_highlight"/>
                         <button special="cancel" string="Cerrar" class="oe_highlight"/>
                     </footer>
 
