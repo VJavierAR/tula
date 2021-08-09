@@ -114,7 +114,7 @@ class LinesFactura(models.Model):
 				#record.nueva_utilidad=record.utilida
 
 	@api.onchange('nueva_utilidad')
-	def nuevaUtil(self):
+	def _onchange_nuevaUtil(self):
 		for record in self:
 			if(record.product_id.id):
 				if(record.nuevo_precio!=0):
