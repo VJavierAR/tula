@@ -109,16 +109,15 @@ class LinesFactura(models.Model):
 	@api.depends('nueva_utilidad')
 	def _nuevaUtil(self):
 		for record in self:
-			if(record.product_id.id):
-				if(record.nuevo_precio!=0):
-					if(record.nueva_utilidad!=0):
-						_logger.info('3')
-						_logger.info('4'+str(record.nueva_utilidad))
-						record.valorX=record.nueva_utilidad
-						newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
-						record.nuevo_precio=newprice
-						record.nueva_utilidad=record.valorX
-						#record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)/newprice)*100 if(newprice!=0) else 0
+			if(record.product_id.id!=False):
+				if(record.nueva_utilidad!=0):
+					_logger.info('3')
+					_logger.info('4'+str(record.nueva_utilidad))
+					record.valorX=record.nueva_utilidad
+					newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+					record.nuevo_precio=newprice
+					record.nueva_utilidad=record.valorX
+					#record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)/newprice)*100 if(newprice!=0) else 0
 
 
 class Almacen(models.Model):
