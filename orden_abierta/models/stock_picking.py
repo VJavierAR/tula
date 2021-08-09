@@ -20,7 +20,9 @@ class StockPicking(models.Model):
     _description = 'cron'
 
     def write(self, vals):
+        # _logger.info("vals: " + str(vals))
         if 'state' in vals and vals['state'] == 'done' and 'out' in self.name and self.sale_id.id and self.sale_id.user_id.id:
+            # _logger.info("entre para generar alerta")
             vendedor_id = self.sale_id.user_id.id
             message_text = "Se necesita validar orden " + self.sale_id.name
             # odoo runbot
