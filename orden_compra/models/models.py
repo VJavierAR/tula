@@ -89,6 +89,7 @@ class LinesFactura(models.Model):
 	def _ultimoProvedor(self):
 		for record in self:
 			record.valorX=1
+			_logger.info('1')
 			if(record.product_id.id!=False):
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
 				record.ultimo_provedor=ultimo.order_id.partner_id.id
@@ -101,6 +102,7 @@ class LinesFactura(models.Model):
 				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
 				unidades=sum(cost.mapped('quantity'))+record.quantity
 				costos=sum(cost.mapped('value'))+(record.price_unit*record.quantity)
+				_logger.info('2')
 				#utilida=((record.precio-costos)/record.precio)*100 if(record.precio!=0) else 0
 				#record.utilida=utilida
 				new_cost=costos/unidades if(unidades>0) else record.costo
@@ -119,8 +121,12 @@ class LinesFactura(models.Model):
 			if(record.product_id.id):
 				if(record.nuevo_precio!=0):
 					if(record.nueva_utilidad!=0):
+						_logger.info('3')
+						_logger.info('4'+str(record.nueva_utilidad))
+						record.valorX=record.nueva_utilidad
 						newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
 						record.nuevo_precio=newprice
+						record.nueva_utilidad=record.valorX
 						#record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)/newprice)*100 if(newprice!=0) else 0
 
 
