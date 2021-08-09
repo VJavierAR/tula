@@ -82,7 +82,7 @@ class LinesFactura(models.Model):
 	nueva_utilidad=fields.Float()
 	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,readonly=True, company_dependent=True,check_company=True)
 	nuevo_costo=fields.Float(store=True,readonly=True)
-	nuevo_precio=fields.Float(compute='_nuevaUtil',store=True,readonly=True)
+	nuevo_precio=fields.Float(compute='_nuevaUtil',store=True,readonly=True,default=0)
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
 
 	@api.depends('product_id','price_unit','quantity')
@@ -105,7 +105,8 @@ class LinesFactura(models.Model):
 				_logger.info('2')
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record.nuevo_costo=new_cost
-				record.nuevo_precio=record.precio
+				record.nuevo_precio=record.precio if(record.nuevo_precio==0) else record.nuevo_precio
+
 	@api.depends('nueva_utilidad')
 	def _nuevaUtil(self):
 		for record in self:
