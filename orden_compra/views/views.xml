@@ -228,7 +228,7 @@
                                       <field name='precio' />
                                       <field name='costo'/>
                                       <field name='nuevo_costo' />
-                                      <field name='nueva_utilidad' string="Nueva Utilidad precio de venta (%)" />
+                                      <field name='nueva_utilidad' string="Nueva Utilidad precio de venta (%)" force_save="1"/>
                                       <field name='nuevo_precio' />
                                       <field name='ultimo_precio_compra' />
                                       <field name='ultimo_provedor' />
