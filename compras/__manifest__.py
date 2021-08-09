@@ -18,7 +18,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','purchase','report_xlsx','account'],
+    'depends': ['base','purchase','report_xlsx','account','td_generico_gt'],
 
     # always loaded
     'data': [

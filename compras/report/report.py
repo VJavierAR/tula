@@ -26,7 +26,7 @@ class MovimientosXlsx(models.AbstractModel):
         for obj in account:
             sheet.write(i, 0, str(i-3), bold)
             sheet.write(i, 1, obj.date.strftime("%Y/%m/%d"), bold)
-            nombre=obj.name.replace('Factura ','').split('-') if(obj.invoice_ref) else []
+            nombre=obj.invoice_ref.replace('Factura ','').split('-') if(obj.invoice_ref) else []
             sheet.write(i, 2, nombre[0] if(nombre!=[] and len(nombre)>1) else obj.name, bold)
             sheet.write(i, 3, nombre[1] if(nombre!=[] and len(nombre)>1) else obj.name, bold)
             #sheet.write(i, 2, '', bold)
