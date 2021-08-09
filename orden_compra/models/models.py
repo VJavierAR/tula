@@ -82,7 +82,7 @@ class LinesFactura(models.Model):
 	nueva_utilidad=fields.Float()
 	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,readonly=True, company_dependent=True,check_company=True)
 	nuevo_costo=fields.Float(store=True,readonly=True)
-	nuevo_precio=fields.Float(store=True,readonly=True)
+	nuevo_precio=fields.Float(compute='_nuevaUtil',store=True,readonly=True)
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
 
 	@api.depends('product_id','price_unit','quantity')
@@ -103,20 +103,11 @@ class LinesFactura(models.Model):
 				unidades=sum(cost.mapped('quantity'))+record.quantity
 				costos=sum(cost.mapped('value'))+(record.price_unit*record.quantity)
 				_logger.info('2')
-				#utilida=((record.precio-costos)/record.precio)*100 if(record.precio!=0) else 0
-				#record.utilida=utilida
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record.nuevo_costo=new_cost
-				#newprice=(new_cost *record.utilida / 100) + new_cost
-				#nuevautil=record.utilida if(record.nueva_utilidad==0) else record.nueva_utilidad
-				#newprice=(new_cost * nuevautil / 100) + new_cost
-				#precio=record.precio if(record.nuevo_precio==0) else newprice
-				#record.nuevo_precio=newprice if(newprice!=0) else record.precio
 				record.nuevo_precio=record.precio
-				#record.nueva_utilidad=record.utilida
-
-	@api.onchange('nueva_utilidad')
-	def _onchange_nuevaUtil(self):
+	@api.depends('nueva_utilidad')
+	def _nuevaUtil(self):
 		for record in self:
 			if(record.product_id.id):
 				if(record.nuevo_precio!=0):
@@ -128,29 +119,6 @@ class LinesFactura(models.Model):
 						record.nuevo_precio=newprice
 						record.nueva_utilidad=record.valorX
 						#record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)/newprice)*100 if(newprice!=0) else 0
-
-
-
-
-	# def create(self,vals_list):
-	# 	for vals in vals_list:
-	# 		if('nueva_utilidad' in vals and vals['nueva_utilidad']!=vals['utilida']):
-	# 			if('product_id' in vals and vals['product_id']!=False):
-	# 				p=self.env['product_id'].browse(vals['product_id'])
-	# 				p.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
-	# 	super(LinesFactura, self).create(vals_list)
-	
-	# def write(self,vals):
-	# 	for line in self:
-	# 		utilidad=vals['utilida'] if('utilida' in vals) else line.utilida
-	# 		if('nueva_utilidad' in vals and vals['nueva_utilidad']!=utilidad):
-	# 			if('product_id' in vals):
-	# 				p=self.env['product_id'].browse(vals['product_id'])
-	# 				p.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
-	# 			else:
-	# 				p=self.product_id
-	# 				p.write({'x_studio_utilidad_precio_de_venta':vals['nueva_utilidad']})
-	# 		super(LinesFactura, line).write(vals)
 
 
 class Almacen(models.Model):
