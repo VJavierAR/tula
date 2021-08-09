@@ -79,13 +79,13 @@ class LinesFactura(models.Model):
 	ultimo_precio_compra=fields.Float(store=True,readonly=True)
 	stock_total=fields.Float(store=True,readonly=True)
 	stock_quant=fields.Many2many('stock.quant',store=True,readonly=True)
-	nueva_utilidad=fields.Float(store=True)
+	nueva_utilidad=fields.Float()
 	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,readonly=True, company_dependent=True,check_company=True)
 	nuevo_costo=fields.Float(store=True,readonly=True)
 	nuevo_precio=fields.Float(compute='_nuevaUtil',store=True,readonly=True,default=0)
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
 
-	@api.depends('product_id','price_unit','quantity')
+	@api.depends('product_id','price_unit','quantity','nueva_utilidad')
 	def _ultimoProvedor(self):
 		for record in self:
 			record.valorX=1
@@ -107,18 +107,21 @@ class LinesFactura(models.Model):
 				record.nuevo_costo=new_cost
 				if(record.nuevo_precio==0):
 					record.nuevo_precio=record.precio
-
-	@api.depends('nueva_utilidad')
-	def _nuevaUtil(self):
-		for record in self:
-			if(record.product_id.id!=False):
 				if(record.nueva_utilidad!=0):
-					_logger.info('3')
-					_logger.info('4'+str(record.nueva_utilidad))
-					record.valorX=record.nueva_utilidad
 					newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
 					record.nuevo_precio=newprice
-					record.nueva_utilidad=record.valorX
+
+	#@api.depends('nueva_utilidad')
+	#def _nuevaUtil(self):
+	#	for record in self:
+	#		if(record.product_id.id!=False):
+	#			if(record.nueva_utilidad!=0):
+	#				_logger.info('3')
+	#				_logger.info('4'+str(record.nueva_utilidad))
+	#				record.valorX=record.nueva_utilidad
+	#				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+	#				record.nuevo_precio=newprice
+	#				record.nueva_utilidad=record.valorX
 					#record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)/newprice)*100 if(newprice!=0) else 0
 
 
