@@ -106,10 +106,12 @@ class LinesFactura(models.Model):
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record.nuevo_costo=new_cost
 				if(record.nuevo_precio==0):
-					record.nuevo_precio=record.precio
+					record['nuevo_precio']=record.precio
 				if(record.nueva_utilidad!=0):
+					record.valorX=record.nueva_utilidad
 					newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
-					record.nuevo_precio=newprice
+					record['nuevo_precio']=newprice
+					record['nueva_utilidad']=record.valorX
 
 	#@api.depends('nueva_utilidad')
 	#def _nuevaUtil(self):
