@@ -15,7 +15,7 @@ class AccountPayment(models.Model):
     cierre_id = fields.Many2one('cierre.caja')
     incluir = fields.Boolean('Incluir', default=False)
     tipo_pago=fields.Selection([('Contado','Contado'),('Credito','Credito')],default='Credito')
-    monto_moneda=fields.Float('Monto')
+    monto_moneda=fields.Float('Monto',default=0)
 
     @api.onchange('currency_id')
     def actulizaMonneda(self):
