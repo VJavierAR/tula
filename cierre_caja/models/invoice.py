@@ -182,7 +182,8 @@ class Cierre(models.Model):
             cierre.write(vals)
 
     def set_closed(self):
-        fecha=fields.Datetime.now()
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        fecha=pytz.utc.localize(fields.Datetime.now()).astimezone(user_tz)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         tresdiasmenos=self.name+relativedelta(days=-3)
         inmediato=self.env.ref('account.account_payment_term_immediate')
@@ -200,9 +201,9 @@ class Cierre(models.Model):
                 if(cierre.diferencia!=0):
                     raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.diferencia))
                 if(cierre.diferencia==0):
-                    cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
+                    cierre.write({'state': 'closed', 'date_closed': fecha})
             if self.env.user.id in U:
-                cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
+                cierre.write({'state': 'closed', 'date_closed': fecha})
 
     def get_payments(self):
         payment_env = self.env['account.payment']
@@ -252,7 +253,8 @@ class Cierre(models.Model):
         return super(Cierre, self).unlink()
     
     def get_pagos(self):
-        fecha=self.name
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        fecha=pytz.utc.localize(self.name).astimezone(user_tz)
         ayer=datetime(fecha.year, fecha.month, fecha.day)
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
@@ -269,7 +271,8 @@ class Cierre(models.Model):
 
 
     def get_facturas(self):
-        fecha=self.name
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        fecha=pytz.utc.localize(self.name).astimezone(user_tz)
         ayer=datetime(fecha.year, fecha.month, fecha.day)
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
@@ -292,7 +295,8 @@ class Cierre(models.Model):
         return data
 
     def get_ventas(self):
-        fecha=self.name
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        fecha=pytz.utc.localize(self.name).astimezone(user_tz)
         ayer=datetime(fecha.year, fecha.month, fecha.day)
         prime_day_of_month=datetime(fecha.year, fecha.month, 1)
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
@@ -361,7 +365,8 @@ class Cierre(models.Model):
 
     def getPagosAll(self):
         data=[]
-        fecha=self.name
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        fecha=pytz.utc.localize(self.name).astimezone(user_tz)
         j=self.env['account.journal'].search([['type','not in',['purchase','general','sale']],['quitar_diario','=',False]])
         facturas_ayer=self.env['account.move.line'].search([['date','<',fecha],['move_id.state', '=', 'posted']])
         facturas_hoy=self.env['account.move.line'].search([['date','=',fecha],['move_id.state', '=', 'posted']])
@@ -374,7 +379,8 @@ class Cierre(models.Model):
 
     def getPagosOtros(self):
         data=[]
-        fecha=self.name
+        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
+        fecha=pytz.utc.localize(self.name).astimezone(user_tz)
         j=self.env['account.journal'].search([['type','not in',['purchase','general','sale']],['quitar_diario','=',True]])
         facturas_ayer=self.env['account.move.line'].search([['date','<',fecha],['move_id.state', '=', 'posted']])
         facturas_hoy=self.env['account.move.line'].search([['date','=',fecha],['move_id.state', '=', 'posted']])
