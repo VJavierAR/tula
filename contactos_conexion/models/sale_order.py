@@ -48,6 +48,10 @@ class SaleOrder(models.Model):
         store=True,
         related="user_id.meta_facturacion"
     )
+    tickets_alerta = fields.One2many(
+        comodel_name='helpdesk.ticket',
+        inverse_name='origen_sale'
+    )
 
     def action_confirm_validacion(self):
         # Si proviene de una oportunidad
@@ -122,7 +126,7 @@ class SaleOrder(models.Model):
                                 'origen_sale': self.id,
                                 'description': display_msg,
                                 # 'tag_ids': (4, 1),
-                                # 'team_id': 2
+                                'team_id': 3
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
@@ -137,7 +141,7 @@ class SaleOrder(models.Model):
                                 'origen_sale': self.id,
                                 'description': display_msg,
                                 # 'tag_ids': (4, 1),
-                                # 'team_id': 2
+                                'team_id': 3
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
@@ -161,7 +165,7 @@ class SaleOrder(models.Model):
                             'origen_sale': self.id,
                             'description': display_msg,
                             # 'tag_ids': (4, 1),
-                            # 'team_id': 2
+                            'team_id': 3
                         })
                         generar_alerta = self.genera_alerta(mensaje=display_msg)
                         return generar_alerta
@@ -267,7 +271,7 @@ class SaleOrder(models.Model):
                                 'origen_sale': self.id,
                                 'description': display_msg,
                                 # 'tag_ids': (4, 1),
-                                # 'team_id': 2
+                                'team_id': 3
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
@@ -283,7 +287,7 @@ class SaleOrder(models.Model):
                                 'origen_sale': self.id,
                                 'description': display_msg,
                                 # 'tag_ids': (4, 1),
-                                # 'team_id': 2
+                                'team_id': 3
                             })
                             generar_alerta = self.genera_alerta(mensaje=display_msg)
                             return generar_alerta
