@@ -201,9 +201,9 @@ class Cierre(models.Model):
                 if(cierre.diferencia!=0):
                     raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.diferencia))
                 if(cierre.diferencia==0):
-                    cierre.write({'state': 'closed', 'date_closed': fecha.strftime("%d/%m/%Y %H:%M")})
+                    cierre.write({'state': 'closed', 'date_closed': fecha.strftime("%Y-%m-%d %H:%M")})
             if self.env.user.id in U:
-                cierre.write({'state': 'closed', 'date_closed': fecha.strftime("%d/%m/%Y %H:%M")})
+                cierre.write({'state': 'closed', 'date_closed': fecha.strftime("%Y-%m-%d %H:%M")})
 
     def get_payments(self):
         payment_env = self.env['account.payment']
