@@ -182,8 +182,7 @@ class Cierre(models.Model):
             cierre.write(vals)
 
     def set_closed(self):
-        user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz)
-        fecha=pytz.utc.localize(fields.Datetime.now()).astimezone(user_tz)
+        fecha=fields.Datetime.now()
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         tresdiasmenos=self.name+relativedelta(days=-3)
         inmediato=self.env.ref('account.account_payment_term_immediate')
@@ -201,9 +200,9 @@ class Cierre(models.Model):
                 if(cierre.diferencia!=0):
                     raise UserError('No se puede cerrar la caja tiene una diferencia de '+str(cierre.diferencia))
                 if(cierre.diferencia==0):
-                    cierre.write({'state': 'closed', 'date_closed': fecha.strftime("%Y-%m-%d %H:%M")})
+                    cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
             if self.env.user.id in U:
-                cierre.write({'state': 'closed', 'date_closed': fecha.strftime("%Y-%m-%d %H:%M")})
+                cierre.write({'state': 'closed', 'date_closed': fields.Datetime.now()})
 
     def get_payments(self):
         payment_env = self.env['account.payment']
