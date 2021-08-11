@@ -71,7 +71,7 @@
                                     string="Reconciled Entries">
                             </button>
                             <field name='orden_compra' invisible='1'/>
-                            <button name="action_view_purchase" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('orden_compra', '=', False)]}"></button>
+                            <button name="action_view_purchase" type="object" class="oe_stat_button" icon="fa-shopping-cart" attrs="{'invisible': [('orden_compra', '=', False)]}" string='Orden de compra'></button>
                         </div>
 
                         <widget name="web_ribbon" title="Paid"
