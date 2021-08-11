@@ -50,7 +50,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         })
         id_sale_directa = sale_directa.id
         for line in self.order_line_ids:
-            if (line.confirma_venta_directa or not line.fecha_programada) and not line.linea_confirmada:
+            if not line.linea_confirmada:
                 linea_generada = line.dup_line_to_order(order_id=id_sale_directa)
                 line.linea_confirmada = True
                 linea_generada.linea_confirmada = True
