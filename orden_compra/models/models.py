@@ -70,6 +70,16 @@ class Factura(models.Model):
 					pi.unlink()
 				self.orden_compra.write({'state': 'cancel'})
 				self.orden_compra.unlink()
+	
+	def action_view_purchase(self):
+		action = self.env.ref('purchase.purchase_form_action').read()[0]
+		form_view = [(self.env.ref('purchase.purchase_order_form').id, 'form')]
+		if 'views' in action:
+			action['views'] = form_view + [(state,view) for state,view in action['views'] if view != 'form']
+		else:
+			action['views'] = form_view
+		action['res_id'] = self.orden_compra.id
+		return action
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'

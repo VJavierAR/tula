@@ -70,6 +70,8 @@
                                     attrs="{'invisible': ['|', '|', ('type', '!=', 'entry'), ('id', '=', False), ('has_reconciled_entries', '=', False)]}"
                                     string="Reconciled Entries">
                             </button>
+                            <field name='orden_compra' invisible='1'/>
+                            <button name="action_view_purchase" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': [('orden_compra', '=', False)]}"></button>
                         </div>
 
                         <widget name="web_ribbon" title="Paid"
