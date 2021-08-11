@@ -259,8 +259,8 @@ class Cierre(models.Model):
         last_date_of_month = datetime(fecha.year, fecha.month, 1) + relativedelta(months=1, days=-1)
         acumulado=self.env['account.payment'].search([['payment_date','>=',prime_day_of_month],['payment_date','<',fecha]])
         hoy=self.env['account.payment'].search([['payment_date','=',fecha]])
-        acumulado=acumulado.filtered(lambda x:x.payment_type!='outbound')
-        hoy=hoy.filtered(lambda x:x.payment_type!='outbound')
+        acumulado=acumulado.filtered(lambda x:x.state=='posted')
+        hoy=hoy.filtered(lambda x:x.state=='posted')
         data=[]
         data.append(['Contado',"{:,}".format(round(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda')),2)),"{:,}".format(round(sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda')),2)),"{:,}".format(round(sum(acumulado.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Contado').mapped('monto_moneda')),2))])
         data.append(['Abonos Recibidos',"{:,}".format(round(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda')),2)),"{:,}".format(round(sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda')),2)),"{:,}".format(round(sum(acumulado.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda'))+sum(hoy.filtered(lambda x:x.tipo_pago=='Credito').mapped('monto_moneda')),2))])
