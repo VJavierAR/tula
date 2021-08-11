@@ -62,10 +62,10 @@ class SaleReport(models.Model):
         fields['facturable_facturado'] = ",sum(l.facturable / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END)+sum(l.untaxed_amount_invoiced / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END) as facturable_facturado"
         return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
 
-    def init(self):
-        # self._table = sale_report
-        s=self.env['sale.order.line'].search([['qty_invoiced','!=',0]])
-        for sa in s:
-            sa.f()
-        tools.drop_view_if_exists(self.env.cr, self._table)
-        self.env.cr.execute("""CREATE or REPLACE VIEW %s as (%s)""" % (self._table, self._query()))
+    # def init(self):
+    #     # self._table = sale_report
+    #     s=self.env['sale.order.line'].search([['qty_invoiced','!=',0]])
+    #     for sa in s:
+    #         sa.f()
+    #     tools.drop_view_if_exists(self.env.cr, self._table)
+    #     self.env.cr.execute("""CREATE or REPLACE VIEW %s as (%s)""" % (self._table, self._query()))
