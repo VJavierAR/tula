@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_picking_form_update">
+            <field name="name">view.picking.form.update</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="cambia_estado_alerta" invisible="0"/>
+
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

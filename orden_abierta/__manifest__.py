@@ -34,6 +34,7 @@
         'views/sale_order_line.xml',
         'views/product_template.xml',
         'views/sale_order_directa.xml',
+        'views/stock_picking_views.xml',
         'wizard/sale_order_directa_view.xml',
         'wizard/pdf_report_view.xml',
         'report/reportes.xml',

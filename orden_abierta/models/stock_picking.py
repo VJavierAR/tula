@@ -19,6 +19,11 @@ class StockPicking(models.Model):
     _inherit = 'stock.picking'
     _description = 'cron'
 
+    cambia_estado_alerta = fields.Text(
+        string="Cambio estado",
+        compute="cambia_state"
+    )
+
     def write(self, vals):
         # _logger.info("vals: " + str(vals))
         if 'state' in vals and vals['state'] == 'done' and 'out' in self.name and self.sale_id.id and self.sale_id.user_id.id:
@@ -58,47 +63,49 @@ class StockPicking(models.Model):
         result = super(StockPicking, self).write(vals)
         return result
 
-    @api.onchange('state')
+    @api.depends('state')
     def cambia_state(self):
-        if self.state:
-            if self.state == 'done' and 'out' in self.name and self.sale_id.id and self.sale_id.user_id.id:
-                # usuarios = self.env['res.groups'].sudo().search(
-                #    [("name", "=", "Notificacion a vendedor al validar picking")]).mapped('users')
-                vendedor_id = self.sale_id.user_id.id
+        for rec in self:
+            if rec.state:
+                if rec.state == 'done' and 'out' in rec.name and rec.sale_id.id and rec.sale_id.user_id.id:
+                    rec.cambia_estado_alerta = "Cambio estado uju: " + str(rec.state)
+                    # usuarios = self.env['res.groups'].sudo().search(
+                    #    [("name", "=", "Notificacion a vendedor al validar picking")]).mapped('users')
+                    vendedor_id = rec.sale_id.user_id.id
 
-                message_text = "Se necesita validar orden " + self.sale_id.name
-                # odoo runbot
-                odoobot_id = self.env['ir.model.data'].sudo().xmlid_to_res_id("base.partner_root")
-                notificaciones = [(4, self.env.user.partner_id.id), (4, odoobot_id), (4, vendedor_id)]
-                # for usuario in usuarios:
-                #    notificaciones.append([4, usuario.partner_id.id])
+                    message_text = "Se necesita validar orden " + rec.sale_id.name
+                    # odoo runbot
+                    odoobot_id = self.env['ir.model.data'].sudo().xmlid_to_res_id("base.partner_root")
+                    notificaciones = [(4, self.env.user.partner_id.id), (4, odoobot_id), (4, vendedor_id)]
+                    # for usuario in usuarios:
+                    #    notificaciones.append([4, usuario.partner_id.id])
 
-                # find if a channel was opened for this user before
-                channel = self.env['mail.channel'].sudo().search([
-                    ('name', '=', 'Alerta vendedores'),
-                    ('channel_partner_ids', 'in', [self.env.user.partner_id.id])
-                ],
-                    limit=1,
-                )
+                    # find if a channel was opened for this user before
+                    channel = self.env['mail.channel'].sudo().search([
+                        ('name', '=', 'Alerta vendedores'),
+                        ('channel_partner_ids', 'in', [self.env.user.partner_id.id])
+                    ],
+                        limit=1,
+                    )
 
-                if not channel:
-                    # create a new channel
-                    channel = self.env['mail.channel'].with_context(mail_create_nosubscribe=True).sudo().create({
-                        'channel_partner_ids': notificaciones,
-                        'public': 'private',
-                        'channel_type': 'chat',
-                        'email_send': False,
-                        'name': f'Alerta vendedores',
-                        'display_name': f'Alerta vendedores',
-                    })
+                    if not channel:
+                        # create a new channel
+                        channel = self.env['mail.channel'].with_context(mail_create_nosubscribe=True).sudo().create({
+                            'channel_partner_ids': notificaciones,
+                            'public': 'private',
+                            'channel_type': 'chat',
+                            'email_send': False,
+                            'name': f'Alerta vendedores',
+                            'display_name': f'Alerta vendedores',
+                        })
 
-                # send a message to the related user
-                channel.sudo().message_post(
-                    body=message_text,
-                    author_id=odoobot_id,
-                    message_type="comment",
-                    subtype="mail.mt_comment",
-                )
+                    # send a message to the related user
+                    channel.sudo().message_post(
+                        body=message_text,
+                        author_id=odoobot_id,
+                        message_type="comment",
+                        subtype="mail.mt_comment",
+                    )
 
     def cron_notificacion_salidas(self):
         estados = ['confirmed', 'assigned']
