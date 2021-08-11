@@ -3,7 +3,7 @@
 from odoo import models, fields, api
 import logging, ast
 _logger = logging.getLogger(__name__)
-
+from odoo.exceptions import UserError
 
 class Factura(models.Model):
 	_inherit='account.move'
