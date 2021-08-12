@@ -149,7 +149,8 @@ class LinesFactura(models.Model):
 		for line in self:
 			producto=vals['product_id'] if('product_id' in vals) else self.product_id.id
 			if(producto):
-				_logger.info(str(producto))
+				p=self.env['product.product'].browse(producto)
+				_logger.info(str(p.x_studio_utilidad_precio_de_venta))
 			result |= super(LinesFactura, line).write(vals)
 		return result
 					
