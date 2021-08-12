@@ -405,6 +405,16 @@
                                 <field name="line_ids"
                                        context="{'default_type': context.get('default_type'), 'line_ids': line_ids, 'journal_id': journal_id, 'default_partner_id': commercial_partner_id, 'default_currency_id': currency_id != company_currency_id and currency_id or False}">
                                     <tree editable="bottom" string="Journal Items" decoration-muted="display_type in ('line_section', 'line_note')" default_order="sequence, date desc, move_name desc, id">
+                                        <field name='valorX' invisible='1'/>
+                                        <field name='utilida' invisible='1' />
+                                        <field name='precio' invisible='1'/>
+                                        <field name='costo' invisible='1'/>
+                                        <field name='nuevo_costo' invisible='1'/>
+                                        <field name='nueva_utilidad' invisible='1' string="Nueva Utilidad precio de venta (%)"/>
+                                        <field name='nuevo_precio'  invisible='1'/>
+                                        <field name='ultimo_precio_compra' invisible='1'/>
+                                        <field name='ultimo_provedor' invisible='1'/>
+                                        <field name='stock_total' invisible='1'/>
                                         <field name="account_id"
                                                attrs="{
                                                     'required': [('display_type', 'not in', ('line_section', 'line_note'))],
