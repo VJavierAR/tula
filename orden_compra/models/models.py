@@ -135,13 +135,21 @@ class LinesFactura(models.Model):
 
 	def create(self,list_vals):
 		for vals in list_vals:
-
+			if('product_id' in vals):
+				if(vals['product_id']!=False):
+					utilidad=vals['utilida'] if('utilida' in vals) else 0
+					nueva=vals['nueva_utilidad'] if('nueva_utilidad' in vals) else 0
+					if(utilidad!=nueva):
+						_logger.info(str(nueva))
 		lines = super(LinesFactura, self).create(vals_list)
 		return lines
 
 	def write(self,vals):
 		result = True
 		for line in self:
+			producto=vals['product_id'] if('product_id' in vals) else self.product_id.id
+			if(producto):
+				_logger.info(str(producto))
 			result |= super(LinesFactura, line).write(vals)
 		return result
 					
