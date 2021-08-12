@@ -132,6 +132,18 @@ class LinesFactura(models.Model):
 			if(record.product_id.id!=False):
 				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
 				record.nuevo_precio=newprice
+
+	def create(self,list_vals):
+		for vals in list_vals:
+
+		lines = super(LinesFactura, self).create(vals_list)
+		return lines
+
+	def write(self,vals):
+		result = True
+		for line in self:
+			result |= super(LinesFactura, line).write(vals)
+		return result
 					
 
 class Almacen(models.Model):
