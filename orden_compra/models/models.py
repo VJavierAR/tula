@@ -9,6 +9,7 @@ class Factura(models.Model):
 	_inherit='account.move'
 	almacen=fields.Many2one('stock.warehouse')
 	orden_compra=fields.Many2one('purchase.order')
+	check=fields.Boolean(related='company_id.orden_compra')
 
 	def action_post(self):
 		if self.filtered(lambda x: x.journal_id.post_at == 'bank_rec').mapped('line_ids.payment_id').filtered(lambda x: x.state != 'reconciled'):

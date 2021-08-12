@@ -173,7 +173,7 @@
                                        attrs="{'readonly': [('name', '!=', '/')]}"/>
 
                                 <field name="company_id" groups="base.group_multi_company"/>
-                                <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['type','=','in_invoice']]}"/>
+                                <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['check','=',True]]}"/>
                                 <field name="currency_id"
                                        groups="base.group_multi_currency"
                                        attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'))]}"/>
