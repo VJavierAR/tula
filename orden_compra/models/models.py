@@ -96,7 +96,7 @@ class LinesFactura(models.Model):
 	nuevo_precio=fields.Float(store=True,default=0)
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
 
-	@api.depends('product_id','price_unit','quantity','nueva_utilidad')
+	@api.depends('product_id','price_unit','quantity')
 	def _ultimoProvedor(self):
 		for record in self:
 			record.valorX=0
@@ -114,21 +114,23 @@ class LinesFactura(models.Model):
 				costos=sum(cost.mapped('value'))+(record.price_unit*record.quantity)
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record.nuevo_costo=new_cost
-				if(record.nuevo_precio==0):
-					record.nuevo_precio=record.precio
+				record.nuevo_precio=record.precio
 				record.nueva_utilidad=record.nueva_utilidad if(record.nueva_utilidad!=0) else record.utilida
-				if(record.nueva_utilidad!=0):
-					newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
-					record.nuevo_precio=newprice
-					record.valorX=record.nuevo_precio
+				#if(record.nueva_utilidad!=0):
+				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				record.nuevo_precio=newprice
+				record.valorX=record.nuevo_precio
 
-	@api.onchange('nuevo_precio')
+	@api.onchange('nuevo_precio','nueva_utilidad')
 	def _nuevaUtil(self):
 		for record in self:
 			if(record.product_id.id!=False):
-				if(record.nueva_utilidad!=0 and record.nuevo_precio!=record.valorX):
+				if(record.nuevo_precio!=record.valorX):
 					record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)/record.nuevo_precio)*100 if(record.nuevo_precio!=0) else 0
-
+				if(record.utilida!=record.nueva_utilidad):
+					newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+					record.nuevo_precio=newprice
+					
 
 class Almacen(models.Model):
 	_inherit='stock.warehouse'
