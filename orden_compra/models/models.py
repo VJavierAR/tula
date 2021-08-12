@@ -137,7 +137,7 @@ class LinesFactura(models.Model):
 		for vals in list_vals:
 			if('product_id' in vals):
 				if(vals['product_id']!=False):
-					_logger.info(if('utilida' in vals))
+					_logger.info('utilida' in vals)
 					utilidad=vals['utilida'] if('utilida' in vals) else 0
 					nueva=vals['nueva_utilidad'] if('nueva_utilidad' in vals) else 0
 					if(utilidad!=nueva):
