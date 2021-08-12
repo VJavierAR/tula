@@ -116,7 +116,7 @@ class LinesFactura(models.Model):
 				record.nuevo_costo=new_cost
 				if(record.nuevo_precio==0):
 					record.nuevo_precio=record.precio
-				record.nueva_utilidad=record.nueva_utilidad if(record.nueva_utilidad!=0) record.utilida
+				record.nueva_utilidad=record.nueva_utilidad if(record.nueva_utilidad!=0) else record.utilida
 				if(record.nueva_utilidad!=0):
 					newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
 					record.nuevo_precio=newprice
