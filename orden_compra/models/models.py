@@ -90,10 +90,10 @@ class LinesFactura(models.Model):
 	ultimo_precio_compra=fields.Float(store=True,readonly=True)
 	stock_total=fields.Float(store=True,readonly=True)
 	stock_quant=fields.Many2many('stock.quant',store=True,readonly=True)
-	nueva_utilidad=fields.Float()
+	nueva_utilidad=fields.Float(store=True)
 	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,readonly=True, company_dependent=True,check_company=True)
 	nuevo_costo=fields.Float(store=True,readonly=True)
-	nuevo_precio=fields.Float(store=True,default=0)
+	nuevo_precio=fields.Float(store=True)
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
 
 	@api.depends('product_id','price_unit','quantity')
@@ -121,14 +121,16 @@ class LinesFactura(models.Model):
 				record.nuevo_precio=newprice
 				record.valorX=record.nuevo_precio
 
-	@api.onchange('nuevo_precio','nueva_utilidad')
+	@api.onchange('nuevo_precio')
 	def _nuevaUtil(self):
 		for record in self:
 			if(record.product_id.id!=False):
-				#if(record.nuevo_precio!=record.valorX):
-					#record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)/record.nuevo_precio)*100 if(record.nuevo_precio!=0) else 0
 				record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
-				#if(record.utilida!=record.nueva_utilidad):
+
+	@api.onchange('nueva_utilidad')
+	def _nuevaPreci(self):
+		for record in self:
+			if(record.product_id.id!=False):
 				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
 				record.nuevo_precio=newprice
 					
