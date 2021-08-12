@@ -141,7 +141,8 @@ class LinesFactura(models.Model):
 					producto=vals['product_id'] if('product_id' in vals) else self.product_id.id
 					if(producto):
 						p=self.env['product.product'].browse(producto)
-						_logger.info('1'+str(p.x_studio_utilidad_precio_de_venta!=nueva))
+						if(p.x_studio_utilidad_precio_de_venta!=nueva):
+							p.write({'x_studio_utilidad_precio_de_venta':nueva})
 		lines = super(LinesFactura, self).create(list_vals)
 		return lines
 
@@ -152,7 +153,8 @@ class LinesFactura(models.Model):
 			nueva=vals['nueva_utilidad'] if('nueva_utilidad' in vals) else line.nueva_utilidad
 			if(producto):
 				p=self.env['product.product'].browse(producto)
-				_logger.info('2'+str(p.x_studio_utilidad_precio_de_venta!=nueva))
+				if(p.x_studio_utilidad_precio_de_venta!=nueva):
+					p.write({'x_studio_utilidad_precio_de_venta':nueva})
 			result |= super(LinesFactura, line).write(vals)
 		return result
 					
