@@ -236,7 +236,6 @@
                                       <field name='ultimo_precio_compra' />
                                       <field name='ultimo_provedor' />
                                       <field name='stock_total'/>
-                                      <field name="stock_quant" string="Detalle stock"/>
                                         <field name="price_subtotal"
                                                string="Subtotal"
                                                groups="account.group_show_line_subtotals_tax_excluded"/>
