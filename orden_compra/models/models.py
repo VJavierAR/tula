@@ -141,7 +141,7 @@ class LinesFactura(models.Model):
 					nueva=vals['nueva_utilidad'] if('nueva_utilidad' in vals) else 0
 					if(utilidad!=nueva):
 						_logger.info(str(nueva))
-		lines = super(LinesFactura, self).create(vals_list)
+		lines = super(LinesFactura, self).create(list_vals)
 		return lines
 
 	def write(self,vals):
