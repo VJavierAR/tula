@@ -143,6 +143,7 @@ class LinesFactura(models.Model):
 						p=self.env['product.product'].browse(producto)
 						if(p.x_studio_utilidad_precio_de_venta!=nueva):
 							p.write({'x_studio_utilidad_precio_de_venta':nueva})
+							p.cambio_precio_de_venta()
 		lines = super(LinesFactura, self).create(list_vals)
 		return lines
 
@@ -155,6 +156,7 @@ class LinesFactura(models.Model):
 				p=self.env['product.product'].browse(producto)
 				if(p.x_studio_utilidad_precio_de_venta!=nueva):
 					p.write({'x_studio_utilidad_precio_de_venta':nueva})
+					p.cambio_precio_de_venta()
 			result |= super(LinesFactura, line).write(vals)
 		return result
 					
