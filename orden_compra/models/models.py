@@ -125,7 +125,7 @@ class LinesFactura(models.Model):
 	def _nuevaUtil(self):
 		for record in self:
 			if(record.product_id.id!=False):
-				if(record.nueva_utilidad!=0):
+				if(record.nueva_utilidad!=0 and record.nueva_utilidad!=record.utilida):
 					record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)/record.nuevo_precio)*100 if(record.nuevo_precio!=0) else 0
 
 
