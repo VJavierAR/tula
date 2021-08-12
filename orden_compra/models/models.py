@@ -125,12 +125,12 @@ class LinesFactura(models.Model):
 	def _nuevaUtil(self):
 		for record in self:
 			if(record.product_id.id!=False):
-				if(record.nuevo_precio!=record.valorX):
+				#if(record.nuevo_precio!=record.valorX):
 					#record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)/record.nuevo_precio)*100 if(record.nuevo_precio!=0) else 0
-					record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
-				if(record.utilida!=record.nueva_utilidad):
-					newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
-					record.nuevo_precio=newprice
+				record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
+				#if(record.utilida!=record.nueva_utilidad):
+				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				record.nuevo_precio=newprice
 					
 
 class Almacen(models.Model):
