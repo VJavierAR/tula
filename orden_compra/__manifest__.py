@@ -20,7 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','purchase','stock','OLA'],
+    'depends': ['base','account','purchase','stock','OLA','account_invoice_extract',
+'account_taxcloud',
+'account_accountant',
+'account_predictive_bills',
+'account_asset',
+'account_reports',
+'payment',],
 
     # always loaded
     'data': [
