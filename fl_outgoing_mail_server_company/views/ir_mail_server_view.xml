@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit ir.mail.server form view-->
+    <record id="ir_mail_server_form_inherit_company" model="ir.ui.view">
+        <field name="model">ir.mail_server</field>
+        <field name="inherit_id" ref="base.ir_mail_server_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='smtp_debug']" position="after">
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
