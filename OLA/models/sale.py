@@ -560,10 +560,7 @@ class sale(models.Model):
 	        vals['partner_shipping_id'] = vals.setdefault('partner_shipping_id', addr['delivery'])
 	        vals['pricelist_id'] = vals.setdefault('pricelist_id', partner.property_product_pricelist and partner.property_product_pricelist.id)
 	    result = super(sale, self).create(vals)
-	    if('mensaje_limite_de_credito' in vals):
-	        return {'warning': {'title': 'Alertas','message': vals['mensaje_limite_de_credito']}}
-	    else:
-	        return result
+	    return result
 
 	@api.onchange('order_line')
 	def test(self):
