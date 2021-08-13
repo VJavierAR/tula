@@ -293,13 +293,13 @@ class sale(models.Model):
 			if genero_alertas:
 				self.bloqueo_limite_credito = True
 				self.mensaje_limite_de_credito = message
-				return {
-					# 'value': {},
-					'warning': {
-						'title': title,
-						'message': message
-					}
-				}
+				# return {
+				# 	# 'value': {},
+				# 	'warning': {
+				# 		'title': title,
+				# 		'message': message
+				# 	}
+				# }
 
 		if len(self.order_line) > 0 and self.partner_id.id and self.payment_term_id.id != pago_de_contado_id:
 			total = self.amount_total
@@ -459,12 +459,12 @@ class sale(models.Model):
 					mail['email_to'] = str(m).replace('[', '').replace(']', '').replace('\'', '')
 					self.env['mail.mail'].create(mail).send()
 				"""
-				return {
-					'warning': {
-						'title': title,
-						'message': message
-					}
-				}
+				# return {
+				# 	'warning': {
+				# 		'title': title,
+				# 		'message': message
+				# 	}
+				# }
 			else:
 				self.bloqueo_limite_credito = False
 				self.mensaje_limite_de_credito = ""
@@ -508,13 +508,13 @@ class sale(models.Model):
 			if genero_alertas:
 				self.bloqueo_limite_credito = True
 				self.mensaje_limite_de_credito = message
-				return {
-					# 'value': {},
-					'warning': {
-						'title': title,
-						'message': message
-					}
-				}
+				# return {
+				# 	# 'value': {},
+				# 	'warning': {
+				# 		'title': title,
+				# 		'message': message
+				# 	}
+				# }
 		elif self.payment_term_id.id and self.payment_term_id.id == pago_de_contado_id:
 			self.bloqueo_limite_credito = False
 			self.mensaje_limite_de_credito = ""
