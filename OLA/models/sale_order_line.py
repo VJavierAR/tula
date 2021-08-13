@@ -132,7 +132,7 @@ class saleOr(models.Model):
 
 	x_studio_field_Ml1CB = fields.Float("Precio minímo", related="product_id.standard_price")
 
-	@api.onchange('price_unit', 'discount')
+	@api.onchange('price_unit', 'discount','product_uom_qty')
 	def precio_minimo(self):
 		d = self.env.user.max_discount
 		descuento_cliente = self.order_partner_id.limite_de_descuento

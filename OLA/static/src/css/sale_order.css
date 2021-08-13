@@ -22,6 +22,12 @@
 .slae_line_edit [data-name="product_uom_qty"] {
     width: 93px !important;
 }
+.slae_line_edit [data-name="product_uom"] {
+    width: 83px !important;
+}
 .slae_line_edit [data-name="x_value1_id"] {
+    width: 151px !important;
+}
+.slae_line_edit [data-name="tax_id"] {
     width: 151px !important;
 }
