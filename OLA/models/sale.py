@@ -101,9 +101,12 @@ class sale(models.Model):
 		bloquear = False
 		check = self.mapped('order_line.bloqueo')
 		U = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede descuento")]).mapped('users.id')
-		m = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede descuento")]).mapped('users.email')
+		mm = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede descuento")])
 		na = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede descuento")]).mapped('users.name')
-
+		m=[]
+		for um in mm.users:
+			if(self.env.company.id in um.company_ids.mapped('id')):
+				m.append(um.mail)
 		ids_grupo_limites = self.env['res.groups'].sudo().search(
 			[("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
 		mails_grupo_limites = self.env['res.groups'].sudo().search(
