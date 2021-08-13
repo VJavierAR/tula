@@ -91,7 +91,7 @@ class ProductProduct(models.Model):
 	def write(self, vals):
 		if 'standard_price' in vals:
 			#_logger.info("self.id: " + str(self.id))
-			producto = self.env['product.template'].search([('id', '=', self.id)])
+			producto = self.env['product.template'].search([('id', '=', self.product_tmpl_id.id)])
 			#_logger.info("producto: " + str(producto))
 			# actualiza precio de venta
 			coste = vals['standard_price']
