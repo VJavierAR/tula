@@ -778,7 +778,7 @@
         <xpath expr="//page[@id='invoice_tab']" position="attributes">
             <attribute name="attrs">{'invisible': [('type', 'in', ('in_refund','in_invoice','entry'))]}</attribute>
         </xpath>
-        <xpath expr="//page[@id='invoice_tab']/field[name='price_subtotal']" position="after">
+        <xpath expr="//page[@id='invoice_tab']/field[@name='invoice_line_ids']/tree[1]/field[name='price_subtotal']" position="after">
                             <!--<page id="invoice_tab2"
                                   string="Invoice Lines2"
                                   attrs="{'invisible': [('type', 'not in', ('in_refund','in_invoice','entry'))]}">
