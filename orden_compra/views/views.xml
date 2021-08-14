@@ -780,7 +780,7 @@
         </xpath>
         <xpath expr="//page[@id='invoice_tab']" position="after">
                             <page id="invoice_tab2"
-                                  string="Invoice Lines"
+                                  string="Invoice Lines2"
                                   attrs="{'invisible': [('type', 'not in', ('in_refund','in_invoice','entry'))]}">
                                 <field name="invoice_line_ids"
                                        widget="section_and_note_one2many"
