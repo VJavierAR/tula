@@ -778,8 +778,8 @@
         <xpath expr="//page[@id='invoice_tab']" position="attributes">
             <attribute name="attrs">{'invisible': [('type', 'in', ('in_refund','in_invoice','entry'))]}</attribute>
         </xpath>
-        <xpath expr="//page[@id='invoice_tab']" position="after">
-                            <page id="invoice_tab2"
+        <xpath expr="//page[@id='invoice_tab']/field[name='price_subtotal']" position="after">
+                            <!--<page id="invoice_tab2"
                                   string="Invoice Lines2"
                                   attrs="{'invisible': [('type', 'not in', ('in_refund','in_invoice','entry'))]}">
                                 <field name="invoice_line_ids"
@@ -998,7 +998,17 @@
                                     attrs="{'invisible': ['|', ('state', '!=', 'posted'), ('type', 'in', ('out_receipt', 'in_receipt'))]}"/>
 
                                 <field name="narration" placeholder="Add an internal note..." nolabel="1" height="50"/>
-                            </page>
+                            </page>-->
+                                    <field name='valorX' invisible='1'/>
+                                      <field name='utilida' />
+                                      <field name='precio' />
+                                      <field name='costo'/>
+                                      <field name='nuevo_costo' />
+                                      <field name='nueva_utilidad' string="Nueva Utilidad precio de venta (%)"/>
+                                      <field name='nuevo_precio' />
+                                      <field name='ultimo_precio_compra' />
+                                      <field name='ultimo_provedor' />
+                                      <field name='stock_total'/>
                         </xpath>
       <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='company_id']" position="after">
           <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['check','=',True]]}"/>
