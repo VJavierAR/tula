@@ -103,7 +103,7 @@ class LinesFactura(models.Model):
 			if(record.product_id.id!=False):
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
 				record.ultimo_provedor=ultimo.order_id.partner_id.id
-				record.ultimo_precio_compra=ultimo.price_unit
+				record.ultimo_precio_compra=ultimo.price_unit*ultimo.currency_id.rate
 				wa=self.env['stock.warehouse'].search([['stock_visible','=',True]])
 				location=self.env['stock.location'].search([['location_id','=',wa.lot_stock_id.id],['usage','=','internal']]).mapped('id') if(wa.lot_stock_id.id) else []
 				locations=wa.lot_stock_id.mapped('id')+location
