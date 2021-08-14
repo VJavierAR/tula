@@ -27,7 +27,7 @@ class Factura(models.Model):
 					raise UserError(_('Faltan productos en las lineas de Factura'))
 				else:
 					self.post()
-			if(tipo=='in_invoice' and self.company_id.orden_compra):
+			if(tipo=='in_invoice' and self.company_id.orden_compra and self.orden_compra.id==False):
 				orden=self.env['purchase.order'].create({'partner_id':self.partner_id.id,'picking_type_id':self.almacen.in_type_id.id})
 				for inv in self.invoice_line_ids:
 					prod=dict()

@@ -1012,8 +1012,9 @@
                                       <field name='stock_total'/>
                         </xpath>
       <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='company_id']" position="after">
-          <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['check','=',True]]}"/>
+          <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['check','=',True],['orden_compra','=',False]]}"/>
             <field name='check' invisible='1'/>
+            <field name='orden_compra' invisible='1'/>
       </xpath>
       <xpath expr="//form[1]/sheet[1]/group[1]/group[1]/field[@name='partner_id']" position="attributes">
           <attribute name="attrs">{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))],'required': [['type','=','in_invoice']]}</attribute>
@@ -1030,6 +1031,10 @@
             <field name='ultimo_provedor' invisible='1'/>
             <field name='stock_total' invisible='1'/>
         </xpath>
+        <xpath expr="//form[1]/sheet[1]/div[@name='button_box']/button[@name='action_open_asset_ids'][2]" position="after">
+                            <field name='orden_compra' invisible='1'/>
+                            <button name="action_view_purchase" type="object" class="oe_stat_button" icon="fa-shopping-cart" attrs="{'invisible': [('orden_compra', '=', False)]}" string='Orden de compra'></button>
+    </xpath>
       </field>
   </record>
 
