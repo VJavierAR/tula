@@ -105,7 +105,9 @@ class LinesFactura(models.Model):
 				record.ultimo_provedor=ultimo.order_id.partner_id.id
 				record.ultimo_precio_compra=ultimo.price_unit
 				wa=self.env['stock.warehouse'].search([['stock_visible','=',True]])
-				quant=self.env['stock.quant'].search([['location_id','in',wa.mapped('lot_stock_id.id')],['product_id','=',record.product_id.id]])
+				location=self.env['stock.location'].search([['location_id','=',wa.lot_stock_id.id],['usage','=','internal']]).mapped('id') if(wa.lot_stock_id.id) else []
+				locations=wa.lot_stock_id.mapped('id')+location
+				quant=self.env['stock.quant'].search([['location_id','in',locations],['product_id','=',record.product_id.id]])
 				record.stock_quant=[(5,0,0)]
 				record.stock_quant=[(6,0,quant.mapped('id'))]
 				record.stock_total=sum(quant.mapped('quantity'))
