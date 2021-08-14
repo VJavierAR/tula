@@ -34,7 +34,7 @@ class Factura(models.Model):
 					prod['product_id']=inv.product_id.id
 					prod['product_qty']=inv.quantity
 					prod['name']=inv.name
-					prod['price_unit']=inv.price_unit
+					prod['price_unit']=inv.price_subtotal/inv.quantity if(inv.quantity!=0) else 0
 					prod['taxes_id']=inv.tax_ids.mapped('id')
 					prod['order_id']=orden.id
 					prod['product_uom']=inv.product_uom_id.id
@@ -113,7 +113,8 @@ class LinesFactura(models.Model):
 				record.stock_total=sum(quant.mapped('quantity'))
 				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
 				unidades=sum(cost.mapped('quantity'))+record.quantity
-				costos=sum(cost.mapped('value'))+(record.price_unit*record.quantity)
+				#costos=sum(cost.mapped('value'))+(record.price_unit*record.quantity)
+				costos=sum(cost.mapped('value'))+(record.price_subtotal)
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record.nuevo_costo=new_cost
 				record.nuevo_precio=record.precio
