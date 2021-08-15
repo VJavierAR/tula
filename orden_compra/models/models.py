@@ -10,6 +10,14 @@ class Factura(models.Model):
 	almacen=fields.Many2one('stock.warehouse')
 	orden_compra=fields.Many2one('purchase.order')
 	check=fields.Boolean(related='company_id.orden_compra')
+	otro=fields.Boolean(compute='checkSa')
+
+	@api.depends('check')
+	def checkSa(self):
+		for record in self:
+			record.otro=True
+			p=self.env.context.get('default_purchase_id')
+			_logger.inf(p)
 
 	def action_post(self):
 		if self.filtered(lambda x: x.journal_id.post_at == 'bank_rec').mapped('line_ids.payment_id').filtered(lambda x: x.state != 'reconciled'):
