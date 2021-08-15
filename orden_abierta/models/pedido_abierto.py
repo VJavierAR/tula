@@ -50,7 +50,7 @@ class PedidoAbierto(models.Model):
         check_company=True,  # Unrequired company
         # required=True,
         readonly=True,
-        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        # states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         help="If you change the pricelist, only newly added lines will be affected."
     )
@@ -59,7 +59,7 @@ class PedidoAbierto(models.Model):
         required=True,
         copy=False,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        states={'borrador': [('readonly', False)]},
         index=True,
         default=lambda self: _('New')
     )
