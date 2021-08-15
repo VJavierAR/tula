@@ -86,7 +86,7 @@ class PedidoAbierto(models.Model):
         _logger.info("self.lineas_pedido.ids: " + str(self.lineas_pedido.ids))
         _logger.info("self.lineas_pedido.pedido_abierto_rel: " + str(self.lineas_pedido.mapped('pedido_abierto_rel')))
         wiz.write({
-            'lineas_pedidos': (6, 0, self.lineas_pedido.ids)
+            'lineas_pedidos': [(6, 0, self.lineas_pedido.ids)]
         })
 
         view = self.env.ref('orden_abierta.view_pedido_abierto_wizard')
