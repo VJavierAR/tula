@@ -34,3 +34,7 @@ class PedidoAbiertoWizard(models.TransientModel):
 
         for linea in pedido_abierto.lineas_pedido:
             linea.order_id = id_sale_directa
+
+        pedido_abierto.write({
+            'state': 'confirmado'
+        })

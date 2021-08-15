@@ -33,9 +33,11 @@ class PedidoAbierto(models.Model):
         selection=[
             ('borrador', 'borrador'),
             ('abierto', 'abierto'),
+            ('confirmado', 'confirmado')
             ('expirado', 'expirado')
         ],
-        string="Estados"
+        string="Estados",
+        default="borrador"
     )
     company_id = fields.Many2one(
         comodel_name='res.company',
