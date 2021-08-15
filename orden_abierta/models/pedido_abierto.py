@@ -85,7 +85,7 @@ class PedidoAbierto(models.Model):
         })
         wiz.lineas_pedidos = [(6, 0, self.lineas_pedido.ids)]
 
-        view = self.env.ref('orden_abierta.view_pdf_report')
+        view = self.env.ref('orden_abierta.view_pedido_abierto_wizard')
         return {
             'name': _('Crear pedido '),
             'type': 'ir.actions.act_window',

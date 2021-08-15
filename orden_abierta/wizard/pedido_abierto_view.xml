@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <record model="ir.ui.view" id="view_pdf_report" >
+        <record model="ir.ui.view" id="view_pedido_abierto_wizard" >
             <field name="model">pedido.abierto.wizard</field>
             <field name="arch" type="xml">
                 <form string="Pedido abierto">
