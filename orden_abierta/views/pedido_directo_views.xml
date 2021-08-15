@@ -17,38 +17,77 @@
             <field name="name">pedido.abierto.form</field>
             <field name="model">pedido.abierto</field>
             <field name="arch" type="xml">
-                <header>
-                    <button name="crear_pedido_wizard" string="Crear Pedido" type="object" />
-                    <field name="state" widget="statusbar" statusbar_visible="borrador,abierto,expirado"/>
-                </header>
                 <form>
-                    <group>
+                    <header>
+                        <button name="crear_pedido_wizard" string="Crear Pedido" type="object" />
+                        <field name="state" widget="statusbar" statusbar_visible="borrador,abierto,expirado"/>
+                    </header>
+                    <sheet>
                         <group>
-                            <field name="id" />
-                            <field name="create_date" />
-                            <field name="partner_id" />
+                            <group>
+                                <field name="id" />
+                                <field name="create_date" />
+                                <field name="partner_id" />
+                            </group>
+                            <group>
+
+                            </group>
                         </group>
-                        <group>
-                            
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Lineas de pedido" name="order_lines">
-                            <field name="lineas_pedido">
-                                <tree>
-                                    <field name="pedido_abierto_rel" invisible="0"/>
-                                    <field name="default_code_product" readonly="1" optional="show"/>
-                                    <field name="codigo_cliente" readonly="1" optional="show"/>
-                                    <field name="pedido_cliente" optional="show"/>
-                                    <field name="codigo_alterno" optional="show"/>
-                                    <field name="fecha_programada" optional="show"/>
-                                    <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
-                                    <field name="order_partner_id" invisible="1"/>
-                                    <field name="order_id" invisible="1"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
+                        <notebook>
+                            <page string="Lineas de pedido" name="order_lines">
+                                <field name="lineas_pedido">
+                                    <tree class="slae_line_edit" editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
+                                        <field name="display_type" invisible="1"/>
+                                        <field name="product_uom_category_id" invisible="1"/>
+                                        <field name="product_updatable" invisible="1"/>
+                                        <field name="product_id" attrs="{                                             'readonly': [('product_updatable', '=', False)],                                             'required': [('display_type', '=', False)],                                         }" options="{'no_open': True}" force_save="1" context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom':product_uom,                                             'company_id': parent.company_id,                                             'default_lst_price': price_unit,                                             'default_description_sale': name                                         }" domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" widget="product_configurator"/>
+                                        <field name="product_template_id" string="Product" invisible="1" attrs="{                                           'readonly': [('product_updatable', '=', False)],                                           'required': [('display_type', '=', False)],                                       }" options="{'no_open': True}" context="{                                           'partner_id': parent.partner_id,                                           'quantity': product_uom_qty,                                           'pricelist': parent.pricelist_id,                                           'uom':product_uom,                                           'company_id': parent.company_id,                                           'default_list_price': price_unit,                                           'default_description_sale': name                                       }" domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" widget="product_configurator"/>
+
+                                        <field name="pedido_abierto_rel" invisible="0"/>
+                                        <field name="default_code_product" readonly="1" optional="show"/>
+                                        <field name="codigo_cliente" readonly="1" optional="show"/>
+                                        <field name="pedido_cliente" optional="show"/>
+                                        <field name="codigo_alterno" optional="show"/>
+                                        <field name="fecha_programada" optional="show"/>
+                                        <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
+                                        <field name="order_partner_id" invisible="1"/>
+                                        <field name="order_id" invisible="1"/>
+
+                                        <field name="name" widget="section_and_note_text" optional="show"/>
+                                        <field name="analytic_tag_ids" optional="hide" groups="analytic.group_analytic_tags" widget="many2many_tags" options="{'color_field': 'color'}" domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"/>
+                                        <field name="product_uom_qty" context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom': product_uom,                                             'company_id': parent.company_id                                         }"/>
+                                        <field name="qty_delivered" string="Delivered" attrs="{                                             'column_invisible': [('parent.state', 'not in', ['sale', 'done'])],                                             'readonly': [('qty_delivered_method', '!=', 'manual')]                                         }" optional="show"/>
+                                        <field name="qty_delivered_manual" invisible="1"/>
+                                        <field name="qty_delivered_method" invisible="1"/>
+                                        <field name="qty_invoiced" string="Invoiced" attrs="{'column_invisible': [('parent.state', 'not in', ['sale', 'done'])]}" optional="show"/>
+                                        <field name="qty_to_invoice" invisible="1"/>
+                                        <field name="product_uom" force_save="1" string="UoM" attrs="{                                             'readonly': [('state', 'in', ('sale','done', 'cancel'))],                                             'required': [('display_type', '=', False)],                                         }" context="{'company_id': parent.company_id}" groups="uom.group_uom" options="{&quot;no_open&quot;: True}" optional="show"/>
+                                        <field name="customer_lead" optional="hide" attrs="{'readonly': [('parent.state', 'not in', ['draft', 'sent'])]}"/>
+                                        <field name="price_unit" attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
+                                        <field name="tax_id" widget="many2many_tags" options="{'no_create': True}" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]" attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}" optional="show"/>
+                                        <field name="discount" string="Disc.%" groups="product.group_discount_per_so_line" optional="show"/>
+                                        <field name="price_subtotal" widget="monetary" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                        <field name="price_total" widget="monetary" groups="account.group_show_line_subtotals_tax_included"/>
+                                        <field name="state" invisible="1"/>
+                                        <field name="invoice_status" invisible="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="price_tax" invisible="1"/>
+                                        <field name="company_id" invisible="1"/>
+
+
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
