@@ -100,5 +100,5 @@ class PedidoAbierto(models.Model):
             'view_id': view.id,
             'target': 'new',
             'res_id': wiz.id,
-            'context': {'lineas_pedidos': [(6, 0, self.lineas_pedido.ids)]},
+            'context': {'default_lineas_pedidos': [(6, 0, self.lineas_pedido.ids)]},
         }
