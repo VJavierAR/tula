@@ -24,7 +24,7 @@
                 <form>
                     <header>
                         <button name="crear_pedido_wizard" string="Crear Pedido" type="object" />
-                        <field name="state" widget="statusbar" statusbar_visible="borrador,abierto,expirado"/>
+                        <field name="state" widget="statusbar" />
                     </header>
                     <sheet>
                         <div class="oe_title">
