@@ -15,7 +15,7 @@ class PedidoAbiertoWizard(models.TransientModel):
     )
     lineas_pedidos = fields.One2many(
         comodel_name="sale.order.line",
-        inverse_name="pedido_abierto_rel",
+        inverse_name="pedido_abierto_wizard_rel",
         string="Lineas de pedido abierto"
     )
 

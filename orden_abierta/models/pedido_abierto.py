@@ -83,7 +83,6 @@ class PedidoAbierto(models.Model):
         wiz = self.env['pedido.abierto.wizard'].create({
             'pedido_abierto_id': self.id
         })
-        self.env.cr.commit()
         _logger.info("self.lineas_pedido.ids: " + str(self.lineas_pedido.ids))
         _logger.info("self.lineas_pedido.pedido_abierto_rel: " + str(self.lineas_pedido.mapped('pedido_abierto_rel')))
         wiz.write({
