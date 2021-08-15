@@ -53,7 +53,14 @@ class SaleOrderLineOrdenAbierta(models.Model):
         comodel_name="pedido.abierto",
         string="Pedido abierto rel"
     )
-
+    order_id = fields.Many2one(
+        comodel_name='sale.order',
+        string='Order Reference',
+        required=False,
+        ondelete='cascade',
+        index=True,
+        copy=False
+    )
 
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
