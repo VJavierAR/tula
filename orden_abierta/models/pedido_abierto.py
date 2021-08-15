@@ -63,6 +63,14 @@ class PedidoAbierto(models.Model):
         index=True,
         default=lambda self: _('New')
     )
+    user_id = fields.Many2one(
+        comodel_name='res.users',
+        string='Comercial',
+        index=True,
+        tracking=2,
+        default=lambda self: self.env.user,
+        domain=lambda self: [('groups_id', 'in', self.env.ref('sales_team.group_sale_salesman').id)]
+    )
 
     @api.model
     def create(self, vals):

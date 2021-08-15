@@ -7,8 +7,11 @@
             <field name="arch" type="xml">
                 <tree>
                     <field name="id" />
-                    <field name="create_date" />
+                    <field name="name" string="Orden abierta" />
+                    <field name="create_date" string="Creado el" />
                     <field name="partner_id" />
+                    <field name="user_id" />
+                    <field name="company_id" />
                 </tree>
             </field>
         </record>
@@ -37,7 +40,7 @@
                                 <field name="pricelist_id" groups="product.group_product_pricelist" options="{'no_open':True,'no_create': True}"/>
                             </group>
                             <group>
-
+                                <field name="user_id" />
                             </group>
                         </group>
                         <notebook>
