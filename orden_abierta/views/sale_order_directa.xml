@@ -41,7 +41,7 @@
                   sequence="5"
                   action='ordenes_directas'/>
 
-         <record model="ir.ui.view" id="view_sales_order_line_filter_update">
+        <record model="ir.ui.view" id="view_sales_order_line_filter_update">
             <field name="name">sale.order.line.select.update</field>
             <field name="model">sale.order.line</field>
             <field name="inherit_id" ref="sale.view_sales_order_line_filter"/>

@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+    	<template id="assets_backend" inherit_id="web.assets_backend" name="tree view menu">
+    		<xpath expr="." positio="inside">
+    			<link rel="stylesheet" type="text/css" href="/orden_abierta/static/src/css/sale_order.css" />
+    		</xpath>
+    	</template>
+    </data>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_pdf_report" >
+            <field name="model">pedido.abierto.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Pedido abierto">
+                    <field name="pedido_abierto_id" invisible="0" />
+                    <field name='lineas_pedidos' string=' ' force_save='1' />
+
+                    <footer>
+                        <button name="crear_orden" string="Crear orden" type="object" class="oe_highlight"/>
+                        <button special="cancel" string="Cerrar" class="oe_highlight"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

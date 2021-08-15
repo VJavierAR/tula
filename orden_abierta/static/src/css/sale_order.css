@@ -1,0 +1,9 @@
+.slae_line_edit [data-name="product_id"] {
+    width: 300px !important;
+}
+.slae_line_edit [data-name="name"] {
+    width: 300px !important;
+}
+.slae_line_edit [data-name="product_uom_qty"] {
+    width: 93px !important;
+}

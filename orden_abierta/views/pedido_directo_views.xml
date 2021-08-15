@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+
+        <record id="pedido_abierto_view_tree" model="ir.ui.view">
+            <field name="name">pedido.abierto.tree</field>
+            <field name="model">pedido.abierto</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="id" />
+                    <field name="create_date" />
+                    <field name="partner_id" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="pedido_abierto_view_form" model="ir.ui.view">
+            <field name="name">pedido.abierto.form</field>
+            <field name="model">pedido.abierto</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                        </group>
+                        <group></group>
+                    </group>
+                    <notebook>
+                        <page string="Lineas de pedido" name="order_lines">
+                            <field name="lineas_pedido">
+                                <tree>
+                                    <field name="pedido_abierto_rel" invisible="0"/>
+                                    <field name="default_code_product" readonly="1" optional="show"/>
+                                    <field name="codigo_cliente" readonly="1" optional="show"/>
+                                    <field name="pedido_cliente" optional="show"/>
+                                    <field name="codigo_alterno" optional="show"/>
+                                    <field name="fecha_programada" optional="show"/>
+                                    <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
+                                    <field name="order_partner_id" invisible="1"/>
+                                    <field name="order_id" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <field name="id" />
+                    <field name="create_date" />
+                    <field name="partner_id" />
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

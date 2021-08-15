@@ -49,6 +49,11 @@ class SaleOrderLineOrdenAbierta(models.Model):
         string="Línea confirmada",
         default=False
     )
+    pedido_abierto_rel = fields.Many2one(
+        comodel_name="pedido.abierto",
+        string="Pedido abierto rel"
+    )
+
 
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
