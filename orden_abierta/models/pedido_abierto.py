@@ -44,6 +44,15 @@ class PedidoAbierto(models.Model):
         index=True,
         default=lambda self: self.env.company
     )
+    pricelist_id = fields.Many2one(
+        comodel_name='product.pricelist',
+        string='Pricelist',
+        check_company=True,  # Unrequired company
+        required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        help="If you change the pricelist, only newly added lines will be affected.")
 
     def crear_pedido_wizard(self):
         wiz = self.env['pedido.abierto.wizard'].create({
