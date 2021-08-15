@@ -15,9 +15,7 @@ class Factura(models.Model):
 	@api.depends('check')
 	def checkSa(self):
 		for record in self:
-			record.otro=True
-			p=self.env.context.get('default_purchase_id')
-			_logger.inf(p)
+			record.otro='default_purchase_id' in self.env.context
 
 	def action_post(self):
 		if self.filtered(lambda x: x.journal_id.post_at == 'bank_rec').mapped('line_ids.payment_id').filtered(lambda x: x.state != 'reconciled'):
