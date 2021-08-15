@@ -28,6 +28,14 @@ class PedidoAbierto(models.Model):
         comodel_name="res.partner",
         string="Cliente"
     )
+    state = fields.Selection(
+        selection=[
+            ('borrador', 'borrador'),
+            ('abierto', 'abierto'),
+            ('expirado', 'expirado')
+        ],
+        string="Estados"
+    )
 
     def crear_pedido_wizard(self):
         wiz = self.env['pedido.abierto.wizard'].create({

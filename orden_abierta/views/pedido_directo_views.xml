@@ -18,14 +18,19 @@
             <field name="model">pedido.abierto</field>
             <field name="arch" type="xml">
                 <header>
-                    <button name="crear_pedido_wizard" string="Crear Pedido" type="object" states="draft" />
+                    <button name="crear_pedido_wizard" string="Crear Pedido" type="object" />
+                    <field name="state" widget="statusbar" statusbar_visible="borrador,abierto,expirado"/>
                 </header>
                 <form>
                     <group>
                         <group>
-                            <field name="partner_id"/>
+                            <field name="id" />
+                            <field name="create_date" />
+                            <field name="partner_id" />
                         </group>
-                        <group></group>
+                        <group>
+                            
+                        </group>
                     </group>
                     <notebook>
                         <page string="Lineas de pedido" name="order_lines">
@@ -44,9 +49,6 @@
                             </field>
                         </page>
                     </notebook>
-                    <field name="id" />
-                    <field name="create_date" />
-                    <field name="partner_id" />
                 </form>
             </field>
         </record>
