@@ -53,6 +53,8 @@ class SaleOrderLineOrdenAbierta(models.Model):
         comodel_name="pedido.abierto",
         string="Pedido abierto rel",
         required=False,
+        store=True,
+        index=True,
     )
     order_id = fields.Many2one(
         comodel_name='sale.order',
