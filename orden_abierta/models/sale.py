@@ -27,6 +27,11 @@ class SaleOrderOrdenAbierta(models.Model):
             ('orden abierta', 'orden abierta')
         ]
     )
+    pedido_abierto_origen = fields.Many2one(
+        comodel_name="pedido.abierto",
+        string="Pedido abierto origen",
+        required=False
+    )
     """
     reservas = fields.One2many(
         comodel_name='sale.order.reservas',

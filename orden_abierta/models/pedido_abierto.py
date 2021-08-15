@@ -71,6 +71,11 @@ class PedidoAbierto(models.Model):
         default=lambda self: self.env.user,
         domain=lambda self: [('groups_id', 'in', self.env.ref('sales_team.group_sale_salesman').id)]
     )
+    pedidos_directos = fields.One2many(
+        comodel_name="sale.order",
+        inverse_name="pedido_abierto_origen",
+        string="Pedidos directos"
+    )
 
     @api.model
     def create(self, vals):
