@@ -13,7 +13,7 @@ class PedidoAbiertoWizard(models.TransientModel):
     pedido_abierto_id = fields.Integer(
         string="id pedido abierto"
     )
-    lineas_pedidos = fields.Many2mnay(
+    lineas_pedidos = fields.Many2many(
         comodel_name="sale.order.line",
         string="Lineas de pedido abierto"
     )
