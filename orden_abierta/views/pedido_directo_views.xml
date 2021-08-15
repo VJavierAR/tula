@@ -17,6 +17,9 @@
             <field name="name">pedido.abierto.form</field>
             <field name="model">pedido.abierto</field>
             <field name="arch" type="xml">
+                <header>
+                    <button name="crear_pedido_wizard" string="Crear Pedido" type="object" states="draft" />
+                </header>
                 <form>
                     <group>
                         <group>
@@ -47,6 +50,19 @@
                 </form>
             </field>
         </record>
+
+        <record model="ir.actions.act_window" id="pedido_abierto">
+            <field name="name">Pedido abierto</field>
+            <field name="res_model">pedido.abierto</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="context">{'search_default_ordenes_directas': 1}</field>-->
+            <field name="view_id" ref="pedido_abierto_view_tree"/>
+        </record>
+
+        <menuitem id="menu_pedido_abierto" name="Pedido abierto"
+                  parent="sale.sale_order_menu"
+                  sequence="6"
+                  action='pedido_abierto'/>
 
     </data>
 </odoo>
