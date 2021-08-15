@@ -56,12 +56,6 @@ class SaleOrderLineOrdenAbierta(models.Model):
         store=True,
         index=True,
     )
-    pedido_abierto_wizard_rel = fields.Many2one(
-        comodel_name="pedido.abierto.wizard",
-        string="Pedido abierto wizard rel",
-        required=False,
-        index=True,
-    )
     order_id = fields.Many2one(
         comodel_name='sale.order',
         string='Order Reference',
