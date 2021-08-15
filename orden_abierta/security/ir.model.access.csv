@@ -3,3 +3,4 @@ access_product_codigos,product.codigos,model_product_codigos,,1,1,1,1
 access_sale_notificacion_orden_abierta,access.noticiacion.orden.abierta,orden_abierta.model_sale_order,group_noticiacion_orden_abierta,1,1,1,1
 access_sale_notificacion_pickings,access.noticiacion.pickings,orden_abierta.model_stock_picking,group_noticiacion_pickings,1,1,1,1
 access_sale_notificacion_vendedor_pickings,access.noticiacion.vendedor.pickings,orden_abierta.model_stock_picking,group_noticiacion_vendedor_picking,1,1,1,1
+access_pedido_abierto,access_pedido_abierto,model_pedido_abierto,,1,1,1,1
