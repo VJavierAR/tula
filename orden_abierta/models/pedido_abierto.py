@@ -37,6 +37,13 @@ class PedidoAbierto(models.Model):
         ],
         string="Estados"
     )
+    company_id = fields.Many2one(
+        comodel_name='res.company',
+        string='Compañia',
+        required=True,
+        index=True,
+        default=lambda self: self.env.company
+    )
 
     def crear_pedido_wizard(self):
         wiz = self.env['pedido.abierto.wizard'].create({
