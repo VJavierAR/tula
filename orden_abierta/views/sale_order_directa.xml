@@ -49,9 +49,10 @@
                 <xpath expr="//search" position="inside">
                     <!--<field name=""/>-->
                     <separator/>
+                    <!--domain="[('fecha_programada', '!=', False), ('linea_confirmada', '=', False)]"-->
                     <filter string="Ordenenes directas"
                             name="ordenes_directas"
-                            domain="[('fecha_programada', '!=', False), ('linea_confirmada', '=', False)]"
+                            domain="[('order_id.pedido_abierto_origen', '!=', False)]"
                             />
                     <filter string="Fecha programada"
                             name="fecha_programada"
