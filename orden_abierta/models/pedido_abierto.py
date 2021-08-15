@@ -48,7 +48,7 @@ class PedidoAbierto(models.Model):
         comodel_name='product.pricelist',
         string='Pricelist',
         check_company=True,  # Unrequired company
-        required=True,
+        # required=True,
         readonly=True,
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
