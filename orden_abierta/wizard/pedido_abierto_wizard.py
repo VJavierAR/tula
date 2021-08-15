@@ -28,7 +28,7 @@ class PedidoAbiertoWizard(models.TransientModel):
             # 'payment_term_id': self.payment_term_id.id
         })
         sale_directa.write({
-            'pedido_abierto_origen': pedido_abierto_id
+            'pedido_abierto_origen': self.pedido_abierto_id
         })
         id_sale_directa = sale_directa.id
 
