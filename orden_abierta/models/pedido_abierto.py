@@ -83,7 +83,7 @@ class PedidoAbierto(models.Model):
         wiz = self.env['pedido.abierto.wizard'].create({
             'pedido_abierto_id': self.id
         })
-        wiz.lineas_pedidos = [(6, 0, self.lineas_pedido.ids)]
+        wiz.lineas_pedidos = [(6, 0, self.lineas_pedido.mapped('id'))]
 
         view = self.env.ref('orden_abierta.view_pedido_abierto_wizard')
         return {
