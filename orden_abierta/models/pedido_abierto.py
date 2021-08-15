@@ -33,7 +33,7 @@ class PedidoAbierto(models.Model):
         selection=[
             ('borrador', 'borrador'),
             ('abierto', 'abierto'),
-            ('confirmado', 'confirmado')
+            ('confirmado', 'confirmado'),
             ('expirado', 'expirado')
         ],
         string="Estados",
