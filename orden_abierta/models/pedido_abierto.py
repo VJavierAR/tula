@@ -17,7 +17,7 @@ _logger = logging.getLogger(__name__)
 
 class PedidoAbierto(models.Model):
     _name = 'pedido.abierto'
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Genera pedido con base a lineas de pedido abierto'
 
     lineas_pedido = fields.One2many(
