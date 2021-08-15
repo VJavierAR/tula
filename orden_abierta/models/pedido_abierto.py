@@ -52,7 +52,24 @@ class PedidoAbierto(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
-        help="If you change the pricelist, only newly added lines will be affected.")
+        help="If you change the pricelist, only newly added lines will be affected."
+    )
+    name = fields.Char(
+        string='Order Reference',
+        required=True,
+        copy=False,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        index=True,
+        default=lambda self: _('New')
+    )
+
+    @api.model
+    def create(self, vals):
+        if vals.get('name', _('New')) == _('New'):
+            vals['name'] = self.env['ir.sequence'].next_by_code('pedido.abierto.seq') or 'New'
+        result = super(PedidoAbierto, self).create(vals)
+        return result
 
     def crear_pedido_wizard(self):
         wiz = self.env['pedido.abierto.wizard'].create({
