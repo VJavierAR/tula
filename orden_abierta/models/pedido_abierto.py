@@ -37,6 +37,7 @@ class PedidoAbierto(models.Model):
             ('expirado', 'expirado')
         ],
         string="Estados",
+        readonly=True,
         default="borrador"
     )
     company_id = fields.Many2one(
