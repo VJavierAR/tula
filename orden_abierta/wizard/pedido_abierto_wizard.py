@@ -46,6 +46,7 @@ class PedidoAbiertoWizard(models.TransientModel):
         display_msg = "Se genero orden directa de un pedido abierto: <br/>Orden directa: " + sale_directa.name
         pedido_abierto.message_post(body=display_msg)
 
+        mensajeTitulo = "Alerta"
         wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
         view = self.env.ref('orden_abierta.sale_order_alerta_view')
         return {
