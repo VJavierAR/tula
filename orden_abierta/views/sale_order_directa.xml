@@ -52,7 +52,7 @@
                     <!--domain="[('fecha_programada', '!=', False), ('linea_confirmada', '=', False)]"-->
                     <filter string="Ordenenes directas"
                             name="ordenes_directas"
-                            domain="[('order_id.pedido_abierto_origen', '!=', False)]"
+                            domain="[('order_id', '=', False), ('pedido_abierto_rel', '!=', False)]"
                             />
                     <filter string="Fecha programada"
                             name="fecha_programada"
