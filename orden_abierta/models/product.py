@@ -30,6 +30,7 @@ class ProductTemplate(models.Model):
         default=0,
         compute="_compute_en_transito"
     )
+    """
     cantidad_pedidos = fields.Integer(
         string="Cantidad pedidos",
         default=0,
@@ -40,29 +41,34 @@ class ProductTemplate(models.Model):
         default=0,
         compute="_compute_cantidad_disponible"
     )
+    """
 
     @api.depends('virtual_available', 'qty_available')
     def _compute_en_transito(self):
         for rec in self:
             rec.en_transito = rec.virtual_available - rec.qty_available
 
+    """
     def _compute_cantidad_pedidos(self):
         for rec in self:
-            lineas_de_pedido_abierto_sin_confirmar = self.env['sale.order.line'].search([
-                ('pedido_abierto_rel', '!=', False),
-                ('linea_confirmada', '=', False),
-                ('product_id', '=', rec.product_variant_id.id)
-            ]).mapped('product_uom_qty')
-            if lineas_de_pedido_abierto_sin_confirmar:
-                cantidad_total = 0
-                for cantidad in lineas_de_pedido_abierto_sin_confirmar:
-                    cantidad_total += cantidad
-                rec.cantidad_pedidos = cantidad_total
+            if rec.product_variant_id.id:
+                lineas_de_pedido_abierto_sin_confirmar = self.env['sale.order.line'].search([
+                    ('pedido_abierto_rel', '!=', False),
+                    ('linea_confirmada', '=', False),
+                    ('product_id', '=', rec.product_variant_id.id)
+                ]).mapped('product_uom_qty')
+                _logger.info("\nlineas_de_pedido_abierto_sin_confirmar:\n" + str(lineas_de_pedido_abierto_sin_confirmar))
+                if len(lineas_de_pedido_abierto_sin_confirmar) > 0:
+                    cantidad_total = 0
+                    for cantidad in lineas_de_pedido_abierto_sin_confirmar:
+                        cantidad_total += cantidad
+                    rec.cantidad_pedidos = cantidad_total
 
     @api.depends('qty_available')
     def _compute_cantidad_disponible(self):
         for rec in self:
             rec.cantidad_disponible = rec.cantidad_pedidos - rec.qty_available
+    """
 
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):

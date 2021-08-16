@@ -68,7 +68,8 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         for id_pedido_abierto in ids_pedidos_abiertos:
             lineas_de_pedido_abierto_sin_confirmar = self.env['sale.order.line'].search([
                 ('pedido_abierto_rel', '=', id_pedido_abierto),
-                ('linea_confirmada', '=', False)
+                ('linea_confirmada', '=', False),
+                ('creado_desde_pedido_abierto', '=', True)
             ]).mapped('id')
 
             if len(lineas_de_pedido_abierto_sin_confirmar) == 0:

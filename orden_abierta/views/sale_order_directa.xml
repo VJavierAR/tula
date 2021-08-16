@@ -25,6 +25,7 @@
                     <field name="price_subtotal" readonly="1"/>
                     <field name="confirma_venta_directa" readonly="0" invisible="1"/>
                     <field name="linea_confirmada" readonly="1"/>
+                    <field name="creado_desde_pedido_abierto" invisible="1" />
                 </tree>
             </field>
         </record>
@@ -53,7 +54,7 @@
                     <!--domain="[('fecha_programada', '!=', False), ('linea_confirmada', '=', False)]"-->
                     <filter string="Ordenenes directas"
                             name="ordenes_directas"
-                            domain="[('order_id', '=', False), ('pedido_abierto_rel', '!=', False), ('linea_confirmada', '=', False)]"
+                            domain="[('creado_desde_pedido_abierto', '!=', False), ('pedido_abierto_rel', '!=', False), ('linea_confirmada', '=', False)]"
                             />
                     <filter string="Fecha programada"
                             name="fecha_programada"

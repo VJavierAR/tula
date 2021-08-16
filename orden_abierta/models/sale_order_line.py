@@ -56,6 +56,11 @@ class SaleOrderLineOrdenAbierta(models.Model):
         store=True,
         index=True,
     )
+    creado_desde_pedido_abierto = fields.Boolean(
+        string="Creado desde pedido abierto",
+        default=False
+    )
+    """
     order_id = fields.Many2one(
         comodel_name='sale.order',
         string='Order Reference',
@@ -64,6 +69,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
         index=True,
         copy=False
     )
+    """
 
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
