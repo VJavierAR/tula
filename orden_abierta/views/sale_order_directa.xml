@@ -15,7 +15,7 @@
                     <field name="codigo_alterno" readonly="0"/>
                     <field name="cantidad_reservada" readonly="1"/>
                     <field name="name" readonly="1"/>
-                    <field name="product_uom_qty" readonly="1"/>
+                    <field name="product_uom_qty" readonly="0"/>
                     <field name="qty_delivered" readonly="1"/>
                     <field name="qty_invoiced" readonly="1"/>
                     <field name="price_unit" readonly="1"/>
