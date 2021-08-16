@@ -104,8 +104,8 @@ class sale(models.Model):
 		mm = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede descuento")])
 		na = self.env['res.groups'].sudo().search([("name", "=", "Confirma pedido de venta que excede descuento")]).mapped('users.name')
 		m=[]
-		for um in mm.users:
-			if(self.env.company.id in um.company_ids.mapped('id')):
+		for um in mm.sudo().users:
+			if(self.env.company.id in um.sudo().company_ids.mapped('id')):
 				m.append(um.email)
 		ids_grupo_limites = self.env['res.groups'].sudo().search(
 			[("name", "=", "Confirma pedido de venta que excede límite de crédito")]).mapped('users.id')
