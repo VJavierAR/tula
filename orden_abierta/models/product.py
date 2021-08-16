@@ -25,6 +25,44 @@ class ProductTemplate(models.Model):
         inverse_name='producto_id',
         string='Códigos de producto'
     )
+    en_transito = fields.Integr(
+        string="En tránsito",
+        default=0,
+        compute="_compute_en_transito"
+    )
+    cantidad_pedidos = fields.Integr(
+        string="Cantidad pedidos",
+        default=0,
+        compute="_compute_cantidad_pedidos"
+    )
+    cantidad_disponible = fields.Integr(
+        string="Cantidad disponible",
+        default=0,
+        compute="_compute_cantidad_disponible"
+    )
+
+    @api.depends('virtual_available', 'qty_available')
+    def _compute_en_transito(self):
+        for rec in self:
+            rec.en_transito = rec.virtual_available - rec.qty_available
+
+    def _compute_cantidad_pedidos(self):
+        for rec in self:
+            lineas_de_pedido_abierto_sin_confirmar = self.env['sale.order.line'].search([
+                ('pedido_abierto_rel', '!=', False),
+                ('linea_confirmada', '=', False),
+                ('product_id', '=', rec.product_variant_id.id)
+            ]).mapped('product_uom_qty')
+            if lineas_de_pedido_abierto_sin_confirmar:
+                cantidad_total = 0
+                for cantidad in lineas_de_pedido_abierto_sin_confirmar:
+                    cantidad_total += cantidad
+                rec.cantidad_pedidos = cantidad_total
+
+    @api.depends('qty_available')
+    def _compute_cantidad_disponible(self):
+        for rec in self:
+            rec.cantidad_disponible = rec.cantidad_pedidos - rec.qty_available
 
     @api.model
     def _name_search(self, name, args=None, operator='ilike', limit=100, name_get_uid=None):
