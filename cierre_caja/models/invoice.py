@@ -304,8 +304,8 @@ class Cierre(models.Model):
         lines=self.env['account.move'].search(['&','&','&',['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['state','=','posted'],['type','=','out_invoice']])
         notas_acumulado=self.env['account.move'].search([['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['type','=','out_refund']])
         notas_hoy=self.env['account.move'].search([['invoice_date','=',fecha],['type','=','out_refund']])        
-        notas_ayer=sum(notas_acumulado.mapped('amount_total_signed'))
-        notas_hoy1=sum(notas_hoy.mapped('amount_total_signed'))
+        notas_ayer=sum(notas_acumulado.mapped('amount_untaxed_signed'))
+        notas_hoy1=sum(notas_hoy.mapped('amount_untaxed_signed'))
         total=0
         descuento=0
         iva=0
