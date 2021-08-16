@@ -25,17 +25,17 @@ class ProductTemplate(models.Model):
         inverse_name='producto_id',
         string='Códigos de producto'
     )
-    en_transito = fields.Integr(
+    en_transito = fields.Integer(
         string="En tránsito",
         default=0,
         compute="_compute_en_transito"
     )
-    cantidad_pedidos = fields.Integr(
+    cantidad_pedidos = fields.Integer(
         string="Cantidad pedidos",
         default=0,
         compute="_compute_cantidad_pedidos"
     )
-    cantidad_disponible = fields.Integr(
+    cantidad_disponible = fields.Integer(
         string="Cantidad disponible",
         default=0,
         compute="_compute_cantidad_disponible"
