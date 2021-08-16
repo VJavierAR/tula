@@ -46,7 +46,7 @@
                         </group>
                         <notebook>
                             <page string="Lineas de pedido" name="order_lines">
-                                <field name="lineas_pedido">
+                                <field name="lineas_pedido" context="{'default_order_partner_id': partner_id}">
                                     <tree class="slae_line_edit" editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
@@ -63,7 +63,7 @@
                                         <field name="codigo_alterno" optional="show"/>
                                         <field name="fecha_programada" optional="show"/>
                                         <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
-                                        <field name="order_partner_id" invisible="1"/>
+                                        <field name="order_partner_id" invisible="0" />
                                         <!--<field name="order_id" invisible="1"/>-->
 
                                         <field name="name" widget="section_and_note_text" optional="show"/>

@@ -26,6 +26,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
 
         mensajeTitulo = "Alerta"
         cliente_id = self.order_line_ids[0].order_partner_id.id
+        _logger.info("cliente_id: " + str(cliente_id))
         for line in self.order_line_ids:
             if line.order_partner_id.id != cliente_id:
                 display_msg = "Una línea de pedido tiene diferente cliente"
@@ -44,6 +45,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
                     'context': self.env.context,
                 }
 
+        _logger.info("cliente_id: " + str(cliente_id))
         sale_directa = self.env['sale.order'].create({
             'partner_id': cliente_id,
             # 'company_id': self.order_line_ids[0].order_id.company_id.id,
