@@ -38,6 +38,7 @@
         'views/sale_order_directa.xml',
         'views/stock_picking_views.xml',
         'views/pedido_directo_views.xml',
+        'views/lineas_pedido_views.xml',
         'wizard/sale_order_directa_view.xml',
         'wizard/pdf_report_view.xml',
         'wizard/pedido_abierto_view.xml',
