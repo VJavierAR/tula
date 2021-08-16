@@ -22,6 +22,79 @@ class OrdenAbiertaToDirecta(models.TransientModel):
     )
 
     def generar_orden(self):
+        _logger.info("generando orden")
+
+        mensajeTitulo = "Alerta"
+        cliente_id = self.order_line_ids[0].order_partner_id.id
+        for line in self.order_line_ids:
+            if line.order_partner_id.id != cliente_id:
+                display_msg = "Una línea de pedido tiene diferente cliente"
+                wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
+                view = self.env.ref('orden_abierta.sale_order_alerta_view')
+                return {
+                    'name': _(mensajeTitulo),
+                    'type': 'ir.actions.act_window',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'sale.order.alerta',
+                    'views': [(view.id, 'form')],
+                    'view_id': view.id,
+                    'target': 'new',
+                    'res_id': wiz.id,
+                    'context': self.env.context,
+                }
+
+        sale_directa = self.env['sale.order'].create({
+            'partner_id': cliente_id,
+            # 'company_id': self.order_line_ids[0].order_id.company_id.id,
+            # 'picking_policy': self.order_line_ids[0].order_id.picking_policy,
+            # 'payment_term_id': self.payment_term_id.id
+        })
+        # sale_directa.write({
+        #   'pedido_abierto_origen': self.pedido_abierto_id
+        # })
+        id_sale_directa = sale_directa.id
+
+        name_pedidos_abiertos = []
+        ids_pedidos_abiertos = []
+        for linea in self.order_line_ids:
+            linea.order_id = id_sale_directa
+            linea.linea_confirmada = True
+            ids_pedidos_abiertos.append(linea.pedido_abierto_rel.id)
+            name_pedidos_abiertos.append(linea.pedido_abierto_rel.name)
+
+        for id_pedido_abierto in ids_pedidos_abiertos:
+            lineas_de_pedido_abierto_sin_confirmar = self.env['sale.order.line'].search([
+                ('pedido_abierto_rel', '=', id_pedido_abierto),
+                ('linea_confirmada', '=', False)
+            ]).mapped('id')
+
+            if len(lineas_de_pedido_abierto_sin_confirmar) == 0:
+                pedido_abierto = self.env['pedido.abierto'].search([('id', '=', id_pedido_abierto)])
+                pedido_abierto.write({
+                    'state': 'confirmado'
+                })
+
+        sale_directa.action_confirm()
+        display_msg = "Se genero orden directa de uno o más pedidos abiertos: <br/>Pedido(s) abierto(s): " + str(name_pedidos_abiertos)
+        sale_directa.message_post(body=display_msg)
+
+        wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
+        view = self.env.ref('orden_abierta.sale_order_alerta_view')
+        return {
+            'name': _(mensajeTitulo),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'sale.order.alerta',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'res_id': wiz.id,
+            'context': self.env.context,
+        }
+
+        """
         mensajeTitulo = "Alerta"
         cliente_id = self.order_line_ids[0].order_partner_id.id
         for line in self.order_line_ids:
@@ -97,6 +170,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
                 'res_id': wiz.id,
                 'context': self.env.context,
             }
+        """
 
 
 class Alerta(models.TransientModel):

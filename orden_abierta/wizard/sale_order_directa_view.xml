@@ -16,6 +16,7 @@
                     <h2>
                         Se creara y confirmara la orden directa de las líneas seleccionadas.
                     </h2>
+                    <field name="order_line_ids" />
                     <footer>
                         <button name="generar_orden" string="Crear orden directa" type="object" class="oe_highlight"/>
                         <button string="Cerrar" class="oe_link" special="cancel"/>

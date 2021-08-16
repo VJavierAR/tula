@@ -34,6 +34,7 @@ class PedidoAbiertoWizard(models.TransientModel):
 
         for linea in pedido_abierto.lineas_pedido:
             linea.order_id = id_sale_directa
+            linea.linea_confirmada = True
 
         pedido_abierto.write({
             'state': 'confirmado'
@@ -44,3 +45,18 @@ class PedidoAbiertoWizard(models.TransientModel):
 
         display_msg = "Se genero orden directa de un pedido abierto: <br/>Orden directa: " + sale_directa.name
         pedido_abierto.message_post(body=display_msg)
+
+        wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
+        view = self.env.ref('orden_abierta.sale_order_alerta_view')
+        return {
+            'name': _(mensajeTitulo),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'sale.order.alerta',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'res_id': wiz.id,
+            'context': self.env.context,
+        }
