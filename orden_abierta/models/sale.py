@@ -41,6 +41,8 @@ class SaleOrderOrdenAbierta(models.Model):
     """
 
     def conf(self):
+        self.action_confirm()
+        """
         orden_abierta = self.es_orden_abierta
         conteo_lineas_confirmadas = 0
         if orden_abierta:
@@ -71,7 +73,10 @@ class SaleOrderOrdenAbierta(models.Model):
                 sale_directa.action_confirm()
         else:
             self.action_confirm()
+        """
 
+
+    """
     @api.onchange('order_line')
     def cambian_lineas(self):
         if self.order_line:
@@ -82,7 +87,9 @@ class SaleOrderOrdenAbierta(models.Model):
                     existe_fecha_programada = True
             if existe_fecha_programada:
                 self.state = 'orden abierta'
+    """
 
+    """
     @api.model
     def create(self, vals):
         existe_fecha_programada = False
@@ -96,6 +103,7 @@ class SaleOrderOrdenAbierta(models.Model):
             vals['state'] = 'orden abierta'
         result = super(SaleOrderOrdenAbierta, self).create(vals)
         return result
+    """
 
     def cron_orden_abierta(self):
         genero_html = False
