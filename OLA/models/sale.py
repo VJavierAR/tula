@@ -137,9 +137,9 @@ class sale(models.Model):
 			bloquear = True
 			# Enviando alerta por correo
 			template_id2 = self.env.ref('OLA.notify_descuento_email_template')
-			mail = template_id2.generate_email(self.id)
+			mail = template_id2.sudo()generate_email(self.id)
 			mail['email_to'] = str(m).replace('[', '').replace(']', '').replace('\'', '')
-			self.env['mail.mail'].create(mail).send()
+			self.env['mail.mail'].sudo().create(mail).sudo().send()
 			genera_alerta = True
 
 		# Si usuario esta entre los que validan excediendo descuentos y una linea excede el desuento del usuario

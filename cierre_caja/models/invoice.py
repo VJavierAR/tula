@@ -304,8 +304,8 @@ class Cierre(models.Model):
         lines=self.env['account.move'].search(['&','&','&',['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['state','=','posted'],['type','=','out_invoice']])
         notas_acumulado=self.env['account.move'].search([['invoice_date','>=',prime_day_of_month],['invoice_date','<',ayer],['type','=','out_refund']])
         notas_hoy=self.env['account.move'].search([['invoice_date','=',fecha],['type','=','out_refund']])        
-        notas_ayer=sum(notas_acumulado.mapped('amount_untaxed_signed'))
-        notas_hoy1=sum(notas_hoy.mapped('amount_untaxed_signed'))
+        notas_ayer=0
+        notas_hoy1=0
         total=0
         descuento=0
         iva=0
@@ -313,10 +313,32 @@ class Cierre(models.Model):
         descuento2=0
         iva2=0
         moneda=self.env.user.company_id.currency_id.id
+        descuento_nc_hoy=0
+        descuento_nc_ayer=0
+        iva_nc_hoy=0
+        iva_nc_ayer=0
+        
+        for nota in notas_acumulado:
+            for liin in nota.invoice_line_ids:
+                notas_ayer=notas_ayer+(liin.price_unit*liin.quantity)
+                if(liin.currency_id.id!=moneda and liin.currency_id.id!=False):
+                    descuento_nc_ayer=descuento_nc_ayer+(((liin.price_unit*liin.quantity)-(liin.price_subtotal))/liin.currency_id.rate)
+                else:
+                    descuento_nc_ayer=descuento_nc_ayer+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
+            iva_nc_ayer=iva_nc_ayer+(nota.amount_total_signed-nota.amount_untaxed_signed)                
+        
+        for nota in notas_hoy:
+            for liin in nota.invoice_line_ids:
+                notas_hoy1=notas_hoy1+(liin.price_unit*liin.quantity)
+                if(liin.currency_id.id!=moneda and liin.currency_id.id!=False):
+                    descuento_nc_hoy=descuento_nc_hoy+(((liin.price_unit*liin.quantity)-(liin.price_subtotal))/liin.currency_id.rate)
+                else:
+                    descuento_nc_hoy=descuento_nc_hoy+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
+            iva_nc_hoy=iva_nc_hoy+(nota.amount_total_signed-nota.amount_untaxed_signed)       
+
         for li in lines:
             for liin in li.invoice_line_ids:
                 total=total+(liin.price_unit*liin.quantity)
-                _logger.info(str(liin.currency_id.id))
                 if(liin.currency_id.id!=moneda and liin.currency_id.id!=False):
                     descuento=descuento+(((liin.price_unit*liin.quantity)-(liin.price_subtotal))/liin.currency_id.rate)
                 else:
@@ -332,8 +354,8 @@ class Cierre(models.Model):
                     descuento2=descuento2+((liin.price_unit*liin.quantity)-(liin.price_subtotal))
             iva2=iva2+(li.amount_total_signed-li.amount_untaxed_signed)
         data=[]
-        total=total+notas_ayer
-        total2=total2+notas_hoy1
+        total=total-notas_ayer
+        total2=total2-notas_hoy1
         data.append(['Ventas',"{:,}".format(round(total,2)),"{:,}".format(round(total2,2)),"{:,}".format(round(total+total2,2))])
         data.append(['Descuento',"{:,}".format(round(descuento,2)),"{:,}".format(round(descuento2,2)),"{:,}".format(round(descuento+descuento2,2))])
         data.append(['Impuestos',"{:,}".format(round(iva,2)),"{:,}".format(round(iva2,2)),"{:,}".format(round(iva+iva2,2))])
