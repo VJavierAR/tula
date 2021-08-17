@@ -368,7 +368,6 @@ class Cierre(models.Model):
     
 
 
-
     # def getPagosAll(self):
     #     fecha=self.name
     #     ayer=datetime(fecha.year, fecha.month, fecha.day)
