@@ -10,17 +10,23 @@
         Long description of module's purpose
     """,
 
-    'author': "Cesar Lopez Robredo ",
+    'author': "Cesar Lopez Robredo",
     'website': "cesarlopez173@yahoo.com.mx",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/13.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Compras',
+    'category': 'Purchase',
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','purchase','stock','OLA'],
+    'depends': ['base','account','purchase','stock','OLA','account_invoice_extract',
+'account_taxcloud',
+'account_accountant',
+'account_predictive_bills',
+'account_asset',
+'account_reports',
+'payment',],
 
     # always loaded
     'data': [
@@ -28,8 +34,7 @@
         'views/views.xml',
         'views/templates.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
 }
