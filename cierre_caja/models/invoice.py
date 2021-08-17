@@ -358,8 +358,8 @@ class Cierre(models.Model):
         total2=total2-notas_hoy1
         descuento=descuento-descuento_nc_ayer
         descuento2=descuento2-descuento_nc_hoy
-        iva=iva-iva_nc_ayer
-        iva=iva-iva_nc_hoy
+        iva=iva+iva_nc_ayer
+        iva=iva+iva_nc_hoy
         data.append(['Ventas',"{:,}".format(round(total,2)),"{:,}".format(round(total2,2)),"{:,}".format(round(total+total2,2))])
         data.append(['Descuento',"{:,}".format(round(descuento,2)),"{:,}".format(round(descuento2,2)),"{:,}".format(round(descuento+descuento2,2))])
         data.append(['Impuestos',"{:,}".format(round(iva,2)),"{:,}".format(round(iva2,2)),"{:,}".format(round(iva+iva2,2))])
