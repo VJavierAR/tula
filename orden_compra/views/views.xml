@@ -1011,7 +1011,7 @@
                                       <field name='ultimo_provedor' />
                                       <field name='stock_total'/>
                         </xpath>
-      <xpath expr="//form[1]/sheet[1]/group[1]/group[2]/field[@name='company_id']" position="after">
+      <xpath expr="//field[@name='company_id']" position="after">
           <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['check','=',True],['otro','=',False]]}"/>
             <field name='check' invisible='1'/>
             <field name='otro' invisible='1'/>
