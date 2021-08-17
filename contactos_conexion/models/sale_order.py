@@ -341,7 +341,7 @@ class SaleOrder(models.Model):
                                         return generar_alerta
 
                                     self.message_post(body=display_msg)
-                                    return generar_alerta
+                                    # return generar_alerta  # En caso de que se exceda se detiene proceso
 
                             # Si ocurre un error al consultar límite de crédito en NAF entonces, informa
                             elif 'error' in limite_de_credito:
@@ -483,6 +483,10 @@ class SaleOrder(models.Model):
                     return {
                         'existe': 'no'
                     }
+            elif int(json_respuesta['status_code']) == status_code_cliente_existente:
+                return {
+                    'error': json_respuesta['message']
+                }
             else:
                 _logger.info("Error al realizar petición json_respuesta['message']: " + str(json_respuesta['message']))
                 return {
