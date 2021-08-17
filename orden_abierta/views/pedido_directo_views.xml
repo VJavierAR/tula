@@ -46,7 +46,7 @@
                         </group>
                         <notebook>
                             <page string="Lineas de pedido" name="order_lines">
-                                <field name="lineas_pedido" context="{'default_order_partner_id': partner_id, default_creado_desde_pedido_abierto: True}">
+                                <field name="lineas_pedido" context="{'default_order_partner_id': partner_id, creado_desde_pedido_abierto: True}">
                                     <tree class="slae_line_edit" editable="bottom">
                                         <field name="sequence" widget="handle"/>
                                         <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
