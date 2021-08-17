@@ -22,3 +22,7 @@ class SaleOrder(models.Model):
         comodel_name='sale.order',
         string='Pedidod de venta origen'
     )
+    origin_crm = fields.Many2one(
+        comodel_name='crm.lead',
+        string='Oportunidad origen'
+    )

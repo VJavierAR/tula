@@ -52,6 +52,10 @@ class CRM(models.Model):
         store=True,
         default=0
     )
+    ticket_nuevo_cliente = fields.One2many(
+        comodel_name='helpdesk.ticket',
+        inverse_name='origin_crm'
+    )
 
     def write(self, values):
         if 'date_conversion' in values:
@@ -66,6 +70,28 @@ class CRM(models.Model):
         if self.date_conversion:
             self.tiempo_de_conversion = int((self.date_conversion - self.create_date).days)
     """
+
+    @api.onchange('partner_id')
+    def cambia_parter_id(self):
+        if self.partner_id.id:
+            today_date = datetime.datetime.strptime(datetime.date.today().strftime("%m-%d-%Y %H:%M:%S"),
+                                                    '%m-%d-%Y %H:%M:%S') + relativedelta(hours=+ 6)
+            fecha_creacion = datetime.datetime.strptime(self.partner_id.create_date.strftime("%m-%d-%Y %H:%M:%S"),
+                                                        '%m-%d-%Y %H:%M:%S') + relativedelta(hours=+ 6)
+            tiempo_en_ganar = int((today_date - fecha_creacion).days)
+            if tiempo_en_ganar == 0:
+                self.partner_id.oprotunidad_origen = self.id
+                self.partner_id.creado_desde_oportunidad = True
+                self.partner_id.active = False
+                display_msg = "Solicitud de nuevo cliente creado a traves de oportunidad"
+                self.env['helpdesk.ticket'].create({
+                    'name': 'Solicitud de creación de cliente',
+                    'partner_id': self.partner_id.id,
+                    'origin_crm': self.id,
+                    'description': display_msg,
+                    # 'tag_ids': (4, 1),
+                    'team_id': 3
+                })
 
     @api.onchange('stage_id')
     def tiempo_que_llevo_ganar_oportunidad(self):

@@ -56,6 +56,14 @@ class Partner(models.Model):
         store=False,
         compute='_compute_meta_facturacion'
     )
+    oprotunidad_origen = fields.Char(
+        string="oportunidad origen",
+        store=True
+    )
+    creado_desde_oportunidad = fields.Boolean(
+        string="Creado desde oportunidad",
+        default=False
+    )
 
     def _compute_meta_facturacion(self):
         for rec in self:
