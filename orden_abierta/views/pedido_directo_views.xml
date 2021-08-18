@@ -68,6 +68,7 @@
                             <page string="Lineas de pedido" name="order_lines">
                                 <field name="lineas_pedido"
                                        context="{'default_order_partner_id': partner_id, 'default_creado_desde_pedido_abierto': True, 'default_order_id': id_orden_temp}"
+                                       attrs="{'domain': [('es_de_sale_order', '=', False)]}"
                                 >
                                     <tree class="slae_line_edit" editable="bottom">
                                         <field name="sequence" widget="handle"/>
@@ -179,6 +180,7 @@
                                                 </group>
                                             </group>
                                             <group>
+                                                <field name="es_de_sale_order" invisible="0"/>
                                                 <field name="linea_relacionada" />
                                             </group>
                                         </sheet>
