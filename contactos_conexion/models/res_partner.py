@@ -80,3 +80,8 @@ class Partner(models.Model):
     def create(self,vals):
         _logger.info(vals)
         super(Partner,self).create(vals)
+
+        
+    def write(self,vals):
+        _logger.info(vals)
+        super(Partner,self).write(vals)
