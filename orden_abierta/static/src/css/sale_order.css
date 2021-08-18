@@ -34,8 +34,8 @@
     color: #009879;
 }
 .slae_line_edit table thead > tr > th {
-    max-width: 400px !important;
-    width: 400px !important;
+    max-width: 200px !important;
+    width: 200px !important;
     text-align: center;
 }
 .slae_line_edit table thead > tr > th:nth-child(1) {
@@ -135,6 +135,12 @@
     text-align: center !important;
 }
 
+
+
+.o_list_view .o_list_table .o_data_row:not(.o_selected_row) > .o_data_cell
+{
+    white-space: initial !important;
+}
 
 
 
