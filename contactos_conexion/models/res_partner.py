@@ -64,7 +64,7 @@ class Partner(models.Model):
         string="Creado desde oportunidad",
         default=False
     )
-    check=fields:Boolean(default=False)
+    check=fields.Boolean(default=False)
 
     def _compute_meta_facturacion(self):
         for rec in self:
