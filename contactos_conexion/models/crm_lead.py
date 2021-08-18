@@ -71,27 +71,27 @@ class CRM(models.Model):
             self.tiempo_de_conversion = int((self.date_conversion - self.create_date).days)
     """
 
-    @api.onchange('partner_id')
-    def cambia_parter_id(self):
-        if self.partner_id.id:
-            today_date = datetime.datetime.strptime(datetime.date.today().strftime("%m-%d-%Y %H:%M:%S"),
-                                                    '%m-%d-%Y %H:%M:%S') + relativedelta(hours=+ 6)
-            fecha_creacion = datetime.datetime.strptime(self.partner_id.create_date.strftime("%m-%d-%Y %H:%M:%S"),
-                                                        '%m-%d-%Y %H:%M:%S') + relativedelta(hours=+ 6)
-            tiempo_en_ganar = int((today_date - fecha_creacion).days)
-            if tiempo_en_ganar == 0:
-                self.partner_id.oprotunidad_origen = self.id
-                self.partner_id.creado_desde_oportunidad = True
-                self.partner_id.active = False
-                display_msg = "Solicitud de nuevo cliente creado a traves de oportunidad"
-                self.env['helpdesk.ticket'].create({
-                    'name': 'Solicitud de creación de cliente',
-                    'partner_id': self.partner_id.id,
-                    'origin_crm': self.id,
-                    'description': display_msg,
-                    # 'tag_ids': (4, 1),
-                    'team_id': 3
-                })
+    # @api.onchange('partner_id')
+    # def cambia_parter_id(self):
+    #     if self.partner_id.id:
+    #         today_date = datetime.datetime.strptime(datetime.date.today().strftime("%m-%d-%Y %H:%M:%S"),
+    #                                                 '%m-%d-%Y %H:%M:%S') + relativedelta(hours=+ 6)
+    #         fecha_creacion = datetime.datetime.strptime(self.partner_id.create_date.strftime("%m-%d-%Y %H:%M:%S"),
+    #                                                     '%m-%d-%Y %H:%M:%S') + relativedelta(hours=+ 6)
+    #         tiempo_en_ganar = int((today_date - fecha_creacion).days)
+    #         if tiempo_en_ganar == 0:
+    #             self.partner_id.oprotunidad_origen = self.id
+    #             self.partner_id.creado_desde_oportunidad = True
+    #             self.partner_id.active = False
+    #             display_msg = "Solicitud de nuevo cliente creado a traves de oportunidad"
+    #             self.env['helpdesk.ticket'].create({
+    #                 'name': 'Solicitud de creación de cliente',
+    #                 'partner_id': self.partner_id.id,
+    #                 'origin_crm': self.id,
+    #                 'description': display_msg,
+    #                 # 'tag_ids': (4, 1),
+    #                 'team_id': 3
+    #             })
 
     @api.onchange('stage_id')
     def tiempo_que_llevo_ganar_oportunidad(self):
@@ -124,6 +124,37 @@ class CRM(models.Model):
                                              '%m-%d-%Y %H:%M:%S') + relativedelta(days=- 16))
         _logger.info("date_1: " + str(date_1))
         self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
+
+    def handle_partner_assignment(self, force_partner_id=False, create_missing=True):
+        """ Update customer (partner_id) of leads. Purpose is to set the same
+        partner on most leads; either through a newly created partner either
+        through a given partner_id.
+
+        :param int force_partner_id: if set, update all leads to that customer;
+        :param create_missing: for leads without customer, create a new one
+          based on lead information;
+        """
+        for lead in self:
+            if force_partner_id:
+                lead.partner_id = force_partner_id
+            if not lead.partner_id and create_missing:
+                partner = lead._create_customer()
+                lead.partner_id = partner.id
+            if(lead.partner_id.id):
+                lead.partner_id.oprotunidad_origen = lead.id
+                lead.partner_id.creado_desde_oportunidad = True
+                lead.partner_id.active = False
+                display_msg = "Solicitud de nuevo cliente creado a traves de oportunidad"
+                self.env['helpdesk.ticket'].create({
+                    'name': 'Solicitud de creación de cliente',
+                    'partner_id': lead.partner_id.id,
+                    'origin_crm': lead.id,
+                    'description': display_msg,
+                    # 'tag_ids': (4, 1),
+                    'team_id': 3
+                })
+
+
 
 
 """
