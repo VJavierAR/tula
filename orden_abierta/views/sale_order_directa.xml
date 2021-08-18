@@ -29,7 +29,7 @@
                     <field name="discount" readonly="1"/>
                     <field name="price_subtotal" readonly="1"/>
                     <field name="confirma_venta_directa" readonly="0" invisible="1"/>
-                    <field name="linea_confirmada" readonly="1"/>
+                    <field name="linea_confirmada" readonly="1" invisible="1"/>
                     <field name="creado_desde_pedido_abierto" invisible="1" />
                 </tree>
             </field>

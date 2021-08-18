@@ -34,12 +34,73 @@
     color: #009879;
 }
 .slae_line_edit table thead > tr > th {
-    max-width: 500px !important;
-    width: 500px !important;
+    max-width: 400px !important;
+    width: 400px !important;
     text-align: center;
 }
 .slae_line_edit table thead > tr > th:nth-child(1) {
-    max-width: 50px !important;
-    width: 50px !important;
+    max-width: 40px !important;
+    width: 40px !important;
     text-align: center;
+}
+
+.slae_line_edit table thead > tr [data-name="cantidad_reservada"] {
+    max-width: 300px !important;
+    min-width: 10px !important;
+    width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table thead > tr [data-name="product_uom_qty"] {
+    max-width: 300px !important;
+    min-width: 10px !important;
+    width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table thead > tr [data-name="cantidad_facturada"] {
+    max-width: 300px !important;
+    min-width: 10px !important;
+    width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table thead > tr [data-name="cantidad_entregada"] {
+    max-width: 300px !important;
+    min-width: 10px !important;
+    width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table thead > tr [data-name="cantidad_restante"] {
+    max-width: 300px !important;
+    min-width: 10px !important;
+    width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table thead > tr [data-name="cantidad_original"] {
+    max-width: 300px !important;
+    min-width: 10px !important;
+    width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table thead > tr [data-name="tax_id"] {
+    max-width: 300px !important;
+    min-width: 10px !important;
+    width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table thead > tr [data-name="discount"] {
+    max-width: 300px !important;
+    min-width: 10px !important;
+    width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table thead > tr [data-name="price_unit"] {
+    max-width: 300px !important;
+    min-width: 10px !important;
+    width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table thead > tr [data-name="price_subtotal"] {
+    max-width: 300px !important;
+    min-width: 10px !important;
+    width: 200px !important;
+    text-align: center !important;
 }
