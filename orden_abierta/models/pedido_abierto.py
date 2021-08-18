@@ -145,3 +145,14 @@ class PedidoAbierto(models.Model):
             'context': self.env.context,
             # 'context': {'default_lineas_pedidos': [(6, 0, self.lineas_pedido.ids)]},
         }
+
+    def get_sales_directas(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Pedidos',
+            'view_mode': 'tree',
+            'res_model': 'sale.order',
+            'domain': [('pedido_abierto_origen', '=', self.id)],
+            'context': "{'create': False}"
+        }
