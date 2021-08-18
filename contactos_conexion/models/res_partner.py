@@ -79,7 +79,7 @@ class Partner(models.Model):
             rec.meta_facturacion = suma_totales
     @api.model_create_multi
     def create(self,vals_list):
-        _logger.info(vals)
+        _logger.info(vals_list)
         res=super(Partner,self).create(vals_list)
         return res
 
