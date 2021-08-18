@@ -86,7 +86,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
         default=False,
         store=True
     )
-    linea_relacionada = fields.Many2Many(
+    linea_relacionada = fields.Many2many(
         comodel_name="sale.order.line",
         relation="linea_venta_and_linea_abierta",
         column1="id_linea_venta",

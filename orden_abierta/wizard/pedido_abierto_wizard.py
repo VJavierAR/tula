@@ -81,7 +81,7 @@ class PedidoAbiertoWizard(models.TransientModel):
             linea_duplicada.write({
                 'linea_relacionada': [(4, linea_duplicada.id, 0)]
             })
-            
+
             if linea.cantidad_restante == 0:
                 linea.linea_confirmada = True
 
