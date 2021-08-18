@@ -57,15 +57,15 @@
                                         <field name="product_id" attrs="{                                             'readonly': [('product_updatable', '=', False)],                                             'required': [('display_type', '=', False)],                                         }" options="{'no_open': True}" force_save="1" context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom':product_uom,                                             'company_id': parent.company_id,                                             'default_lst_price': price_unit,                                             'default_description_sale': name                                         }" domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" widget="product_configurator"/>
                                         <field name="product_template_id" string="Product" invisible="1" attrs="{                                           'readonly': [('product_updatable', '=', False)],                                           'required': [('display_type', '=', False)],                                       }" options="{'no_open': True}" context="{                                           'partner_id': parent.partner_id,                                           'quantity': product_uom_qty,                                           'pricelist': parent.pricelist_id,                                           'uom':product_uom,                                           'company_id': parent.company_id,                                           'default_list_price': price_unit,                                           'default_description_sale': name                                       }" domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]" widget="product_configurator"/>
 
-                                        <field name="pedido_abierto_rel" invisible="0"/>
+                                        <field name="pedido_abierto_rel" invisible="1"/>
                                         <field name="default_code_product" readonly="1" optional="show"/>
                                         <field name="codigo_cliente" readonly="1" optional="show"/>
                                         <field name="pedido_cliente" optional="show"/>
                                         <field name="codigo_alterno" optional="show"/>
                                         <field name="fecha_programada" optional="show"/>
                                         <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
-                                        <field name="order_partner_id" invisible="0" />
-                                        <field name="order_id" invisible="0"/>
+                                        <field name="order_partner_id" invisible="1" />
+                                        <field name="order_id" invisible="1"/>
 
                                         <field name="name" widget="section_and_note_text" optional="show"/>
                                         <field name="analytic_tag_ids" optional="hide" groups="analytic.group_analytic_tags" widget="many2many_tags" options="{'color_field': 'color'}" domain="['|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"/>
@@ -87,7 +87,7 @@
                                         <field name="currency_id" invisible="1"/>
                                         <field name="price_tax" invisible="1"/>
                                         <field name="company_id" invisible="1"/>
-                                        <field name="creado_desde_pedido_abierto" invisible="0" />
+                                        <field name="creado_desde_pedido_abierto" invisible="1" />
 
 
                                     </tree>
