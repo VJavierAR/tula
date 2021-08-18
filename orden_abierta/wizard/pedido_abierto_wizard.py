@@ -79,8 +79,11 @@ class PedidoAbiertoWizard(models.TransientModel):
             # linea_duplicada.pedido_abierto_rel = False
             #v linea_duplicada.es_de_sale_order = True
             linea_duplicada.write({
-                'linea_relacionada': [(4, linea_duplicada.id, 0)],
                 'es_de_sale_order': True
+            })
+
+            linea.write({
+                'linea_relacionada': [(4, linea_duplicada.id, 0)]
             })
 
             if linea.cantidad_restante == 0:

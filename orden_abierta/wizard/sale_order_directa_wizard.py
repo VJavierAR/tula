@@ -105,9 +105,12 @@ class OrdenAbiertaToDirecta(models.TransientModel):
             #v linea_duplicada.es_de_sale_order = True
             # linea_duplicada.linea_relacionada = linea_duplicada.id
             linea_duplicada.write({
-                'linea_relacionada': [(4, linea_duplicada.id, 0)],
                 'es_de_sale_order': True
             })
+            linea.write({
+                'linea_relacionada': [(4, linea_duplicada.id, 0)]
+            })
+
 
             if linea.cantidad_restante == 0:
                 linea.linea_confirmada = True
