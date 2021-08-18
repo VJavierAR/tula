@@ -153,6 +153,8 @@ class CRM(models.Model):
                     # 'tag_ids': (4, 1),
                     'team_id': 3
                 })
+                
+    @api.model_create_multi
     def create(self,vals):
         res=super(CRM,self).create(vals)
         _logger.info(vals)
