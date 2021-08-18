@@ -102,12 +102,6 @@ class PedidoAbierto(models.Model):
         result = super(PedidoAbierto, self).create(vals)
         return result
 
-    @api.onchange('lineas_pedido')
-    def agrega_order_id(self):
-        if self.lineas_pedido.ids:
-            for linea in self.lineas_pedido:
-                linea.order_id = self.id_orden_temp
-
     def crear_pedido_wizard(self):
         wiz = self.env['pedido.abierto.wizard'].create({
             'pedido_abierto_id': self.id
