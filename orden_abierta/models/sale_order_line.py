@@ -33,7 +33,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
         string="Código alterno",
         copy=True
     )
-    cantidad_reservada = fields.Text(
+    cantidad_reservada = fields.Integer(
         string="Cantidad reservada",
         copy=True
     )

@@ -50,10 +50,16 @@
     width: 200px !important;
     text-align: center !important;
 }
+.slae_line_edit table tbody > tr [name="cantidad_reservada"] {
+    text-align: center !important;
+}
 .slae_line_edit table thead > tr [data-name="product_uom_qty"] {
     max-width: 300px !important;
     min-width: 10px !important;
     width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table tbody > tr [name="product_uom_qty"] {
     text-align: center !important;
 }
 .slae_line_edit table thead > tr [data-name="cantidad_facturada"] {
@@ -62,10 +68,16 @@
     width: 200px !important;
     text-align: center !important;
 }
+.slae_line_edit table tbody > tr [name="cantidad_facturada"] {
+    text-align: center !important;
+}
 .slae_line_edit table thead > tr [data-name="cantidad_entregada"] {
     max-width: 300px !important;
     min-width: 10px !important;
     width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table tbody > tr [name="cantidad_entregada"] {
     text-align: center !important;
 }
 .slae_line_edit table thead > tr [data-name="cantidad_restante"] {
@@ -74,10 +86,16 @@
     width: 200px !important;
     text-align: center !important;
 }
+.slae_line_edit table tbody > tr [name="cantidad_restante"] {
+    text-align: center !important;
+}
 .slae_line_edit table thead > tr [data-name="cantidad_original"] {
     max-width: 300px !important;
     min-width: 10px !important;
     width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table tbody > tr [name="cantidad_original"] {
     text-align: center !important;
 }
 .slae_line_edit table thead > tr [data-name="tax_id"] {
@@ -86,10 +104,16 @@
     width: 200px !important;
     text-align: center !important;
 }
+.slae_line_edit table tbody > tr [name="tax_id"] {
+    text-align: center !important;
+}
 .slae_line_edit table thead > tr [data-name="discount"] {
     max-width: 300px !important;
     min-width: 10px !important;
     width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table tbody > tr [name="discount"] {
     text-align: center !important;
 }
 .slae_line_edit table thead > tr [data-name="price_unit"] {
@@ -98,9 +122,30 @@
     width: 200px !important;
     text-align: center !important;
 }
+.slae_line_edit table tbody > tr [name="price_unit"] {
+    text-align: center !important;
+}
 .slae_line_edit table thead > tr [data-name="price_subtotal"] {
     max-width: 300px !important;
     min-width: 10px !important;
     width: 200px !important;
+    text-align: center !important;
+}
+.slae_line_edit table tbody > tr [name="price_subtotal"] {
+    text-align: center !important;
+}
+
+
+
+
+
+.slae_line_edit table tbody > tr .o_list_number {
+    text-align: center !important;
+}
+
+.o_list_record_remove_header {
+    max-width: 40px !important;
+    min-width: 40px !important;
+    width: 40px !important;
     text-align: center !important;
 }
