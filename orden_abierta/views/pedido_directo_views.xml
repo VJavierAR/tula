@@ -36,7 +36,7 @@
                             <group>
                                 <field name="id" />
                                 <field name="create_date" />
-                                <field name="partner_id" />
+                                <field name="partner_id" required="1" />
                                 <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
                                 <field name="pricelist_id" groups="product.group_product_pricelist" options="{'no_open':True,'no_create': True}"/>
                             </group>
