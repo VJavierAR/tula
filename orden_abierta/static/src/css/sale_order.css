@@ -1,29 +1,61 @@
-.o_field_one2many  [data-name="product_id"] {
+.slae_line_edit  [data-name="product_id"] {
     width: 300px !important;
 }
-.o_field_one2many [data-name="name"] {
+.slae_line_edit [data-name="name"] {
     width: 300px !important;
 }
-.o_field_one2many [data-name="product_uom_qty"] {
+.slae_line_edit [data-name="product_uom_qty"] {
     width: 93px !important;
 }
 
+.slae_line_edit [data-name="default_code_product"] {
+    width: 300px !important;
+}
+.slae_line_edit [data-name="codigo_cliente"] {
+    width: 300px !important;
+}
+.slae_line_edit [data-name="pedido_cliente] {
+    width: 300px !important;
+}
+.slae_line_edit [data-name="codigo_alterno"] {
+    width: 300px !important;
+}
+.slae_line_edit [data-name="fecha_programada"] {
+    width: 300px !important;
+}
+.slae_line_edit [data-name="cantidad_reservada"] {
+    width: 300px !important;
+}
 
-.o_field_one2many [data-name="default_code_product"] {
+
+
+
+
+.slae_line_edit  [name="product_id"] {
     width: 300px !important;
 }
-.o_field_one2many [data-name="codigo_cliente"] {
+.slae_line_edit [name="name"] {
     width: 300px !important;
 }
-.o_field_one2many [data-name="pedido_cliente] {
+.slae_line_edit [name="product_uom_qty"] {
+    width: 93px !important;
+}
+
+.slae_line_edit [name="default_code_product"] {
     width: 300px !important;
 }
-.o_field_one2many [data-name="codigo_alterno"] {
+.slae_line_edit [name="codigo_cliente"] {
     width: 300px !important;
 }
-.o_field_one2many [data-name="fecha_programada"] {
+.slae_line_edit [name="pedido_cliente] {
     width: 300px !important;
 }
-.o_field_one2many [data-name="cantidad_reservada"] {
+.slae_line_edit [name="codigo_alterno"] {
+    width: 300px !important;
+}
+.slae_line_edit [name="fecha_programada"] {
+    width: 300px !important;
+}
+.slae_line_edit [name="cantidad_reservada"] {
     width: 300px !important;
 }
