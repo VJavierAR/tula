@@ -77,9 +77,10 @@ class Partner(models.Model):
             for total in totales:
                 suma_totales += total
             rec.meta_facturacion = suma_totales
-    def create(self,vals):
+    @api.model_create_multi
+    def create(self,vals_list):
         _logger.info(vals)
-        res=super(Partner,self).create(vals)
+        res=super(Partner,self).create(vals_list)
         return res
 
     def write(self,vals):
