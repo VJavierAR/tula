@@ -23,6 +23,7 @@ class PedidoAbiertoWizard(models.TransientModel):
         pedido_abierto = self.env['pedido.abierto'].search([('id', '=', self.pedido_abierto_id)])
         sale_directa = self.env['sale.order'].create({
             'partner_id': pedido_abierto.partner_id.id,
+            'payment_term_id': pedido_abierto.plazo_de_pago.id,
             # 'company_id': self.order_line_ids[0].order_id.company_id.id,
             # 'picking_policy': self.order_line_ids[0].order_id.picking_policy,
             # 'payment_term_id': self.payment_term_id.id

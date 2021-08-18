@@ -88,6 +88,10 @@ class PedidoAbierto(models.Model):
         store=True,
         help="Actualiza el dato pedido cliente de todas las lineas de pedido"
     )
+    plazo_de_pago = fields.Many2one(
+        comodel_name="account.payment.term",
+        string="Plazo de pago"
+    )
 
     @api.onchange('pedido_cliente')
     def actualiza_pedido_cliente_en_lienas(self):

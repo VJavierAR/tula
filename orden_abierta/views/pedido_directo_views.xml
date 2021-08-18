@@ -35,7 +35,6 @@
                         <group>
                             <group>
                                 <field name="id" invisible="1"/>
-                                <field name="create_date" invisible="1"/>
                                 <field name="partner_id" required="1" />
                                 <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" />
                                 <field name="pricelist_id" groups="product.group_product_pricelist" options="{'no_open':True,'no_create': True}"/>
@@ -45,6 +44,8 @@
                             <group>
                                 <field name="user_id" />
                                 <field name="id_orden_temp" invisible="1"/>
+                                <field name="create_date" string="Fecha de solicitud" />
+                                <field name="plazo_de_pago" />
                             </group>
                         </group>
                         <notebook>
