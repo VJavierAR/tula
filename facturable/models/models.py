@@ -75,7 +75,7 @@ class fact(models.Model):
             raise UserError(_(
                 'It is not allowed to confirm an order in the following states: %s'
             ) % (', '.join(self._get_forbidden_state_confirm())))
-        if(self.delivery_set==False or self.recompute_delivery_price==False):
+        if(self.delivery_set==False and self.recompute_delivery_price==False):
             raise UserError(_('Faltan costos de envio'))
         for order in self.filtered(lambda order: order.partner_id not in order.message_partner_ids):
             order.message_subscribe([order.partner_id.id])
