@@ -156,7 +156,7 @@ class CRM(models.Model):
     def create(self,vals):
         res=super(CRM,self).create(vals)
         _logger.info(vals)
-        resturn res
+        return res
 
 
 
