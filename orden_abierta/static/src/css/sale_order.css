@@ -1,29 +1,29 @@
-.slae_line_edit [data-name="product_id"] {
+.o_list_table [data-name="product_id"] {
     width: 300px !important;
 }
-.slae_line_edit [data-name="name"] {
+.o_list_table [data-name="name"] {
     width: 300px !important;
 }
-.slae_line_edit [data-name="product_uom_qty"] {
+.o_list_table [data-name="product_uom_qty"] {
     width: 93px !important;
 }
 
 
-.slae_line_edit [data-name="default_code_product"] {
+.o_list_table [data-name="default_code_product"] {
     width: 300px !important;
 }
-.slae_line_edit [data-name="codigo_cliente"] {
+.o_list_table [data-name="codigo_cliente"] {
     width: 300px !important;
 }
-.slae_line_edit [data-name="pedido_cliente] {
+.o_list_table [data-name="pedido_cliente] {
     width: 300px !important;
 }
-.slae_line_edit [data-name="codigo_alterno"] {
+.o_list_table [data-name="codigo_alterno"] {
     width: 300px !important;
 }
-.slae_line_edit [data-name="fecha_programada"] {
+.o_list_table [data-name="fecha_programada"] {
     width: 300px !important;
 }
-.slae_line_edit [data-name="cantidad_reservada"] {
+.o_list_table [data-name="cantidad_reservada"] {
     width: 300px !important;
 }
