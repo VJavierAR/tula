@@ -77,3 +77,6 @@ class Partner(models.Model):
             for total in totales:
                 suma_totales += total
             rec.meta_facturacion = suma_totales
+    def create(self,vals):
+        _logger.info(vals)
+        super(Partner,self).create(vals)

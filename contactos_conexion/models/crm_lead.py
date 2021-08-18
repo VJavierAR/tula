@@ -125,34 +125,34 @@ class CRM(models.Model):
         _logger.info("date_1: " + str(date_1))
         self.env.cr.execute("update crm_lead set write_date = '" + str(date_1) + "' where  id = " + str(self.id) + ";")
 
-    def handle_partner_assignment(self, force_partner_id=False, create_missing=True):
-        """ Update customer (partner_id) of leads. Purpose is to set the same
-        partner on most leads; either through a newly created partner either
-        through a given partner_id.
+    # def handle_partner_assignment(self, force_partner_id=False, create_missing=True):
+    #     """ Update customer (partner_id) of leads. Purpose is to set the same
+    #     partner on most leads; either through a newly created partner either
+    #     through a given partner_id.
 
-        :param int force_partner_id: if set, update all leads to that customer;
-        :param create_missing: for leads without customer, create a new one
-          based on lead information;
-        """
-        for lead in self:
-            if force_partner_id:
-                lead.partner_id = force_partner_id
-            if not lead.partner_id and create_missing:
-                partner = lead._create_customer()
-                lead.partner_id = partner.id
-            if(lead.partner_id.id):
-                lead.partner_id.oprotunidad_origen = lead.id
-                lead.partner_id.creado_desde_oportunidad = True
-                lead.partner_id.active = False
-                display_msg = "Solicitud de nuevo cliente creado a traves de oportunidad"
-                self.env['helpdesk.ticket'].create({
-                    'name': 'Solicitud de creación de cliente',
-                    'partner_id': lead.partner_id.id,
-                    'origin_crm': lead.id,
-                    'description': display_msg,
-                    # 'tag_ids': (4, 1),
-                    'team_id': 3
-                })
+    #     :param int force_partner_id: if set, update all leads to that customer;
+    #     :param create_missing: for leads without customer, create a new one
+    #       based on lead information;
+    #     """
+    #     for lead in self:
+    #         if force_partner_id:
+    #             lead.partner_id = force_partner_id
+    #         if not lead.partner_id and create_missing:
+    #             partner = lead._create_customer()
+    #             lead.partner_id = partner.id
+    #         if(lead.partner_id.id):
+    #             lead.partner_id.oprotunidad_origen = lead.id
+    #             lead.partner_id.creado_desde_oportunidad = True
+    #             lead.partner_id.active = False
+    #             display_msg = "Solicitud de nuevo cliente creado a traves de oportunidad"
+    #             self.env['helpdesk.ticket'].create({
+    #                 'name': 'Solicitud de creación de cliente',
+    #                 'partner_id': lead.partner_id.id,
+    #                 'origin_crm': lead.id,
+    #                 'description': display_msg,
+    #                 # 'tag_ids': (4, 1),
+    #                 'team_id': 3
+    #             })
 
 
 
