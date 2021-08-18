@@ -23,7 +23,8 @@ class PedidoAbierto(models.Model):
     lineas_pedido = fields.One2many(
         comodel_name="sale.order.line",
         inverse_name="pedido_abierto_rel",
-        string="Lineas de pedido abierto"
+        string="Lineas de pedido abierto",
+        domain="[('es_de_sale_order', '=', False)]"
     )
     partner_id = fields.Many2one(
         comodel_name="res.partner",
