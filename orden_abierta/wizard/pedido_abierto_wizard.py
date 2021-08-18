@@ -64,7 +64,6 @@ class PedidoAbiertoWizard(models.TransientModel):
             'payment_term_id': pedido_abierto.plazo_de_pago.id,
             # 'company_id': self.order_line_ids[0].order_id.company_id.id,
             # 'picking_policy': self.order_line_ids[0].order_id.picking_policy,
-            # 'payment_term_id': self.payment_term_id.id
         })
         sale_directa.write({
             'pedido_abierto_origen': self.pedido_abierto_id

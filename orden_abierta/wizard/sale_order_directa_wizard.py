@@ -19,6 +19,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         comodel_name="sale.order.line",
         default=lambda self: self._default_order_line_ids(),
         help="",
+        readonly=False
     )
 
     def generar_orden(self):
@@ -27,8 +28,8 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         mensajeTitulo = "Alerta"
         cliente_id = self.order_line_ids[0].order_partner_id.id
         _logger.info("cliente_id: " + str(cliente_id))
-        for line in self.order_line_ids:
-            if line.order_partner_id.id != cliente_id:
+        for linea in self.order_line_ids:
+            if linea.order_partner_id.id != cliente_id:
                 display_msg = "Una línea de pedido tiene diferente cliente"
                 wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
                 view = self.env.ref('orden_abierta.sale_order_alerta_view')
@@ -44,13 +45,46 @@ class OrdenAbiertaToDirecta(models.TransientModel):
                     'res_id': wiz.id,
                     'context': self.env.context,
                 }
+            cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
+            if cantidad_sobrante < 0:
+                mensajeTitulo = "Alerta"
+                display_msg = "La cantidad de pedida no puede exceder de la cantidad restante."
+                wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
+                view = self.env.ref('orden_abierta.sale_order_alerta_view')
+                return {
+                    'name': _(mensajeTitulo),
+                    'type': 'ir.actions.act_window',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'sale.order.alerta',
+                    'views': [(view.id, 'form')],
+                    'view_id': view.id,
+                    'target': 'new',
+                    'res_id': wiz.id,
+                    'context': self.env.context,
+                }
+            if linea.linea_confirmada:
+                mensajeTitulo = "Alerta"
+                display_msg = "Una de las lineas no tiene cantidades restantes por entregar."
+                wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
+                view = self.env.ref('orden_abierta.sale_order_alerta_view')
+                return {
+                    'name': _(mensajeTitulo),
+                    'type': 'ir.actions.act_window',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'sale.order.alerta',
+                    'views': [(view.id, 'form')],
+                    'view_id': view.id,
+                    'target': 'new',
+                    'res_id': wiz.id,
+                    'context': self.env.context,
+                }
 
-        _logger.info("cliente_id: " + str(cliente_id))
         sale_directa = self.env['sale.order'].create({
             'partner_id': cliente_id,
             # 'company_id': self.order_line_ids[0].order_id.company_id.id,
             # 'picking_policy': self.order_line_ids[0].order_id.picking_policy,
-            # 'payment_term_id': self.payment_term_id.id
         })
         # sale_directa.write({
         #   'pedido_abierto_origen': self.pedido_abierto_id
@@ -60,8 +94,16 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         name_pedidos_abiertos = []
         ids_pedidos_abiertos = []
         for linea in self.order_line_ids:
-            linea.order_id = id_sale_directa
-            linea.linea_confirmada = True
+            # linea.order_id = id_sale_directa
+            # linea.linea_confirmada = True
+            linea.cantidad_restante = linea.cantidad_restante - linea.product_uom_qty
+            linea.cantidad_entregada = linea.cantidad_entregada + linea.product_uom_qty
+
+            linea_duplicada = linea.dup_line_to_order(order_id=id_sale_directa)
+            linea_duplicada.pedido_abierto_rel = False
+            if linea.cantidad_restante == 0:
+                linea.linea_confirmada = True
+
             ids_pedidos_abiertos.append(linea.pedido_abierto_rel.id)
             name_pedidos_abiertos.append(linea.pedido_abierto_rel.name)
 
