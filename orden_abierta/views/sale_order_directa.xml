@@ -18,8 +18,12 @@
                     <field name="cantidad_reservada" readonly="1"/>
                     <field name="name" readonly="1"/>
                     <field name="product_uom_qty" readonly="0"/>
-                    <field name="qty_delivered" readonly="1"/>
-                    <field name="qty_invoiced" readonly="1"/>
+                    <field name="cantidad_facturada" readonly="1"/>
+                    <field name="cantidad_entregada" readonly="1"/>
+                    <field name="cantidad_restante" readonly="1"/>
+                    <field name="cantidad_original" readonly="1"/>
+                    <field name="qty_delivered" readonly="1" invisible="1"/>
+                    <field name="qty_invoiced" readonly="1"  invisible="1"/>
                     <field name="price_unit" readonly="1"/>
                     <field name="tax_id" readonly="1"/>
                     <field name="discount" readonly="1"/>
