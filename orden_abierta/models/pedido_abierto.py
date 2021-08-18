@@ -92,7 +92,7 @@ class PedidoAbierto(models.Model):
         })
         _logger.info("vals.get('lineas_pedido'): \n" + str(vals.get('lineas_pedido')))
         for linea in vals.get('lineas_pedido'):
-            linea['order_id'] = orden_temp.id
+            linea[2]['order_id'] = orden_temp.id
 
         result = super(PedidoAbierto, self).create(vals)
         return result
