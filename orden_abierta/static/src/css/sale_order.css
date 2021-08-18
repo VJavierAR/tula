@@ -1,29 +1,29 @@
-.o_list_table [data-name="product_id"] {
+.slae_line_edit o_list_view o_list_optional_columns [data-name="product_id"] {
     width: 300px !important;
 }
-.o_list_table [data-name="name"] {
+.slae_line_edit o_list_view o_list_optional_columns [data-name="name"] {
     width: 300px !important;
 }
-.o_list_table [data-name="product_uom_qty"] {
+.slae_line_edit o_list_view o_list_optional_columns [data-name="product_uom_qty"] {
     width: 93px !important;
 }
 
 
-.o_list_table [data-name="default_code_product"] {
+.slae_line_edit o_list_view o_list_optional_columns [data-name="default_code_product"] {
     width: 300px !important;
 }
-.o_list_table [data-name="codigo_cliente"] {
+.slae_line_edit o_list_view o_list_optional_columns [data-name="codigo_cliente"] {
     width: 300px !important;
 }
-.o_list_table [data-name="pedido_cliente] {
+.slae_line_edit o_list_view o_list_optional_columns [data-name="pedido_cliente] {
     width: 300px !important;
 }
-.o_list_table [data-name="codigo_alterno"] {
+.slae_line_edit o_list_view o_list_optional_columns [data-name="codigo_alterno"] {
     width: 300px !important;
 }
-.o_list_table [data-name="fecha_programada"] {
+.slae_line_edit o_list_view o_list_optional_columns [data-name="fecha_programada"] {
     width: 300px !important;
 }
-.o_list_table [data-name="cantidad_reservada"] {
+.slae_line_edit o_list_view o_list_optional_columns [data-name="cantidad_reservada"] {
     width: 300px !important;
 }
