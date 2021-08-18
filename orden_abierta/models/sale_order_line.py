@@ -81,6 +81,16 @@ class SaleOrderLineOrdenAbierta(models.Model):
         default=0,
         copy=True
     )
+    es_de_sale_order = fields.Boolean(
+        string="Es de sale order",
+        default=False,
+        store=True
+    )
+    linea_relacionada = fields.Many2one(
+        comodel_name="sale.order.line",
+        string="Linea relacionada",
+        required=False,
+    )
     """
     order_id = fields.Many2one(
         comodel_name='sale.order',

@@ -16,7 +16,7 @@
                     <h2>
                         Se creara y confirmara la orden directa de las líneas seleccionadas.
                     </h2>
-                    <field name="order_line_ids" readonly="0" force_save="1">
+                    <field name="order_line_ids" readonly="0" force_save="1" attrs="{'domain': [('es_de_sale_order', '=', False)]}">
                         <tree class="slae_line_edit" editable="bottom" create="0">
                             <field name="order_id" readonly="1" invisible="1" />
                             <!-- options='{"bg_color": "#77DBEB: fecha_programada &lt;= context_today().strftime(\"%Y-%m-%d\");"}' -->

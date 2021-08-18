@@ -100,7 +100,10 @@ class OrdenAbiertaToDirecta(models.TransientModel):
             linea.cantidad_entregada = linea.cantidad_entregada + linea.product_uom_qty
 
             linea_duplicada = linea.dup_line_to_order(order_id=id_sale_directa)
-            linea_duplicada.pedido_abierto_rel = False
+            # linea_duplicada.pedido_abierto_rel = False
+            linea_duplicada.es_de_sale_order = True
+            linea_duplicada.linea_relacionada = linea_duplicada.id
+
             if linea.cantidad_restante == 0:
                 linea.linea_confirmada = True
 
