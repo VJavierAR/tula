@@ -64,6 +64,7 @@ class Partner(models.Model):
         string="Creado desde oportunidad",
         default=False
     )
+    check=fields:Boolean(default=False)
 
     def _compute_meta_facturacion(self):
         for rec in self:
@@ -77,13 +78,13 @@ class Partner(models.Model):
             for total in totales:
                 suma_totales += total
             rec.meta_facturacion = suma_totales
-    @api.model_create_multi
-    def create(self,vals_list):
-        _logger.info(vals_list)
-        res=super(Partner,self).create(vals_list)
-        return res
+    # @api.model_create_multi
+    # def create(self,vals_list):
+    #     _logger.info(vals_list)
+    #     res=super(Partner,self).create(vals_list)
+    #     return res
 
-    def write(self,vals):
-        _logger.info(vals)
-        res=super(Partner,self).write(vals)
-        return res
+    # def write(self,vals):
+    #     _logger.info(vals)
+    #     res=super(Partner,self).write(vals)
+    #     return res
