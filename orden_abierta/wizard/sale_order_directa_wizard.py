@@ -19,7 +19,8 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         comodel_name="sale.order.line",
         default=lambda self: self._default_order_line_ids(),
         help="",
-        readonly=False
+        readonly=False,
+        domain="[('es_de_sale_order', '=', False)]"
     )
 
     def generar_orden(self):

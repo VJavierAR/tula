@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form string="Pedido abierto">
                     <field name="pedido_abierto_id" invisible="1"/>
-                    <field name='lineas_pedidos' string=' ' attrs="{'domain': [('es_de_sale_order', '=', False)]}">
+                    <field name='lineas_pedidos' string=' '>
                         <tree class="slae_line_edit" editable="bottom">
                             <field name="sequence" widget="handle"/>
                             <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->

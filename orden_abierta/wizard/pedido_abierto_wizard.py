@@ -15,7 +15,8 @@ class PedidoAbiertoWizard(models.TransientModel):
     )
     lineas_pedidos = fields.Many2many(
         comodel_name="sale.order.line",
-        string="Lineas de pedido abierto"
+        string="Lineas de pedido abierto",
+        domain="[('es_de_sale_order', '=', False)]"
     )
 
     def crear_orden(self):
