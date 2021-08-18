@@ -1,61 +1,39 @@
-.slae_line_edit  [data-name="product_id"] {
-    width: 300px !important;
-}
-.slae_line_edit [data-name="name"] {
-    width: 300px !important;
-}
-.slae_line_edit [data-name="product_uom_qty"] {
-    width: 93px !important;
-}
-
-.slae_line_edit [data-name="default_code_product"] {
-    width: 300px !important;
-}
-.slae_line_edit [data-name="codigo_cliente"] {
-    width: 300px !important;
-}
-.slae_line_edit [data-name="pedido_cliente] {
-    width: 300px !important;
-}
-.slae_line_edit [data-name="codigo_alterno"] {
-    width: 300px !important;
-}
-.slae_line_edit [data-name="fecha_programada"] {
-    width: 300px !important;
-}
-.slae_line_edit [data-name="cantidad_reservada"] {
-    width: 300px !important;
+.slae_line_edit {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-
-
-
-
-.slae_line_edit  [name="product_id"] {
-    width: 300px !important;
-}
-.slae_line_edit [name="name"] {
-    width: 300px !important;
-}
-.slae_line_edit [name="product_uom_qty"] {
-    width: 93px !important;
+.slae_line_edit table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: center;
 }
 
-.slae_line_edit [name="default_code_product"] {
-    width: 300px !important;
+.slae_line_edit table th, .slae_line_edit table td {
+    padding: 12px 15px;
 }
-.slae_line_edit [name="codigo_cliente"] {
-    width: 300px !important;
+
+.slae_line_edit table tbody tr {
+    border-bottom: 1px solid #dddddd;
 }
-.slae_line_edit [name="pedido_cliente] {
-    width: 300px !important;
+
+.slae_line_edit table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
 }
-.slae_line_edit [name="codigo_alterno"] {
-    width: 300px !important;
+
+.slae_line_edit table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
 }
-.slae_line_edit [name="fecha_programada"] {
-    width: 300px !important;
+
+.slae_line_edit table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
 }
-.slae_line_edit [name="cantidad_reservada"] {
-    width: 300px !important;
+.slae_line_edit table thead > tr > th:nth-child(2) {
+    width: 500px;
+    text-align: center;
 }
