@@ -43,6 +43,7 @@
                             <field name="confirma_venta_directa" readonly="0" invisible="1"/>
                             <field name="linea_confirmada" readonly="1" invisible="1"/>
                             <field name="creado_desde_pedido_abierto" invisible="1" />
+                            <field name="es_de_sale_order" invisible="1" />
                         </tree>
                     </field>
                     <footer>

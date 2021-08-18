@@ -159,6 +159,8 @@ class PedidoAbierto(models.Model):
             'name': 'Pedidos',
             'view_mode': 'tree',
             'res_model': 'sale.order',
-            'domain': [('pedido_abierto_origen', '=', self.id), ('es_de_sale_order', '=', False)],
+            'domain': [
+                ('pedido_abierto_origen', '=', self.id),
+            ],
             'context': "{'create': False}"
         }

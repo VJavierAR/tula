@@ -60,7 +60,7 @@
                             <field name="currency_id" invisible="1"/>
                             <field name="price_tax" invisible="1"/>
                             <field name="company_id" invisible="1"/>
-
+                            <field name="es_de_sale_order" invisible="1" />
 
                         </tree>
 
