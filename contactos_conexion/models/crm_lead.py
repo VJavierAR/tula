@@ -150,7 +150,7 @@ class CRM(models.Model):
 
     @api.model_create_multi
     def create(self,vals_list):
-        res=False
+        res=True
         for vals in vals_list:
             par=super(CRM,self).create(vals)
             res|=par
