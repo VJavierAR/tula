@@ -16,7 +16,35 @@
                     <h2>
                         Se creara y confirmara la orden directa de las líneas seleccionadas.
                     </h2>
-                    <field name="order_line_ids" readonly="0" force_save="1"/>
+                    <field name="order_line_ids" readonly="0" force_save="1">
+                        <tree class="slae_line_edit" editable="bottom">
+                            <field name="order_id" readonly="1" invisible="1" />
+                            <!-- options='{"bg_color": "#77DBEB: fecha_programada &lt;= context_today().strftime(\"%Y-%m-%d\");"}' -->
+                            <field name="order_partner_id" readonly="1"/>
+                            <field name="pedido_abierto_rel" readonly="1"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="default_code_product" readonly="1"/>
+                            <field name="codigo_cliente" readonly="1"/>
+                            <field name="fecha_programada" readonly="0"/>
+                            <field name="codigo_alterno" readonly="0"/>
+                            <field name="cantidad_reservada" readonly="1"/>
+                            <field name="name" readonly="1"/>
+                            <field name="product_uom_qty" readonly="0"/>
+                            <field name="cantidad_facturada" readonly="1"/>
+                            <field name="cantidad_entregada" readonly="1"/>
+                            <field name="cantidad_restante" readonly="1"/>
+                            <field name="cantidad_original" readonly="1"/>
+                            <field name="qty_delivered" readonly="1" invisible="1"/>
+                            <field name="qty_invoiced" readonly="1"  invisible="1"/>
+                            <field name="price_unit" readonly="1"/>
+                            <field name="tax_id" readonly="1"/>
+                            <field name="discount" readonly="1"/>
+                            <field name="price_subtotal" readonly="1"/>
+                            <field name="confirma_venta_directa" readonly="0" invisible="1"/>
+                            <field name="linea_confirmada" readonly="1"/>
+                            <field name="creado_desde_pedido_abierto" invisible="1" />
+                        </tree>
+                    </field>
                     <footer>
                         <button name="generar_orden" string="Crear orden directa" type="object" class="oe_highlight"/>
                         <button string="Cerrar" class="oe_link" special="cancel"/>
