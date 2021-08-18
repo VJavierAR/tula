@@ -94,6 +94,12 @@ class PedidoAbierto(models.Model):
     )
 
     @api.onchange('pedido_cliente')
+    def actualiza_cliente_en_lineas(self):
+        if self.partner_id.id and self.lineas_pedido.ids:
+            for linea in self.lineas_pedido:
+                linea.order_partner_id = self.partner_id.id
+
+    @api.onchange('pedido_cliente')
     def actualiza_pedido_cliente_en_lienas(self):
         if self.pedido_cliente and self.lineas_pedido.ids:
             for linea in self.lineas_pedido:
