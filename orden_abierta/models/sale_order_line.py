@@ -94,9 +94,9 @@ class SaleOrderLineOrdenAbierta(models.Model):
 
     def create(self, vals):
 
-        if 'product_uom_qty' in vals:
-            vals['cantidad_restante'] = vals['product_uom_qty']
-            vals['cantidad_original'] = vals['product_uom_qty']
+        
+        vals['cantidad_restante'] = vals['product_uom_qty']
+        vals['cantidad_original'] = vals['product_uom_qty']
 
         result = super(SaleOrderLineOrdenAbierta, self).create(vals)
         return result
