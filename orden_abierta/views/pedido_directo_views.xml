@@ -34,15 +34,17 @@
                         </div>
                         <group>
                             <group>
-                                <field name="id" />
-                                <field name="create_date" />
+                                <field name="id" invisible="1"/>
+                                <field name="create_date" invisible="1"/>
                                 <field name="partner_id" required="1" />
-                                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company" />
                                 <field name="pricelist_id" groups="product.group_product_pricelist" options="{'no_open':True,'no_create': True}"/>
+
+                                <field name="pedido_cliente" />
                             </group>
                             <group>
                                 <field name="user_id" />
-                                <field name="id_orden_temp" invisible="0"/>
+                                <field name="id_orden_temp" invisible="1"/>
                             </group>
                         </group>
                         <notebook>

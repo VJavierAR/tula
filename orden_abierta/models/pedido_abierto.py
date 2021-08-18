@@ -83,6 +83,17 @@ class PedidoAbierto(models.Model):
         string="id orden temp",
         store=True
     )
+    pedido_cliente = fields.Char(
+        string="Pedido cliente",
+        store=True,
+        help="Actualiza el dato pedido cliente de todas las lineas de pedido"
+    )
+
+    @api.onchange('pedido_cliente')
+    def actualiza_pedido_cliente_en_lienas(self):
+        if self.pedido_cliente and self.lineas_pedido.ids:
+            for linea in self.lineas_pedido:
+                linea.pedido_cliente = self.pedido_cliente
 
     @api.model
     def create(self, vals):
