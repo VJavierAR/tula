@@ -93,7 +93,7 @@ class PedidoAbierto(models.Model):
         string="Plazo de pago"
     )
 
-    @api.onchange('pedido_cliente')
+    @api.onchange('partner_id')
     def actualiza_cliente_en_lineas(self):
         if self.partner_id.id and self.lineas_pedido.ids:
             for linea in self.lineas_pedido:
