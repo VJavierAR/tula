@@ -10,7 +10,6 @@
                     <field name='lineas_pedidos' string=' '>
                         <tree class="slae_line_edit" editable="bottom">
                             <field name="sequence" widget="handle"/>
-                            <field name="linea_relacionada" />
                             <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
                             <field name="display_type" invisible="1"/>
                             <field name="product_uom_category_id" invisible="1"/>
@@ -64,11 +63,6 @@
                             <field name="es_de_sale_order" invisible="1" />
 
                         </tree>
-                        <form>
-                            <group>
-                                <field name="linea_relacionada" />
-                            </group>
-                        </form>
 
                     </field>
 
