@@ -33,6 +33,12 @@
                             <field name="name" widget="section_and_note_text" optional="show" readonly="1"/>
 
                             <field name="product_uom_qty"/>
+                            <field name="cantidad_facturada" readonly="1"/>
+                            <field name="cantidad_entregada" readonly="1"/>
+                            <field name="cantidad_restante" readonly="1"/>
+                            <field name="cantidad_original" readonly="1"/>
+
+
                             <field name="qty_delivered" string="Delivered" optional="show" readonly="1"/>
                             <field name="qty_delivered_manual" invisible="1"/>
                             <field name="qty_delivered_method" invisible="1"/>

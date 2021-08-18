@@ -127,6 +127,10 @@ class PedidoAbierto(models.Model):
             'lineas_pedidos': [(6, 0, self.lineas_pedido.ids)]
         })
 
+        for linea in wiz.lineas_pedidos:
+            if linea.linea_confirmada:
+                linea.unlink()
+
         view = self.env.ref('orden_abierta.view_pedido_abierto_wizard')
         return {
             'name': _('Crear pedido '),

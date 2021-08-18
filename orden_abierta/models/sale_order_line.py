@@ -58,7 +58,28 @@ class SaleOrderLineOrdenAbierta(models.Model):
     )
     creado_desde_pedido_abierto = fields.Boolean(
         string="Creado desde pedido abierto",
-        default=False
+        default=False,
+        copy=True
+    )
+    cantidad_original = fields.Integer(
+        string="Cantidad original",
+        default=0,
+        copy=True
+    )
+    cantidad_facturada = fields.Integer(
+        string="Cantidad facturada",
+        default=0,
+        copy=True
+    )
+    cantidad_entregada = fields.Integer(
+        string="Cantidad entregada",
+        default=0,
+        copy=True
+    )
+    cantidad_restante = fields.Integer(
+        string="Cantidad restante",
+        default=0,
+        copy=True
     )
     """
     order_id = fields.Many2one(
@@ -70,6 +91,15 @@ class SaleOrderLineOrdenAbierta(models.Model):
         copy=False
     )
     """
+
+    def create(self, vals):
+
+        if 'product_uom_qty' in vals:
+            vals['cantidad_restante'] = vals['product_uom_qty']
+            vals['cantidad_original'] = vals['product_uom_qty']
+
+        result = super(SaleOrderLineOrdenAbierta, self).create(vals)
+        return result
 
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):

@@ -21,6 +21,44 @@ class PedidoAbiertoWizard(models.TransientModel):
     def crear_orden(self):
         _logger.info("generando orden")
         pedido_abierto = self.env['pedido.abierto'].search([('id', '=', self.pedido_abierto_id)])
+
+        for linea in self.lineas_pedidos:
+            cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
+            if cantidad_sobrante < 0:
+                mensajeTitulo = "Alerta"
+                display_msg = "La cantidad de pedida no puede exceder de la cantidad restante."
+                wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
+                view = self.env.ref('orden_abierta.sale_order_alerta_view')
+                return {
+                    'name': _(mensajeTitulo),
+                    'type': 'ir.actions.act_window',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'sale.order.alerta',
+                    'views': [(view.id, 'form')],
+                    'view_id': view.id,
+                    'target': 'new',
+                    'res_id': wiz.id,
+                    'context': self.env.context,
+                }
+            if linea.linea_confirmada:
+                mensajeTitulo = "Alerta"
+                display_msg = "Una de las lineas no tiene cantidades restantes por entregar."
+                wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
+                view = self.env.ref('orden_abierta.sale_order_alerta_view')
+                return {
+                    'name': _(mensajeTitulo),
+                    'type': 'ir.actions.act_window',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'sale.order.alerta',
+                    'views': [(view.id, 'form')],
+                    'view_id': view.id,
+                    'target': 'new',
+                    'res_id': wiz.id,
+                    'context': self.env.context,
+                }
+
         sale_directa = self.env['sale.order'].create({
             'partner_id': pedido_abierto.partner_id.id,
             'payment_term_id': pedido_abierto.plazo_de_pago.id,
@@ -33,13 +71,27 @@ class PedidoAbiertoWizard(models.TransientModel):
         })
         id_sale_directa = sale_directa.id
 
-        for linea in pedido_abierto.lineas_pedido:
-            linea.order_id = id_sale_directa
-            linea.linea_confirmada = True
+        for linea in self.lineas_pedidos:
+            linea.cantidad_restante = linea.cantidad_restante - linea.product_uom_qty
+            linea.cantidad_entregada = linea.cantidad_entregada + linea.product_uom_qty
 
-        pedido_abierto.write({
-            'state': 'confirmado'
-        })
+            linea_duplicada = linea.dup_line_to_order(order_id=id_sale_directa)
+
+            if linea.cantidad_restante == 0:
+                linea.linea_confirmada = True
+
+        todas_validadas = True
+        for linea in pedido_abierto.lineas_pedido:
+            # linea.order_id = id_sale_directa
+            # linea.linea_confirmada = True
+            if not linea.linea_confirmada:
+                todas_validadas = False
+
+        if todas_validadas:
+            pedido_abierto.write({
+                'state': 'confirmado'
+            })
+
         sale_directa.action_confirm()
         display_msg = "Se genero orden directa de un pedido abierto: <br/>Pedido abierto: " + pedido_abierto.name
         sale_directa.message_post(body=display_msg)
