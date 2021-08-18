@@ -32,6 +32,10 @@ class SaleOrderOrdenAbierta(models.Model):
         string="Pedido abierto origen",
         required=False
     )
+    active = fields.Boolean(
+        string="Activo",
+        default=True
+    )
     """
     reservas = fields.One2many(
         comodel_name='sale.order.reservas',
