@@ -50,10 +50,12 @@ class PedidoAbiertoLinea(models.Model):
         string='Unit of Measure',
         domain="[('category_id', '=', product_uom_category_id)]"
     )
+    """
     product_uom_category_id = fields.Many2one(
         related='product_id.uom_id.category_id',
         readonly=True
     )
+    """
     price_unit = fields.Float(
         'Unit Price',
         required=True,
