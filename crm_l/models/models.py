@@ -120,7 +120,7 @@ class Crm_l(models.Model):
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
                         # date_time_acto = pytz.utc.localize(fecha).astimezone(user_tz)
                     elif len(fecha_segundo_caso) > 0:
-                        Fec = da[0].replace('Fecha y Hora Maxima de Recepción de expresiones de Interes:\t', '')
+                        Fec = fecha_segundo_caso[0].replace('Fecha y Hora Maxima de Recepción de expresiones de Interes:\t', '')
                         fecha = Fec
 
                     nu = list(filter(lambda v: 'Número:	' in v, d))
