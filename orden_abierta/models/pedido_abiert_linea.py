@@ -54,7 +54,7 @@ class PedidoAbiertoLinea(models.Model):
     )
     product_uom = fields.Many2one(
         'uom.uom',
-        string='Unit of Measure',
+        string='Unidad de medida',
         # domain="[('category_id', '=', product_uom_category_id)]"
     )
     """
@@ -98,7 +98,7 @@ class PedidoAbiertoLinea(models.Model):
 
     tax_id = fields.Many2many(
         'account.tax',
-        string='Taxes',
+        string='Impuesto',
         domain=['|', ('active', '=', False), ('active', '=', True)]
     )
 
@@ -115,7 +115,7 @@ class PedidoAbiertoLinea(models.Model):
         readonly=True
     )
     discount = fields.Float(
-        string='Discount (%)',
+        string='Descuento (%)',
         digits='Discount',
         default=0.0
     )

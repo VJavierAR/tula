@@ -113,7 +113,7 @@
 
 
 
-                                        <field name="product_uom" force_save="1" string="UoM"
+                                        <field name="product_uom" force_save="1" string="UoM" invisible="1"
 
                                                options="{&quot;no_open&quot;: True}" optional="show"/>
 
