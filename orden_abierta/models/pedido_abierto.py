@@ -167,3 +167,16 @@ class PedidoAbierto(models.Model):
             ],
             'context': "{'create': False}"
         }
+
+    def get_lineas_abiertas(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Pedidos',
+            'view_mode': 'tree',
+            'res_model': 'pedido.abierto.linea',
+            'domain': [
+                ('pedido_abierto_rel', '=', self.id),
+            ],
+            'context': "{'create': False}"
+        }
