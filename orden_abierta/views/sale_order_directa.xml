@@ -71,9 +71,10 @@
                     <field name="discount" string="Disc.%"
                            groups="product.group_discount_per_so_line" optional="show" readonly="1"/>
 
-                    <field name="price_total" widget="monetary"
-                           groups="account.group_show_line_subtotals_tax_included" readonly="1"/>
-
+                    <!--
+                                        <field name="price_total" widget="monetary"
+                                               groups="account.group_show_line_subtotals_tax_included"/>
+                                        -->
 
                     <!--<field name="currency_id" invisible="1"/>-->
 

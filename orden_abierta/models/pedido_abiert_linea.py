@@ -60,12 +60,14 @@ class PedidoAbiertoLinea(models.Model):
         digits='Product Price',
         default=0.0
     )
+    """
     price_total = fields.Monetary(
         # compute='_compute_amount',
         string='Total',
         readonly=True,
         store=True
     )
+    """
 
     @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
     def _compute_amount(self):
