@@ -4,3 +4,4 @@ access_sale_notificacion_orden_abierta,access.noticiacion.orden.abierta,orden_ab
 access_sale_notificacion_pickings,access.noticiacion.pickings,orden_abierta.model_stock_picking,group_noticiacion_pickings,1,1,1,1
 access_sale_notificacion_vendedor_pickings,access.noticiacion.vendedor.pickings,orden_abierta.model_stock_picking,group_noticiacion_vendedor_picking,1,1,1,1
 access_pedido_abierto,access_pedido_abierto,model_pedido_abierto,,1,1,1,1
+access_pedido_abierto_linea,access_pedido_abierto_linea,model_pedido_abierto_linea,,1,1,1,1
