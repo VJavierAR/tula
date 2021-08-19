@@ -20,16 +20,16 @@ class PedidoAbiertoLinea(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'lineas de pedido abierto'
 
+    @api.onchange('product_id')
     def _get_name(self):
         if self.product_id.id:
-            return self.product_id.name
+            self.name = self.product_id.name
         else:
-            return ""
+            self.name = "No disponible"
 
     name = fields.Text(
         string='Description',
         required=True,
-        default=lambda self: self._get_name(),
     )
     company_id = fields.Many2one(
         related='pedido_abierto_rel.company_id',
