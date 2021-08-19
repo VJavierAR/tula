@@ -36,6 +36,11 @@ class SaleOrderOrdenAbierta(models.Model):
         string="Activo",
         default=True
     )
+    pedido_cliente = fields.Char(
+        string="Pedido cliente",
+        store=True,
+        help="Actualiza el dato pedido cliente de todas las lineas de pedido"
+    )
     """
     reservas = fields.One2many(
         comodel_name='sale.order.reservas',
@@ -43,6 +48,21 @@ class SaleOrderOrdenAbierta(models.Model):
         string='Reservas'
     )
     """
+
+    @api.model
+    def create(self, vals):
+        if 'pedido_cliente' in vals and 'order_line' in vals:
+            for linea in vals.get('order_line'):
+                linea[2]['pedido_cliente'] = vals['pedido_cliente']
+
+        result = super(SaleOrderOrdenAbierta, self).create(vals)
+        return result
+
+    @api.onchange('pedido_cliente')
+    def actualiza_pedido_cliente_en_lienas(self):
+        if self.pedido_cliente and self.order_line.ids:
+            for linea in self.order_line:
+                linea.pedido_cliente = self.pedido_cliente
 
     def conf(self):
         self.action_confirm()
