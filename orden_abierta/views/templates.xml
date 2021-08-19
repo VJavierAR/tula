@@ -3,6 +3,7 @@
     	<template id="assets_backend" inherit_id="web.assets_backend" name="tree view menu">
     		<xpath expr="." positio="inside">
     			<link rel="stylesheet" type="text/css" href="/orden_abierta/static/src/css/sale_order.css" />
+				<script type="text/javascript" src="/orden_abierta/static/src/js/tree_view_button.js"></script>
     		</xpath>
     	</template>
     </data>
