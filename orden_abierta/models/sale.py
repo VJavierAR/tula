@@ -52,7 +52,7 @@ class SaleOrderOrdenAbierta(models.Model):
     @api.model
     def create(self, vals):
         if 'pedido_cliente' in vals and 'order_line' in vals:
-            for linea in vals.get('order_line'):
+            for linea in vals.get('order_line'): 
                 linea[2]['pedido_cliente'] = vals['pedido_cliente']
 
         result = super(SaleOrderOrdenAbierta, self).create(vals)
