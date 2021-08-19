@@ -48,59 +48,60 @@
                         <tree class="slae_line_edit" editable="bottom" create="0">
 
                             <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
-                            <field name="linea_relacionada"/>
-                            <field name="company_id" invisible="1"/>
+                                        <field name="linea_relacionada"/>
+                                        <field name="company_id" invisible="1"/>
 
-                            <field name="product_id"
+                                        <field name="product_id"
 
-                                   options="{'no_open': True}" force_save="1"
+                                               options="{'no_open': True}" force_save="1"
 
-                            domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=',
-                            parent.company_id)]"
-                            widget="product_configurator"/>
+                                               domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"
+                                               widget="product_configurator"/>
+                                        <!--context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom':product_uom,                                             'company_id': parent.company_id,                                             'default_lst_price': price_unit,                                             'default_description_sale': name                                         }"-->
 
-                            <field name="pedido_abierto_rel" invisible="1"/>
-                            <field name="default_code_product" readonly="1" optional="show"/>
-                            <field name="codigo_cliente" readonly="1" optional="show"/>
-                            <field name="pedido_cliente" optional="show"/>
-                            <field name="codigo_alterno" optional="show"/>
-                            <field name="fecha_programada" optional="show"/>
-                            <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
-                            <field name="order_partner_id" invisible="1"/>
-
-
-                            <field name="name" widget="section_and_note_text" optional="show"/>
-
-                            <field name="product_uom_qty"
-                                   context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom': product_uom,                                             'company_id': parent.company_id                                         }"/>
-                            <field name="cantidad_facturada" readonly="1"/>
-                            <field name="cantidad_entregada" readonly="1"/>
-                            <field name="cantidad_restante" readonly="1"/>
-                            <field name="cantidad_original" readonly="1"/>
+                                        <field name="pedido_abierto_rel" invisible="1"/>
+                                        <field name="default_code_product" readonly="1" optional="show"/>
+                                        <field name="codigo_cliente" readonly="1" optional="show"/>
+                                        <field name="pedido_cliente" optional="show"/>
+                                        <field name="codigo_alterno" optional="show"/>
+                                        <field name="fecha_programada" optional="show"/>
+                                        <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
+                                        <field name="order_partner_id" invisible="1"/>
 
 
-                            <field name="product_uom" force_save="1" string="UoM"
+                                        <field name="name" widget="section_and_note_text" optional="show"/>
 
-                                   context="{'company_id': parent.company_id}" groups="uom.group_uom"
-                                   options="{&quot;no_open&quot;: True}" optional="show"/>
+                                        <field name="product_uom_qty"
+                                               />
+                                        <field name="cantidad_facturada" readonly="1"/>
+                                        <field name="cantidad_entregada" readonly="1"/>
+                                        <field name="cantidad_restante" readonly="1"/>
+                                        <field name="cantidad_original" readonly="1"/>
 
-                            <field name="price_unit" />
-                            <field name="tax_id" widget="many2many_tags" options="{'no_create': True}"
-                                   domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
-                                    optional="show"/>
-                            <field name="discount" string="Disc.%"
-                                   groups="product.group_discount_per_so_line" optional="show"/>
 
-                            <!--
+
+
+
+                                        <field name="product_uom" force_save="1" string="UoM"
+
+                                               options="{&quot;no_open&quot;: True}" optional="show"/>
+
+                                        <field name="price_unit" />
+                                        <field name="tax_id" widget="many2many_tags"
+                                               optional="show"/>
+                                        <field name="discount" string="Disc.%"
+                                               groups="product.group_discount_per_so_line" optional="show"/>
+
+                                        <!--
                                         <field name="price_total" widget="monetary"
                                                groups="account.group_show_line_subtotals_tax_included"/>
                                         -->
 
-                            <!--<field name="currency_id" invisible="1"/>-->
+                                        <!--<field name="currency_id" invisible="1"/>-->
 
-                            <field name="company_id" invisible="1"/>
-                            <field name="creado_desde_pedido_abierto" invisible="1"/>
-                            <field name="es_de_sale_order" force_save="1" invisible="0"/>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="creado_desde_pedido_abierto" invisible="1"/>
+                                        <field name="es_de_sale_order" force_save="1" invisible="0"/>
 
                         </tree>
                         <form>

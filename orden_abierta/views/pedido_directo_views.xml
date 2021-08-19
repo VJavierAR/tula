@@ -67,7 +67,7 @@
                         <notebook>
                             <page string="Lineas de pedido" name="order_lines">
                                 <field name="lineas_pedido"
-                                       context="{'default_order_partner_id': partner_id, 'default_creado_desde_pedido_abierto': True, 'default_order_id': id_orden_temp}"
+                                       context="{'default_order_partner_id': partner_id, 'default_creado_desde_pedido_abierto': True}"
 
                                 >
                                     <tree class="slae_line_edit" editable="bottom" >
@@ -97,7 +97,7 @@
                                         <field name="name" widget="section_and_note_text" optional="show"/>
 
                                         <field name="product_uom_qty"
-                                               context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom': product_uom,                                             'company_id': parent.company_id                                         }"/>
+                                               />
                                         <field name="cantidad_facturada" readonly="1"/>
                                         <field name="cantidad_entregada" readonly="1"/>
                                         <field name="cantidad_restante" readonly="1"/>
@@ -109,12 +109,10 @@
 
                                         <field name="product_uom" force_save="1" string="UoM"
 
-                                               context="{'company_id': parent.company_id}" groups="uom.group_uom"
                                                options="{&quot;no_open&quot;: True}" optional="show"/>
 
                                         <field name="price_unit" />
-                                        <field name="tax_id" widget="many2many_tags" options="{'no_create': True}"
-                                               domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
+                                        <field name="tax_id" widget="many2many_tags"
                                                optional="show"/>
                                         <field name="discount" string="Disc.%"
                                                groups="product.group_discount_per_so_line" optional="show"/>
