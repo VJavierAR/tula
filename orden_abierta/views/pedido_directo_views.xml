@@ -119,6 +119,8 @@
 
                                         <field name="price_unit" />
                                         <field name="tax_id" widget="many2many_tags"
+                                               options="{'no_create': True}"
+                                               domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
                                                optional="show"/>
                                         <field name="discount" string="Disc.%"
                                                groups="product.group_discount_per_so_line" optional="show"/>
