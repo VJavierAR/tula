@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from . import product
+from . import pedido_abiert_linea
 from . import sale
 from . import sale_order_line
 from . import pedido_abierto

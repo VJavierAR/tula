@@ -16,7 +16,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
 
     order_line_ids = fields.Many2many(
         string='Ordenes',
-        comodel_name="sale.order.line",
+        comodel_name="pedido.abierto.linea",
         default=lambda self: self._default_order_line_ids(),
         help="",
         readonly=False,

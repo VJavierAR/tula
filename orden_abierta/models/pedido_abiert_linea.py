@@ -4,8 +4,9 @@ from odoo import models, fields, api
 from email.utils import formataddr
 from odoo.exceptions import UserError, RedirectWarning
 from odoo import exceptions, _
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 import logging, ast
-import datetime, time
 import pytz
 import base64
 import requests
@@ -14,9 +15,105 @@ import json
 _logger = logging.getLogger(__name__)
 
 
-class SaleOrderLineOrdenAbierta(models.Model):
-    _inherit = 'sale.order.line'
-    _description = 'línea de pedido orden abierta'
+class PedidoAbiertoLinea(models.Model):
+    _name = 'pedido.abierto.linea'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _description = 'lineas de pedido abierto'
+
+    name = fields.Text(
+        string='Description',
+        required=True
+    )
+    company_id = fields.Many2one(
+        related='pedido_abierto_rel.company_id',
+        string='Company',
+        store=True,
+        readonly=True,
+        index=True
+    )
+    product_id = fields.Many2one(
+        'product.product',
+        string='Producto',
+        domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        change_default=True,
+        ondelete='restrict',
+        check_company=True
+    )
+    product_uom_qty = fields.Float(
+        string='Cantidad',
+        digits='Product Unit of Measure',
+        required=True,
+        default=1.0
+    )
+    product_uom = fields.Many2one(
+        'uom.uom',
+        string='Unit of Measure',
+        domain="[('category_id', '=', product_uom_category_id)]"
+    )
+    product_uom_category_id = fields.Many2one(
+        related='product_id.uom_id.category_id',
+        readonly=True
+    )
+    price_unit = fields.Float(
+        'Unit Price',
+        required=True,
+        digits='Product Price',
+        default=0.0
+    )
+    price_total = fields.Monetary(
+        compute='_compute_amount',
+        string='Total',
+        readonly=True,
+        store=True
+    )
+
+    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
+    def _compute_amount(self):
+        """
+        Compute the amounts of the SO line.
+        """
+        for line in self:
+            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            taxes = line.tax_id.compute_all(price, line.order_id.currency_id, line.product_uom_qty,
+                                            product=line.product_id, partner=None)
+            line.update({
+                # 'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
+                # 'price_total': taxes['total_included'],
+                'price_subtotal': taxes['total_excluded'],
+            })
+            if self.env.context.get('import_file', False) and not self.env.user.user_has_groups(
+                    'account.group_account_manager'):
+                line.tax_id.invalidate_cache(['invoice_repartition_line_ids'], [line.tax_id.id])
+
+    tax_id = fields.Many2many(
+        'account.tax',
+        string='Taxes',
+        domain=['|', ('active', '=', False), ('active', '=', True)])
+
+    order_partner_id = fields.Many2one(
+        related='pedido_abierto_rel.partner_id',
+        store=True,
+        string='Customer',
+        readonly=False
+    )
+    salesman_id = fields.Many2one(
+        related='pedido_abierto_rel.user_id',
+        store=True,
+        string='Salesperson',
+        readonly=True
+    )
+    """
+    currency_id = fields.Many2one(
+        related='pedido_abierto_rel.currency_id', 
+        depends=['order_id.currency_id'], 
+        store=True,
+        string='Currency', 
+        readonly=True
+    )
+    """
+
+
+
 
     codigo_cliente = fields.Text(
         string="Código cliente",
@@ -49,8 +146,8 @@ class SaleOrderLineOrdenAbierta(models.Model):
         string="Línea confirmada",
         default=False
     )
-    linea_abierta_rel = fields.Many2one(
-        comodel_name="pedido.abierto.linea",
+    pedido_abierto_rel = fields.Many2one(
+        comodel_name="pedido.abierto",
         string="Pedido abierto rel",
         required=False,
         store=True,
@@ -86,25 +183,21 @@ class SaleOrderLineOrdenAbierta(models.Model):
         default=False,
         store=True
     )
-    """
-    order_id = fields.Many2one(
-        comodel_name='sale.order',
-        string='Order Reference',
-        required=False,
-        ondelete='cascade',
-        index=True,
-        copy=False
+    linea_relacionada = fields.One2many(
+        comodel_name="sale.order.line",
+        inverse_name="linea_abierta_rel",
+        string="Lineas de pedido abierto",
+        store=True
     )
-    """
 
     def create(self, vals):
-
+        _logger.info("vals de pedidod abietto_loina:   \n\n " + str(vals))
         for linea in vals:
             if 'product_uom_qty' in linea:
                 linea['cantidad_restante'] = linea['product_uom_qty']
                 linea['cantidad_original'] = linea['product_uom_qty']
 
-        result = super(SaleOrderLineOrdenAbierta, self).create(vals)
+        result = super(PedidoAbiertoLinea, self).create(vals)
         return result
 
     @api.onchange('product_id', 'product_uom_qty')
@@ -114,7 +207,6 @@ class SaleOrderLineOrdenAbierta(models.Model):
             for codigo in self.product_id.codigos_de_producto:
                 if self.order_partner_id.id == codigo.cliente.id:
                     self.codigo_cliente = codigo.codigo_producto
-
 
             # Cantidad reservada
             estados_no_aprobados = ['draft', 'sent']
@@ -135,14 +227,15 @@ class SaleOrderLineOrdenAbierta(models.Model):
             else:
                 self.cantidad_reservada = 0
 
-
             # Mensaje inventario actual
             cantidad_a_vender = self.product_uom_qty
             cantidad_prevista = self.product_id.virtual_available
             cantidad_entrada = self.product_id.incoming_qty
             cantidad_pedidos_abiertos = cantidad_reservada_suma
             cantidad_disponible_menos_cantidad_pa = cantidad_dispobible - cantidad_pedidos_abiertos
-            _logger.info("cantidad_a_vender: " + str(cantidad_a_vender) + " > cantidad_disponible_menos_cantidad_pa:" + str(cantidad_disponible_menos_cantidad_pa))
+            _logger.info(
+                "cantidad_a_vender: " + str(cantidad_a_vender) + " > cantidad_disponible_menos_cantidad_pa:" + str(
+                    cantidad_disponible_menos_cantidad_pa))
             if cantidad_a_vender > cantidad_disponible_menos_cantidad_pa:
 
                 nombre_producto = self.product_id.name
@@ -170,7 +263,3 @@ class SaleOrderLineOrdenAbierta(models.Model):
                         'message': _(mensaje),
                     },
                 }
-
-    # @api.multi
-    def dup_line_to_order(self, order_id=None):
-        return self.copy(default={'order_id': order_id})

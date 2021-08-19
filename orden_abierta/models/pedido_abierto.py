@@ -21,10 +21,10 @@ class PedidoAbierto(models.Model):
     _description = 'Genera pedido con base a lineas de pedido abierto'
 
     lineas_pedido = fields.One2many(
-        comodel_name="sale.order.line",
+        comodel_name="pedido.abierto.linea",
         inverse_name="pedido_abierto_rel",
         string="Lineas de pedido abierto",
-        domain="[('es_de_sale_order', '=', False)]"
+        store=True
     )
     partner_id = fields.Many2one(
         comodel_name="res.partner",

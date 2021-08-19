@@ -3,11 +3,11 @@
 
         <record model="ir.ui.view" id="view_orden_directa">
             <field name="name">sale.ordenes.directas</field>
-            <field name="model">sale.order.line</field>
+            <field name="model">pedido.abierto.linea</field>
             <field name="arch" type="xml">
                 <tree string="Ordenes directas" create="0" delete="0" edit="1" multi_edit="1">
+                    <!--
                     <field name="order_id" readonly="1" invisible="1" />
-                    <!-- options='{"bg_color": "#77DBEB: fecha_programada &lt;= context_today().strftime(\"%Y-%m-%d\");"}' -->
                     <field name="order_partner_id" readonly="1"/>
                     <field name="pedido_abierto_rel" readonly="1"/>
                     <field name="product_id" readonly="1"/>
@@ -32,14 +32,63 @@
                     <field name="linea_confirmada" readonly="1" invisible="1"/>
                     <field name="creado_desde_pedido_abierto" invisible="1" />
                     <field name="es_de_sale_order" invisible="1" />
+                    -->
+
+                    <field name="linea_relacionada"/>
+                    <field name="company_id" invisible="1"/>
+
+                    <field name="product_id" readonly="1"/>
+
+                    <field name="pedido_abierto_rel" invisible="1"/>
+                    <field name="default_code_product" readonly="1" optional="show"/>
+                    <field name="codigo_cliente" readonly="1" optional="show"/>
+                    <field name="pedido_cliente" optional="show"/>
+                    <field name="codigo_alterno" optional="show"/>
+                    <field name="fecha_programada" optional="show"/>
+                    <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
+                    <field name="order_partner_id" invisible="1"/>
+                    <field name="order_id" invisible="1"/>
+
+                    <field name="name" widget="section_and_note_text" readonly="1" optional="show"/>
+
+                    <field name="product_uom_qty"
+                           context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom': product_uom,                                             'company_id': parent.company_id                                         }"/>
+                    <field name="cantidad_facturada" readonly="1"/>
+                    <field name="cantidad_entregada" readonly="1"/>
+                    <field name="cantidad_restante" readonly="1"/>
+                    <field name="cantidad_original" readonly="1"/>
+
+
+                    <field name="product_uom" force_save="1" string="UoM"
+                           attrs="{                                             'readonly': [('state', 'in', ('sale','done', 'cancel'))],                                             'required': [('display_type', '=', False)],                                         }"
+                           context="{'company_id': parent.company_id}" groups="uom.group_uom"
+                           options="{&quot;no_open&quot;: True}" optional="show"/>
+
+                    <field name="price_unit" attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/>
+                    <field name="tax_id" widget="many2many_tags" options="{'no_create': True}"
+                           domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
+                           attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}" optional="show"/>
+                    <field name="discount" string="Disc.%"
+                           groups="product.group_discount_per_so_line" optional="show" readonly="1"/>
+
+                    <field name="price_total" widget="monetary"
+                           groups="account.group_show_line_subtotals_tax_included" readonly="1"/>
+
+
+                    <!--<field name="currency_id" invisible="1"/>-->
+
+                    <field name="company_id" invisible="1" />
+                    <field name="creado_desde_pedido_abierto" invisible="1" />
+                    <field name="es_de_sale_order" force_save="1" invisible="0" />
+
                 </tree>
             </field>
         </record>
 
         <record model="ir.actions.act_window" id="ordenes_directas">
             <field name="name">Ordenes directas</field>
-            <field name="res_model">sale.order.line</field>
-            <field name="view_mode">tree,form</field>
+            <field name="res_model">pedido.abierto.linea</field>
+            <field name="view_mode">tree</field>
             <field name="context">{'search_default_ordenes_directas': 1}</field>
             <field name="view_id" ref="view_orden_directa"/>
         </record>
@@ -66,16 +115,18 @@
                                 ('linea_confirmada', '=', False),
                                 ('es_de_sale_order', '=', False)
                             ]"
-                            />
+                    />
                     <filter string="Fecha programada"
                             name="fecha_programada"
-                            />
+                    />
                     <separator/>
 
                 </xpath>
                 <xpath expr="//search/group[1]" position="inside">
-                    <filter string="Cliente" name="cliente_group" domain="[]" context="{'group_by':'order_partner_id'}"/>
-                    <filter string="Fecha programada" name="fecha_programada_group" domain="[]" context="{'group_by':'fecha_programada'}"/>
+                    <filter string="Cliente" name="cliente_group" domain="[]"
+                            context="{'group_by':'order_partner_id'}"/>
+                    <filter string="Fecha programada" name="fecha_programada_group" domain="[]"
+                            context="{'group_by':'fecha_programada'}"/>
                 </xpath>
             </field>
         </record>
