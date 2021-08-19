@@ -20,9 +20,16 @@ class PedidoAbiertoLinea(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'lineas de pedido abierto'
 
+    def _get_name(self):
+        if self.product_id.id:
+            return self.product_id.name
+        else:
+            return ""
+
     name = fields.Text(
         string='Description',
-        required=True
+        required=True,
+        default=lambda self: self._get_name(),
     )
     company_id = fields.Many2one(
         related='pedido_abierto_rel.company_id',
@@ -198,6 +205,7 @@ class PedidoAbiertoLinea(models.Model):
         inverse_name="linea_abierta_rel",
         string="Lineas de pedido abierto",
         store=True
+
     )
 
     def create(self, vals):
