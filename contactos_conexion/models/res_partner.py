@@ -64,6 +64,7 @@ class Partner(models.Model):
         string="Creado desde oportunidad",
         default=False
     )
+    usuarios=fields.Many2many('res.users')
     check=fields.Boolean(default=False)
 
     def _compute_meta_facturacion(self):
