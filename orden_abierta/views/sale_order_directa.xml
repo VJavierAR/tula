@@ -5,37 +5,14 @@
             <field name="name">sale.ordenes.directas</field>
             <field name="model">pedido.abierto.linea</field>
             <field name="arch" type="xml">
-                <header>
-                    <button name="crear_pedido_desde_lineas_wizard" string="Crear pedido directo" type="object" class="oe_highlight"/>
-                </header>
                 <tree string="Ordenes directas" create="0" delete="0" edit="1" multi_edit="1">
-                    <!--
-                    <field name="order_id" readonly="1" invisible="1" />
-                    <field name="order_partner_id" readonly="1"/>
-                    <field name="pedido_abierto_rel" readonly="1"/>
-                    <field name="product_id" readonly="1"/>
-                    <field name="default_code_product" readonly="1"/>
-                    <field name="codigo_cliente" readonly="1"/>
-                    <field name="fecha_programada" readonly="0"/>
-                    <field name="codigo_alterno" readonly="0"/>
-                    <field name="cantidad_reservada" readonly="1"/>
-                    <field name="name" readonly="1"/>
-                    <field name="product_uom_qty" readonly="0"/>
-                    <field name="cantidad_facturada" readonly="1"/>
-                    <field name="cantidad_entregada" readonly="1"/>
-                    <field name="cantidad_restante" readonly="1"/>
-                    <field name="cantidad_original" readonly="1"/>
-                    <field name="qty_delivered" readonly="1" invisible="1"/>
-                    <field name="qty_invoiced" readonly="1"  invisible="1"/>
-                    <field name="price_unit" readonly="1"/>
-                    <field name="tax_id" readonly="1"/>
-                    <field name="discount" readonly="1"/>
-                    <field name="price_subtotal" readonly="1"/>
-                    <field name="confirma_venta_directa" readonly="0" invisible="1"/>
-                    <field name="linea_confirmada" readonly="1" invisible="1"/>
-                    <field name="creado_desde_pedido_abierto" invisible="1" />
-                    <field name="es_de_sale_order" invisible="1" />
-                    -->
+                    <header>
+                        <button
+                                name="crear_pedido_desde_lineas_wizard"
+                                string="Crear pedido directo"
+                                type="object"
+                                class="oe_highlight"/>
+                    </header>
 
                     <field name="linea_relacionada" invisible="1"/>
                     <field name="order_partner_id"/>
@@ -88,14 +65,15 @@
         </record>
 
         <record model="ir.actions.act_window" id="ordenes_directas">
-            <field name="name">Ordenes directas</field>
+            <field name="name">Líneas de ordenes abiertas</field>
             <field name="res_model">pedido.abierto.linea</field>
             <field name="view_mode">tree</field>
             <field name="context">{'search_default_ordenes_directas': 1}</field>
             <field name="view_id" ref="view_orden_directa"/>
         </record>
 
-        <menuitem id="menu_ordenes_directas" name="Ordenes directas"
+        <menuitem id="menu_ordenes_directas"
+                  name="Líneas de ordenes abiertas"
                   parent="sale.sale_order_menu"
                   sequence="5"
                   action='ordenes_directas'/>
