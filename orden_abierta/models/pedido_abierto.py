@@ -172,7 +172,7 @@ class PedidoAbierto(models.Model):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Pedidos',
+            'name': 'Lineas abiertas',
             'view_mode': 'tree',
             'res_model': 'pedido.abierto.linea',
             'domain': [
