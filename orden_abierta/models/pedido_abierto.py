@@ -122,7 +122,7 @@ class PedidoAbierto(models.Model):
             for linea in vals.get('lineas_pedido'):
                 linea[2]['order_id'] = orden_temp.id
         """
-        
+
         result = super(PedidoAbierto, self).create(vals)
         return result
 

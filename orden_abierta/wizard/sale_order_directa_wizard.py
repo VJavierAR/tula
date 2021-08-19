@@ -100,7 +100,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
 
             # linea_duplicada = linea.dup_line_to_order(order_id=id_sale_directa)
             linea_sale_order_line = self.env['sale.order.line'].create({
-                'partner_id': linea.partner_id.id,
+                'partner_id': linea.order_partner_id.id,
                 'order_id': id_sale_directa,
                 'linea_abierta_rel': linea.id,
                 'codigo_cliente': linea.codigo_cliente,
