@@ -99,6 +99,8 @@ class PedidoAbierto(models.Model):
         if self.partner_id.id and self.lineas_pedido.ids:
             for linea in self.lineas_pedido:
                 linea.order_partner_id = self.partner_id.id
+            if self.partner_id.property_payment_term_id.id:
+                self.plazo_de_pago = self.partner_id.property_payment_term_id.id
 
     @api.onchange('pedido_cliente')
     def actualiza_pedido_cliente_en_lienas(self):
