@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<template id="template" xml:space="preserve">
+	    <t t-extend="ListView.buttons">
+	        <t t-jquery="button.o_list_button_add" t-operation="after">
+                <t t-if="widget.model=='pedido.abierto.linea'">
+                    <button
+                            class="btn btn-primary oe_action_button_pedido_abierto_linea"
+                            name="crear_pedido_desde_lineas_wizard"
+                            string="Crear pedido directo"
+                            type="object"
+                            accesskey="f">Crear pedido directo
+                    </button>
+                </t>
+	        </t>
+	    </t>
+	</template>
