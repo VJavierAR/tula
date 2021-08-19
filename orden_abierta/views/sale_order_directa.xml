@@ -5,7 +5,7 @@
             <field name="name">sale.ordenes.directas</field>
             <field name="model">pedido.abierto.linea</field>
             <field name="arch" type="xml">
-                <tree string="Ordenes directas" create="0" delete="0" edit="1" multi_edit="1">
+                <tree string="Ordenes directas" create="1" delete="0" edit="1" multi_edit="1">
                     <header>
                         <button
                                 name="crear_pedido_desde_lineas_wizard"
