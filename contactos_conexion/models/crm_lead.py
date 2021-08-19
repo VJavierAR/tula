@@ -157,7 +157,7 @@ class CRM(models.Model):
             if('partner_id' in vals):
                 p=self.env['res.partner'].browse(vals['partner_id'])
                 if(p.creado_desde_oportunidad==False):
-                    p.write({'oprotunidad_origen':par.id,'creado_desde_oportunidad':True,'check':True,'type':'private'})
+                    p.sudo().write({'oprotunidad_origen':par.id,'creado_desde_oportunidad':True,'check':True,'type':'private'})
                     display_msg = "Solicitud de nuevo cliente creado a traves de oportunidad"
                     self.env['helpdesk.ticket'].create({'name': 'Solicitud de creación de cliente','partner_id': p.id,'origin_crm': self.id,'description': display_msg,'team_id': 3})
         return res
@@ -166,7 +166,7 @@ class CRM(models.Model):
         if('partner_id' in vals):
                 p=self.env['res.partner'].browse(vals['partner_id'])
                 if(p.creado_desde_oportunidad==False):
-                    p.write({'oprotunidad_origen':self.id,'creado_desde_oportunidad':True,'check':True,'type':'private'})
+                    p.sudo().write({'oprotunidad_origen':self.id,'creado_desde_oportunidad':True,'check':True,'type':'private'})
                     display_msg = "Solicitud de nuevo cliente creado a traves de oportunidad"
                     self.env['helpdesk.ticket'].create({'name': 'Solicitud de creación de cliente','partner_id': p.id,'origin_crm': self.id,'description': display_msg,'team_id': 3})
         return res
