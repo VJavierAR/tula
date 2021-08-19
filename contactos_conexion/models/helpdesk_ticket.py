@@ -24,4 +24,4 @@ class SaleOrder(models.Model):
     )
     origin_crm = fields.Char(related='partner_id.oprotunidad_origen',string='Oportunidad origen')
     def visible(self):
-        self.partner_id.write({'type':'contact'})
+        self.partner_id.write({'active':True})
