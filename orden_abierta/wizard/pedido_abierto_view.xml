@@ -69,6 +69,7 @@
                         </tree>
                         <form>
                             <field name="linea_relacionada"/>
+                            <field name="company_id" invisible="1"/>
                         </form>
 
                     </field>
