@@ -21,7 +21,7 @@ class StockPicking(models.Model):
 
     cambia_estado_alerta = fields.Text(
         string="Cambio estado",
-        compute="cambia_state"
+        # compute="cambia_state"
     )
 
     def write(self, vals):

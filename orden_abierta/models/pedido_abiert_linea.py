@@ -221,6 +221,12 @@ class PedidoAbiertoLinea(models.Model):
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
         if self.product_id.id:
+            # self.product_uom
+            self.price_unit = self.product_id.lst_price
+            if self.product_id.taxes_id.ids:
+                self.tax_id = [(6, 0, self.product_id.taxes_id.ids)]
+
+
             # Obtiene código de cliente
             for codigo in self.product_id.codigos_de_producto:
                 if self.order_partner_id.id == codigo.cliente.id:
