@@ -26,3 +26,5 @@ class SaleOrder(models.Model):
         comodel_name='crm.lead',
         string='Oportunidad origen'
     )
+    def visible(self):
+        self.partner_id.write({'type':'contact'})
