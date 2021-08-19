@@ -48,7 +48,7 @@ class PedidoAbiertoLinea(models.Model):
     product_uom = fields.Many2one(
         'uom.uom',
         string='Unit of Measure',
-        domain="[('category_id', '=', product_uom_category_id)]"
+        # domain="[('category_id', '=', product_uom_category_id)]"
     )
     """
     product_uom_category_id = fields.Many2one(
