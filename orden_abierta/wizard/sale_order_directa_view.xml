@@ -46,7 +46,7 @@
                             <field name="es_de_sale_order" invisible="1" />
                         </tree>-->
                         <tree class="slae_line_edit" editable="bottom" create="0">
-                            <field name="sequence" widget="handle"/>
+
                             <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
                             <field name="linea_relacionada"/>
                             <field name="company_id" invisible="1"/>
