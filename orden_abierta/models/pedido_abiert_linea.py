@@ -61,7 +61,7 @@ class PedidoAbiertoLinea(models.Model):
         default=0.0
     )
     price_total = fields.Monetary(
-        compute='_compute_amount',
+        # compute='_compute_amount',
         string='Total',
         readonly=True,
         store=True
