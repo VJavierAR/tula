@@ -111,6 +111,7 @@ class PedidoAbierto(models.Model):
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('pedido.abierto.seq') or 'New'
 
+        """
         if 'lineas_pedido' in vals:
             orden_temp = self.env['sale.order'].create({
                 'partner_id': vals.get('partner_id'),
@@ -120,7 +121,8 @@ class PedidoAbierto(models.Model):
 
             for linea in vals.get('lineas_pedido'):
                 linea[2]['order_id'] = orden_temp.id
-
+        """
+        
         result = super(PedidoAbierto, self).create(vals)
         return result
 

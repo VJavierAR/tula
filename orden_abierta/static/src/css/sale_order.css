@@ -38,18 +38,13 @@
     width: 200px !important;
     text-align: center;
 }
-.slae_line_edit table thead > tr > th:nth-child(1) {
+.slae_line_edit table thead > tr [data-name="sequence"] {
     max-width: 40px !important;
     width: 40px !important;
     text-align: center;
 }
 
-.slae_line_edit table thead > tr [data-name="product_id"] {
-    max-width: 300px !important;
-    min-width: 10px !important;
-    width: 300px !important;
-    text-align: center !important;
-}
+
 
 .slae_line_edit table thead > tr [data-name="cantidad_reservada"] {
     max-width: 300px !important;
