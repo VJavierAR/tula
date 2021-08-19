@@ -160,7 +160,7 @@ class PedidoAbierto(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Pedidos',
-            'view_mode': 'tree, form',
+            'view_mode': 'tree',
             'res_model': 'sale.order',
             'domain': [
                 ('pedido_abierto_origen', '=', self.id),

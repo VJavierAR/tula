@@ -114,6 +114,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
                 'cantidad_facturada': linea.cantidad_facturada,
                 'cantidad_entregada': linea.cantidad_entregada,
                 'cantidad_restante': linea.cantidad_restante,
+                'product_uom_qty': linea.product_uom_qty,
                 'es_de_sale_order': True,
             })
 
