@@ -104,6 +104,11 @@ class PedidoAbiertoLinea(models.Model):
         string='Salesperson',
         readonly=True
     )
+    discount = fields.Float(
+        string='Discount (%)',
+        digits='Discount',
+        default=0.0
+    )
     """
     currency_id = fields.Many2one(
         related='pedido_abierto_rel.currency_id', 
