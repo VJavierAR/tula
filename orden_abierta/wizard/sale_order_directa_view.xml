@@ -87,7 +87,7 @@
                             <field name="price_unit" />
                             <field name="tax_id" widget="many2many_tags" options="{'no_create': True}"
                                    domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
-                                   attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}" optional="show"/>
+                                    optional="show"/>
                             <field name="discount" string="Disc.%"
                                    groups="product.group_discount_per_so_line" optional="show"/>
 

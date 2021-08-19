@@ -9,7 +9,7 @@
                     <field name="pedido_abierto_id" invisible="1"/>
                     <field name='lineas_pedidos' string=' '>
                         <tree class="slae_line_edit" editable="bottom" create="0">
-                            
+
                             <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
                             <field name="linea_relacionada"/>
                             <field name="company_id" invisible="1"/>
@@ -50,7 +50,7 @@
                             <field name="price_unit" />
                             <field name="tax_id" widget="many2many_tags" options="{'no_create': True}"
                                    domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
-                                   attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}" optional="show"/>
+                                    optional="show"/>
                             <field name="discount" string="Disc.%"
                                    groups="product.group_discount_per_so_line" optional="show"/>
 <!--
