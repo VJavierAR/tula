@@ -218,6 +218,24 @@ class PedidoAbiertoLinea(models.Model):
         result = super(PedidoAbiertoLinea, self).create(vals)
         return result
 
+    def crear_pedido_desde_lineas_wizard(self):
+        wiz = self.env['orden.abierta.to.directa'].create({})
+
+        view = self.env.ref('orden_abierta.view_orden_abierta_lineas_to_orden_directa_wizard')
+        return {
+            'name': _('Crear pedido '),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'orden.abierta.to.directa',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'res_id': wiz.id,
+            'context': self.env.context,
+            # 'context': {'default_lineas_pedidos': [(6, 0, self.lineas_pedido.ids)]},
+        }
+
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
         if self.product_id.id:

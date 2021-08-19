@@ -5,6 +5,9 @@
             <field name="name">sale.ordenes.directas</field>
             <field name="model">pedido.abierto.linea</field>
             <field name="arch" type="xml">
+                <header>
+                    <button name="crear_pedido_desde_lineas_wizard" string="Crear pedido directo" type="object" class="oe_highlight"/>
+                </header>
                 <tree string="Ordenes directas" create="0" delete="0" edit="1" multi_edit="1">
                     <!--
                     <field name="order_id" readonly="1" invisible="1" />
