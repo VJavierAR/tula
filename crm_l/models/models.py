@@ -30,7 +30,7 @@ class Crm_l(models.Model):
         for record in self:
             if record.description:
                 d = record.description.splitlines()
-                _logger.info("d: " + str(d))
+                #_logger.info("d: " + str(d))
                 if 'CONNEXIS' in record.description:
                     
                     regex = re.compile("^Institución contratante ")
@@ -108,13 +108,13 @@ class Crm_l(models.Model):
                     fecha_segundo_caso = list(
                         filter(lambda v: 'Fecha y Hora Maxima de Recepción de expresiones de Interes:' in v, d))
 
-                    _logger.info("da: " + str(da))
-                    _logger.info("fecha_segundo_caso: " + str(fecha_segundo_caso))
+                    #_logger.info("da: " + str(da))
+                    #_logger.info("fecha_segundo_caso: " + str(fecha_segundo_caso))
                     fecha = False
                     if len(da) > 0:
                         # Fec = da[0].replace('Fecha y Hora Presentación de Propuestas:\t', '').replace('- ', '')
                         Fec = da[0].replace('Fecha y Hora Presentación de Propuestas:\t', '')
-                        _logger.info("Fec: " + str(Fec))
+                        #_logger.info("Fec: " + str(Fec))
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p') + timedelta(hours=5)
                         fecha = Fec
                         # fecha = datetime.strptime(Fec, '%d-%m-%Y %I:%M %p')
