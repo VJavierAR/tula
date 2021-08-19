@@ -77,7 +77,7 @@
                                         <field name="company_id" invisible="1"/>
 
                                         <field name="product_id"
-                                               attrs="{                                             'readonly': [('product_updatable', '=', False)],                                             'required': [('display_type', '=', False)],                                         }"
+
                                                options="{'no_open': True}" force_save="1"
 
                                                domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"
