@@ -23,9 +23,14 @@
         <field name="target">new</field>
     </record>
 
-    <menuitem id="sale.menu_report_product_all"
+    <!--<menuitem id="sale.menu_report_product_all"
         name="Sales"
         action="action_sale_report_update"
+        parent="sale.menu_sale_report"
+        sequence="1"/>-->
+        <menuitem id="sale.menu_report_product_all"
+        name="Sales"
+        action="sale_enterprise.sale_report_action_dashboard"
         parent="sale.menu_sale_report"
         sequence="1"/>
 
