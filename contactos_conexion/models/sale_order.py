@@ -347,7 +347,8 @@ class SaleOrder(models.Model):
                             elif 'error' in limite_de_credito:
                                 display_msg = "Error al consultar límite de crédito <br/>Error: " + str(limite_de_credito['error'])
                                 self.message_post(body=display_msg)
-                                generar_alerta = self.genera_alerta(mensaje="Error de conexión vuelve a intentarlo")
+                                message = "Error al consultar límite de crédito \n\nError: " + str(limite_de_credito['error'])
+                                generar_alerta = self.genera_alerta(mensaje=message)
                                 return generar_alerta
 
                         # Si el cliente no esta activo en Odoo entonces, informa y no permitas confirmar
@@ -425,6 +426,10 @@ class SaleOrder(models.Model):
                         elif 'error' in limite_de_credito:
                             display_msg = "Error al consultar límite de crédito <br/>Error: " + str(limite_de_credito['error'])
                             self.message_post(body=display_msg)
+                            message = "Error al consultar límite de crédito \n\nError: " + str(
+                                limite_de_credito['error'])
+                            generar_alerta = self.genera_alerta(mensaje=message)
+                            return generar_alerta
 
                     # Si el cliente no esta activo informa de esto y no permitas confirmar
                     else:
