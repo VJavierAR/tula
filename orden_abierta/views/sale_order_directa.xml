@@ -61,13 +61,13 @@
 
 
                     <field name="product_uom" force_save="1" string="UoM"
-                           optional="show"/>
+                           optional="show" invisible="1"/>
 
                     <field name="price_unit" />
                     <field name="tax_id" widget="many2many_tags"
                             optional="show"/>
                     <field name="discount" string="Disc.%"
-                           groups="product.group_discount_per_so_line" optional="show" readonly="1"/>
+                           groups="product.group_discount_per_so_line" optional="show" readonly="1" invisible="1"/>
 
                     <!--
                                         <field name="price_total" widget="monetary"
@@ -78,7 +78,7 @@
 
                     <field name="company_id" invisible="1" />
                     <field name="creado_desde_pedido_abierto" invisible="1" />
-                    <field name="es_de_sale_order" force_save="1" invisible="0" />
+                    <field name="es_de_sale_order" force_save="1" invisible="1" />
 
                 </tree>
             </field>

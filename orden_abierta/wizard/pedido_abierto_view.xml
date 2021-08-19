@@ -45,15 +45,15 @@
 
 
 
-                                        <field name="product_uom" force_save="1" string="UoM"
+                                        <field name="product_uom" force_save="1" string="UoM" invisible="1"
 
                                                options="{&quot;no_open&quot;: True}" optional="show"/>
 
                                         <field name="price_unit" />
                                         <field name="tax_id" widget="many2many_tags"
-                                               optional="show"/>
+                                               optional="show" invisible="1"/>
                                         <field name="discount" string="Disc.%"
-                                               groups="product.group_discount_per_so_line" optional="show"/>
+                                               groups="product.group_discount_per_so_line" optional="show" invisible="1"/>
 
                                         <!--
                                         <field name="price_total" widget="monetary"
@@ -64,7 +64,7 @@
 
                                         <field name="company_id" invisible="1"/>
                                         <field name="creado_desde_pedido_abierto" invisible="1"/>
-                                        <field name="es_de_sale_order" force_save="1" invisible="0"/>
+                                        <field name="es_de_sale_order" force_save="1" invisible="1"/>
 
                         </tree>
                         <form>
