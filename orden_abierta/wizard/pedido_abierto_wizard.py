@@ -75,15 +75,29 @@ class PedidoAbiertoWizard(models.TransientModel):
             linea.cantidad_restante = linea.cantidad_restante - linea.product_uom_qty
             linea.cantidad_entregada = linea.cantidad_entregada + linea.product_uom_qty
 
-            linea_duplicada = linea.dup_line_to_order(order_id=id_sale_directa)
-            # linea_duplicada.pedido_abierto_rel = False
-            #v linea_duplicada.es_de_sale_order = True
-            linea_duplicada.write({
-                'es_de_sale_order': True
+            linea_sale_order_line = self.env['sale.order.line'].create({
+                'partner_id': linea.partner_id.id,
+                'order_id': id_sale_directa,
+                'linea_abierta_rel': linea.id,
+                'codigo_cliente': linea.codigo_cliente,
+                'pedido_cliente': linea.pedido_cliente,
+                'fecha_programada': linea.fecha_programada,
+                'codigo_alterno': linea.codigo_alterno,
+                'cantidad_reservada': linea.cantidad_reservada,
+                'creado_desde_pedido_abierto': linea.creado_desde_pedido_abierto,
+                'cantidad_original': linea.cantidad_original,
+                'cantidad_facturada': linea.cantidad_facturada,
+                'cantidad_entregada': linea.cantidad_entregada,
+                'cantidad_restante': linea.cantidad_restante,
+                'es_de_sale_order': True,
             })
 
+            #linea_duplicada = linea.dup_line_to_order(order_id=id_sale_directa)
+            # linea_duplicada.pedido_abierto_rel = False
+            #v linea_duplicada.es_de_sale_order = True
+
             linea.write({
-                'linea_relacionada': [(4, linea_duplicada.id, 0)]
+                'linea_relacionada': [(4, linea_sale_order_line.id, 0)]
             })
 
             if linea.cantidad_restante == 0:
