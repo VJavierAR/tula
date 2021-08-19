@@ -34,7 +34,7 @@ class PedidoAbiertoLinea(models.Model):
     product_id = fields.Many2one(
         'product.product',
         string='Producto',
-        domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        # domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         change_default=True,
         ondelete='restrict',
         check_company=True
@@ -92,7 +92,8 @@ class PedidoAbiertoLinea(models.Model):
     tax_id = fields.Many2many(
         'account.tax',
         string='Taxes',
-        domain=['|', ('active', '=', False), ('active', '=', True)])
+        domain=['|', ('active', '=', False), ('active', '=', True)]
+    )
 
     order_partner_id = fields.Many2one(
         related='pedido_abierto_rel.partner_id',
