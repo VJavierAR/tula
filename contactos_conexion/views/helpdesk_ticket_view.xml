@@ -9,6 +9,7 @@
                 <xpath expr="//field[@name='partner_id']" position="before">
 
                     <field name="origen_sale" force_save="1" attrs="{'invisible': [('origen_sale', '=', False)] }"/>
+                    <field name="origin_crm" force_save="1" invisible="1"/>
                     <button name="visible" type="object" string="Hacer visible contacto" attrs="{'invisible': [('origin_crm', '=', False)] }"/>
 
                 </xpath>
