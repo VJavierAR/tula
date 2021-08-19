@@ -47,7 +47,7 @@
                     <field name="fecha_programada" optional="show"/>
                     <field name="cantidad_reservada" force_save="1" optional="show" readonly="1"/>
                     <field name="order_partner_id" invisible="1"/>
-                    <field name="order_id" invisible="1"/>
+
 
                     <field name="name" widget="section_and_note_text" readonly="1" optional="show"/>
 
