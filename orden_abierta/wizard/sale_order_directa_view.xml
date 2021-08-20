@@ -68,7 +68,7 @@
                         </form>
                     </field>
                     <footer>
-                        <button name="generar_orden" string="Crear orden directa" type="object" class="oe_highlight"/>
+                        <button name="generar_orden" string="Crear y abrir orden directa" type="object" class="oe_highlight"/>
                         <button string="Cerrar" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
