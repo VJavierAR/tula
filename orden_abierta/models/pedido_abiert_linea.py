@@ -64,7 +64,7 @@ class PedidoAbiertoLinea(models.Model):
     )
     """
     price_unit = fields.Float(
-        'Unit Price',
+        'Precio',
         required=True,
         digits='Precio producto',
         default=0.0
