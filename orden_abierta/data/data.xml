@@ -1,5 +1,5 @@
 <odoo>
-    <data>
+    <data noupdate="True">
         <record id="count_location" model="ir.cron">
             <field name="name">Envia correo de ordenes abiertas</field>
             <field name="interval_number">1</field>
@@ -7,6 +7,7 @@
             <field name="numbercall">-1</field>
             <field eval="False" name="doall"/>
             <field eval="True" name="active"/>
+            <field name="nextcall" eval="datetime.now(pytz.timezone('UTC')).strftime('%Y-%m-%d 13:59:59')"/>
             <field name="model_id" ref="sale.model_sale_order" />
             <field name="state">code</field>
             <field name="code">
@@ -29,6 +30,16 @@ model.cron_orden_abierta()
 
 model.cron_notificacion_salidas()
             </field>
+        </record>
+
+                <record id="sequence_pedido_abierto" model="ir.sequence">
+            <field name="name">Pedido abierto</field>
+            <field name="code">pedido.abierto.seq</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">OC</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
         </record>
 
     </data>
