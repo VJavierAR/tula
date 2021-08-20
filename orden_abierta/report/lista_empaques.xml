@@ -96,6 +96,13 @@
                                 <strong>Plazos de pago:</strong>
                                 <p class="m-0" t-field="doc.payment_term_id"/>
                             </div>
+                            <div>
+                                <strong>Fecha de lista empaque:</strong>
+                                <p>
+                                    <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%m-%d-%Y %H:%M')"/>
+                                </p>
+
+                            </div>
                         </div>
 
                         <!-- Is there a discount on at least one line? -->
