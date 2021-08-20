@@ -194,13 +194,13 @@ class PedidoAbiertoLinea(models.Model):
         string="Cantidad facturada",
         default=0,
         copy=True,
-        store=True
+        store=False
     )
     cantidad_entregada = fields.Integer(
         string="Cantidad entregada",
         default=0,
         copy=True,
-        store=True
+        store=False
     )
     cantidad_restante = fields.Integer(
         string="Cantidad restante",
@@ -242,7 +242,7 @@ class PedidoAbiertoLinea(models.Model):
                     cantidad_facturada_total += linea.qty_invoiced
                 rec.cantidad_entregada = cantidad_entregada_total
                 rec.cantidad_facturada = cantidad_facturada_total
-                
+
     def crear_pedido_desde_lineas_wizard(self):
         wiz = self.env['orden.abierta.to.directa'].create({})
 
