@@ -119,11 +119,13 @@ class SaleOrderLineOrdenAbierta(models.Model):
     @api.depends('linea_abierta_rel.cantidad_restante')
     def _compute_cantidad_restante_linea_pedido_abierto(self):
         for rec in self:
-            if rec.linea_abierta_rel.id:
+            if rec.linea_abierta_rel and rec.linea_abierta_rel.id:
                 text = "[" + str(rec.linea_abierta_rel.pedido_abierto_rel.name) + "]" + "\n"
                 text += "(restante:" + str(rec.linea_abierta_rel.cantidad_restante) + " "
                 text += str(rec.linea_abierta_rel.product_uom.name or "") + ")"
                 rec.c_r_l_p_a = text
+            else:
+                rec.c_r_l_p_a = ""
 
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
