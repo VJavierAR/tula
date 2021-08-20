@@ -86,7 +86,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
         default=False,
         store=True
     )
-    cantidad_restante_linea_pedido_abierto = fields.Text(
+    c_r_l_p_a = fields.Text(
         string="Programación",
         store=True,
         compute="_compute_cantidad_restante_linea_pedido_abierto"
@@ -119,7 +119,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
                 text = "[" + str(rec.linea_abierta_rel.name) + "]" + "\n"
                 text += "(restante:" + str(rec.linea_abierta_rel.cantidad_restante) + " "
                 text += str(rec.linea_abierta_rel.product_uom.name or "") + ")"
-                rec.cantidad_restante_linea_pedido_abierto = text
+                rec.c_r_l_p_a = text
 
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
