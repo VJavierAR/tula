@@ -231,7 +231,7 @@ class PedidoAbiertoLinea(models.Model):
         result = super(PedidoAbiertoLinea, self).create(vals)
         return result
 
-    @api.depends('linea_relacionada')
+    @api.depends('linea_relacionada', 'linea_relacionada.qty_delivered', 'linea_relacionada.qty_invoiced')
     def _compute_cantidad_entregada_and_cantidad_facturada(self):
         for rec in self:
             if len(rec.linea_relacionada.ids) > 0:

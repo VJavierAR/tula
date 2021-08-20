@@ -103,8 +103,8 @@
                                         <field name="name" widget="section_and_note_text" optional="show" invisible="1"/>
 
                                         <field name="cantidad_pedida" readonly="1" force_save="1"/>
-                                        <field name="cantidad_facturada" readonly="1" force_save="1"/>
-                                        <field name="cantidad_entregada" readonly="1" force_save="1"/>
+                                        <field name="cantidad_facturada" readonly="1" />
+                                        <field name="cantidad_entregada" readonly="1" />
                                         <field name="cantidad_restante" readonly="1" force_save="1"/>
 
                                         <field name="tax_id" widget="many2many_tags"
