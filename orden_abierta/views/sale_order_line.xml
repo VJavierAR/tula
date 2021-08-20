@@ -61,6 +61,10 @@
                     <button name="get_lista_empaque" string="Lista empaque" type="object" />
                 </xpath>
 
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_uom']" position="attributes">
+                    <attribute name="string">Unidad de medida</attribute>
+                </xpath>
+
             </field>
         </record>
 
