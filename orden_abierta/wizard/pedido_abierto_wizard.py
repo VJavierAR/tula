@@ -73,7 +73,7 @@ class PedidoAbiertoWizard(models.TransientModel):
 
         for linea in self.lineas_pedidos:
             linea.cantidad_restante = linea.cantidad_restante - linea.product_uom_qty
-            linea.cantidad_entregada = linea.cantidad_entregada + linea.product_uom_qty
+            # linea.cantidad_entregada = linea.cantidad_entregada + linea.product_uom_qty
 
             linea_sale_order_line = self.env['sale.order.line'].create({
                 'product_id': linea.product_id.id,

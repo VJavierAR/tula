@@ -96,7 +96,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         ids_pedidos_abiertos = []
         for linea in self.order_line_ids:
             linea.cantidad_restante = linea.cantidad_restante - linea.product_uom_qty
-            linea.cantidad_entregada = linea.cantidad_entregada + linea.product_uom_qty
+            # linea.cantidad_entregada = linea.cantidad_entregada + linea.product_uom_qty
 
             # linea_duplicada = linea.dup_line_to_order(order_id=id_sale_directa)
             linea_sale_order_line = self.env['sale.order.line'].create({
