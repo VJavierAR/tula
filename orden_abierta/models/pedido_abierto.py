@@ -146,6 +146,15 @@ class PedidoAbierto(models.Model):
         tracking=4
     )
 
+    @api.model
+    def _default_note(self):
+        return self.env['ir.config_parameter'].sudo().get_param(
+            'account.use_invoice_terms') and self.env.company.invoice_terms or ''
+    note = fields.Text(
+        string='Terminos y condiciones',
+        default=_default_note
+    )
+
     @api.depends('partner_id')
     def _compute_plazo_de_pago(self):
         for rec in self:
