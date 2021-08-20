@@ -17,12 +17,13 @@
                     -->
 
                     <field name="linea_relacionada" invisible="1"/>
+                    <field name="pedido_abierto_rel" invisible="0"/>
                     <field name="order_partner_id"/>
                     <field name="company_id" invisible="1"/>
 
                     <field name="product_id" readonly="1"/>
 
-                    <field name="pedido_abierto_rel" invisible="1"/>
+
                     <field name="default_code_product" readonly="1" optional="show"/>
                     <field name="codigo_cliente" readonly="1" optional="show"/>
                     <field name="pedido_cliente" optional="show"/>
