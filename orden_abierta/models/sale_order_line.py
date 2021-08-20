@@ -129,13 +129,11 @@ class SaleOrderLineOrdenAbierta(models.Model):
                 if self.order_partner_id.id == codigo.cliente.id:
                     self.codigo_cliente = codigo.codigo_producto
 
-
-            # Cantidad reservada
+            # Cantidad reservada pedidos directos
             estados_no_aprobados = ['draft', 'sent']
             ordenes = self.env['sale.order'].search(
                 [
-                    ('state', 'in', estados_no_aprobados),
-                    ('es_orden_abierta', '=', True)
+                    ('state', 'in', estados_no_aprobados)
                 ])
             cantidad_dispobible = self.product_id.qty_available
             cantidad_reservada_suma = 0
@@ -144,11 +142,21 @@ class SaleOrderLineOrdenAbierta(models.Model):
                     if linea.product_id.id == self.product_id.id:
                         cantidad_reservada_suma += linea.product_uom_qty
 
+            # Cantidad reservada pedidos abiertos
+            estados_no_aprobados = ['borrador', 'abierto', 'expirado']
+            ordenes_abiertas = self.env['sale.order'].search(
+                [
+                    ('state', 'in', estados_no_aprobados)
+                ])
+            for orden in ordenes_abiertas:
+                for linea in orden.lineas_pedido:
+                    if not linea.linea_confirmada:
+                        cantidad_reservada_suma += linea.cantidad_restante
+
             if cantidad_reservada_suma > 0:
                 self.cantidad_reservada = cantidad_dispobible - cantidad_reservada_suma
             else:
                 self.cantidad_reservada = 0
-
 
             # Mensaje inventario actual
             cantidad_a_vender = self.product_uom_qty
@@ -156,7 +164,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
             cantidad_entrada = self.product_id.incoming_qty
             cantidad_pedidos_abiertos = cantidad_reservada_suma
             cantidad_disponible_menos_cantidad_pa = cantidad_dispobible - cantidad_pedidos_abiertos
-            _logger.info("cantidad_a_vender: " + str(cantidad_a_vender) + " > cantidad_disponible_menos_cantidad_pa:" + str(cantidad_disponible_menos_cantidad_pa))
+            
             if cantidad_a_vender > cantidad_disponible_menos_cantidad_pa:
 
                 nombre_producto = self.product_id.name
