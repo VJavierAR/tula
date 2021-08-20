@@ -41,6 +41,11 @@ class SaleOrderOrdenAbierta(models.Model):
         store=True,
         help="Actualiza el dato pedido cliente de todas las lineas de pedido"
     )
+    creado_por_pedido_abierto = fields.Boolean(
+        string="Creado por pedido abierto",
+        default=False,
+        store=True
+    )
     """
     reservas = fields.One2many(
         comodel_name='sale.order.reservas',
@@ -57,6 +62,19 @@ class SaleOrderOrdenAbierta(models.Model):
 
         result = super(SaleOrderOrdenAbierta, self).create(vals)
         return result
+
+    def cancelar(self):
+        if self.creado_por_pedido_abierto:
+            if len(self.order_line.ids) > 0:
+                for linea in self.order_line:
+                    linea.linea_abierta_rel.write({
+                        'cantidad_restante': linea.linea_abierta_rel.cantidad_pedida
+                    })
+            self.write({
+                'active': False
+            })
+        self.action_cancel()
+
 
     @api.onchange('pedido_cliente')
     def actualiza_pedido_cliente_en_lienas(self):

@@ -39,6 +39,10 @@
                     <attribute name="name">conf</attribute>
                 </xpath>
 
+                <xpath expr="//button[@name='action_cancel']" position="attributes">
+                    <attribute name="name">cancelar</attribute>
+                </xpath>
+
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']" position="attributes">
                     <attribute name="context">{'default_order_partner_id': partner_id}</attribute>
                 </xpath>

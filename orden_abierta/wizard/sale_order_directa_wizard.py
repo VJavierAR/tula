@@ -84,6 +84,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
 
         sale_directa = self.env['sale.order'].create({
             'partner_id': cliente_id,
+            'creado_por_pedido_abierto': True,
             # 'company_id': self.order_line_ids[0].order_id.company_id.id,
             # 'picking_policy': self.order_line_ids[0].order_id.picking_policy,
         })
