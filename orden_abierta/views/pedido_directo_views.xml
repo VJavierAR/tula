@@ -120,7 +120,6 @@
                                         <field name="price_subtotal" widget="monetary"/>
 
 
-                                        <field name="price_unit" invisible="1"/>
                                         <field name="discount" string="Disc.%"
                                                groups="product.group_discount_per_so_line" optional="show"
                                                invisible="1"/>

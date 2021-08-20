@@ -34,29 +34,30 @@
 
                     <field name="name" widget="section_and_note_text" readonly="1" optional="show"/>
 
-                    <field name="product_uom_qty"
+                    <field name="product_uom_qty" invisible="1"
                            />
+                    <field name="cantidad_pedida" readonly="1"/>
                     <field name="cantidad_facturada" readonly="1"/>
                     <field name="cantidad_entregada" readonly="1"/>
                     <field name="cantidad_restante" readonly="1"/>
-                    <field name="cantidad_pedida" readonly="1"/>
+
 
 
                     <field name="product_uom" force_save="1" string="UoM"
                            optional="show" invisible="1"/>
 
                     <field name="price_unit" />
-                    <field name="tax_id" widget="many2many_tags"
-                            optional="show"/>
+                    <field name="tax_id" widget="many2many_tags" optional="show"/>
+                    <field name="price_subtotal" widget="monetary"/>
+
+                    <field name="price_total" widget="monetary" invisible="1"/>
+                    <field name="price_tax" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+
                     <field name="discount" string="Disc.%"
                            groups="product.group_discount_per_so_line" optional="show" readonly="1" invisible="1"/>
 
-                    <!--
-                                        <field name="price_total" widget="monetary"
-                                               groups="account.group_show_line_subtotals_tax_included"/>
-                                        -->
-
-                    <!--<field name="currency_id" invisible="1"/>-->
 
                     <field name="company_id" invisible="1" />
                     <field name="creado_desde_pedido_abierto" invisible="1" />
