@@ -68,7 +68,7 @@
                                 <field name="user_id"/>
                                 <field name="id_orden_temp" invisible="1"/>
                                 <field name="create_date" string="Fecha de solicitud"/>
-                                <field name="plazo_de_pago"/>
+                                <field name="plazo_de_pago" readonly="1" force_save="1"/>
                             </group>
                         </group>
                         <notebook>
