@@ -43,7 +43,7 @@ class ProductTemplate(models.Model):
     )
     """
 
-    @api.depends('virtual_available')
+    @api.depends('virtual_available', 'qty_available')
     def _compute_en_transito(self):
         for rec in self:
             rec.en_transito = rec.virtual_available
