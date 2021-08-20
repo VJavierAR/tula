@@ -49,7 +49,8 @@
 
                 <xpath expr="//field[@name='validity_date']" position="before">
                     <field name="es_orden_abierta" readonly="1" force_save="1" invisible="1"/>
-                    <field name="pedido_abierto_origen" readonly="1" force_save="1" />
+                    <field name="pedido_abierto_origen" readonly="1" force_save="1" attrs="{'invisible': [('pedido_abierto_origen', '=', False))]}"/>
+                    <field name="pedidos_abiertos_origen" readonly="1" force_save="1" attrs="{'invisible': [('pedidos_abiertos_origen', '=', False))]}"/>
                     <field name="creado_por_pedido_abierto" invisible="1"/>
                 </xpath>
 

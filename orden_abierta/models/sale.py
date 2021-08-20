@@ -32,6 +32,11 @@ class SaleOrderOrdenAbierta(models.Model):
         string="Pedido abierto origen",
         required=False
     )
+    pedidos_abiertos_origen = fields.Char(
+        string="Pedidos abiertos origen",
+        required=False,
+        store=True
+    )
     active = fields.Boolean(
         string="Activo",
         default=True

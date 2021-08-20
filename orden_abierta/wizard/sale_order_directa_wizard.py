@@ -140,6 +140,10 @@ class OrdenAbiertaToDirecta(models.TransientModel):
                     'state': 'confirmado'
                 })
 
+        sale_directa.write({
+            'pedidos_abiertos_origen': str(name_pedidos_abiertos)
+        })
+
         # sale_directa.action_confirm()
 
         return {

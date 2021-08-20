@@ -70,8 +70,8 @@
                                 <field name="id_orden_temp" invisible="1"/>
                                 <field name="create_date" string="Fecha de solicitud"/>
                                 <field name="plazo_de_pago" readonly="0" force_save="1"/>
-                                <field name="pricelist_id" invisible="1"/>
-                                <field name="currency_id" invisible="1"/>
+                                <field name="pricelist_id" invisible="0" force_save="1"/>
+                                <field name="currency_id" invisible="0" force_save="1"/>
 
                             </group>
                         </group>
