@@ -141,6 +141,17 @@ class OrdenAbiertaToDirecta(models.TransientModel):
                 })
 
         # sale_directa.action_confirm()
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Pedidos directos',
+            'view_mode': 'form',
+            'res_model': 'sale.order',
+            'res_id': sale_directa.id,
+            'context': "{}"
+        }
+
+        """
         display_msg = "Se genero orden directa de uno o más pedidos abiertos: <br/>Pedido(s) abierto(s): " + str(name_pedidos_abiertos)
         sale_directa.message_post(body=display_msg)
 
@@ -158,6 +169,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
             'res_id': wiz.id,
             'context': self.env.context,
         }
+        """
 
         """
         mensajeTitulo = "Alerta"
