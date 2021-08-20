@@ -184,8 +184,8 @@ class PedidoAbierto(models.Model):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Pedidos',
-            'view_mode': 'tree',
+            'name': 'Pedidos directos',
+            'view_mode': 'tree,form',
             'res_model': 'sale.order',
             'domain': [
                 ('pedido_abierto_origen', '=', self.id),
@@ -197,7 +197,7 @@ class PedidoAbierto(models.Model):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Lineas abiertas',
+            'name': 'Líneas de pedido abierto',
             'view_mode': 'tree',
             'res_model': 'pedido.abierto.linea',
             'domain': [
