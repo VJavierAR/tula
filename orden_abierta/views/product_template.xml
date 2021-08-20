@@ -32,10 +32,8 @@
 
                 <xpath expr="//field[@name='virtual_available']" position="after">
                     <field name="en_transito"/>
-                    <!--
                     <field name="cantidad_pedidos"/>
                     <field name="cantidad_disponible"/>
-                    -->
                 </xpath>
 
             </field>
