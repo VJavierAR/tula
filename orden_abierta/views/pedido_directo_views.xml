@@ -95,35 +95,29 @@
                                         <field name="codigo_cliente" readonly="1" optional="show"/>
                                         <field name="pedido_cliente" optional="show"/>
                                         <field name="codigo_alterno" optional="show"/>
+
+                                        <field name="cantidad_original" readonly="1"/>
+                                        <field name="product_uom" force_save="1" invisible="0"
+                                               options="{&quot;no_open&quot;: True}" optional="show"/>
+
                                         <field name="fecha_programada" optional="show"/>
                                         <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>
                                         <field name="order_partner_id" invisible="1"/>
+                                        <field name="name" widget="section_and_note_text" optional="show" invisible="1"/>
 
-
-                                        <field name="name" widget="section_and_note_text" optional="show"/>
-
-                                        <field name="product_uom_qty"
-                                               />
+                                        <field name="product_uom_qty" string="Cantidad pedida"/>
                                         <field name="cantidad_facturada" readonly="1"/>
                                         <field name="cantidad_entregada" readonly="1"/>
                                         <field name="cantidad_restante" readonly="1"/>
-                                        <field name="cantidad_original" readonly="1"/>
 
-
-
-
-
-                                        <field name="product_uom" force_save="1" string="UoM" invisible="1"
-
-                                               options="{&quot;no_open&quot;: True}" optional="show"/>
-
-                                        <field name="price_unit" />
                                         <field name="tax_id" widget="many2many_tags"
                                                options="{'no_create': True}"
                                                domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"
                                                optional="show"/>
+
+                                        <field name="price_unit" invisible="1"/>
                                         <field name="discount" string="Disc.%"
-                                               groups="product.group_discount_per_so_line" optional="show"/>
+                                               groups="product.group_discount_per_so_line" optional="show" invisible="1"/>
 
                                         <!--
                                         <field name="price_total" widget="monetary"
