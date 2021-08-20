@@ -231,6 +231,18 @@ class PedidoAbiertoLinea(models.Model):
         result = super(PedidoAbiertoLinea, self).create(vals)
         return result
 
+    @api.depends('linea_relacionada')
+    def _compute_cantidad_entregada_and_cantidad_facturada(self):
+        for rec in self:
+            if len(rec.linea_relacionada.ids) > 0:
+                cantidad_entregada_total = 0
+                cantidad_facturada_total = 0
+                for linea in rec.linea_relacionada:
+                    cantidad_entregada_total += linea.qty_delivered
+                    cantidad_facturada_total += linea.qty_invoiced
+                rec.cantidad_entregada = cantidad_entregada_total
+                rec.cantidad_facturada = cantidad_facturada_total
+                
     def crear_pedido_desde_lineas_wizard(self):
         wiz = self.env['orden.abierta.to.directa'].create({})
 
