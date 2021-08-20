@@ -28,12 +28,12 @@ class PedidoAbiertoLinea(models.Model):
             self.name = "No disponible"
 
     name = fields.Text(
-        string='Description',
+        string='Descripción',
         required=True,
     )
     company_id = fields.Many2one(
         related='pedido_abierto_rel.company_id',
-        string='Company',
+        string='Compañia',
         store=True,
         readonly=True,
         index=True
@@ -66,7 +66,7 @@ class PedidoAbiertoLinea(models.Model):
     price_unit = fields.Float(
         'Unit Price',
         required=True,
-        digits='Product Price',
+        digits='Precio producto',
         default=0.0
     )
     """
@@ -105,13 +105,13 @@ class PedidoAbiertoLinea(models.Model):
     order_partner_id = fields.Many2one(
         related='pedido_abierto_rel.partner_id',
         store=True,
-        string='Customer',
+        string='Cliente',
         readonly=False
     )
     salesman_id = fields.Many2one(
         related='pedido_abierto_rel.user_id',
         store=True,
-        string='Salesperson',
+        string='Comercial',
         readonly=True
     )
     discount = fields.Float(

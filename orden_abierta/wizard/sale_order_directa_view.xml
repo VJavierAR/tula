@@ -17,91 +17,49 @@
                         Se creara y confirmara la orden directa de las líneas seleccionadas.
                     </h2>
                     <field name="order_line_ids" readonly="0" force_save="1">
-                        <!--
-                        <tree class="slae_line_edit" editable="bottom" create="0">
-                            <field name="order_id" readonly="1" invisible="1" />
-                            <field name="order_partner_id" readonly="1"/>
-                            <field name="pedido_abierto_rel" readonly="1"/>
-                            <field name="product_id" readonly="1"/>
-                            <field name="default_code_product" readonly="1"/>
-                            <field name="codigo_cliente" readonly="1"/>
-                            <field name="fecha_programada" readonly="0"/>
-                            <field name="codigo_alterno" readonly="0"/>
-                            <field name="cantidad_reservada" readonly="1"/>
-                            <field name="name" readonly="1"/>
-                            <field name="product_uom_qty" readonly="0"/>
-                            <field name="cantidad_facturada" readonly="1"/>
-                            <field name="cantidad_entregada" readonly="1"/>
-                            <field name="cantidad_restante" readonly="1"/>
-                            <field name="cantidad_original" readonly="1"/>
-                            <field name="qty_delivered" readonly="1" invisible="1"/>
-                            <field name="qty_invoiced" readonly="1"  invisible="1"/>
-                            <field name="price_unit" readonly="1"/>
-                            <field name="tax_id" readonly="1"/>
-                            <field name="discount" readonly="1"/>
-                            <field name="price_subtotal" readonly="1"/>
-                            <field name="confirma_venta_directa" readonly="0" invisible="1"/>
-                            <field name="linea_confirmada" readonly="1" invisible="1"/>
-                            <field name="creado_desde_pedido_abierto" invisible="1" />
-                            <field name="es_de_sale_order" invisible="1" />
-                        </tree>-->
                         <tree class="slae_line_edit" editable="bottom" create="0">
 
                             <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
-                                        <field name="linea_relacionada"/>
-                                        <field name="company_id" invisible="1"/>
+                            <field name="linea_relacionada" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
 
-                                        <field name="product_id"
+                            <field name="product_id"
+                                   options="{'no_open': True}" force_save="1"
+                                   widget="product_configurator"
+                                   readonly="1"
+                            />
+                            <!--context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom':product_uom,                                             'company_id': parent.company_id,                                             'default_lst_price': price_unit,                                             'default_description_sale': name                                         }"-->
 
-                                               options="{'no_open': True}" force_save="1"
+                            <field name="pedido_abierto_rel" invisible="1"/>
+                            <field name="default_code_product" readonly="1" optional="show" invisible="1"/>
+                            <field name="pedido_cliente" optional="show"/>
+                            <field name="codigo_alterno" optional="show"/>
+                            <field name="codigo_cliente" readonly="1" optional="show"/>
+                            <field name="name" widget="section_and_note_text" optional="show" />
+                            <field name="order_partner_id" readonly="1" optional="show" />
 
-
-                                               widget="product_configurator"/>
-                                        <!--context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom':product_uom,                                             'company_id': parent.company_id,                                             'default_lst_price': price_unit,                                             'default_description_sale': name                                         }"-->
-
-                                        <field name="pedido_abierto_rel" invisible="1"/>
-                                        <field name="default_code_product" readonly="1" optional="show"/>
-                                        <field name="codigo_cliente" readonly="1" optional="show"/>
-                                        <field name="pedido_cliente" optional="show"/>
-                                        <field name="codigo_alterno" optional="show"/>
-                                        <field name="fecha_programada" optional="show"/>
-                                        <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>
-                                        <field name="order_partner_id" invisible="1"/>
-
-
-                                        <field name="name" widget="section_and_note_text" optional="show"/>
-
-                                        <field name="product_uom_qty"
-                                               />
-                                        <field name="cantidad_facturada" readonly="1"/>
-                                        <field name="cantidad_entregada" readonly="1"/>
-                                        <field name="cantidad_restante" readonly="1"/>
-                                        <field name="cantidad_original" readonly="1"/>
+                            <field name="fecha_programada" optional="show" readonly="1"/>
+                            <field name="price_unit" optional="show" readonly="1"/>
+                            <field name="cantidad_restante" readonly="1" optional="show"/>
+                            <field name="product_uom" force_save="1" readonly="1"
+                                   options="{&quot;no_open&quot;: True}"
+                                   optional="show"/>
+                            <field name="product_uom_qty"/>
 
 
 
 
-
-                                        <field name="product_uom" force_save="1" string="UoM" invisible="1"
-
-                                               options="{&quot;no_open&quot;: True}" optional="show"/>
-
-                                        <field name="price_unit" />
-                                        <field name="tax_id" widget="many2many_tags"
-                                               optional="show" invisible="1"/>
-                                        <field name="discount" string="Disc.%"
-                                               groups="product.group_discount_per_so_line" optional="show" invisible="1"/>
-
-                                        <!--
-                                        <field name="price_total" widget="monetary"
-                                               groups="account.group_show_line_subtotals_tax_included"/>
-                                        -->
-
-                                        <!--<field name="currency_id" invisible="1"/>-->
-
-                                        <field name="company_id" invisible="1"/>
-                                        <field name="creado_desde_pedido_abierto" invisible="1"/>
-                                        <field name="es_de_sale_order" force_save="1" invisible="1"/>
+                            <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>
+                            <field name="cantidad_facturada" readonly="1" invisible="1"/>
+                            <field name="cantidad_entregada" readonly="1" invisible="1"/>
+                            <field name="cantidad_original" readonly="1" invisible="1"/>
+                            <field name="tax_id" widget="many2many_tags"
+                                   optional="show" invisible="1"/>
+                            <field name="discount"
+                                   groups="product.group_discount_per_so_line" optional="show" invisible="1"/>
+                            <field name="company_id" invisible="1"/>
+                            <field name="creado_desde_pedido_abierto" invisible="1"/>
+                            <field name="es_de_sale_order" force_save="1" invisible="1"/>
 
                         </tree>
                         <form>
@@ -116,7 +74,6 @@
                 </form>
             </field>
         </record>
-
 
 
         <record model="ir.ui.view" id="sale_order_alerta_view">
