@@ -117,7 +117,7 @@ class PedidoAbiertoWizard(models.TransientModel):
                 'state': 'confirmado'
             })
 
-        sale_directa.action_confirm()
+        # sale_directa.action_confirm()
         display_msg = "Se genero orden directa de un pedido abierto: <br/>Pedido abierto: " + pedido_abierto.name
         sale_directa.message_post(body=display_msg)
 

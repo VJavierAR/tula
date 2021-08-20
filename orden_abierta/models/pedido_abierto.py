@@ -91,7 +91,8 @@ class PedidoAbierto(models.Model):
     )
     plazo_de_pago = fields.Many2one(
         comodel_name="account.payment.term",
-        string="Plazo de pago"
+        string="Plazo de pago",
+        # default=lambda self: self.partner_id.property_payment_term_id.id or False
     )
 
     @api.onchange('partner_id')
@@ -116,6 +117,14 @@ class PedidoAbierto(models.Model):
         if 'pedido_cliente' in vals and 'lineas_pedido' in vals:
             for linea in vals.get('lineas_pedido'):
                 linea[2]['pedido_cliente'] = vals['pedido_cliente']
+
+
+
+        if 'partner_id' in vals and 'plazo_de_pago' not in vals:
+            cliente = self.env['res.partner'].search([
+                ('id', '=', vals['partner_id'])
+            ])
+            vals['plazo_de_pago'] = cliente.property_payment_term_id.id
 
 
         """
