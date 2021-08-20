@@ -160,7 +160,10 @@ class PedidoAbierto(models.Model):
 
         for linea in wiz.lineas_pedidos:
             if linea.linea_confirmada:
-                linea.unlink()
+                wiz.write({
+                    'lineas_pedidos': [(3, linea.id, 0)]
+                })
+                # linea.unlink()
 
         view = self.env.ref('orden_abierta.view_pedido_abierto_wizard')
         return {
