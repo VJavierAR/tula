@@ -86,6 +86,11 @@ class SaleOrderLineOrdenAbierta(models.Model):
         default=False,
         store=True
     )
+    cantidad_restante_linea_pedido_abierto = fields.Text(
+        string="Programación",
+        store=True,
+        compute="_compute_cantidad_restante_linea_pedido_abierto"
+    )
     """
     order_id = fields.Many2one(
         comodel_name='sale.order',
@@ -106,6 +111,15 @@ class SaleOrderLineOrdenAbierta(models.Model):
 
         result = super(SaleOrderLineOrdenAbierta, self).create(vals)
         return result
+
+    @api.depends('linea_abierta_rel.cantidad_restante')
+    def cantidad_restante_linea_pedido_abierto(self):
+        for rec in self:
+            if rec.linea_abierta_rel.id:
+                text = "[" + str(rec.linea_abierta_rel.name) + "]" + "\n"
+                text += "(restante:" + str(rec.linea_abierta_rel.cantidad_restante) + " "
+                text += str(rec.linea_abierta_rel.product_uom.name or "") + ")"
+                rec.cantidad_restante_linea_pedido_abierto = text
 
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
