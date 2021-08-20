@@ -69,18 +69,6 @@ class PedidoAbiertoLinea(models.Model):
         digits='Precio producto',
         default=0.0
     )
-    price_total = fields.Monetary(
-        compute='_compute_amount',
-        string='Total',
-        readonly=True,
-        store=True
-    )
-    price_subtotal = fields.Monetary(
-        compute='_compute_amount',
-        string='Subtotal',
-        readonly=True,
-        store=True
-    )
 
     # 'discount',
     @api.depends('product_uom_qty', 'price_unit', 'tax_id')
@@ -101,6 +89,28 @@ class PedidoAbiertoLinea(models.Model):
             if self.env.context.get('import_file', False) and not self.env.user.user_has_groups(
                     'account.group_account_manager'):
                 line.tax_id.invalidate_cache(['invoice_repartition_line_ids'], [line.tax_id.id])
+
+    price_total = fields.Monetary(
+        currency_field="currency_id",
+        compute='_compute_amount',
+        string='Total',
+        readonly=True,
+        store=True
+    )
+    price_subtotal = fields.Monetary(
+        currency_field="currency_id",
+        compute='_compute_amount',
+        string='Subtotal',
+        readonly=True,
+        store=True
+    )
+    currency_id = fields.Many2one(
+        related='pedido_abierto_rel.currency_id',
+        depends=['pedido_abierto_rel.currency_id'],
+        store=True,
+        string='Currency',
+        readonly=True
+    )
 
     tax_id = fields.Many2many(
         'account.tax',

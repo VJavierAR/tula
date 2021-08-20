@@ -125,8 +125,7 @@
                                         <field name="price_total" widget="monetary"/>
 
 
-                                        <!--<field name="currency_id" invisible="1"/>-->
-
+                                        <field name="currency_id" invisible="0"/>
                                         <field name="company_id" invisible="1"/>
                                         <field name="creado_desde_pedido_abierto" invisible="1"/>
                                         <field name="es_de_sale_order" force_save="1" invisible="1"/>
