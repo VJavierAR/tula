@@ -88,7 +88,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
     )
     c_r_l_p_a = fields.Text(
         string="Programación",
-        store=True,
+        store=False,
         compute="_compute_cantidad_restante_linea_pedido_abierto"
     )
     """
