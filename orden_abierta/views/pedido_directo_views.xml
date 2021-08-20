@@ -75,7 +75,6 @@
                             <page string="Lineas de pedido" name="order_lines">
                                 <field name="lineas_pedido"
                                        context="{'default_order_partner_id': partner_id, 'default_creado_desde_pedido_abierto': True}"
-
                                 >
                                     <tree class="slae_line_edit" editable="bottom" >
 
@@ -84,9 +83,7 @@
                                         <field name="company_id" invisible="1"/>
 
                                         <field name="product_id"
-
                                                options="{'no_open': True}" force_save="1"
-
                                                widget="product_configurator"/>
                                         <!--context="{                                             'partner_id': parent.partner_id,                                             'quantity': product_uom_qty,                                             'pricelist': parent.pricelist_id,                                             'uom':product_uom,                                             'company_id': parent.company_id,                                             'default_lst_price': price_unit,                                             'default_description_sale': name                                         }"-->
 
@@ -132,9 +129,9 @@
 
                                     </tree>
                                     <form>
-                            <field name="linea_relacionada"/>
-                            <field name="company_id" invisible="1"/>
-                        </form>
+                                        <field name="linea_relacionada"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </form>
                                 </field>
                             </page>
                         </notebook>
