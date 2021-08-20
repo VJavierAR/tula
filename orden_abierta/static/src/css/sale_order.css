@@ -33,6 +33,10 @@
     font-weight: bold;
     color: #009879;
 }
+
+
+/*
+
 .slae_line_edit table thead > tr > th {
     max-width: 200px !important;
     width: 200px !important;
@@ -136,10 +140,16 @@
 .slae_line_edit table tbody > tr [name="price_subtotal"] {
     text-align: center !important;
 }
-
+*/
 
 
 .o_list_view .o_list_table .o_data_row:not(.o_selected_row) > .o_data_cell
+{
+    white-space: initial !important;
+}
+
+
+.o_list_view .o_list_table > thead > tr > th.o_column_sortable:not(:empty)
 {
     white-space: initial !important;
 }
