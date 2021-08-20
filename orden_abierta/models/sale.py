@@ -71,6 +71,7 @@ class SaleOrderOrdenAbierta(models.Model):
                     linea.linea_abierta_rel.write({
                         'cantidad_restante': cantidad_a_regresar
                     })
+                    linea.write({'active': False})
             self.write({
                 'active': False
             })

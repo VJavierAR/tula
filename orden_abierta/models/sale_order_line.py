@@ -18,6 +18,10 @@ class SaleOrderLineOrdenAbierta(models.Model):
     _inherit = 'sale.order.line'
     _description = 'línea de pedido orden abierta'
 
+    active = fields.Boolean(
+        string="Activo",
+        default=True
+    )
     codigo_cliente = fields.Text(
         string="Código cliente",
         copy=True
