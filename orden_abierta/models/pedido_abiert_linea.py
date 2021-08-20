@@ -236,6 +236,12 @@ class PedidoAbiertoLinea(models.Model):
             # 'context': {'default_lineas_pedidos': [(6, 0, self.lineas_pedido.ids)]},
         }
 
+    @api.onchange('product_uom_qty')
+    def cambia_cantidad_original(self):
+        if self.linea_relacionada.ids:
+            self.cantidad_pedida = self.product_uom_qty
+            self.cantidad_restante = self.product_uom_qty
+
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
         if self.product_id.id:
