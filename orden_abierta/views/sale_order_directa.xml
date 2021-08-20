@@ -67,7 +67,7 @@
         </record>
 
         <record model="ir.actions.act_window" id="ordenes_directas">
-            <field name="name">Líneas de ordenes abiertas</field>
+            <field name="name">Líneas de pedido abierto</field>
             <field name="res_model">pedido.abierto.linea</field>
             <field name="view_mode">tree</field>
             <field name="context">{'search_default_ordenes_directas': 1}</field>
@@ -75,9 +75,9 @@
         </record>
 
         <menuitem id="menu_ordenes_directas"
-                  name="Líneas de ordenes abiertas"
+                  name="Líneas de pedido abierto"
                   parent="sale.sale_order_menu"
-                  sequence="5"
+                  sequence="6"
                   action='ordenes_directas'/>
 
         <record model="ir.ui.view" id="view_sales_order_line_filter_update">

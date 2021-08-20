@@ -30,7 +30,7 @@
         </record>
 
         <record model="ir.actions.act_window" id="lineas_pedido">
-            <field name="name">Lineas de ordenes de pedido</field>
+            <field name="name">Líneas de pedidos</field>
             <field name="res_model">sale.order.line</field>
             <field name="view_mode">tree,form</field>
             <!--<field name="context">{'search_default_ordenes_directas': 1}</field>-->
@@ -38,7 +38,7 @@
         </record>
 
         <menuitem id="menu_lineas_ordenes_pedido"
-                  name="Lineas de ordenes de pedido"
+                  name="Líneas de pedidos"
                   parent="sale.sale_order_menu"
                   sequence="7"
                   action='lineas_pedido'/>
