@@ -116,7 +116,7 @@ class PedidoAbierto(models.Model):
         """
         for order in self:
             amount_untaxed = amount_tax = 0.0
-            for line in order.order_line:
+            for line in order.lineas_pedido:
                 amount_untaxed += line.price_subtotal
                 amount_tax += line.price_tax
             order.update({
