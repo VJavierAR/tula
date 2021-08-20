@@ -121,7 +121,7 @@
                                     <th name="th_taxes" class="text-right">Impuestos</th>
 
                                     <th name="th_subtotal" class="text-right">
-                                        <t groups="account.group_show_line_subtotals_tax_excluded">Cantidad</t>
+                                        <t groups="account.group_show_line_subtotals_tax_excluded">Total</t>
                                         <t groups="account.group_show_line_subtotals_tax_included">Precio Total</t>
                                     </th>
                                 </tr>
@@ -144,7 +144,7 @@
                                             </td>
 
                                             <td name="td_name">
-                                                <span t-field="line.name"/>
+                                                <span t-field="line.product_id.name"/>
                                             </td>
 
                                             <td name="td_codigo_cliente">
