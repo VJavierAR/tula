@@ -30,18 +30,16 @@ class ProductTemplate(models.Model):
         default=0,
         compute="_compute_en_transito"
     )
-    """
+
     cantidad_pedidos = fields.Integer(
         string="Cantidad pedidos",
         default=0,
-        compute="_compute_cantidad_pedidos"
     )
     cantidad_disponible = fields.Integer(
         string="Cantidad disponible",
-        default=0,
-        compute="_compute_cantidad_disponible"
+        default=0
     )
-    """
+
 
     @api.depends('virtual_available', 'qty_available')
     def _compute_en_transito(self):
