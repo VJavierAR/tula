@@ -1,3 +1,4 @@
+/*
 .slae_line_edit {
     border-collapse: collapse;
     margin: 25px 0;
@@ -35,7 +36,7 @@
 }
 
 
-/*
+
 
 .slae_line_edit table thead > tr > th {
     max-width: 200px !important;
@@ -161,9 +162,12 @@
     text-align: center !important;
 }
 
+/*
 .o_list_record_remove_header {
     max-width: 40px !important;
     min-width: 40px !important;
     width: 40px !important;
     text-align: center !important;
 }
+
+*/
