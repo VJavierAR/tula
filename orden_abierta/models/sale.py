@@ -67,8 +67,9 @@ class SaleOrderOrdenAbierta(models.Model):
         if self.creado_por_pedido_abierto:
             if len(self.order_line.ids) > 0:
                 for linea in self.order_line:
+                    cantidad_a_regresar = linea.linea_abierta_rel.cantidad_restante + linea.product_uom_qty
                     linea.linea_abierta_rel.write({
-                        'cantidad_restante': linea.linea_abierta_rel.cantidad_pedida
+                        'cantidad_restante': cantidad_a_regresar
                     })
             self.write({
                 'active': False
