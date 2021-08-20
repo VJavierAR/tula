@@ -22,7 +22,7 @@
                     <field name="price_unit" readonly="1"/>
                     <field name="tax_id" readonly="1"/>
                     <field name="discount" readonly="1"/>
-                    <field name="price_subtotal" readonly="1"/>
+                    <field name="price_subtotal" readonly="1" sum="Total"/>
                     <field name="confirma_venta_directa" readonly="0" invisible="1"/>
                     <field name="linea_confirmada" readonly="1" invisible="1"/>
                 </tree>

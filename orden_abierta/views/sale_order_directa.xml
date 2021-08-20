@@ -49,7 +49,7 @@
 
                     <field name="price_unit" readonly="1"/>
                     <field name="tax_id" widget="many2many_tags" optional="show" readonly="1"/>
-                    <field name="price_subtotal" widget="monetary"/>
+                    <field name="price_subtotal" widget="monetary" sum="Total"/>
 
                     <field name="price_total" widget="monetary" invisible="1"/>
                     <field name="price_tax" invisible="1"/>
