@@ -69,27 +69,33 @@ class PedidoAbiertoLinea(models.Model):
         digits='Precio producto',
         default=0.0
     )
-    """
     price_total = fields.Monetary(
-        # compute='_compute_amount',
+        compute='_compute_amount',
         string='Total',
         readonly=True,
         store=True
     )
-    """
+    price_subtotal = fields.Monetary(
+        compute='_compute_amount',
+        string='Subtotal',
+        readonly=True,
+        store=True
+    )
 
-    @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id')
+    # 'discount',
+    @api.depends('product_uom_qty', 'price_unit', 'tax_id')
     def _compute_amount(self):
         """
         Compute the amounts of the SO line.
         """
         for line in self:
-            price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-            taxes = line.tax_id.compute_all(price, line.order_id.currency_id, line.product_uom_qty,
+            # price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+            price = line.price_unit
+            taxes = line.tax_id.compute_all(price, line.pedido_abierto_rel.currency_id, line.product_uom_qty,
                                             product=line.product_id, partner=None)
             line.update({
                 # 'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
-                # 'price_total': taxes['total_included'],
+                'price_total': taxes['total_included'],
                 'price_subtotal': taxes['total_excluded'],
             })
             if self.env.context.get('import_file', False) and not self.env.user.user_has_groups(

@@ -92,9 +92,21 @@ class PedidoAbierto(models.Model):
     plazo_de_pago = fields.Many2one(
         comodel_name="account.payment.term",
         string="Plazo de pago",
-        compute="_compute_plazo_de_pago",
+        # compute="_compute_plazo_de_pago",
         store=True
         # default=lambda self: self.partner_id.property_payment_term_id.id or False
+    )
+    pricelist_id = fields.Many2one(
+        'product.pricelist', string='Pricelist', check_company=True,  # Unrequired company
+        required=True, readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        help="If you change the pricelist, only newly added lines will be affected.")
+    currency_id = fields.Many2one(
+        "res.currency",
+        related='pricelist_id.currency_id',
+        string="Currency",
+        readonly=True,
+        required=True
     )
 
     @api.depends('partner_id')
@@ -108,8 +120,11 @@ class PedidoAbierto(models.Model):
         if self.partner_id.id and self.lineas_pedido.ids:
             for linea in self.lineas_pedido:
                 linea.order_partner_id = self.partner_id.id
-            if self.partner_id.property_payment_term_id.id:
-                self.plazo_de_pago = self.partner_id.property_payment_term_id.id
+            # if self.partner_id.property_payment_term_id.id:
+            #    self.plazo_de_pago = self.partner_id.property_payment_term_id.id
+
+        self.plazo_de_pago = self.partner_id.property_payment_term_id.id or False
+        self.pricelist_id = self.partner_id.property_product_pricelist.id or False
 
     @api.onchange('pedido_cliente')
     def actualiza_pedido_cliente_en_lienas(self):
