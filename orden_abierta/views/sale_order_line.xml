@@ -17,7 +17,7 @@
                     <field name="pedido_cliente" optional="show" force_save="1"/>
                     <field name="codigo_alterno" optional="show" force_save="1"/>
                     <field name="fecha_programada" optional="show" force_save="1" invisible="1"/>
-                    <field name="cantidad_restante_linea_pedido_abierto" optional="show" force_save="1" readonly="1"/>
+                    <!--<field name="cantidad_restante_linea_pedido_abierto" optional="show" force_save="1" readonly="1"/>-->
                     <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>
                     <field name="order_partner_id" invisible="1"/>
                     <field name="order_id" invisible="1"/>
