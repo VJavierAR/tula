@@ -47,7 +47,7 @@ class PedidoAbiertoLinea(models.Model):
         check_company=True
     )
     product_uom_qty = fields.Float(
-        string='Cantidad',
+        string='Cantidad original',
         digits='Product Unit of Measure',
         required=True,
         default=1.0
@@ -175,8 +175,8 @@ class PedidoAbiertoLinea(models.Model):
         default=False,
         copy=True
     )
-    cantidad_original = fields.Integer(
-        string="Cantidad original",
+    cantidad_pedida = fields.Integer(
+        string="Cantidad pedida",
         default=0,
         copy=True
     )
@@ -213,7 +213,7 @@ class PedidoAbiertoLinea(models.Model):
         for linea in vals:
             if 'product_uom_qty' in linea:
                 linea['cantidad_restante'] = linea['product_uom_qty']
-                linea['cantidad_original'] = linea['product_uom_qty']
+                linea['cantidad_pedida'] = linea['product_uom_qty']
 
         result = super(PedidoAbiertoLinea, self).create(vals)
         return result

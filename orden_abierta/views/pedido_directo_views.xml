@@ -93,7 +93,7 @@
                                         <field name="pedido_cliente" optional="show"/>
                                         <field name="codigo_alterno" optional="show"/>
 
-                                        <field name="cantidad_original" readonly="1"/>
+                                        <field name="product_uom_qty"/>
                                         <field name="product_uom" force_save="1" invisible="0"
                                                options="{'no_open': True, 'no_create': True}" optional="show"/>
                                         <field name="price_unit" />
@@ -102,7 +102,7 @@
                                         <field name="order_partner_id" invisible="1"/>
                                         <field name="name" widget="section_and_note_text" optional="show" invisible="1"/>
 
-                                        <field name="product_uom_qty" string="Cantidad pedida"/>
+                                        <field name="cantidad_pedida" readonly="1"/>
                                         <field name="cantidad_facturada" readonly="1"/>
                                         <field name="cantidad_entregada" readonly="1"/>
                                         <field name="cantidad_restante" readonly="1"/>

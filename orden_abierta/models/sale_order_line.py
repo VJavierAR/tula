@@ -61,8 +61,8 @@ class SaleOrderLineOrdenAbierta(models.Model):
         default=False,
         copy=True
     )
-    cantidad_original = fields.Integer(
-        string="Cantidad original",
+    cantidad_pedida = fields.Integer(
+        string="Cantidad pedida",
         default=0,
         copy=True
     )
@@ -102,7 +102,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
         for linea in vals:
             if 'product_uom_qty' in linea:
                 linea['cantidad_restante'] = linea['product_uom_qty']
-                linea['cantidad_original'] = linea['product_uom_qty']
+                linea['cantidad_pedida'] = linea['product_uom_qty']
 
         result = super(SaleOrderLineOrdenAbierta, self).create(vals)
         return result

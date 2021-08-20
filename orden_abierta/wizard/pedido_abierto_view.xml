@@ -43,7 +43,7 @@
                             <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>
                             <field name="cantidad_facturada" readonly="1" invisible="1"/>
                             <field name="cantidad_entregada" readonly="1" invisible="1"/>
-                            <field name="cantidad_original" readonly="1" invisible="1"/>
+                            <field name="cantidad_pedida" readonly="1" invisible="1"/>
                             <field name="tax_id" widget="many2many_tags"
                                    optional="show" invisible="1"/>
                             <field name="discount"

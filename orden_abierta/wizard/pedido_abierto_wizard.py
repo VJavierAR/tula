@@ -86,7 +86,7 @@ class PedidoAbiertoWizard(models.TransientModel):
                 'codigo_alterno': linea.codigo_alterno,
                 'cantidad_reservada': linea.cantidad_reservada,
                 'creado_desde_pedido_abierto': linea.creado_desde_pedido_abierto,
-                'cantidad_original': linea.cantidad_original,
+                'cantidad_pedida': linea.cantidad_pedida,
                 'cantidad_facturada': linea.cantidad_facturada,
                 'cantidad_entregada': linea.cantidad_entregada,
                 'cantidad_restante': linea.cantidad_restante,

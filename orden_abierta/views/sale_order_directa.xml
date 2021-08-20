@@ -39,7 +39,7 @@
                     <field name="cantidad_facturada" readonly="1"/>
                     <field name="cantidad_entregada" readonly="1"/>
                     <field name="cantidad_restante" readonly="1"/>
-                    <field name="cantidad_original" readonly="1"/>
+                    <field name="cantidad_pedida" readonly="1"/>
 
 
                     <field name="product_uom" force_save="1" string="UoM"
