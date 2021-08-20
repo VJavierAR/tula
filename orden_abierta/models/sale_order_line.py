@@ -113,7 +113,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
         return result
 
     @api.depends('linea_abierta_rel.cantidad_restante')
-    def cantidad_restante_linea_pedido_abierto(self):
+    def _compute_cantidad_restante_linea_pedido_abierto(self):
         for rec in self:
             if rec.linea_abierta_rel.id:
                 text = "[" + str(rec.linea_abierta_rel.name) + "]" + "\n"
