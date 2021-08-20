@@ -237,19 +237,19 @@ class PedidoAbiertoLinea(models.Model):
     def _compute_cantidad_entregada_and_cantidad_facturada(self):
         _logger.info("_compute_cantidad_entregada_and_cantidad_facturada")
         for rec in self:
-            _logger.info("len(rec.linea_relacionada.ids): \n\n" + str(len(rec.linea_relacionada.ids)))
-            if len(rec.linea_relacionada.ids) > 0:
+            # _logger.info("len(rec.linea_relacionada.ids): \n\n" + str(len(rec.linea_relacionada.ids)))
+            # if len(rec.linea_relacionada.ids) > 0:
 
-                cantidad_entregada_total = 0
-                cantidad_facturada_total = 0
-                for linea in rec.linea_relacionada:
-                    cantidad_entregada_total += linea.qty_delivered
-                    cantidad_facturada_total += linea.qty_invoiced
+            #     cantidad_entregada_total = 0
+            #     cantidad_facturada_total = 0
+            #     for linea in rec.linea_relacionada:
+            #         cantidad_entregada_total += linea.qty_delivered
+            #         cantidad_facturada_total += linea.qty_invoiced
 
-                _logger.info("cantidad_entregada_total \n\n" + str(cantidad_entregada_total))
-                _logger.info("cantidad_facturada_total \n\n" + str(cantidad_facturada_total))
-                rec.cantidad_entregada = cantidad_entregada_total
-                rec.cantidad_facturada = cantidad_facturada_total
+            #     _logger.info("cantidad_entregada_total \n\n" + str(cantidad_entregada_total))
+            #     _logger.info("cantidad_facturada_total \n\n" + str(cantidad_facturada_total))
+            rec.cantidad_entregada = sum(rec.linea_relacionada.mapped('qty_delivered'))
+            rec.cantidad_facturada = sum(rec.linea_relacionada.mapped('qty_invoiced'))
 
     def crear_pedido_desde_lineas_wizard(self):
         wiz = self.env['orden.abierta.to.directa'].create({})
