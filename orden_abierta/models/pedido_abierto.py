@@ -109,6 +109,43 @@ class PedidoAbierto(models.Model):
         required=True
     )
 
+    @api.depends('lineas_pedido.price_total')
+    def _amount_all(self):
+        """
+        Compute the total amounts of the SO.
+        """
+        for order in self:
+            amount_untaxed = amount_tax = 0.0
+            for line in order.order_line:
+                amount_untaxed += line.price_subtotal
+                amount_tax += line.price_tax
+            order.update({
+                'amount_untaxed': amount_untaxed,
+                'amount_tax': amount_tax,
+                'amount_total': amount_untaxed + amount_tax,
+            })
+
+    amount_untaxed = fields.Monetary(
+        string='Untaxed Amount',
+        store=True,
+        readonly=True,
+        compute='_amount_all',
+        tracking=5
+    )
+    amount_tax = fields.Monetary(
+        string='Taxes',
+        store=True,
+        readonly=True,
+        compute='_amount_all'
+    )
+    amount_total = fields.Monetary(
+        string='Total',
+        store=True,
+        readonly=True,
+        compute='_amount_all',
+        tracking=4
+    )
+
     @api.depends('partner_id')
     def _compute_plazo_de_pago(self):
         for rec in self:

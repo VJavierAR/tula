@@ -82,7 +82,7 @@ class PedidoAbiertoLinea(models.Model):
             taxes = line.tax_id.compute_all(price, line.pedido_abierto_rel.currency_id, line.product_uom_qty,
                                             product=line.product_id, partner=None)
             line.update({
-                # 'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
+                'price_tax': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
                 'price_total': taxes['total_included'],
                 'price_subtotal': taxes['total_excluded'],
             })
@@ -104,6 +104,12 @@ class PedidoAbiertoLinea(models.Model):
         readonly=True,
         store=True
     )
+    price_tax = fields.Float(
+        compute='_compute_amount',
+        string='Total Impuestos',
+        readonly=True,
+        store=True
+    )
     currency_id = fields.Many2one(
         related='pedido_abierto_rel.currency_id',
         depends=['pedido_abierto_rel.currency_id'],
@@ -111,7 +117,13 @@ class PedidoAbiertoLinea(models.Model):
         string='Currency',
         readonly=True
     )
-
+    display_type = fields.Selection([
+            ('line_section', "Section"),
+            ('line_note', "Note")
+        ],
+        default='line_section',
+        help="Technical field for UX purpose."
+    )
     tax_id = fields.Many2many(
         'account.tax',
         string='Impuesto',
