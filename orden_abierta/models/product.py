@@ -40,13 +40,18 @@ class ProductTemplate(models.Model):
         default=0
     )
 
-
     @api.depends('virtual_available', 'qty_available')
     def _compute_en_transito(self):
         for rec in self:
             rec.en_transito = rec.virtual_available
-            rec.cantidad_pedidos=sum(self.env['pedido.abierto.linea'].search([['product_id','in',rec.product_variant_ids.mapped('id')],['linea_confirmada','=',True],['cantidad_restante','!=',0]]).mapped('cantidad_restante'))
-            rec.cantidad_disponible=rec.qty_available-rec.cantidad_pedidos-rec.en_transito
+            rec.cantidad_pedidos = sum(
+                self.env['pedido.abierto.linea'].search([
+                    ['product_id', 'in', rec.product_variant_ids.mapped('id')],
+                    ['linea_confirmada', '=', True],
+                    ['cantidad_restante', '!=', 0]
+                ]).mapped('cantidad_restante')
+            )
+            rec.cantidad_disponible = rec.qty_available - rec.cantidad_pedidos-rec.en_transito
     """
     def _compute_cantidad_pedidos(self):
         for rec in self:

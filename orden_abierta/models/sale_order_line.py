@@ -164,7 +164,7 @@ class SaleOrderLineOrdenAbierta(models.Model):
             cantidad_entrada = self.product_id.incoming_qty
             cantidad_pedidos_abiertos = cantidad_reservada_suma
             cantidad_disponible_menos_cantidad_pa = cantidad_dispobible - cantidad_pedidos_abiertos
-            
+
             if cantidad_a_vender > cantidad_disponible_menos_cantidad_pa:
 
                 nombre_producto = self.product_id.name
