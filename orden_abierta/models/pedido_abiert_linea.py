@@ -194,13 +194,15 @@ class PedidoAbiertoLinea(models.Model):
         string="Cantidad facturada",
         default=0,
         copy=True,
-        store=False
+        store=True,
+        compute="_compute_cantidad_entregada_and_cantidad_facturada"
     )
     cantidad_entregada = fields.Integer(
         string="Cantidad entregada",
         default=0,
         copy=True,
-        store=False
+        store=True,
+        compute="_compute_cantidad_entregada_and_cantidad_facturada"
     )
     cantidad_restante = fields.Integer(
         string="Cantidad restante",
@@ -233,13 +235,19 @@ class PedidoAbiertoLinea(models.Model):
 
     @api.depends('linea_relacionada', 'linea_relacionada.qty_delivered', 'linea_relacionada.qty_invoiced')
     def _compute_cantidad_entregada_and_cantidad_facturada(self):
+        _logger.info("_compute_cantidad_entregada_and_cantidad_facturada")
         for rec in self:
+            _logger.info("len(rec.linea_relacionada.ids): \n\n" + str(len(rec.linea_relacionada.ids)))
             if len(rec.linea_relacionada.ids) > 0:
+
                 cantidad_entregada_total = 0
                 cantidad_facturada_total = 0
                 for linea in rec.linea_relacionada:
                     cantidad_entregada_total += linea.qty_delivered
                     cantidad_facturada_total += linea.qty_invoiced
+
+                _logger.info("cantidad_entregada_total \n\n" + str(cantidad_entregada_total))
+                _logger.info("cantidad_facturada_total \n\n" + str(cantidad_facturada_total))
                 rec.cantidad_entregada = cantidad_entregada_total
                 rec.cantidad_facturada = cantidad_facturada_total
 
