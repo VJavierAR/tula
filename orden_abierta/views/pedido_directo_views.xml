@@ -98,7 +98,7 @@
 
                                         <field name="cantidad_original" readonly="1"/>
                                         <field name="product_uom" force_save="1" invisible="0"
-                                               options="{&quot;no_open&quot;: True}" optional="show"/>
+                                               options="{'no_open': True, 'no_create': True}" optional="show"/>
 
                                         <field name="fecha_programada" optional="show"/>
                                         <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>
