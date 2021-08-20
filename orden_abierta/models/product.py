@@ -46,7 +46,7 @@ class ProductTemplate(models.Model):
         for rec in self:
             rec.en_transito = rec.virtual_available
             rec.cantidad_pedidos=sum(self.env['pedido.abierto.linea'].search([['product_id','in',rec.product_variant_ids.mapped('id')],['linea_confirmada','=',True],['cantidad_restante','!=',0]]).mapped('cantidad_restante'))
-            rec.cantidad_disponible=rec.quantity_avaible-rec.cantidad_pedidos-rec.en_transito
+            rec.cantidad_disponible=rec.qty_available-rec.cantidad_pedidos-rec.en_transito
     """
     def _compute_cantidad_pedidos(self):
         for rec in self:
@@ -127,7 +127,7 @@ class ProductProduct(models.Model):
         for rec in self:
             rec.en_transito = rec.virtual_available
             rec.cantidad_pedidos=sum(self.env['pedido.abierto.linea'].search([['product_id','=',rec.id],['linea_confirmada','=',True],['cantidad_restante','!=',0]]).mapped('cantidad_restante'))
-            rec.cantidad_disponible=rec.quantity_avaible-rec.cantidad_pedidos-rec.en_transito
+            rec.cantidad_disponible=rec.qty_available-rec.cantidad_pedidos-rec.en_transito
 
 
 class Codigos(models.Model):
