@@ -134,34 +134,42 @@ class PedidoAbiertoLinea(models.Model):
 
     codigo_cliente = fields.Text(
         string="Código cliente",
-        copy=True
+        copy=True,
+        store=True
     )
     pedido_cliente = fields.Text(
         string="Pedido cliente",
-        copy=True
+        copy=True,
+        store=True
     )
     fecha_programada = fields.Date(
-        string="Programación"
+        string="Programación",
+        store=True
     )
     codigo_alterno = fields.Text(
         string="Código alterno",
-        copy=True
+        copy=True,
+        store=True
     )
     cantidad_reservada = fields.Integer(
         string="Cantidad reservada",
-        copy=True
+        copy=True,
+        store=True
     )
     default_code_product = fields.Char(
         string="Referencia interna",
-        related="product_id.default_code"
+        related="product_id.default_code",
+        store=True
     )
     confirma_venta_directa = fields.Boolean(
         string="Confirma venta directa",
-        default=False
+        default=False,
+        store=True
     )
     linea_confirmada = fields.Boolean(
         string="Línea confirmada",
-        default=False
+        default=False,
+        store=True
     )
     pedido_abierto_rel = fields.Many2one(
         comodel_name="pedido.abierto",
@@ -173,27 +181,32 @@ class PedidoAbiertoLinea(models.Model):
     creado_desde_pedido_abierto = fields.Boolean(
         string="Creado desde pedido abierto",
         default=False,
-        copy=True
+        copy=True,
+        store=True
     )
     cantidad_pedida = fields.Integer(
         string="Cantidad pedida",
         default=0,
-        copy=True
+        copy=True,
+        store=True
     )
     cantidad_facturada = fields.Integer(
         string="Cantidad facturada",
         default=0,
-        copy=True
+        copy=True,
+        store=True
     )
     cantidad_entregada = fields.Integer(
         string="Cantidad entregada",
         default=0,
-        copy=True
+        copy=True,
+        store=True
     )
     cantidad_restante = fields.Integer(
         string="Cantidad restante",
         default=0,
-        copy=True
+        copy=True,
+        store=True
     )
     es_de_sale_order = fields.Boolean(
         string="Es de sale order",
@@ -238,7 +251,7 @@ class PedidoAbiertoLinea(models.Model):
 
     @api.onchange('product_uom_qty')
     def cambia_cantidad_original(self):
-        if self.linea_relacionada.ids:
+        if len(self.linea_relacionada.ids) == 0:
             self.cantidad_pedida = self.product_uom_qty
             self.cantidad_restante = self.product_uom_qty
 
@@ -247,9 +260,8 @@ class PedidoAbiertoLinea(models.Model):
         if self.product_id.id:
             # self.product_uom
             self.price_unit = self.product_id.lst_price
-            if self.product_id.taxes_id.ids:
+            if len(self.product_id.taxes_id.ids) > 0:
                 self.tax_id = [(6, 0, self.product_id.taxes_id.ids)]
-
 
             # Obtiene código de cliente
             for codigo in self.product_id.codigos_de_producto:
