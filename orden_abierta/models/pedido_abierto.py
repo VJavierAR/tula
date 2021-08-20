@@ -97,8 +97,12 @@ class PedidoAbierto(models.Model):
         # default=lambda self: self.partner_id.property_payment_term_id.id or False
     )
     pricelist_id = fields.Many2one(
-        'product.pricelist', string='Pricelist', check_company=True,  # Unrequired company
-        required=True, readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
+        'product.pricelist',
+        string='Pricelist',
+        check_company=True,  # Unrequired company
+        required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         help="If you change the pricelist, only newly added lines will be affected.")
     currency_id = fields.Many2one(
@@ -126,14 +130,14 @@ class PedidoAbierto(models.Model):
             })
 
     amount_untaxed = fields.Monetary(
-        string='Untaxed Amount',
+        string='Base imponible',
         store=True,
         readonly=True,
         compute='_amount_all',
         tracking=5
     )
     amount_tax = fields.Monetary(
-        string='Taxes',
+        string='Impuestos',
         store=True,
         readonly=True,
         compute='_amount_all'
