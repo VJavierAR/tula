@@ -19,8 +19,10 @@
 
                     </h2>
                     -->
-                    <field name="alerta_text" readonly="1" attrs="{'invisible': [('alerta_text', '=', False)]}" force_save="1"/>
-
+                    <h2>
+                        <field name="alerta_text" readonly="1" attrs="{'invisible': [('alerta_text', '=', False)]}" force_save="1"/>
+                    </h2>
+                    <field name="alerta" force_save="1"/>
                     <field name="order_line_ids" readonly="0" force_save="1">
                         <tree class="slae_line_edit" editable="bottom" create="0">
 
