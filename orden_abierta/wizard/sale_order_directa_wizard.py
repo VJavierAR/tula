@@ -25,6 +25,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
     alerta_text = fields.Text(
         string="",
         compute="_compute_valida_cantidad_pedida",
+        store=True
     )
 
     @api.depends('lineas_pedidos.product_uom_qty')
