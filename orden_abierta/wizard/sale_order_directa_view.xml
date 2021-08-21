@@ -13,9 +13,13 @@
             <field name="model">orden.abierta.to.directa</field>
             <field name="arch" type="xml">
                 <form string="Generar orden directa">
+                    <!--
                     <h2>
                         Se creara y confirmara la orden directa de las líneas seleccionadas.
                     </h2>
+                    -->
+                    <field name="alerta_text" readonly="1" attrs="{'invisible': [('alerta_text', '=', False)]}"/>
+
                     <field name="order_line_ids" readonly="0" force_save="1">
                         <tree class="slae_line_edit" editable="bottom" create="0">
 

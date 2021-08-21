@@ -18,19 +18,24 @@ class PedidoAbiertoWizard(models.TransientModel):
         string="Lineas de pedido abierto",
         domain="[('es_de_sale_order', '=', False)]"
     )
+    alerta_text = fields.Text(
+        string="",
+        compute="_compute_valida_cantidad_pedida",
+    )
 
-    @api.onchange('lineas_pedidos')
-    def valida_cantidad_pedida(self):
-        if len(self.lineas_pedidos.ids) > 0:
-            for linea in self.lineas_pedidos:
-                cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
-                if cantidad_sobrante < 0:
-                    return {
-                        'warning': {
-                            'title': "Cantidad excedida",
-                            'message': "Cantidad pedida excede la cantidad restante, favor de validar."
+    @api.depends('lineas_pedidos.product_uom_qty')
+    def _compute_valida_cantidad_pedida(self):
+        for rec in self:
+            if len(rec.lineas_pedidos.ids) > 0:
+                for linea in rec.lineas_pedidos:
+                    cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
+                    if cantidad_sobrante < 0:
+                        return {
+                            'warning': {
+                                'title': "Cantidad excedida",
+                                'message': "Cantidad pedida excede la cantidad restante, favor de validar."
+                            }
                         }
-                    }
 
     def crear_orden(self):
         _logger.info("generando orden")

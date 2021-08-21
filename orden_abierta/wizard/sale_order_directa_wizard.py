@@ -22,19 +22,24 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         readonly=False,
         domain="[('es_de_sale_order', '=', False)]"
     )
+    alerta_text = fields.Text(
+        string="",
+        compute="_compute_valida_cantidad_pedida",
+    )
 
-    @api.onchange('lineas_pedidos')
+    @api.depends('lineas_pedidos.product_uom_qty')
     def valida_cantidad_pedida(self):
-        if len(self.lineas_pedidos.ids) > 0:
-            for linea in self.lineas_pedidos:
-                cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
-                if cantidad_sobrante < 0:
-                    return {
-                        'warning': {
-                            'title': "Cantidad excedida",
-                            'message': "Cantidad pedida excede la cantidad restante, favor de validar."
+        for rec in self:
+            if len(rec.lineas_pedidos.ids) > 0:
+                for linea in rec.lineas_pedidos:
+                    cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
+                    if cantidad_sobrante < 0:
+                        return {
+                            'warning': {
+                                'title': "Cantidad excedida",
+                                'message': "Cantidad pedida excede la cantidad restante, favor de validar."
+                            }
                         }
-                    }
 
     def generar_orden(self):
         _logger.info("generando orden")
