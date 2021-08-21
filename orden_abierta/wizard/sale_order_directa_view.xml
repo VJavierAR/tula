@@ -73,7 +73,7 @@
                         </form>
                     </field>
                     <footer>
-                        <button name="generar_orden" string="Crear y abrir orden directa" type="object" class="oe_highlight" attrs="{'invisible': [('alerta_text', '=', False)]}"/>
+                        <button name="generar_orden" string="Crear y abrir orden directa" type="object" class="oe_highlight" invisible="[('alerta_text', '=', False)]}"/>
                         <button string="Cerrar" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
