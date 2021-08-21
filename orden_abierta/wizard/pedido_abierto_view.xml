@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form string="Pedido abierto">
                     <field name="pedido_abierto_id" invisible="1"/>
-                    <field name="alerta_text" readonly="1" attrs="{'invisible': [('alerta_text', '=', False)]}"/>
+                    <field name="alerta_text" readonly="1" attrs="{'invisible': [('alerta_text', '=', False)]}" force_save="1"/>
                     <field name='lineas_pedidos' string=' '>
                         <tree class="slae_line_edit" editable="bottom" create="0">
 
