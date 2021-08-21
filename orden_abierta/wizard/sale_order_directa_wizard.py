@@ -28,7 +28,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         store=False
     )
 
-    @api.depends('lineas_pedidos.product_uom_qty')
+    @api.depends('order_line_ids.product_uom_qty')
     def _compute_valida_cantidad_pedida(self):
         for rec in self:
             if len(rec.order_line_ids.ids) > 0:

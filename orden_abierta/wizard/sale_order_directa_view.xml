@@ -16,10 +16,10 @@
                     <!--
                     <h2>
                         Se creara y confirmara la orden directa de las líneas seleccionadas.
-                        attrs="{'invisible': [('alerta_text', '=', False)]}"
+
                     </h2>
                     -->
-                    <field name="alerta_text" readonly="1"  force_save="1"/>
+                    <field name="alerta_text" readonly="1" attrs="{'invisible': [('alerta_text', '=', False)]}" force_save="1"/>
 
                     <field name="order_line_ids" readonly="0" force_save="1">
                         <tree class="slae_line_edit" editable="bottom" create="0">
@@ -73,7 +73,7 @@
                         </form>
                     </field>
                     <footer>
-                        <button name="generar_orden" string="Crear y abrir orden directa" type="object" class="oe_highlight"/>
+                        <button name="generar_orden" string="Crear y abrir orden directa" type="object" class="oe_highlight" attrs="{'invisible': [('alerta_text', '=', False)]}"/>
                         <button string="Cerrar" class="oe_link" special="cancel"/>
                     </footer>
                 </form>
