@@ -19,46 +19,22 @@ class PedidoAbiertoWizard(models.TransientModel):
         domain="[('es_de_sale_order', '=', False)]"
     )
 
+    @api.onchange('lineas_pedidos')
+    def valida_cantidad_pedida(self):
+        if len(self.lineas_pedidos.ids) > 0:
+            for linea in self.lineas_pedidos:
+                cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
+                if cantidad_sobrante < 0:
+                    return {
+                        'warning': {
+                            'title': "Cantidad excedida",
+                            'message': "Cantidad pedida excede la cantidad restante, favor de validar."
+                        }
+                    }
+
     def crear_orden(self):
         _logger.info("generando orden")
         pedido_abierto = self.env['pedido.abierto'].search([('id', '=', self.pedido_abierto_id)])
-
-        for linea in self.lineas_pedidos:
-            cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
-            if cantidad_sobrante < 0:
-                mensajeTitulo = "Alerta"
-                display_msg = "La cantidad de pedida no puede exceder de la cantidad restante."
-                wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
-                view = self.env.ref('orden_abierta.sale_order_alerta_view')
-                return {
-                    'name': _(mensajeTitulo),
-                    'type': 'ir.actions.act_window',
-                    'view_type': 'form',
-                    'view_mode': 'form',
-                    'res_model': 'sale.order.alerta',
-                    'views': [(view.id, 'form')],
-                    'view_id': view.id,
-                    'target': 'new',
-                    'res_id': wiz.id,
-                    'context': self.env.context,
-                }
-            if linea.linea_confirmada:
-                mensajeTitulo = "Alerta"
-                display_msg = "Una de las lineas no tiene cantidades restantes por entregar."
-                wiz = self.env['sale.order.alerta'].create({'mensaje': display_msg})
-                view = self.env.ref('orden_abierta.sale_order_alerta_view')
-                return {
-                    'name': _(mensajeTitulo),
-                    'type': 'ir.actions.act_window',
-                    'view_type': 'form',
-                    'view_mode': 'form',
-                    'res_model': 'sale.order.alerta',
-                    'views': [(view.id, 'form')],
-                    'view_id': view.id,
-                    'target': 'new',
-                    'res_id': wiz.id,
-                    'context': self.env.context,
-                }
 
         sale_directa = self.env['sale.order'].create({
             'partner_id': pedido_abierto.partner_id.id,
