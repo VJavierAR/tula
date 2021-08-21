@@ -139,7 +139,8 @@ class LinesFactura(models.Model):
 	def _nuevaPreci(self):
 		for record in self:
 			if(record.product_id.id!=False):
-				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				#newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				newprice=(record.price_unit * record.nueva_utilidad / 100) + record.price_unit
 				record.nuevo_precio=newprice
 
 	def create(self,list_vals):
@@ -214,3 +215,12 @@ class AlertaDescuento(models.TransientModel):
 	_description = 'Alerta'
 
 	mensaje = fields.Text(string='Mensaje')
+
+class Product(models.Model):
+	_inherit='product.product'
+	nuevo_costo_facturacion=fields.Boolean('Costo')
+
+
+class Product(models.Model):
+	_inherit='product.template'
+	nuevo_costo_facturacion=fields.Boolean('Costo')
