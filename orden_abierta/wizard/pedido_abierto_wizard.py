@@ -23,6 +23,11 @@ class PedidoAbiertoWizard(models.TransientModel):
         compute="_compute_valida_cantidad_pedida",
         store=False
     )
+    alerta = fields.Boolean(
+        string="Alerta",
+        store=True,
+        default=False
+    )
 
     @api.depends('lineas_pedidos.product_uom_qty')
     def _compute_valida_cantidad_pedida(self):
@@ -34,9 +39,11 @@ class PedidoAbiertoWizard(models.TransientModel):
                     if cantidad_sobrante < 0:
                         msg = "Cantidad pedida excede la cantidad restante, favor de validar."
                         rec.alerta_text = msg
+                        rec.alerta = True
                         generoMensaje = True
             if not generoMensaje:
                 rec.alerta_text = ""
+                rec.alerta = False
 
     def crear_orden(self):
         _logger.info("generando orden")

@@ -6,9 +6,22 @@
             <field name="model">pedido.abierto.wizard</field>
             <field name="arch" type="xml">
                 <form string="Pedido abierto">
+                    <group col="6">
+                        <group colspan="1">
+                        </group>
+                        <group colspan="4">
+                            <h2>
+                                <field name="alerta_text" readonly="1" attrs="{'invisible': [('alerta_text', '=', False)]}" force_save="1"/>
+                            </h2>
+                        </group>
+                        <group colspan="1">
+                        </group>
+                    </group>
+                    <field name="alerta" force_save="1" invisible="1"/>
                     <field name="pedido_abierto_id" invisible="1"/>
-                    <field name="alerta_text" readonly="1" attrs="{'invisible': [('alerta_text', '=', False)]}" force_save="1"/>
                     <field name='lineas_pedidos' string=' '>
+
+
                         <tree class="slae_line_edit" editable="bottom" create="0">
 
                             <!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
@@ -62,7 +75,7 @@
                     </field>
 
                     <footer>
-                        <button name="crear_orden" string="Crear y abrir orden directa" type="object" class="oe_highlight" invisible="[('alerta_text', '=', False)]"/>
+                        <button name="crear_orden" string="Crear y abrir orden directa" type="object" class="oe_highlight" attrs="{'invisible': [('alerta', '=', True)]}"/>
                         <button special="cancel" string="Cerrar" class="oe_highlight"/>
                     </footer>
 
