@@ -62,7 +62,7 @@
                     </field>
 
                     <footer>
-                        <button name="crear_orden" string="Crear y abrir orden directa" type="object" class="oe_highlight" invisible="[('alerta_text', '=', False)]}"/>
+                        <button name="crear_orden" string="Crear y abrir orden directa" type="object" class="oe_highlight" invisible="[('alerta_text', '=', False)]"/>
                         <button special="cancel" string="Cerrar" class="oe_highlight"/>
                     </footer>
 
