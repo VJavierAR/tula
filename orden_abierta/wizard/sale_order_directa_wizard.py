@@ -25,11 +25,11 @@ class OrdenAbiertaToDirecta(models.TransientModel):
     alerta_text = fields.Text(
         string="",
         compute="_compute_valida_cantidad_pedida",
-        store=True
+        store=False
     )
 
     @api.depends('lineas_pedidos.product_uom_qty')
-    def valida_cantidad_pedida(self):
+    def _compute_valida_cantidad_pedida(self):
         for rec in self:
             if len(rec.lineas_pedidos.ids) > 0:
                 generoMensaje = False
