@@ -108,8 +108,10 @@ class LinesFactura(models.Model):
 		for line in self:
 			price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
 			taxes = line.tax_ids.compute_all(price, line.move_id.currency_id, 1, product=line.product_id, partner=line.move_id.partner_id)
-			_logger.info(str(taxes))
-			line.impuesto=taxes.get('taxes').get('amount')
+			line.impuesto=0
+			if(len(line.tax_ids)>0):
+				t=float(taxes['taxes'][0]['amount'])
+				line.impuesto=t
 			#line.update({
 			#    'impuesto': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
 			    #'price_total': taxes['total_included'],
@@ -147,7 +149,7 @@ class LinesFactura(models.Model):
 	def _nuevaUtil(self):
 		for record in self:
 			if(record.product_id.id!=False):
-				record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
+				record.nueva_utilidad=((record.valorX-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
 
 	@api.onchange('nueva_utilidad','impuesto')
 	def _nuevaPreci(self):
@@ -155,6 +157,7 @@ class LinesFactura(models.Model):
 			if(record.product_id.id!=False):
 				#newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
 				newprice=(record.price_unit * record.nueva_utilidad / 100) + record.price_unit
+				record.valorX=newprice
 				record.nuevo_precio=newprice+record.impuesto
 
 	def create(self,list_vals):
