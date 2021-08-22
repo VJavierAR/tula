@@ -1008,6 +1008,7 @@
                                       <field name='nuevo_costo' />
                                       <field name='nueva_utilidad' string="Nueva Utilidad precio de venta (%)"/>
                                       <field name='nuevo_precio' />
+                                      <field name='valorX' string="Nuevo precio+impuesto"/>
                                       <field name='ultimo_precio_compra' />
                                       <field name='ultimo_provedor' />
                                       <field name='stock_total'/>
