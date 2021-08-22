@@ -103,11 +103,11 @@ class LinesFactura(models.Model):
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
 	impuesto=fields.Float(compute='_compute_amount',readonly=True,default=0)
 
-	@api.depends('quantity', 'discount', 'price_unit', 'tax_id')
+	@api.depends('quantity', 'discount', 'price_unit', 'taxes_id')
 	def _compute_amount(self):
 		for line in self:
 			price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-			taxes = line.tax_id.compute_all(price, line.order_id.currency_id, 1, product=line.product_id, partner=line.move_id.partner_id)
+			taxes = line.taxes_id.compute_all(price, line.order_id.currency_id, 1, product=line.product_id, partner=line.move_id.partner_id)
 			line.update({
 			    'impuesto': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
 			    #'price_total': taxes['total_included'],
