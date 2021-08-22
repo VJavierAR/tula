@@ -158,7 +158,7 @@ class LinesFactura(models.Model):
 				#newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
 				newprice=(record.price_unit * record.nueva_utilidad / 100) + record.price_unit
 				record.valorX=newprice
-				record.nuevo_precio=newprice+record.impuesto
+				record.nuevo_precio=newprice
 
 	def create(self,list_vals):
 		for vals in list_vals:
