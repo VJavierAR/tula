@@ -1001,6 +1001,7 @@
                                 <field name="narration" placeholder="Add an internal note..." nolabel="1" height="50"/>
                             </page>-->
                                     <field name='valorX' invisible='1'/>
+                                    <field name='impuesto' invisible='1'/>
                                       <field name='utilida' />
                                       <field name='precio' />
                                       <field name='costo'/>
