@@ -101,7 +101,7 @@ class LinesFactura(models.Model):
 	nuevo_costo=fields.Float(store=True,readonly=True)
 	nuevo_precio=fields.Float(store=True)
 	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
-	impuesto=fields.Float(compute='_compute_amount',readonly=True)
+	impuesto=fields.Float(compute='_compute_amount',readonly=True,default=0)
 
 	@api.depends('quantity', 'discount', 'price_unit', 'tax_id')
 	def _compute_amount(self):
@@ -147,13 +147,13 @@ class LinesFactura(models.Model):
 			if(record.product_id.id!=False):
 				record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
 
-	@api.onchange('nueva_utilidad')
+	@api.onchange('nueva_utilidad','impuesto')
 	def _nuevaPreci(self):
 		for record in self:
 			if(record.product_id.id!=False):
 				#newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
 				newprice=(record.price_unit * record.nueva_utilidad / 100) + record.price_unit
-				record.nuevo_precio=newprice
+				record.nuevo_precio=newprice+record.impuesto
 
 	def create(self,list_vals):
 		for vals in list_vals:
