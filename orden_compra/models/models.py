@@ -109,6 +109,7 @@ class LinesFactura(models.Model):
 			price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
 			taxes = line.tax_ids.compute_all(price, line.move_id.currency_id, 1, product=line.product_id, partner=line.move_id.partner_id)
 			_logger.info(str(taxes))
+			line.impuesto=1
 			#line.update({
 			#    'impuesto': sum(t.get('amount', 0.0) for t in taxes.get('taxes', [])),
 			    #'price_total': taxes['total_included'],
