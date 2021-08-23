@@ -104,7 +104,7 @@
         <record model="ir.actions.act_window" id="ordenes_directas">
             <field name="name">Líneas de pedido abierto</field>
             <field name="res_model">pedido.abierto.linea</field>
-            <field name="view_mode">tree</field>
+            <field name="view_mode">tree,form,pivot</field>
             <field name="context">{
                 'search_default_cliente_group': 1,
                 'search_default_producto_group': 2

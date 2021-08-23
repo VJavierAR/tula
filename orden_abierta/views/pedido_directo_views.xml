@@ -227,7 +227,7 @@
         <record model="ir.actions.act_window" id="pedido_abierto">
             <field name="name">Pedidos abiertos</field>
             <field name="res_model">pedido.abierto</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,calendar,pivot</field>
             <field name="context">{'search_default_partner_id_group': 1}</field>
             <field name="view_id" ref="pedido_abierto_view_tree"/>
         </record>

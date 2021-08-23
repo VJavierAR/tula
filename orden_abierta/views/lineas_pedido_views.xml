@@ -78,7 +78,7 @@
         <record model="ir.actions.act_window" id="lineas_pedido">
             <field name="name">Líneas de pedidos</field>
             <field name="res_model">sale.order.line</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,pivot,graph</field>
             <field name="context">{'search_default_ordenes_directas': 1}</field>
             <field name="view_id" ref="view_lineas_ordenes_pedido"/>
         </record>
