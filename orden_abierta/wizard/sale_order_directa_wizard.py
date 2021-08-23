@@ -11,7 +11,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
     _description = 'Genera orden directa con base a ordenes abiertas'
 
     def _default_order_line_ids(self):
-        return self.env['sale.order.line'].browse(
+        return self.env['pedido.abierto.linea'].browse(
             self.env.context.get('active_ids'))
 
     order_line_ids = fields.Many2many(
@@ -36,8 +36,8 @@ class OrdenAbiertaToDirecta(models.TransientModel):
     @api.depends('order_line_ids.product_uom_qty')
     def _compute_valida_cantidad_pedida(self):
         for rec in self:
+            generoMensaje = False
             if len(rec.order_line_ids.ids) > 0:
-                generoMensaje = False
                 for linea in rec.order_line_ids:
                     cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
                     if cantidad_sobrante < 0:

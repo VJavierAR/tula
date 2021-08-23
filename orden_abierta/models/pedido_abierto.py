@@ -184,12 +184,18 @@ class PedidoAbierto(models.Model):
 
     @api.model
     def create(self, vals):
+        _logger.info("vals create: \n\n" + str(vals))
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('pedido.abierto.seq') or 'New'
 
         if 'pedido_cliente' in vals and 'lineas_pedido' in vals:
             for linea in vals.get('lineas_pedido'):
                 linea[2]['pedido_cliente'] = vals['pedido_cliente']
+
+        if 'lineas_pedido' in vals:
+            for linea in vals.get('lineas_pedido'):
+                linea[2]['cantidad_restante'] = linea[2]['product_uom_qty']
+                linea[2]['cantidad_pedida'] = linea[2]['product_uom_qty']
         """                
         if 'partner_id' in vals and 'plazo_de_pago' not in vals:
             cliente = self.env['res.partner'].search([
@@ -213,19 +219,33 @@ class PedidoAbierto(models.Model):
         result = super(PedidoAbierto, self).create(vals)
         return result
 
+    # @api.model
+    def write(self, vals):
+        _logger.info("vals wrtite: \n\n" + str(vals))
+        if 'lineas_pedido' in vals:
+            for linea in vals.get('lineas_pedido'):
+                linea_full = self.env['pedido.abierto.linea'].search([
+                    ('id', '=', linea[1])
+                ])
+                if linea_full.cantidad_restante == linea_full.cantidad_pedida:
+                    linea[2]['cantidad_restante'] = linea[2]['product_uom_qty']
+                    linea[2]['cantidad_pedida'] = linea[2]['product_uom_qty']
+
+        result = super(PedidoAbierto, self).write(vals)
+        return result
+
     def crear_pedido_wizard(self):
         wiz = self.env['pedido.abierto.wizard'].create({
             'pedido_abierto_id': self.id
         })
-        _logger.info("self.lineas_pedido.ids: " + str(self.lineas_pedido.ids))
-        _logger.info("self.lineas_pedido.pedido_abierto_rel: " + str(self.lineas_pedido.mapped('pedido_abierto_rel')))
+
         wiz.write({
             'lineas_pedidos': [(6, 0, self.lineas_pedido.ids)]
         })
 
         for linea in wiz.lineas_pedidos:
             if linea.linea_confirmada:
-                wiz.write({
+                wiz.sudo().write({
                     'lineas_pedidos': [(3, linea.id, 0)]
                 })
                 # linea.unlink()

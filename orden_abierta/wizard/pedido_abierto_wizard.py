@@ -32,8 +32,8 @@ class PedidoAbiertoWizard(models.TransientModel):
     @api.depends('lineas_pedidos.product_uom_qty')
     def _compute_valida_cantidad_pedida(self):
         for rec in self:
+            generoMensaje = False
             if len(rec.lineas_pedidos.ids) > 0:
-                generoMensaje = False
                 for linea in rec.lineas_pedidos:
                     cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
                     if cantidad_sobrante < 0:

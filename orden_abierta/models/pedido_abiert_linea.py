@@ -308,13 +308,6 @@ class PedidoAbiertoLinea(models.Model):
             # 'context': {'default_lineas_pedidos': [(6, 0, self.lineas_pedido.ids)]},
         }
 
-    @api.onchange('product_uom_qty')
-    def cambia_cantidad_original(self):
-        if len(self.linea_relacionada.ids) == 0:
-            self.cantidad_pedida = self.product_uom_qty
-            if 'NewId' in str(self.id):
-                self.cantidad_restante = self.product_uom_qty
-
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
         if self.product_id.id:
@@ -377,12 +370,12 @@ class PedidoAbiertoLinea(models.Model):
                 for data in almacenes_stock:
                     nombre_almacen += str(data.location_id.display_name) + ": " + str(data.quantity) + "\n"
                 mensaje = "Planea vender " + str(
-                    cantidad_a_vender) + " de " + nombre_producto + " pero solo tiene " + str(cantidad_dispobible)
+                    cantidad_a_vender) + " de " + nombre_producto + " pero solo tiene " + str(cantidad_disponible_menos_cantidad_pa)
                 mensaje += " en los siguientes almacenes:\nAlmacén: cantidad\n" + nombre_almacen + "\n"
                 mensaje += "Existen " + str(cantidad_disponible_menos_cantidad_pa)
                 mensaje += " disponibles (Cantidad a mano, menos la cantidad de pedidos abiertos).\n\n"
                 mensaje += "Cantidad requerida: " + str(cantidad_a_vender) + "\n"
-                mensaje += "Cantidad a mano: " + str(cantidad_dispobible) + "\n"
+                mensaje += "Cantidad a mano: " + str(cantidad_disponible_menos_cantidad_pa) + "\n"
                 mensaje += "Cantidad a prevista: " + str(cantidad_prevista) + "\n"
                 mensaje += "Total cantidad en tránsito: " + str(cantidad_entrada) + "\n"
                 return {
