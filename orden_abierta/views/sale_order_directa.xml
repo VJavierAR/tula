@@ -8,24 +8,24 @@
                 <tree string="Ordenes directas" create="0" delete="0" edit="1" multi_edit="1">
                     <field name="pedido_cliente" optional="show"/>
                     <field name="default_code_product" readonly="1" optional="show"/>
-                    <field name="product_id" readonly="1"/>
+                    <field name="product_id" readonly="1" optional="show"/>
                     <field name="codigo_cliente" readonly="1" optional="show"/>
                     <field name="codigo_alterno" optional="show"/>
-                    <field name="price_unit" readonly="1"/>
+                    <field name="price_unit" readonly="1" optional="show"/>
                     <field name="fecha_programada" optional="show"/>
-                    <field name="cantidad_pedida" readonly="1" string="Cantidad original" sum="Total"/>
-                    <field name="product_uom_qty" readonly="1" string="Cantidad pedida" sum="Total"/>
-                    <field name="cantidad_facturada" readonly="1" sum="Total"/>
-                    <field name="cantidad_entregada" readonly="1" sum="Total"/>
-                    <field name="cantidad_restante" readonly="1" sum="Total"/>
-
+                    <field name="cantidad_pedida" readonly="1" string="Cantidad original" sum="Total" optional="show"/>
+                    <field name="product_uom_qty" readonly="1" string="Cantidad pedida" sum="Total" optional="show"/>
+                    <field name="cantidad_facturada" readonly="1" sum="Total" optional="show"/>
+                    <field name="cantidad_entregada" readonly="1" sum="Total" optional="show"/>
+                    <field name="cantidad_restante" readonly="1" sum="Total" optional="show"/>
+                    <field name="state_pedido_abierto" readonly="1" optional="show"/>
                     <!-- a considerar -->
-                    <field name="pedido_abierto_rel"/>
-                    <field name="order_partner_id"/>
+                    <field name="pedido_abierto_rel" />
                     <field name="price_subtotal" widget="monetary" sum="Total"/>
 
 
                     <!-- invisibles -->
+                    <field name="order_partner_id" invisible="1"/>
                     <field name="linea_relacionada" invisible="1"/>
                     <field name="company_id" invisible="1"/>
                     <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>
