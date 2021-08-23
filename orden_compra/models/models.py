@@ -230,10 +230,19 @@ class AlertaDescuento(models.TransientModel):
 
 class Product(models.Model):
 	_inherit='product.product'
-	nuevo_costo_facturacion=fields.Float('Costo')
-	nuevo_costo_facturacion_impuesto=fields.Float('Costo')
+	nuevo_costo_facturacion=fields.Float(compute='updateCost','Costo')
+	nuevo_costo_facturacion_impuesto=fields.Float('Costo+impuesto')
+
+	@api.depends('standard_price')
+	def updateCost(self):
+		for record in self:
+			record.nuevo_costo_facturacion=0
+			if(record.id):
+				f=self.env['account.move.line'].search([['credit','=',0],['parent_state','=','posted'],['product_id','=',record.id]],order='date asc',limit=1)
+				record.nuevo_costo_facturacion=f.price_unit
+				record.nuevo_costo_facturacion_impuesto=f.price_unit+f.impuesto
 
 class Product(models.Model):
 	_inherit='product.template'
 	nuevo_costo_facturacion=fields.Float('Costo')
-	nuevo_costo_facturacion_impuesto=fields.Float('Costo')
+	nuevo_costo_facturacion_impuesto=fields.Float('Costo+impuesto')
