@@ -171,7 +171,7 @@ class PedidoAbiertoLinea(models.Model):
         store=True
     )
     fecha_programada = fields.Date(
-        string="Programación",
+        string="Fecha programada",
         store=True
     )
     codigo_alterno = fields.Text(

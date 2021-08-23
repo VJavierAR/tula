@@ -207,6 +207,11 @@
                             string="Código cliente"
                             filter_domain="[('lineas_pedido.codigo_cliente', '=', self)]"
                     />
+                    <field
+                            name="lineas_pedido"
+                            string="Fecha programada"
+                            filter_domain="[('lineas_pedido.fecha_programada', '=', self)]"
+                    />
                     <group>
                         <filter
                                 string="Cliente"
