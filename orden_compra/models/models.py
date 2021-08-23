@@ -91,15 +91,15 @@ class Factura(models.Model):
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
-	costo=fields.Float(store=True,readonly=True,company_dependent=True,check_company=True)
-	precio=fields.Float(store=True,readonly=True, company_dependent=True,check_company=True)
-	ultimo_provedor=fields.Many2one('res.partner',store=True,readonly=True)
-	ultimo_precio_compra=fields.Float(store=True,readonly=True)
-	stock_total=fields.Float(store=True,readonly=True)
-	stock_quant=fields.Many2many('stock.quant',store=True,readonly=True)
+	costo=fields.Float(readonly=True,company_dependent=True,check_company=True)
+	precio=fields.Float(readonly=True, company_dependent=True,check_company=True)
+	ultimo_provedor=fields.Many2one('res.partner',readonly=True)
+	ultimo_precio_compra=fields.Float(readonly=True)
+	stock_total=fields.Float(readonly=True)
+	stock_quant=fields.Many2many('stock.quant',readonly=True)
 	nueva_utilidad=fields.Float(store=True)
-	utilida=fields.Float(store=True,readonly=True, company_dependent=True,check_company=True)
-	nuevo_costo=fields.Float(store=True,readonly=True)
+	utilida=fields.Float(readonly=True, company_dependent=True,check_company=True)
+	nuevo_costo=fields.Float(readonly=True)
 	nuevo_precio=fields.Float(store=True)
 	valorX=fields.Float(readonly=True)
 	impuesto=fields.Float(readonly=True,default=0)
