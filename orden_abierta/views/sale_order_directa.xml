@@ -50,10 +50,15 @@
             <field name="model">pedido.abierto.linea</field>
             <field name="arch" type="xml">
                 <search>
+
                     <field
                             name="order_partner_id"
                             string="Cliente"
-                            filter_domain="[('order_partner_id', 'ilike', self)]"
+                    />
+                    <field
+                            name="pedido_cliente"
+                            string="Pedido cliente"
+                            filter_domain="[('pedido_cliente', 'ilike', self)]"
                     />
                     <field
                             name="codigo_cliente"
@@ -77,9 +82,12 @@
                             context="{'group_by': 'fecha_programada'}"/>
                         <filter string="Producto" name="producto_group" domain="[]"
                             context="{'group_by': 'product_id'}"/>
+                        <!--
                         <filter string="Cliente y Producto" name="cliente_producto_group" domain="[]"
-                            context="{'group_by': '['order_partner_id', 'product_id']'}"/>
+                            context="{'group_by': ['order_partner_id', 'product_id']}"/>
+                        -->
                     </group>
+
                     <!--
                     <filter string="Ordenenes directas"
                             name="ordenes_directas"
@@ -97,7 +105,11 @@
             <field name="name">Líneas de pedido abierto</field>
             <field name="res_model">pedido.abierto.linea</field>
             <field name="view_mode">tree</field>
-            <field name="context">{'search_default_cliente_producto_group': 1}</field>
+            <field name="context">{
+                'search_default_cliente_group': 1,
+                'search_default_producto_group': 2
+                }
+            </field>
             <field name="view_id" ref="view_orden_directa"/>
         </record>
 
