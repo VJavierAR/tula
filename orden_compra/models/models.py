@@ -238,7 +238,7 @@ class Product(models.Model):
 		for record in self:
 			record.nuevo_costo_facturacion=0
 			if(record.id):
-				f=self.env['account.move.line'].search([['credit','=',0],['parent_state','=','posted'],['product_id','=',record.id]],order='date asc',limit=1)
+				f=self.env['account.move.line'].search([['credit','=',0],['parent_state','=','posted'],['product_id','=',record.id]],order='date desc',limit=1)
 				record.nuevo_costo_facturacion=f.price_unit
 				record.nuevo_costo_facturacion_impuesto=f.price_unit+f.impuesto
 
