@@ -250,6 +250,17 @@ class PedidoAbiertoLinea(models.Model):
         store=True
 
     )
+    state_pedido_abierto = fields.Selection(
+        selection=[
+            ('borrador', 'borrador'),
+            ('abierto', 'abierto'),
+            ('confirmado', 'confirmado'),
+            ('expirado', 'expirado')
+        ],
+        string="Estado",
+        store=True,
+        related="pedido_abierto_rel.state"
+    )
 
     def create(self, vals):
         _logger.info("vals de pedidod abietto_loina:   \n\n " + str(vals))
@@ -301,7 +312,8 @@ class PedidoAbiertoLinea(models.Model):
     def cambia_cantidad_original(self):
         if len(self.linea_relacionada.ids) == 0:
             self.cantidad_pedida = self.product_uom_qty
-            self.cantidad_restante = self.product_uom_qty
+            if 'NewId' in str(self.id):
+                self.cantidad_restante = self.product_uom_qty
 
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
