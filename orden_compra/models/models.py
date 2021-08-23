@@ -119,9 +119,9 @@ class LinesFactura(models.Model):
 		for record in self:
 			record.valorX=0
 			if(record.product_id.id!=False):
-				record.costo=record.product_id.standard_price
-				record.precio=record.product_id.lst_price
-				record.utilida=record.product_id.x_studio_utilidad_precio_de_venta
+				record.costo=record.product_id.with_context(force_company=self.env.company.id).standard_price
+				record.precio=record.product_id.with_context(force_company=self.env.company.id).lst_price
+				record.utilida=record.product_id.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
 				record.ultimo_provedor=ultimo.order_id.partner_id.id
 				record.ultimo_precio_compra=ultimo.price_unit*ultimo.currency_id.rate
