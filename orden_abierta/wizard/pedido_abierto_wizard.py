@@ -106,6 +106,10 @@ class PedidoAbiertoWizard(models.TransientModel):
             pedido_abierto.write({
                 'state': 'confirmado'
             })
+        else:
+            pedido_abierto.write({
+                'state': 'abierto'
+            })
 
         # sale_directa.action_confirm()
         display_msg = "Se genero orden directa de un pedido abierto: <br/>Pedido abierto: " + pedido_abierto.name
