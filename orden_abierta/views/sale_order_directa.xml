@@ -78,7 +78,7 @@
                         <filter string="Producto" name="producto_group" domain="[]"
                             context="{'group_by': 'product_id'}"/>
                         <filter string="Cliente y Producto" name="cliente_producto_group" domain="[]"
-                            context="{'group_by': ['order_partner_id', 'product_id']}"/>
+                            context="{'group_by': '['order_partner_id', 'product_id']'}"/>
                     </group>
                     <!--
                     <filter string="Ordenenes directas"
