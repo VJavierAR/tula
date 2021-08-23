@@ -230,7 +230,7 @@ class AlertaDescuento(models.TransientModel):
 
 class Product(models.Model):
 	_inherit='product.product'
-	nuevo_costo_facturacion=fields.Float(compute='updateCost','Costo')
+	nuevo_costo_facturacion=fields.Float(compute='updateCost',string='Costo')
 	nuevo_costo_facturacion_impuesto=fields.Float('Costo+impuesto')
 
 	@api.depends('standard_price')
