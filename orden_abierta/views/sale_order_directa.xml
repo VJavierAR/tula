@@ -53,7 +53,7 @@
                     <field
                             name="order_partner_id"
                             string="Cliente"
-                            filter_domain="[('partner_id', 'ilike', self)]"
+                            filter_domain="[('order_partner_id', 'ilike', self)]"
                     />
                     <field
                             name="codigo_cliente"
