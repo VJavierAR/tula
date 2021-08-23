@@ -101,8 +101,8 @@ class LinesFactura(models.Model):
 	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,readonly=True, company_dependent=True,check_company=True)
 	nuevo_costo=fields.Float(store=True,readonly=True)
 	nuevo_precio=fields.Float(store=True)
-	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
-	impuesto=fields.Float(compute='_compute_amount',readonly=True,default=0)
+	valorX=fields.Float(readonly=True)
+	impuesto=fields.Float(readonly=True,default=0)
 
 	@api.depends('quantity', 'discount', 'price_unit', 'tax_ids')
 	def _compute_amount(self):
@@ -114,7 +114,7 @@ class LinesFactura(models.Model):
 				t=float(taxes['taxes'][0]['amount'])
 				line.impuesto=t
 	
-	@api.depends('product_id','price_unit','quantity')
+	@api.onchange('product_id','price_unit','quantity')
 	def _ultimoProvedor(self):
 		for record in self:
 			record.valorX=0
@@ -131,11 +131,11 @@ class LinesFactura(models.Model):
 				record.stock_total=sum(quant.mapped('quantity'))
 				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
 				#old
-				#unidades=sum(cost.mapped('quantity'))+record.quantity
-				#costos=sum(cost.mapped('value'))+(record.price_subtotal)
+				unidades=sum(cost.mapped('quantity'))+record.quantity
+				costos=sum(cost.mapped('value'))+(record.price_subtotal)
 				#new
-				unidades=2
-				costos=(record.product_id.nuevo_costo_facturacion_impuesto)+(record.price_unit+record.impuesto)
+				# unidades=2
+				# costos=(record.product_id.nuevo_costo_facturacion_impuesto)+(record.price_unit+record.impuesto)
 				#######
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record.nuevo_costo=new_cost
