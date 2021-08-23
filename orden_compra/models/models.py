@@ -91,18 +91,18 @@ class Factura(models.Model):
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
-	costo=fields.Float(readonly=True,company_dependent=True,check_company=True)
-	precio=fields.Float(readonly=True, company_dependent=True,check_company=True)
-	ultimo_provedor=fields.Many2one('res.partner',readonly=True)
-	ultimo_precio_compra=fields.Float(readonly=True)
-	stock_total=fields.Float(readonly=True)
-	stock_quant=fields.Many2many('stock.quant',readonly=True)
+	costo=fields.Float()
+	precio=fields.Float()
+	ultimo_provedor=fields.Many2one('res.partner',)
+	ultimo_precio_compra=fields.Float()
+	stock_total=fields.Float()
+	stock_quant=fields.Many2many('stock.quant',)
 	nueva_utilidad=fields.Float(store=True)
-	utilida=fields.Float(readonly=True, company_dependent=True,check_company=True)
-	nuevo_costo=fields.Float(readonly=True)
+	utilida=fields.Float()
+	nuevo_costo=fields.Float()
 	nuevo_precio=fields.Float(store=True)
-	valorX=fields.Float(readonly=True)
-	impuesto=fields.Float(readonly=True,default=0)
+	valorX=fields.Float()
+	impuesto=fields.Float(default=0)
 
 	# @api.onchange('product_id')
 	# def _compute_amount(self):
