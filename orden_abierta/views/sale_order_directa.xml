@@ -6,61 +6,38 @@
             <field name="model">pedido.abierto.linea</field>
             <field name="arch" type="xml">
                 <tree string="Ordenes directas" create="0" delete="0" edit="1" multi_edit="1">
-                    <!--
-                    <header>
-                        <button
-                                name="crear_pedido_desde_lineas_wizard"
-                                string="Crear pedido directo"
-                                type="object"
-                                class="oe_highlight"/>
-                    </header>
-                    -->
-
-                    <field name="linea_relacionada" invisible="1"/>
-                    <field name="pedido_abierto_rel" invisible="0"/>
-                    <field name="order_partner_id"/>
-                    <field name="company_id" invisible="1"/>
-
-                    <field name="product_id" readonly="1"/>
-
-
-                    <field name="default_code_product" readonly="1" optional="show"/>
-                    <field name="codigo_cliente" readonly="1" optional="show"/>
                     <field name="pedido_cliente" optional="show"/>
+                    <field name="default_code_product" readonly="1" optional="show"/>
+                    <field name="product_id" readonly="1"/>
+                    <field name="codigo_cliente" readonly="1" optional="show"/>
                     <field name="codigo_alterno" optional="show"/>
+                    <field name="price_unit" readonly="1"/>
                     <field name="fecha_programada" optional="show"/>
-                    <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>
-                    <field name="order_partner_id" invisible="1"/>
-
-
-                    <field name="name" widget="section_and_note_text" readonly="1" optional="show"/>
-
-                    <field name="product_uom_qty" invisible="1"
-                           />
-                    <field name="cantidad_pedida" readonly="1"/>
+                    <field name="cantidad_pedida" readonly="1" string="Cantidad original"/>
+                    <field name="product_uom_qty" readonly="1" string="Cantidad pedida"/>
                     <field name="cantidad_facturada" readonly="1"/>
                     <field name="cantidad_entregada" readonly="1"/>
                     <field name="cantidad_restante" readonly="1"/>
 
-
-
-                    <field name="product_uom" force_save="1" string="UoM"
-                           optional="show" invisible="1"/>
-
-                    <field name="price_unit" readonly="1"/>
-                    <field name="tax_id" widget="many2many_tags" optional="show" readonly="1"/>
+                    <!-- a considerar -->
+                    <field name="pedido_abierto_rel" invisible="0"/>
+                    <field name="order_partner_id"/>
                     <field name="price_subtotal" widget="monetary" sum="Total"/>
 
+
+                    <!-- invisibles -->
+                    <field name="linea_relacionada" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>
+                    <field name="name" widget="section_and_note_text" readonly="1" optional="show" invisible="1"/>
+                    <field name="product_uom" force_save="1" string="UoM" optional="show" invisible="1"/>
+                    <field name="tax_id" widget="many2many_tags" optional="show" readonly="1" invisible="1"/>
                     <field name="price_total" widget="monetary" invisible="1"/>
                     <field name="price_tax" invisible="1"/>
                     <field name="currency_id" invisible="1"/>
                     <field name="company_id" invisible="1"/>
-
                     <field name="discount" string="Disc.%"
                            groups="product.group_discount_per_so_line" optional="show" readonly="1" invisible="1"/>
-
-
-                    <field name="company_id" invisible="1" />
                     <field name="creado_desde_pedido_abierto" invisible="1" />
                     <field name="es_de_sale_order" force_save="1" invisible="1" />
 
@@ -68,11 +45,59 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="view_pedio_abierto_linea_filter">
+            <field name="name">pedido.abierto.linea.filter</field>
+            <field name="model">pedido.abierto.linea</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field
+                            name="order_partner_id"
+                            string="Cliente"
+                            filter_domain="[('partner_id', 'ilike', self)]"
+                    />
+                    <field
+                            name="codigo_cliente"
+                            string="Código de cliente"
+                            filter_domain="[('codigo_cliente', 'ilike', self)]"
+                    />
+                    <field
+                            name="product_id"
+                            string="Producto"
+                            filter_domain="['|', ('product_id.name', 'ilike', self), ('product_id.default_code', 'ilike', self)]"
+                    />
+                    <filter
+                            string="Fecha programada"
+                            name="fecha_programada"
+                    />
+
+                    <group>
+                        <filter string="Cliente" name="cliente_group" domain="[]"
+                            context="{'group_by': 'order_partner_id'}"/>
+                        <filter string="Fecha programada" name="fecha_programada_group" domain="[]"
+                            context="{'group_by': 'fecha_programada'}"/>
+                        <filter string="Producto" name="producto_group" domain="[]"
+                            context="{'group_by': 'product_id'}"/>
+                        <filter string="Cliente y Producto" name="cliente_producto_group" domain="[]"
+                            context="{'group_by': ['order_partner_id', 'product_id']}"/>
+                    </group>
+                    <!--
+                    <filter string="Ordenenes directas"
+                            name="ordenes_directas"
+                            domain="[
+                                ('pedido_abierto_rel', '!=', False),
+                                ('linea_confirmada', '=', False)
+                            ]"
+                    />
+                    -->
+                </search>
+            </field>
+        </record>
+
         <record model="ir.actions.act_window" id="ordenes_directas">
             <field name="name">Líneas de pedido abierto</field>
             <field name="res_model">pedido.abierto.linea</field>
             <field name="view_mode">tree</field>
-            <field name="context">{'search_default_ordenes_directas': 1}</field>
+            <field name="context">{'search_default_cliente_producto_group': 1}</field>
             <field name="view_id" ref="view_orden_directa"/>
         </record>
 
@@ -82,38 +107,7 @@
                   sequence="6"
                   action='ordenes_directas'/>
 
-        <record model="ir.ui.view" id="view_sales_order_line_filter_update">
-            <field name="name">sale.order.line.select.update</field>
-            <field name="model">sale.order.line</field>
-            <field name="inherit_id" ref="sale.view_sales_order_line_filter"/>
-            <field name="arch" type="xml">
-                <xpath expr="//search" position="inside">
-                    <!--<field name=""/>-->
-                    <separator/>
-                    <!--domain="[('fecha_programada', '!=', False), ('linea_confirmada', '=', False)]"-->
-                    <filter string="Ordenenes directas"
-                            name="ordenes_directas"
-                            domain="[
-                                ('creado_desde_pedido_abierto', '!=', False),
-                                ('pedido_abierto_rel', '!=', False),
-                                ('linea_confirmada', '=', False),
-                                ('es_de_sale_order', '=', False)
-                            ]"
-                    />
-                    <filter string="Fecha programada"
-                            name="fecha_programada"
-                    />
-                    <separator/>
 
-                </xpath>
-                <xpath expr="//search/group[1]" position="inside">
-                    <filter string="Cliente" name="cliente_group" domain="[]"
-                            context="{'group_by':'order_partner_id'}"/>
-                    <filter string="Fecha programada" name="fecha_programada_group" domain="[]"
-                            context="{'group_by':'fecha_programada'}"/>
-                </xpath>
-            </field>
-        </record>
 
         <record id="notify_orden_abierta_email_template" model="mail.template">
             <field name="name">Notificación</field>
