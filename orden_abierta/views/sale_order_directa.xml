@@ -13,14 +13,14 @@
                     <field name="codigo_alterno" optional="show"/>
                     <field name="price_unit" readonly="1"/>
                     <field name="fecha_programada" optional="show"/>
-                    <field name="cantidad_pedida" readonly="1" string="Cantidad original"/>
-                    <field name="product_uom_qty" readonly="1" string="Cantidad pedida"/>
-                    <field name="cantidad_facturada" readonly="1"/>
-                    <field name="cantidad_entregada" readonly="1"/>
-                    <field name="cantidad_restante" readonly="1"/>
+                    <field name="cantidad_pedida" readonly="1" string="Cantidad original" sum="Total"/>
+                    <field name="product_uom_qty" readonly="1" string="Cantidad pedida" sum="Total"/>
+                    <field name="cantidad_facturada" readonly="1" sum="Total"/>
+                    <field name="cantidad_entregada" readonly="1" sum="Total"/>
+                    <field name="cantidad_restante" readonly="1" sum="Total"/>
 
                     <!-- a considerar -->
-                    <field name="pedido_abierto_rel" invisible="0"/>
+                    <field name="pedido_abierto_rel"/>
                     <field name="order_partner_id"/>
                     <field name="price_subtotal" widget="monetary" sum="Total"/>
 
