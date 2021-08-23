@@ -16,6 +16,7 @@
                     <field name="codigo_cliente" readonly="1" optional="show" force_save="1"/>
                     <field name="pedido_cliente" optional="show" force_save="1"/>
                     <field name="codigo_alterno" optional="show" force_save="1"/>
+                    <field name="lot_id" domain="[('product_id','=', product_id)]" context="{'default_product_id': product_id}"/>
                     <field name="fecha_programada" optional="show" force_save="1" invisible="1"/>
                     <field name="c_r_l_p_a" optional="show" force_save="1" readonly="1"/>
                     <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>

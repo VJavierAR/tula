@@ -51,6 +51,12 @@ class SaleOrderOrdenAbierta(models.Model):
         default=False,
         store=True
     )
+    lot_id = fields.Many2one(
+        comodel_name="stock.production.lot",
+        string="Lote",
+        store=True,
+        ondelete='set null'
+    )
     """
     reservas = fields.One2many(
         comodel_name='sale.order.reservas',
