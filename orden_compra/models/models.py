@@ -235,9 +235,10 @@ class AlertaDescuento(models.TransientModel):
 
 class Product(models.Model):
 	_inherit='product.product'
-	nuevo_costo_facturacion=fields.Boolean('Costo')
-
+	nuevo_costo_facturacion=fields.Float('Costo')
+	nuevo_costo_facturacion_impuesto=fields.Float('Costo')
 
 class Product(models.Model):
 	_inherit='product.template'
-	nuevo_costo_facturacion=fields.Boolean('Costo')
+	nuevo_costo_facturacion=fields.Float('Costo')
+	nuevo_costo_facturacion_impuesto=fields.Float('Costo')
