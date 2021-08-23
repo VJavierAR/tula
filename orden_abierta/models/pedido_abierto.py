@@ -184,7 +184,7 @@ class PedidoAbierto(models.Model):
 
     @api.model
     def create(self, vals):
-        _logger.info("vals create: \n\n" + str(vals))
+        
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('pedido.abierto.seq') or 'New'
 
@@ -221,7 +221,7 @@ class PedidoAbierto(models.Model):
 
     # @api.model
     def write(self, vals):
-        _logger.info("vals wrtite: \n\n" + str(vals))
+
         if 'lineas_pedido' in vals:
             for linea in vals.get('lineas_pedido'):
                 linea_full = self.env['pedido.abierto.linea'].search([
