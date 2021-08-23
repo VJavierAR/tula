@@ -121,8 +121,9 @@ class OrdenAbiertaToDirecta(models.TransientModel):
             name_pedidos_abiertos.append(linea.pedido_abierto_rel.name)
 
         for id_pedido_abierto in ids_pedidos_abiertos:
+            _logger.info("id_pedido_abierto: " + str(id_pedido_abierto))
             lineas_de_pedido_abierto_sin_confirmar = self.env['pedido.abierto.linea'].search([
-                ('linea_confirmada', '=', False)
+                ('linea_confirmada', '=', False),
                 ('pedido_abierto_rel', '=', id_pedido_abierto)
             ]).mapped('id')
 
