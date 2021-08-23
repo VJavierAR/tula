@@ -95,6 +95,12 @@ class SaleOrderLineOrdenAbierta(models.Model):
         store=False,
         compute="_compute_cantidad_restante_linea_pedido_abierto"
     )
+    lot_id = fields.Many2one(
+        comodel_name="stock.production.lot",
+        string="Lote",
+        store=True,
+        ondelete='set null'
+    )
     """
     order_id = fields.Many2one(
         comodel_name='sale.order',
