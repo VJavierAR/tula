@@ -1104,6 +1104,20 @@
 </record>
 
 
+        <record model="ir.ui.view" id="product_product_tree_view_update_orden_compra">
+            <field name="name">product.product.tree.update</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='uom_id']" position="after">
+                    <field name="nuevo_costo_facturacion"/>
+                    <field name="nuevo_costo_facturacion_impuesto"/>
+                </xpath>
+
+            </field>
+        </record>
+
 
 
 
