@@ -130,9 +130,13 @@ class LinesFactura(models.Model):
 				record.stock_quant=[(6,0,quant.mapped('id'))]
 				record.stock_total=sum(quant.mapped('quantity'))
 				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
-				unidades=sum(cost.mapped('quantity'))+record.quantity
-				#costos=sum(cost.mapped('value'))+(record.price_unit*record.quantity)
-				costos=sum(cost.mapped('value'))+(record.price_subtotal)
+				#old
+				#unidades=sum(cost.mapped('quantity'))+record.quantity
+				#costos=sum(cost.mapped('value'))+(record.price_subtotal)
+				#new
+				unidades=2
+				costos=(record.product_id.nuevo_costo_facturacion_impuesto)+(record.price_unit+record.impuesto)
+				#######
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record.nuevo_costo=new_cost
 				record.nuevo_precio=record.precio
@@ -151,8 +155,10 @@ class LinesFactura(models.Model):
 	def _nuevaPreci(self):
 		for record in self:
 			if(record.product_id.id!=False):
-				#newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
-				newprice=(record.price_unit * record.nueva_utilidad / 100) + record.price_unit
+				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				##Hi
+				##precio=record.price_unit+record.impuesto
+				###newprice=(precio * record.nueva_utilidad / 100) + precio
 				record.nuevo_precio=newprice
 				#record.valorX=newprice+record.impuesto
 
