@@ -172,6 +172,10 @@ class LinesFactura(models.Model):
 				record.nuevo_precio=newprice
 				record.valorX=newprice+record.impuesto
 
+	@api.onchange('valorX')
+	def _precioSinImpuesto(self):
+		record.nuevo_precio=record.valorX-record.impuesto
+
 	def create(self,list_vals):
 		for vals in list_vals:
 			if('product_id' in vals):
