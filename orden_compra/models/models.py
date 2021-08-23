@@ -163,7 +163,7 @@ class LinesFactura(models.Model):
 				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
 				taxes = record.product_id.taxes_id.compute_all(newprice, record.move_id.currency_id, 1, product=record.product_id, partner=record.move_id.partner_id)
 				record.impuesto=0
-				if(len(record.product_id.taxes_ids)>0):
+				if(len(record.product_id.taxes_id)>0):
 					t=float(taxes['taxes'][0]['amount'])
 					record.impuesto=t
 				##Hi
