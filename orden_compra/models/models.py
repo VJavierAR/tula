@@ -174,8 +174,10 @@ class LinesFactura(models.Model):
 
 	@api.onchange('valorX')
 	def _precioSinImpuesto(self):
-		taxes = sum(record.product_id.taxes_ids.mapped('amount'))
-		record.nuevo_precio=record.valorX/(1+(taxes/100))
+		for record in self:
+			if(record.product_id.id!=False and record.valorX!=0):
+				taxes = sum(record.product_id.taxes_ids.mapped('amount'))
+				record.nuevo_precio=record.valorX/(1+(taxes/100))
 
 	def create(self,list_vals):
 		for vals in list_vals:
