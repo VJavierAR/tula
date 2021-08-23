@@ -91,34 +91,37 @@ class Factura(models.Model):
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
-	costo=fields.Float(related='product_id.standard_price',store=True,readonly=True,company_dependent=True,check_company=True)
-	precio=fields.Float(related='product_id.lst_price',store=True,readonly=True, company_dependent=True,check_company=True)
+	costo=fields.Float(store=True,readonly=True,company_dependent=True,check_company=True)
+	precio=fields.Float(store=True,readonly=True, company_dependent=True,check_company=True)
 	ultimo_provedor=fields.Many2one('res.partner',store=True,readonly=True)
 	ultimo_precio_compra=fields.Float(store=True,readonly=True)
 	stock_total=fields.Float(store=True,readonly=True)
 	stock_quant=fields.Many2many('stock.quant',store=True,readonly=True)
 	nueva_utilidad=fields.Float(store=True)
-	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,readonly=True, company_dependent=True,check_company=True)
+	utilida=fields.Float(store=True,readonly=True, company_dependent=True,check_company=True)
 	nuevo_costo=fields.Float(store=True,readonly=True)
 	nuevo_precio=fields.Float(store=True)
 	valorX=fields.Float(readonly=True)
 	impuesto=fields.Float(readonly=True,default=0)
 
-	@api.depends('quantity', 'discount', 'price_unit', 'tax_ids')
-	def _compute_amount(self):
-		for line in self:
-			price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-			taxes = line.tax_ids.compute_all(price, line.move_id.currency_id, 1, product=line.product_id, partner=line.move_id.partner_id)
-			line.impuesto=0
-			if(len(line.tax_ids)>0):
-				t=float(taxes['taxes'][0]['amount'])
-				line.impuesto=t
+	# @api.onchange('product_id')
+	# def _compute_amount(self):
+	# 	for line in self:
+	# 		price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+	# 		taxes = line.tax_ids.compute_all(price, line.move_id.currency_id, 1, product=line.product_id, partner=line.move_id.partner_id)
+	# 		line.impuesto=0
+	# 		if(len(line.tax_ids)>0):
+	# 			t=float(taxes['taxes'][0]['amount'])
+	# 			line.impuesto=t
 	
 	@api.onchange('product_id','price_unit','quantity')
 	def _ultimoProvedor(self):
 		for record in self:
 			record.valorX=0
 			if(record.product_id.id!=False):
+				record.costo=record.product_id.standard_price
+				record.precio=record.product_id.lst_price
+				record.utilida=record.product_id.x_studio_utilidad_precio_de_venta
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
 				record.ultimo_provedor=ultimo.order_id.partner_id.id
 				record.ultimo_precio_compra=ultimo.price_unit*ultimo.currency_id.rate
