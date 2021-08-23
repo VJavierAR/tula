@@ -4,6 +4,7 @@ from odoo import models, fields, api,_
 import logging, ast
 _logger = logging.getLogger(__name__)
 from odoo.exceptions import UserError
+from statistics import mean
 
 class Factura(models.Model):
 	_inherit='account.move'
@@ -244,5 +245,14 @@ class Product(models.Model):
 
 class Product(models.Model):
 	_inherit='product.template'
-	nuevo_costo_facturacion=fields.Float('Costo')
+	nuevo_costo_facturacion=fields.Float(compute='updateCost',string='Costo')
 	nuevo_costo_facturacion_impuesto=fields.Float('Costo+impuesto')
+
+	@api.depends('standard_price')
+	def updateCost(self):
+		for record in self:
+			record.nuevo_costo_facturacion=0
+			if(record.id):
+				f=record.product_variant_ids
+				record.nuevo_costo_facturacion=mean(f.mapped('nuevo_costo_facturacion'))
+				record.nuevo_costo_facturacion_impuesto=mean(f.mapped('nuevo_costo_facturacion_impuesto'))
