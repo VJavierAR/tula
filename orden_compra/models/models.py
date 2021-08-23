@@ -104,15 +104,15 @@ class LinesFactura(models.Model):
 	valorX=fields.Float()
 	impuesto=fields.Float(default=0)
 
-	# @api.onchange('product_id')
-	# def _compute_amount(self):
-	# 	for line in self:
-	# 		price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
-	# 		taxes = line.tax_ids.compute_all(price, line.move_id.currency_id, 1, product=line.product_id, partner=line.move_id.partner_id)
-	# 		line.impuesto=0
-	# 		if(len(line.tax_ids)>0):
-	# 			t=float(taxes['taxes'][0]['amount'])
-	# 			line.impuesto=t
+	#@api.onchange('product_id')
+	#def _compute_amount(self):
+	#	for line in self:
+			# price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+			# taxes = line.product_id.taxes_ids.compute_all(price, line.move_id.currency_id, 1, product=line.product_id, partner=line.move_id.partner_id)
+			# line.impuesto=0
+			# if(len(line.tax_ids)>0):
+			# 	t=float(taxes['taxes'][0]['amount'])
+			# 	line.impuesto=t
 	
 	@api.onchange('product_id','price_unit','quantity')
 	def _ultimoProvedor(self):
@@ -161,11 +161,16 @@ class LinesFactura(models.Model):
 		for record in self:
 			if(record.product_id.id!=False):
 				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				taxes = record.product_id.taxes_ids.compute_all(newprice, record.move_id.currency_id, 1, product=record.product_id, partner=record.move_id.partner_id)
+				record.impuesto=0
+				if(len(record.product_id.taxes_ids)>0):
+					t=float(taxes['taxes'][0]['amount'])
+					record.impuesto=t
 				##Hi
 				##precio=record.price_unit+record.impuesto
 				###newprice=(precio * record.nueva_utilidad / 100) + precio
 				record.nuevo_precio=newprice
-				#record.valorX=newprice+record.impuesto
+				record.valorX=newprice+record.impuesto
 
 	def create(self,list_vals):
 		for vals in list_vals:
