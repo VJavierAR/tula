@@ -164,7 +164,8 @@ class LinesFactura(models.Model):
 					producto=vals['product_id'] if('product_id' in vals) else self.product_id.id
 					if(producto):
 						p=self.env['product.product'].browse(producto)
-						if(p.x_studio_utilidad_precio_de_venta!=nueva):
+						c=vals['credit'] if('credit' in vals) else self.credit
+						if(p.x_studio_utilidad_precio_de_venta!=nueva and c==0):
 							p.write({'x_studio_utilidad_precio_de_venta':nueva})
 							p.cambio_precio_de_venta()
 		lines = super(LinesFactura, self).create(list_vals)
@@ -177,7 +178,8 @@ class LinesFactura(models.Model):
 			nueva=vals['nueva_utilidad'] if('nueva_utilidad' in vals) else line.nueva_utilidad
 			if(producto):
 				p=self.env['product.product'].browse(producto)
-				if(p.x_studio_utilidad_precio_de_venta!=nueva):
+				c=vals['credit'] if('credit' in vals) else line.credit
+				if(p.x_studio_utilidad_precio_de_venta!=nueva and c==0):
 					p.write({'x_studio_utilidad_precio_de_venta':nueva})
 					p.cambio_precio_de_venta()
 			result |= super(LinesFactura, line).write(vals)
