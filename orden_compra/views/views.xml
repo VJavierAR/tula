@@ -1000,18 +1000,17 @@
 
                                 <field name="narration" placeholder="Add an internal note..." nolabel="1" height="50"/>
                             </page>-->
-                                    <field name='valorX' invisible='1'/>
-                                    <field name='impuesto' invisible='1'/>
-                                      <field name='utilida' />
-                                      <field name='precio' />
-                                      <field name='costo'/>
-                                      <field name='nuevo_costo' />
+                                    <field name='valorX' invisible='1' force_save='1'/>
+                                    <field name='impuesto' invisible='1' force_save='1'/>
+                                      <field name='utilida' force_save='1'/>
+                                      <field name='precio' force_save='1'/>
+                                      <field name='costo' force_save='1'/>
+                                      <field name='nuevo_costo' force_save='1'/>
                                       <field name='nueva_utilidad' string="Nueva Utilidad precio de venta (%)"/>
                                       <field name='nuevo_precio' />
-                                      <field name='valorX' string="Nuevo precio+impuesto" invisible='1'/>
-                                      <field name='ultimo_precio_compra' />
-                                      <field name='ultimo_provedor' />
-                                      <field name='stock_total'/>
+                                      <field name='ultimo_precio_compra' force_save='1'/>
+                                      <field name='ultimo_provedor' force_save='1'/>
+                                      <field name='stock_total' force_save='1'/>
                         </xpath>
       <xpath expr="//field[@name='journal_id']" position="after">
           <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['check','=',True],['otro','=',False]]}"/>
@@ -1023,16 +1022,16 @@
           <attribute name="attrs">{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))],'required': [['type','=','in_invoice']]}</attribute>
       </xpath>
         <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@id='aml_tab']/field[@name='line_ids']/tree[1]/field[@name='name']" position="after">
-            <field name='valorX' invisible='1'/>
-            <field name='utilida' invisible='1' />
-            <field name='precio' invisible='1'/>
-            <field name='costo' invisible='1'/>
-            <field name='nuevo_costo' invisible='1'/>
+            <field name='valorX' invisible='1' force_save='1'/>
+            <field name='utilida' invisible='1' force_save='1'/>
+            <field name='precio' invisible='1' force_save='1'/>
+            <field name='costo' invisible='1' force_save='1'/>
+            <field name='nuevo_costo' invisible='1' force_save='1'/>
             <field name='nueva_utilidad' invisible='1' string="Nueva Utilidad precio de venta (%)"/>
             <field name='nuevo_precio'  invisible='1'/>
-            <field name='ultimo_precio_compra' invisible='1'/>
-            <field name='ultimo_provedor' invisible='1'/>
-            <field name='stock_total' invisible='1'/>
+            <field name='ultimo_precio_compra' invisible='1' force_save='1'/>
+            <field name='ultimo_provedor' invisible='1' force_save='1'/>
+            <field name='stock_total' invisible='1' force_save='1'/>
         </xpath>
         <xpath expr="//form[1]/sheet[1]/div[@name='button_box']/button[@name='action_open_asset_ids'][2]" position="after">
                             <field name='orden_compra' invisible='1'/>
