@@ -231,8 +231,8 @@ class AlertaDescuento(models.TransientModel):
 
 class Product(models.Model):
 	_inherit='product.product'
-	nuevo_costo_facturacion=fields.Float(compute='updateCost',string='Costo')
-	nuevo_costo_facturacion_impuesto=fields.Float('Costo+impuesto')
+	nuevo_costo_facturacion=fields.Float(compute='updateCost',string='Precio Compra')
+	nuevo_costo_facturacion_impuesto=fields.Float('Precio Compra+impuesto')
 
 	@api.depends('standard_price')
 	def updateCost(self):
@@ -245,14 +245,20 @@ class Product(models.Model):
 
 class Product(models.Model):
 	_inherit='product.template'
-	nuevo_costo_facturacion=fields.Float(compute='updateCost',string='Costo')
-	nuevo_costo_facturacion_impuesto=fields.Float('Costo+impuesto')
+	nuevo_costo_facturacion=fields.Float(compute='updateCost',string='Precio Compra')
+	nuevo_costo_facturacion_impuesto=fields.Float('Precio Compra+impuesto')
 
 	@api.depends('standard_price')
 	def updateCost(self):
 		for record in self:
 			record.nuevo_costo_facturacion=0
 			if(record.id):
-				f=record.product_variant_ids
-				record.nuevo_costo_facturacion=mean(f.mapped('nuevo_costo_facturacion'))
-				record.nuevo_costo_facturacion_impuesto=mean(f.mapped('nuevo_costo_facturacion_impuesto'))
+				a=[]
+				b=[]
+				for f in record.product_variant_ids:
+					c=f.nuevo_costo_facturacion if(f.nuevo_costo_facturacion!=0) else f.lst_price
+					d=f.nuevo_costo_facturacion_impuesto if(f.nuevo_costo_facturacion_impuesto!=0) else f.lst_price
+					a.append(c)
+					b.append(d)
+				record.nuevo_costo_facturacion=mean(a)
+				record.nuevo_costo_facturacion_impuesto=mean(b)
