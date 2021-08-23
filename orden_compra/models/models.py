@@ -150,14 +150,14 @@ class LinesFactura(models.Model):
 
 	@api.onchange('nuevo_precio')
 	def _nuevaUtil(self):
-		self._ultimoProvedor()
+		#self._ultimoProvedor()
 		for record in self:
 			if(record.product_id.id!=False):
 				record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
 
 	@api.onchange('nueva_utilidad')
 	def _nuevaPreci(self):
-		self._ultimoProvedor()
+		#self._ultimoProvedor()
 		for record in self:
 			if(record.product_id.id!=False):
 				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
