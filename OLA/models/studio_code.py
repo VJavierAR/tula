@@ -5,8 +5,6 @@ from odoo.exceptions import AccessDenied
 from odoo.tools import float_is_zero, float_repr
 import logging, ast
 _logger = logging.getLogger(__name__)
-
-
 class ProductProduct(models.Model):
 	_inherit = 'product.product'
 	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
