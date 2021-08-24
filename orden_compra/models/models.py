@@ -4,6 +4,7 @@ from odoo import models, fields, api,_
 import logging, ast
 _logger = logging.getLogger(__name__)
 from odoo.exceptions import UserError
+from statistics import mean
 
 class Factura(models.Model):
 	_inherit='account.move'
@@ -90,23 +91,37 @@ class Factura(models.Model):
 
 class LinesFactura(models.Model):
 	_inherit='account.move.line'
-	costo=fields.Float(related='product_id.standard_price',store=True,readonly=True,company_dependent=True,check_company=True)
-	precio=fields.Float(related='product_id.lst_price',store=True,readonly=True, company_dependent=True,check_company=True)
-	ultimo_provedor=fields.Many2one('res.partner',store=True,readonly=True)
-	ultimo_precio_compra=fields.Float(store=True,readonly=True)
-	stock_total=fields.Float(store=True,readonly=True)
-	stock_quant=fields.Many2many('stock.quant',store=True,readonly=True)
+	costo=fields.Float()
+	precio=fields.Float()
+	ultimo_provedor=fields.Many2one('res.partner',)
+	ultimo_precio_compra=fields.Float()
+	stock_total=fields.Float()
+	stock_quant=fields.Many2many('stock.quant',)
 	nueva_utilidad=fields.Float(store=True)
-	utilida=fields.Float(related='product_id.x_studio_utilidad_precio_de_venta',store=True,readonly=True, company_dependent=True,check_company=True)
-	nuevo_costo=fields.Float(store=True,readonly=True)
+	utilida=fields.Float()
+	nuevo_costo=fields.Float()
 	nuevo_precio=fields.Float(store=True)
-	valorX=fields.Float(compute='_ultimoProvedor',readonly=True)
+	valorX=fields.Float()
+	impuesto=fields.Float(default=0)
 
-	@api.depends('product_id','price_unit','quantity')
+	#@api.onchange('product_id')
+	#def _compute_amount(self):
+	#	for line in self:
+			# price = line.price_unit * (1 - (line.discount or 0.0) / 100.0)
+			# taxes = line.product_id.taxes_ids.compute_all(price, line.move_id.currency_id, 1, product=line.product_id, partner=line.move_id.partner_id)
+			# line.impuesto=0
+			# if(len(line.tax_ids)>0):
+			# 	t=float(taxes['taxes'][0]['amount'])
+			# 	line.impuesto=t
+	
+	@api.onchange('product_id','price_unit','quantity')
 	def _ultimoProvedor(self):
 		for record in self:
 			record.valorX=0
 			if(record.product_id.id!=False):
+				record.costo=record.product_id.with_context(force_company=self.env.company.id).standard_price
+				record.precio=record.product_id.with_context(force_company=self.env.company.id).lst_price
+				record.utilida=record.product_id.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
 				record.ultimo_provedor=ultimo.order_id.partner_id.id
 				record.ultimo_precio_compra=ultimo.price_unit*ultimo.currency_id.rate
@@ -118,41 +133,74 @@ class LinesFactura(models.Model):
 				record.stock_quant=[(6,0,quant.mapped('id'))]
 				record.stock_total=sum(quant.mapped('quantity'))
 				cost=self.env['stock.valuation.layer'].search([['product_id','=',record.product_id.id]])
+				#old
 				unidades=sum(cost.mapped('quantity'))+record.quantity
-				#costos=sum(cost.mapped('value'))+(record.price_unit*record.quantity)
 				costos=sum(cost.mapped('value'))+(record.price_subtotal)
+				#new
+				# unidades=2
+				# costos=(record.product_id.nuevo_costo_facturacion_impuesto)+(record.price_unit+record.impuesto)
+				#######
 				new_cost=costos/unidades if(unidades>0) else record.costo
 				record.nuevo_costo=new_cost
 				record.nuevo_precio=record.precio
 				record.nueva_utilidad=record.nueva_utilidad if(record.nueva_utilidad!=0) else record.utilida
-				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				#newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				newprice=((record.price_unit * record.nueva_utilidad) / 100) + record.price_unit
 				record.nuevo_precio=newprice
 				record.valorX=record.nuevo_precio
 
 	@api.onchange('nuevo_precio')
 	def _nuevaUtil(self):
+		#self._ultimoProvedor()
 		for record in self:
 			if(record.product_id.id!=False):
-				record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
+				#record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
+				precio=record.price_subtotal/record.quantity
+				#record.nueva_utilidad=((record.nuevo_precio-record.price_unit)*100)/record.price_unit if(record.price_unit!=0) else 0
+				record.nueva_utilidad=((record.nuevo_precio-precio)*100)/precio if(precio!=0) else 0
+
 
 	@api.onchange('nueva_utilidad')
 	def _nuevaPreci(self):
+		#self._ultimoProvedor()
 		for record in self:
 			if(record.product_id.id!=False):
-				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				#newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				precio=record.price_subtotal/record.quantity
+				newprice=((precio * record.nueva_utilidad) / 100) + precio
+				#newprice=((record.price_unit * record.nueva_utilidad) / 100) + record.price_unit
+				taxes = record.product_id.taxes_id.compute_all(newprice, record.move_id.currency_id, 1, product=record.product_id, partner=record.move_id.partner_id)
+				record.impuesto=0
+				if(len(record.product_id.taxes_id)>0):
+					t=float(taxes['taxes'][0]['amount'])
+					record.impuesto=t
+				##Hi
+				##precio=record.price_unit+record.impuesto
+				###newprice=(precio * record.nueva_utilidad / 100) + precio
 				record.nuevo_precio=newprice
+				record.valorX=newprice+record.impuesto
+
+	@api.onchange('valorX')
+	def _precioSinImpuesto(self):
+		for record in self:
+			if(record.product_id.id!=False and record.valorX!=0):
+				taxes = sum(record.product_id.taxes_id.mapped('amount'))
+				record.nuevo_precio=record.valorX/(1+(taxes/100))
 
 	def create(self,list_vals):
 		for vals in list_vals:
-			if('product_id' in vals):
+			if('product_id' in vals and self.company_id.price_lst):
 				if(vals['product_id']!=False):
 					nueva=vals['nueva_utilidad'] if('nueva_utilidad' in vals) else 0
+					precio=vals['nuevo_precio'] if('nuevo_precio' in vals) else 0
 					producto=vals['product_id'] if('product_id' in vals) else self.product_id.id
+					precio_impuesto=vals['valorX'] if('valorX' in vals) else 0
 					if(producto):
 						p=self.env['product.product'].browse(producto)
-						if(p.x_studio_utilidad_precio_de_venta!=nueva):
-							p.write({'x_studio_utilidad_precio_de_venta':nueva})
-							p.cambio_precio_de_venta()
+						c=vals['credit'] if('credit' in vals) else self.credit
+						if(p.x_studio_utilidad_precio_de_venta!=nueva and c==0):
+							p.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio,'nuevo_costo_facturacion_impuesto':precio_impuesto})
+							#p.cambio_precio_de_venta()
 		lines = super(LinesFactura, self).create(list_vals)
 		return lines
 
@@ -161,11 +209,14 @@ class LinesFactura(models.Model):
 		for line in self:
 			producto=vals['product_id'] if('product_id' in vals) else line.product_id.id
 			nueva=vals['nueva_utilidad'] if('nueva_utilidad' in vals) else line.nueva_utilidad
-			if(producto):
+			precio=vals['nuevo_precio'] if('nuevo_precio' in vals) else line.nuevo_precio
+			precio_impuesto=vals['valorX'] if('valorX' in vals) else line.valorX
+			if(producto and self.company_id.price_lst):
 				p=self.env['product.product'].browse(producto)
-				if(p.x_studio_utilidad_precio_de_venta!=nueva):
-					p.write({'x_studio_utilidad_precio_de_venta':nueva})
-					p.cambio_precio_de_venta()
+				c=vals['credit'] if('credit' in vals) else line.credit
+				if(p.x_studio_utilidad_precio_de_venta!=nueva and c==0):
+					p.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio,'nuevo_costo_facturacion_impuesto':precio_impuesto})
+					#p.cambio_precio_de_venta()
 			result |= super(LinesFactura, line).write(vals)
 		return result
 					
@@ -179,6 +230,7 @@ class Almacen(models.Model):
 class Company(models.Model):
 	_inherit='res.company'
 	orden_compra=fields.Boolean()
+	price_lst=fields.Boolean()
 
 class Compra(models.Model):
 	_inherit='purchase.order'
@@ -214,3 +266,56 @@ class AlertaDescuento(models.TransientModel):
 	_description = 'Alerta'
 
 	mensaje = fields.Text(string='Mensaje')
+
+class Product(models.Model):
+	_inherit='product.product'
+	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
+	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
+
+	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
+	@api.depends_context('force_company')
+	def cambio_precio_de_venta(self):
+		company = self.env.context.get('force_company', False)
+		for rec in self:
+			if(rec.with_context(force_company=self.env.company.id).nuevo_costo_facturacion_impuesto==0):
+				if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta:
+					rec.list_price = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta / 100) + rec.with_context(force_company=self.env.company.id).standard_price
+
+
+
+	# @api.depends('standard_price')
+	# def updateCost(self):
+	# 	for record in self:
+	# 		record.nuevo_costo_facturacion_impuesto=0
+	# 		if(record.id):
+	# 			f=self.env['account.move.line'].search([['credit','=',0],['parent_state','=','posted'],['product_id','=',record.id]],order='date desc',limit=1)
+	# 			record.nuevo_costo_facturacion=f.price_unit
+	# 			record.nuevo_costo_facturacion_impuesto=f.price_unit+f.impuesto
+
+
+
+
+
+
+
+
+
+class Product(models.Model):
+	_inherit='product.template'
+	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
+	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
+
+	# @api.depends('standard_price')
+	# def updateCost(self):
+	# 	for record in self:
+	# 		record.nuevo_costo_facturacion=0
+	# 		if(record.id):
+	# 			a=[]
+	# 			b=[]
+	# 			for f in record.product_variant_ids:
+	# 				c=f.nuevo_costo_facturacion if(f.nuevo_costo_facturacion!=0) else f.lst_price
+	# 				d=f.nuevo_costo_facturacion_impuesto if(f.nuevo_costo_facturacion_impuesto!=0) else f.lst_price
+	# 				a.append(c)
+	# 				b.append(d)
+	# 			record.nuevo_costo_facturacion=mean(a)
+	# 			record.nuevo_costo_facturacion_impuesto=mean(b)

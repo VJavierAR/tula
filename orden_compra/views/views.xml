@@ -1000,16 +1000,18 @@
 
                                 <field name="narration" placeholder="Add an internal note..." nolabel="1" height="50"/>
                             </page>-->
-                                    <field name='valorX' invisible='1'/>
-                                      <field name='utilida' />
-                                      <field name='precio' />
-                                      <field name='costo'/>
-                                      <field name='nuevo_costo' />
+                                    <field name='valorX' invisible='1' readonly="1" force_save="1"/>
+                                    <field name='impuesto' invisible='1' readonly="1" force_save="1"/>
+                                      <field name='utilida' readonly="1" force_save="1"/>
+                                      <field name='precio' readonly="1" force_save="1"/>
+                                      <field name='costo' readonly="1" force_save="1"/>
+                                      <field name='nuevo_costo' readonly="1" force_save="1"/>
                                       <field name='nueva_utilidad' string="Nueva Utilidad precio de venta (%)"/>
-                                      <field name='nuevo_precio' />
-                                      <field name='ultimo_precio_compra' />
-                                      <field name='ultimo_provedor' />
-                                      <field name='stock_total'/>
+                                      <field name='nuevo_precio' invisible='1'/>
+                                      <field name='valorX' string='Nuevo precio '  force_save="1"/>
+                                      <field name='ultimo_precio_compra' readonly="1" force_save="1"/>
+                                      <field name='ultimo_provedor' readonly="1" force_save="1"/>
+                                      <field name='stock_total' readonly="1" force_save="1"/>
                         </xpath>
       <xpath expr="//field[@name='journal_id']" position="after">
           <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['check','=',True],['otro','=',False]]}"/>
@@ -1021,16 +1023,16 @@
           <attribute name="attrs">{'invisible': [('type', 'not in', ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'))],'required': [['type','=','in_invoice']]}</attribute>
       </xpath>
         <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@id='aml_tab']/field[@name='line_ids']/tree[1]/field[@name='name']" position="after">
-            <field name='valorX' invisible='1'/>
-            <field name='utilida' invisible='1' />
-            <field name='precio' invisible='1'/>
-            <field name='costo' invisible='1'/>
-            <field name='nuevo_costo' invisible='1'/>
+            <field name='valorX' invisible='1' readonly="1" force_save="1"/>
+            <field name='utilida' invisible='1' readonly="1" force_save="1"/>
+            <field name='precio' invisible='1' readonly="1" force_save="1"/>
+            <field name='costo' invisible='1' readonly="1" force_save="1"/>
+            <field name='nuevo_costo' invisible='1' readonly="1" force_save="1"/>
             <field name='nueva_utilidad' invisible='1' string="Nueva Utilidad precio de venta (%)"/>
             <field name='nuevo_precio'  invisible='1'/>
-            <field name='ultimo_precio_compra' invisible='1'/>
-            <field name='ultimo_provedor' invisible='1'/>
-            <field name='stock_total' invisible='1'/>
+            <field name='ultimo_precio_compra' invisible='1' readonly="1" force_save="1"/>
+            <field name='ultimo_provedor' invisible='1' readonly="1" force_save="1"/>
+            <field name='stock_total' invisible='1' readonly="1" force_save="1"/>
         </xpath>
         <xpath expr="//form[1]/sheet[1]/div[@name='button_box']/button[@name='action_open_asset_ids'][2]" position="after">
                             <field name='orden_compra' invisible='1'/>
@@ -1053,6 +1055,7 @@
     <field name="arch" type="xml">
           <xpath expr="//field[@name='website']" position="after">
             <field name="orden_compra"/>
+            <field name="price_lst" string='Update price list'/>
           </xpath>
     </field>
 </record>
@@ -1102,7 +1105,50 @@
 </record>
 
 
+        <record model="ir.ui.view" id="product_product_tree_view_update_orden_compra">
+            <field name="name">product.product.tree.update.orden.compra</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
 
+                <xpath expr="//field[@name='uom_id']" position="after">
+                    <field name="nuevo_costo_facturacion" invisible='1'/>
+                    <field name="nuevo_costo_facturacion_impuesto"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+
+
+        <record model="ir.ui.view" id="product_template_tree_view_update_orden_compra">
+            <field name="name">product.template.tree.update</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="account.product_template_view_tree"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='supplier_taxes_id']" position="after">
+                    <field name="nuevo_costo_facturacion" invisible='1'/>
+                    <field name="nuevo_costo_facturacion_impuesto"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="product_product_update_orden_compra_form_view">
+            <field name="name">product.product.form.update.orden.compra</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+              <xpath expr="//field[@name='company_id']" position="after">
+
+                <field name="nuevo_costo_facturacion_impuesto" readonly='1'/>
+              </xpath>
+            </field>
+        </record>
 
 
 
