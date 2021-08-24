@@ -15,6 +15,7 @@
         'sale',
         'product',
         'account',
+        'account_check_printing',
     ],
     'data': [
         'security/security.xml',
