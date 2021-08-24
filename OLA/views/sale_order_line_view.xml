@@ -1,0 +1,156 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_order_line_tree_update">
+            <field name="name">view.order.line.tree.update</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_tree"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//field[@name='order_partner_id']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//tree[1]/field[@name='name']" position="attributes">
+                    <attribute name="string">Producto</attribute>
+                  </xpath>
+                  <xpath expr="//tree[1]/field[@name='name']" position="after">
+                    <field name="price_unit"/>
+                  </xpath>
+                  <xpath expr="//field[@name='salesman_id']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="string">Cantidad solicitada</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='qty_delivered']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='qty_delivered']" position="after">
+                    <field name="x_value2_id" string="Cantidad perdida" attrs="{}"/>
+                    <field name="discount" attrs="{}" invisible="1"/>
+                    <field name="x_precio_con_descuento" attrs="{}" invisible="1"/>
+                    <field name="x_value1_id" string="Estado del producto" attrs="{}" invisible="1" />
+                    <field name="x_studio_motivo_de_perdida"/>
+                    <field name="x_studio_motivo_de_perdida_de_la_orden" string="Motivo de perdida de la orden"/>
+                  </xpath>
+                  <xpath expr="//field[@name='qty_invoiced']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='qty_to_invoice']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='product_uom']" position="after">
+                    <field name="x_value3_id" attrs="{}" sum="Sum of Monto perdido"/>
+                    <field name="x_value4_id" sum="Sum of Venta total" attrs="{}"/>
+                  </xpath>
+                  <xpath expr="//field[@name='price_subtotal']" position="attributes">
+                    <attribute name="attrs">{}</attribute>
+                    <attribute name="invisible">1</attribute>
+                  </xpath>
+                <xpath expr="//field[@name='price_subtotal']" position="after">
+                    <field name="bloqueo" />
+                </xpath>
+
+                <!--
+                <xpath expr="//field[@name='purchase_price']" position="attributes">
+                    <attribute name="groups">base.group_user,sales_team.group_sale_manager</attribute>
+                    <attribute name="optional">show</attribute>
+                </xpath>
+                -->
+
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_sale_order_line_tree2">
+            <field name="name">view.order.line.tree</field>
+            <field name="model">sale.order.line</field>
+            <field name="arch" type="xml">
+                <tree string="Sales Order Lines" create="false">
+                    <field name="order_id" invisible='1'/>
+                    <field name="order_partner_id" invisible='1'/>
+                    <field name="name" string='Producto'/>
+                    <field name="salesman_id" invisible='1'/>
+                    <field name="product_uom_qty" string="Cantidad"/>
+                    <field name="x_studio_field_Ml1CB" attrs="{}" invisible="1"/>
+                    <field name="x_studio_precio_mnimo" string="Precio mínimo" optional="show"/>
+                    <field name="price_unit"/>
+                    <field name="discount"/>
+                    <field name="x_precio_con_descuento" optional="show"/>
+                    <field name="qty_delivered" invisible='1'/>
+                    <field name="qty_invoiced" invisible='1'/>
+                    <field name="qty_to_invoice" invisible='1'/>
+                    <field name="product_uom" invisible='1' string="Unit of Measure" groups="uom.group_uom"/>
+                    <field name="price_subtotal" sum="Total" widget="monetary"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="historial_precios">
+            <field name="name">Historial de precios de compra</field>
+            <field name="res_model">purchase.order.line</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="ventas_perdidas_action">
+            <field name="name">Ventas perdidas</field>
+            <field name="res_model">sale.order.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="sale.view_order_line_tree"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="precio_descuento_action">
+            <field name="name">Precios con descuento</field>
+            <field name="res_model">sale.order.line</field>
+            <!--<field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_sale_order_line_tree2')})]"/>-->
+            <field name="view_id" ref="view_sale_order_line_tree2"/>
+        </record>
+
+
+        <menuitem id="menu_sale_report_ventas_perdidas"
+            name="Ventas Perdidas"
+            parent="sale.menu_sale_report"
+            groups="sales_team.group_sale_manager" action='ventas_perdidas_action'/>
+
+        <menuitem id="menu_sale_report_precios_con_descuento"
+            name="Precios con descuento y precios minimos"
+            parent="sale.menu_sale_report"
+            groups="sales_team.group_sale_manager" action='precio_descuento_action'/>
+
+        <menuitem id="menu_historico" name="Historial de precios de compra"
+                    parent="purchase.menu_purchase_root"
+                    groups="purchase.group_purchase_manager,purchase.group_purchase_user" sequence="5" action='historial_precios'/>
+
+            
+        <record model="ir.ui.view" id="view_purchase_order_line_tree_update">
+            <field name="name">view.purchase.order.line.tree.update</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_id']" position="before">
+                  <xpath expr="//field[@name='date_planned']" position="move"/>
+                </xpath>
+                <xpath expr="//tree[1]/field[@name='name']" position="attributes">
+                  <attribute name="attrs">{}</attribute>
+                  <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='product_qty']" position="after">
+                  <xpath expr="//field[@name='price_unit']" position="move"/>
+                  <field name="price_tax" attrs="{}" invisible="1"/>
+                  <field name="x_studio_field_2ZpSa" string="Precio de compra antes de costes de envío" attrs="{}" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='product_uom']" position="attributes">
+                  <attribute name="attrs">{}</attribute>
+                  <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='price_unit']" position="attributes">
+                  <attribute name="string">Precio de compra antes de costes de envío</attribute>
+                </xpath>
+            </field>
+          </record>
+    </data>
+</odoo>
