@@ -160,7 +160,8 @@ class LinesFactura(models.Model):
 		#self._ultimoProvedor()
 		for record in self:
 			if(record.product_id.id!=False):
-				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				#newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				newprice=(record.price_unit * record.nueva_utilidad / 100) + record.price_unit
 				taxes = record.product_id.taxes_id.compute_all(newprice, record.move_id.currency_id, 1, product=record.product_id, partner=record.move_id.partner_id)
 				record.impuesto=0
 				if(len(record.product_id.taxes_id)>0):
