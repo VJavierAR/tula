@@ -144,7 +144,8 @@ class LinesFactura(models.Model):
 				record.nuevo_costo=new_cost
 				record.nuevo_precio=record.precio
 				record.nueva_utilidad=record.nueva_utilidad if(record.nueva_utilidad!=0) else record.utilida
-				newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				#newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
+				newprice=((record.price_unit * record.nueva_utilidad) / 100) + record.price_unit
 				record.nuevo_precio=newprice
 				record.valorX=record.nuevo_precio
 
@@ -153,7 +154,8 @@ class LinesFactura(models.Model):
 		#self._ultimoProvedor()
 		for record in self:
 			if(record.product_id.id!=False):
-				record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
+				#record.nueva_utilidad=((record.nuevo_precio-record.nuevo_costo)*100)/record.nuevo_costo if(record.nuevo_costo!=0) else 0
+				record.nueva_utilidad=((record.nuevo_precio-record.price_unit)*100)/record.price_unit if(record.price_unit!=0) else 0
 
 	@api.onchange('nueva_utilidad')
 	def _nuevaPreci(self):
@@ -161,7 +163,7 @@ class LinesFactura(models.Model):
 		for record in self:
 			if(record.product_id.id!=False):
 				#newprice=(record.nuevo_costo * record.nueva_utilidad / 100) + record.nuevo_costo
-				newprice=(record.price_unit * record.nueva_utilidad / 100) + record.price_unit
+				newprice=((record.price_unit * record.nueva_utilidad) / 100) + record.price_unit
 				taxes = record.product_id.taxes_id.compute_all(newprice, record.move_id.currency_id, 1, product=record.product_id, partner=record.move_id.partner_id)
 				record.impuesto=0
 				if(len(record.product_id.taxes_id)>0):
