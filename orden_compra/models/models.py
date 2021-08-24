@@ -264,8 +264,19 @@ class AlertaDescuento(models.TransientModel):
 
 class Product(models.Model):
 	_inherit='product.product'
-	nuevo_costo_facturacion=fields.Float(string='Precio Compra')
-	nuevo_costo_facturacion_impuesto=fields.Float('Precio Venta+impuesto')
+	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
+	nuevo_costo_facturacion_impuesto=fields.Float(default=0,'Precio Venta+impuesto',company_dependent=True,check_company=True)
+
+	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
+	@api.depends_context('force_company')
+	def cambio_precio_de_venta(self):
+		company = self.env.context.get('force_company', False)
+		for rec in self:
+			if(rec.with_context(force_company=self.env.company.id).nuevo_costo_facturacion_impuesto==0):
+				if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta:
+					rec.list_price = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta / 100) + rec.with_context(force_company=self.env.company.id).standard_price
+
+
 
 	# @api.depends('standard_price')
 	# def updateCost(self):
@@ -278,8 +289,8 @@ class Product(models.Model):
 
 class Product(models.Model):
 	_inherit='product.template'
-	nuevo_costo_facturacion=fields.Float('Precio Compra')
-	nuevo_costo_facturacion_impuesto=fields.Float('Precio Venta+impuesto')
+	nuevo_costo_facturacion=fields.Float(default=0,'Precio Compra',company_dependent=True,check_company=True)
+	nuevo_costo_facturacion_impuesto=fields.Float(default=0,'Precio Venta+impuesto',company_dependent=True,check_company=True)
 
 	# @api.depends('standard_price')
 	# def updateCost(self):
