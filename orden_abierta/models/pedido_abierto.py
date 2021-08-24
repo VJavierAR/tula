@@ -271,7 +271,9 @@ class PedidoAbierto(models.Model):
             'view_mode': 'tree,form',
             'res_model': 'sale.order',
             'domain': [
+                '|',
                 ('pedido_abierto_origen', '=', self.id),
+                ('pedidos_abiertos_origen', 'ilike', self.name)
             ],
             'context': "{'create': False}"
         }
