@@ -272,25 +272,33 @@ class Product(models.Model):
 	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
 	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
 
-	# @api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
-	# @api.depends_context('force_company')
-	# def cambio_precio_de_venta(self):
-	# 	company = self.env.context.get('force_company', False)
-	# 	for rec in self:
-	# 		if(rec.with_context(force_company=self.env.company.id).nuevo_costo_facturacion_impuesto==0):
-	# 			if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta:
-	# 				rec.list_price = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta / 100) + rec.with_context(force_company=self.env.company.id).standard_price
+	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
+	@api.depends_context('force_company')
+	def cambio_precio_de_venta(self):
+		company = self.env.context.get('force_company', False)
+		for rec in self:
+			if(rec.with_context(force_company=self.env.company.id).nuevo_costo_facturacion_impuesto==0):
+				if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta:
+					rec.list_price = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta / 100) + rec.with_context(force_company=self.env.company.id).standard_price
 
 
 
 	# @api.depends('standard_price')
 	# def updateCost(self):
 	# 	for record in self:
-	# 		record.nuevo_costo_facturacion=0
+	# 		record.nuevo_costo_facturacion_impuesto=0
 	# 		if(record.id):
 	# 			f=self.env['account.move.line'].search([['credit','=',0],['parent_state','=','posted'],['product_id','=',record.id]],order='date desc',limit=1)
 	# 			record.nuevo_costo_facturacion=f.price_unit
 	# 			record.nuevo_costo_facturacion_impuesto=f.price_unit+f.impuesto
+
+
+
+
+
+
+
+
 
 class Product(models.Model):
 	_inherit='product.template'
