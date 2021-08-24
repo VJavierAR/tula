@@ -265,7 +265,7 @@ class AlertaDescuento(models.TransientModel):
 class Product(models.Model):
 	_inherit='product.product'
 	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
-	nuevo_costo_facturacion_impuesto=fields.Float(default=0,'Precio Venta+impuesto',company_dependent=True,check_company=True)
+	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
 
 	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
 	@api.depends_context('force_company')
@@ -289,8 +289,8 @@ class Product(models.Model):
 
 class Product(models.Model):
 	_inherit='product.template'
-	nuevo_costo_facturacion=fields.Float(default=0,'Precio Compra',company_dependent=True,check_company=True)
-	nuevo_costo_facturacion_impuesto=fields.Float(default=0,'Precio Venta+impuesto',company_dependent=True,check_company=True)
+	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
+	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
 
 	# @api.depends('standard_price')
 	# def updateCost(self):
