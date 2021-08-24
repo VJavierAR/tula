@@ -262,34 +262,34 @@ class AlertaDescuento(models.TransientModel):
 
 class Product(models.Model):
 	_inherit='product.product'
-	nuevo_costo_facturacion=fields.Float(compute='updateCost',string='Precio Compra')
-	nuevo_costo_facturacion_impuesto=fields.Float('Precio Compra+impuesto')
+	nuevo_costo_facturacion=fields.Float(string='Precio Compra')
+	nuevo_costo_facturacion_impuesto=fields.Float('Precio Venta+impuesto')
 
-	@api.depends('standard_price')
-	def updateCost(self):
-		for record in self:
-			record.nuevo_costo_facturacion=0
-			if(record.id):
-				f=self.env['account.move.line'].search([['credit','=',0],['parent_state','=','posted'],['product_id','=',record.id]],order='date desc',limit=1)
-				record.nuevo_costo_facturacion=f.price_unit
-				record.nuevo_costo_facturacion_impuesto=f.price_unit+f.impuesto
+	# @api.depends('standard_price')
+	# def updateCost(self):
+	# 	for record in self:
+	# 		record.nuevo_costo_facturacion=0
+	# 		if(record.id):
+	# 			f=self.env['account.move.line'].search([['credit','=',0],['parent_state','=','posted'],['product_id','=',record.id]],order='date desc',limit=1)
+	# 			record.nuevo_costo_facturacion=f.price_unit
+	# 			record.nuevo_costo_facturacion_impuesto=f.price_unit+f.impuesto
 
 class Product(models.Model):
 	_inherit='product.template'
-	nuevo_costo_facturacion=fields.Float(compute='updateCost',string='Precio Compra')
-	nuevo_costo_facturacion_impuesto=fields.Float('Precio Compra+impuesto')
+	nuevo_costo_facturacion=fields.Float('Precio Compra')
+	nuevo_costo_facturacion_impuesto=fields.Float('Precio Venta+impuesto')
 
-	@api.depends('standard_price')
-	def updateCost(self):
-		for record in self:
-			record.nuevo_costo_facturacion=0
-			if(record.id):
-				a=[]
-				b=[]
-				for f in record.product_variant_ids:
-					c=f.nuevo_costo_facturacion if(f.nuevo_costo_facturacion!=0) else f.lst_price
-					d=f.nuevo_costo_facturacion_impuesto if(f.nuevo_costo_facturacion_impuesto!=0) else f.lst_price
-					a.append(c)
-					b.append(d)
-				record.nuevo_costo_facturacion=mean(a)
-				record.nuevo_costo_facturacion_impuesto=mean(b)
+	# @api.depends('standard_price')
+	# def updateCost(self):
+	# 	for record in self:
+	# 		record.nuevo_costo_facturacion=0
+	# 		if(record.id):
+	# 			a=[]
+	# 			b=[]
+	# 			for f in record.product_variant_ids:
+	# 				c=f.nuevo_costo_facturacion if(f.nuevo_costo_facturacion!=0) else f.lst_price
+	# 				d=f.nuevo_costo_facturacion_impuesto if(f.nuevo_costo_facturacion_impuesto!=0) else f.lst_price
+	# 				a.append(c)
+	# 				b.append(d)
+	# 			record.nuevo_costo_facturacion=mean(a)
+	# 			record.nuevo_costo_facturacion_impuesto=mean(b)

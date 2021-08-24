@@ -1112,7 +1112,7 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='uom_id']" position="after">
-                    <field name="nuevo_costo_facturacion"/>
+                    <field name="nuevo_costo_facturacion" invisible='1'/>
                     <field name="nuevo_costo_facturacion_impuesto"/>
                 </xpath>
 
@@ -1130,10 +1130,23 @@
             <field name="arch" type="xml">
 
                 <xpath expr="//field[@name='supplier_taxes_id']" position="after">
-                    <field name="nuevo_costo_facturacion"/>
+                    <field name="nuevo_costo_facturacion" invisible='1'/>
                     <field name="nuevo_costo_facturacion_impuesto"/>
                 </xpath>
 
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="product_product_update_orden_compra_form_view">
+            <field name="name">product.product.form.update.orden.compra</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+              <xpath expr="//field[@name='company_id']" position="after">
+
+                <field name="nuevo_costo_facturacion_impuesto" readonly='1'/>
+              </xpath>
             </field>
         </record>
 
