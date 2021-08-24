@@ -1055,6 +1055,7 @@
     <field name="arch" type="xml">
           <xpath expr="//field[@name='website']" position="after">
             <field name="orden_compra"/>
+            <field name="price_lst" string='Update price list'/>
           </xpath>
     </field>
 </record>

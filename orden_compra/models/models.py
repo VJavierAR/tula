@@ -187,13 +187,14 @@ class LinesFactura(models.Model):
 			if('product_id' in vals):
 				if(vals['product_id']!=False):
 					nueva=vals['nueva_utilidad'] if('nueva_utilidad' in vals) else 0
+					precio=vals['nuevo_precio'] if('nuevo_precio' in vals) else 0
 					producto=vals['product_id'] if('product_id' in vals) else self.product_id.id
 					if(producto):
 						p=self.env['product.product'].browse(producto)
 						c=vals['credit'] if('credit' in vals) else self.credit
 						if(p.x_studio_utilidad_precio_de_venta!=nueva and c==0):
-							p.write({'x_studio_utilidad_precio_de_venta':nueva})
-							p.cambio_precio_de_venta()
+							p.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio})
+							#p.cambio_precio_de_venta()
 		lines = super(LinesFactura, self).create(list_vals)
 		return lines
 
@@ -202,12 +203,13 @@ class LinesFactura(models.Model):
 		for line in self:
 			producto=vals['product_id'] if('product_id' in vals) else line.product_id.id
 			nueva=vals['nueva_utilidad'] if('nueva_utilidad' in vals) else line.nueva_utilidad
+			precio=vals['nuevo_precio'] if('nuevo_precio' in vals) else line.nuevo_precio
 			if(producto):
 				p=self.env['product.product'].browse(producto)
 				c=vals['credit'] if('credit' in vals) else line.credit
 				if(p.x_studio_utilidad_precio_de_venta!=nueva and c==0):
-					p.write({'x_studio_utilidad_precio_de_venta':nueva})
-					p.cambio_precio_de_venta()
+					p.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio})
+					#p.cambio_precio_de_venta()
 			result |= super(LinesFactura, line).write(vals)
 		return result
 					
@@ -221,6 +223,7 @@ class Almacen(models.Model):
 class Company(models.Model):
 	_inherit='res.company'
 	orden_compra=fields.Boolean()
+	price_lst=fields.Boolean()
 
 class Compra(models.Model):
 	_inherit='purchase.order'
