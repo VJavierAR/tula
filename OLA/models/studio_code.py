@@ -9,7 +9,8 @@ _logger = logging.getLogger(__name__)
 
 class ProductProduct(models.Model):
 	_inherit = 'product.product'
-
+	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
+	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
 	x_preciominimo = fields.Float(
 		string='Precio mínimo',
 		store=True,
@@ -89,7 +90,8 @@ class ProductProduct(models.Model):
 		# self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 
 	def write(self, vals):
-		if 'standard_price' in vals:
+		precio=vals['nuevo_costo_facturacion_impuesto'] if('nuevo_costo_facturacion_impuesto' in vals) else self.nuevo_costo_facturacion_impuesto
+		if 'standard_price' in vals and precio==0:
 			#_logger.info("self.id: " + str(self.id))
 			producto = self.env['product.template'].search([('id', '=', self.product_tmpl_id.id)])
 			#_logger.info("producto: " + str(producto))
