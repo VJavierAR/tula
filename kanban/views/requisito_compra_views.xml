@@ -11,7 +11,7 @@
                             <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                                 <div class="o_kanban_card_content">
                                     <field name="name" modifiers="{&quot;required&quot;: true}"/>
-                                    <field name="state" display="full"/>
+                                    <field name="state"/>
                                     <field name="partner_id" display="full"/>
                                     <field name="solicitado_por" invisible="1"/>
                                 </div>

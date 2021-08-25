@@ -120,7 +120,6 @@ class RequisitoCompraLinea(models.Model):
         required=True,
         copy=False,
         readonly=True,
-        states={'borrador': [('readonly', False)]},
         index=True,
         default=lambda self: _('New')
     )
@@ -232,7 +231,7 @@ class RequisitoCompraLinea(models.Model):
         readonly=True,
         store=True,
         copy=False,
-        related="p_a_linea_programado.state",
+        related="requisito_compra_rel.state",
     )
 
     @api.model
