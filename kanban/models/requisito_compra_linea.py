@@ -141,13 +141,13 @@ class RequisitoCompraLinea(models.Model):
     )
     r_l_prog = fields.Integer(
         string="1. Cantidad restante de PO",
-        related="p_a_l_prog.cantidad_restante",
+        # related="p_a_l_prog.cantidad_restante",
         store=True,
         copy=True,
     )
     s_a_p_l_p = fields.Integer(
         string="Saldo actual pedido",
-        related="p_a_l_prog.cantidad_restante",
+        # related="p_a_l_prog.cantidad_restante",
         store=True,
         copy=True,
     )
@@ -155,11 +155,11 @@ class RequisitoCompraLinea(models.Model):
         string="Precio USD",
         store=True,
         copy=True,
-        related="p_a_l_prog.price_unit"
+        # related="p_a_l_prog.price_unit"
     )
     cantidad_fac_l_p = fields.Integer(
         string="A facturar",
-        related="p_a_l_prog.cantidad_facturada",
+        # related="p_a_l_prog.cantidad_facturada",
         store=True,
         copy=True,
     )
@@ -183,7 +183,7 @@ class RequisitoCompraLinea(models.Model):
     )
     r_l_prog_dos = fields.Integer(
         string="2. Cantidad restante de PO",
-        related="p_a_l_prog_dos.cantidad_restante",
+        # related="p_a_l_prog_dos.cantidad_restante",
         store=True,
         copy=True,
     )
@@ -285,19 +285,31 @@ class RequisitoCompraLinea(models.Model):
     def cambia_p_a_linea_programado(self):
         if self.p_a_l_prog.id:
             self.p_c_l_prog = self.p_a_l_prog.pedido_cliente
+            self.r_l_prog = self.p_a_l_prog.cantidad_restante
+            self.s_a_p_l_p = self.p_a_l_prog.cantidad_restante
+            self.precio_usd = self.p_a_l_prog.price_unit
+            self.cantidad_fac_l_p = self.p_a_l_prog.cantidad_facturada
         else:
             self.p_c_l_prog = ""
+            self.r_l_prog = 0
+            self.s_a_p_l_p = 0
+            self.precio_usd = 0
+            self.cantidad_fac_l_p = 0
 
     @api.onchange('p_a_l_prog_dos')
     def cambia_p_a_linea_programado_dos(self):
         if self.p_a_l_prog_dos.id:
-            self.p_c_l_prog = self.p_a_l_prog_dos.pedido_cliente
+            self.p_c_l_prog_dos = self.p_a_l_prog_dos.pedido_cliente
+            self.r_l_prog_dos = self.p_a_l_prog_dos.cantidad_restante
         else:
-            self.p_c_l_prog = ""
+            self.p_c_l_prog_dos = ""
+            self.r_l_prog_dos = 0
 
     @api.onchange('p_a_l_prog_tres')
     def cambia_p_a_linea_programado_tres(self):
         if self.p_a_l_prog_tres.id:
-            self.p_c_l_prog = self.p_a_l_prog_tres.pedido_cliente
+            self.p_c_l_prog_tres = self.p_a_l_prog_tres.pedido_cliente
+            self.r_l_prog_tres = self.p_a_l_prog_tres.cantidad_restante
         else:
-            self.p_c_l_prog = ""
+            self.p_c_l_prog_tres = ""
+            self.r_l_prog_tres = 0
