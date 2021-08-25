@@ -233,6 +233,13 @@ class RequisitoCompraLinea(models.Model):
         copy=False,
         related="requisito_compra_rel.state",
     )
+    company_id = fields.Many2one(
+        related='requisito_compra_rel.company_id',
+        string='Compañia',
+        store=True,
+        readonly=True,
+        index=True
+    )
 
     @api.model
     def create(self, vals):

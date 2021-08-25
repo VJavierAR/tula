@@ -94,7 +94,14 @@ class RequisitoCompra(models.Model):
         string="Lineas de requisito de compra",
         store=True
     )
-
+    company_id = fields.Many2one(
+        comodel_name='res.company',
+        string='Compañia',
+        required=True,
+        index=True,
+        default=lambda self: self.env.company
+    )
+    
     @api.model
     def create(self, vals):
         if vals.get('name', _('New')) == _('New'):

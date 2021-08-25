@@ -83,6 +83,7 @@
                                 <field name="origin"/>
                                 <field name="descripcion"/>
                                 <field name="grupo_de_adquisiciones"/>
+                                <field name="company_id" invisible="1"/>
                             </group>
                         </group>
 
@@ -104,6 +105,7 @@
                                         <field name="fecha_de_solicitud" invisible="1"/>
                                         <field name="saldo_actual_pedido_abierto" readonly="1"/>
                                         <field name="comentarios" />
+                                        <field name="company_id" invisible="1"/>
                                     </tree>
                                     <form>
                                         <group string="Información">
@@ -111,6 +113,7 @@
                                                 <field name="product_id" />
                                                 <field name="numero_de_parte" />
                                                 <field name="name" />
+                                                <field name="company_id" invisible="1"/>
                                             </group>
                                             <group>
                                                 <field name="order_partner_id" />
