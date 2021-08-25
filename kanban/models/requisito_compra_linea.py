@@ -135,7 +135,7 @@ class RequisitoCompraLinea(models.Model):
     )
     p_c_l_prog = fields.Text(
         string="1. Pedido Cliente",
-        related="p_a_l_prog.pedido_cliente",
+        # related="p_a_l_prog.pedido_cliente",
         store=True,
         copy=True,
     )
@@ -177,7 +177,7 @@ class RequisitoCompraLinea(models.Model):
     )
     p_c_l_prog_dos = fields.Text(
         string="2. Pedido Cliente",
-        related="p_a_l_prog_dos.pedido_cliente",
+        # related="p_a_l_prog_dos.pedido_cliente",
         store=True,
         copy=True,
     )
@@ -196,7 +196,7 @@ class RequisitoCompraLinea(models.Model):
     )
     p_c_l_prog_tres = fields.Text(
         string="3. Pedido Cliente",
-        related="p_a_l_prog_tres.pedido_cliente",
+        # related="p_a_l_prog_tres.pedido_cliente",
         store=True,
         copy=True,
     )
@@ -281,18 +281,23 @@ class RequisitoCompraLinea(models.Model):
         else:
             self.realizado = False
 
-    """
-    @api.onchange('p_a_linea_programado')
+    @api.onchange('p_a_l_prog')
     def cambia_p_a_linea_programado(self):
-        if self.p_a_linea_programado.id:
-            self.p_c_linea_programado = self.p_a_linea_programado.pedido_cliente  
+        if self.p_a_l_prog.id:
+            self.p_c_l_prog = self.p_a_l_prog.pedido_cliente
         else:
-            self.p_c_linea_programado = ""
+            self.p_c_l_prog = ""
 
-    @api.onchange('p_a_linea_programado_dos')
-    def cambia_p_a_linea_programado(self):
-        if self.p_a_linea_programado.id:
-            self.p_c_linea_programado = self.p_a_linea_programado.pedido_cliente
+    @api.onchange('p_a_l_prog_dos')
+    def cambia_p_a_linea_programado_dos(self):
+        if self.p_a_l_prog_dos.id:
+            self.p_c_l_prog = self.p_a_l_prog_dos.pedido_cliente
         else:
-            self.p_c_linea_programado = ""
-    """
+            self.p_c_l_prog = ""
+
+    @api.onchange('p_a_l_prog_tres')
+    def cambia_p_a_linea_programado_tres(self):
+        if self.p_a_l_prog_tres.id:
+            self.p_c_l_prog = self.p_a_l_prog_tres.pedido_cliente
+        else:
+            self.p_c_l_prog = ""
