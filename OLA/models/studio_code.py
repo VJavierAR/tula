@@ -11,7 +11,6 @@ class ProductProduct(models.Model):
 	_inherit = 'product.product'
 	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
 	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
-	check=fields.Boolean(default=False)
 	x_preciominimo = fields.Float(
 		string='Precio mínimo',
 		store=True,
@@ -64,7 +63,8 @@ class ProductProduct(models.Model):
 	def cambio_precio_de_venta(self):
 		self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 	"""
-	def write(self, vals):
+	def write(self,vals):
+		_logger.info(vals)
 		if('x_studio_utilidad_precio_de_venta' in vals):
 			if(vals['x_studio_utilidad_precio_de_venta']==0):
 				del vals['x_studio_utilidad_precio_de_venta']
@@ -74,15 +74,6 @@ class ProductProduct(models.Model):
 		if('nuevo_costo_facturacion_impuesto' in vals):
 			if(vals['nuevo_costo_facturacion_impuesto']==0):
 				del vals['nuevo_costo_facturacion_impuesto']
-		res = super(ProductProduct, self).write(vals)
-		return res
-
-
-
-
-	def write(self,vals):
-		_logger.info(vals)
-
 		res=super(ProductProduct,self).write(vals)
 		return res 
 

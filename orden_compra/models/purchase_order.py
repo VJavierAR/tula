@@ -14,7 +14,7 @@ class Compra(models.Model):
 		self.button_confirm()
 		if(self.check==False):
 			for line in self.order_line:
-				line.product_id.write({'nuevo_costo_facturacion_impuesto':0,'check':True})
+				line.product_id.write({'nuevo_costo_facturacion_impuesto':0})
 		if(self.picking_type_id.warehouse_id.auto_recepcion):
 			sta = self.picking_ids.mapped('state')
 			for pi in self.picking_ids.filtered(lambda x:x.state!='cancel'):
