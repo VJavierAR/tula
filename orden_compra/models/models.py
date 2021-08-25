@@ -264,6 +264,17 @@ class Compra(models.Model):
 						'res_id': wiz.id,
 						'context': self.env.context,
 					}
+class Compra(models.Model):
+	_inherit='purchase.order.line'
+	precio_impuesto=fields.Float()
+	utilidad_venta=fields.Float()
+	precio_lista=fields.Float()
+
+class Compra(models.Model):
+	_inherit='stock.move'
+	precio_impuesto=fields.Float()
+	utilidad_venta=fields.Float()
+	precio_lista=fields.Float()
 
 class AlertaDescuento(models.TransientModel):
 	_name = 'purchase.order.alerta'
