@@ -15,6 +15,7 @@
                     <field name="precio_usd"/>
                     <field name="unidad_de_medidad"/>
                     <field name="state_requisito_compra"/>
+                    <field name="comentarios"/>
                 </tree>
             </field>
         </record>

@@ -129,7 +129,7 @@ class RequisitoCompraLinea(models.Model):
         readonly=True,
         store=True
     )
-    comenatrios = fields.Text(
+    comentarios = fields.Text(
         string="Comentarios",
         store=True,
     )
