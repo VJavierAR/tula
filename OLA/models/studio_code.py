@@ -89,6 +89,7 @@ class ProductProduct(models.Model):
 		# self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 
 	def write(self, vals):
+		_logger.info(vals)
 		precio=vals['nuevo_costo_facturacion_impuesto'] if('nuevo_costo_facturacion_impuesto' in vals) else self.nuevo_costo_facturacion_impuesto
 		if 'standard_price' in vals and precio==0:
 			#_logger.info("self.id: " + str(self.id))
