@@ -11,6 +11,7 @@ class ProductProduct(models.Model):
 	_inherit = 'product.product'
 	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
 	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
+	check=fields.Boolean(default=False)
 	x_preciominimo = fields.Float(
 		string='Precio mínimo',
 		store=True,
@@ -70,8 +71,9 @@ class ProductProduct(models.Model):
 		if('list_price' in vals):
 			if(vals['list_price']==0):
 				del vals['list_price']
+		check=vals['check'] if('check' in vals) else self.check
 		if('nuevo_costo_facturacion_impuesto' in vals):
-			if(vals['nuevo_costo_facturacion_impuesto']==0):
+			if(vals['nuevo_costo_facturacion_impuesto']==0 and check==True):
 				del vals['nuevo_costo_facturacion_impuesto']
 		precio=vals['nuevo_costo_facturacion_impuesto'] if('nuevo_costo_facturacion_impuesto' in vals) else self.nuevo_costo_facturacion_impuesto
 		if 'standard_price' in vals and precio==0:
