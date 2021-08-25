@@ -204,6 +204,7 @@ class LinesFactura(models.Model):
 						c=vals['credit'] if('credit' in vals) else self.credit
 						if(p.x_studio_utilidad_precio_de_venta!=nueva and c==0):
 							p.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio,'nuevo_costo_facturacion_impuesto':precio_impuesto})
+							p.product_tmpl_id.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio,'nuevo_costo_facturacion_impuesto':precio_impuesto})
 							p._compute_x_preciominimo()
 							#p.cambio_precio_de_venta()
 		lines = super(LinesFactura, self).create(list_vals)
@@ -221,6 +222,7 @@ class LinesFactura(models.Model):
 				c=vals['credit'] if('credit' in vals) else line.credit
 				if(p.x_studio_utilidad_precio_de_venta!=nueva and c==0):
 					p.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio,'nuevo_costo_facturacion_impuesto':precio_impuesto})
+					p.product_tmpl_id.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio,'nuevo_costo_facturacion_impuesto':precio_impuesto})
 					p._compute_x_preciominimo()
 					#p.cambio_precio_de_venta()
 			result |= super(LinesFactura, line).write(vals)
