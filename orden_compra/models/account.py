@@ -123,9 +123,9 @@ class LinesFactura(models.Model):
 		for record in self:
 			record.valorX=0
 			if(record.product_id.id!=False):
-				record.costo=record.product_id.with_context(force_company=self.env.company.id).standard_price
-				record.precio=record.product_id.with_context(force_company=self.env.company.id).lst_price
-				record.utilida=record.product_id.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta
+				record.costo=record.product_id.with_context(force_company=self.env.company.id).standard_price if(record.product_id.with_context(force_company=self.env.company.id).standard_price!=0) else record.product_id.with_context(force_company=self.env.company.id).product_tmpl_id.standard_price
+				record.precio=record.product_id.with_context(force_company=self.env.company.id).lst_price if(record.product_id.with_context(force_company=self.env.company.id).lst_price!=0) else record.product_id.with_context(force_company=self.env.company.id).product_tmpl_id.lst_price 
+				record.utilida=record.product_id.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta if(record.product_id.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta!=0) else record.product_id.with_context(force_company=self.env.company.id).product_tmpl_id.x_studio_utilidad_precio_de_venta
 				ultimo=self.env['purchase.order.line'].search([['product_id','=',record.product_id.id]],order='date_planned desc',limit=1)
 				record.ultimo_provedor=ultimo.order_id.partner_id.id
 				record.ultimo_precio_compra=ultimo.price_unit*ultimo.currency_id.rate
@@ -206,6 +206,7 @@ class LinesFactura(models.Model):
 							p.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio,'nuevo_costo_facturacion_impuesto':precio_impuesto})
 							p.product_tmpl_id.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio,'nuevo_costo_facturacion_impuesto':precio_impuesto})
 							p._compute_x_preciominimo()
+							p.product_tmpl_id._compute_x_preciominimo()
 							#p.cambio_precio_de_venta()
 		lines = super(LinesFactura, self).create(list_vals)
 		return lines
@@ -224,7 +225,7 @@ class LinesFactura(models.Model):
 					p.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio,'nuevo_costo_facturacion_impuesto':precio_impuesto})
 					p.product_tmpl_id.write({'x_studio_utilidad_precio_de_venta':nueva,'lst_price':precio,'nuevo_costo_facturacion_impuesto':precio_impuesto})
 					p._compute_x_preciominimo()
-					#p.cambio_precio_de_venta()
+					p.product_tmpl_id._compute_x_preciominimo()
 			result |= super(LinesFactura, line).write(vals)
 		return result
 					

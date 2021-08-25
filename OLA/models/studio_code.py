@@ -142,7 +142,9 @@ class ProductProduct(models.Model):
 
 class ProductTemplate(models.Model):
 	_inherit = 'product.template'
-
+	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
+	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
+	check=fields.Boolean(default=False)
 	x_studio_precio_mnimo = fields.Float(
 		string='Precio mínimo',
 		store=True,
@@ -193,7 +195,7 @@ class ProductTemplate(models.Model):
 	def actualiza_precio_de_venta_y_precio_minimo(self):
 		self._compute_x_preciominimo()
 		self.cambio_precio_de_venta()
-
+        
 	def write(self, vals):
 		if('x_studio_utilidad_precio_de_venta' in vals):
 			if(vals['x_studio_utilidad_precio_de_venta']==0):
@@ -201,11 +203,33 @@ class ProductTemplate(models.Model):
 		if('list_price' in vals):
 			if(vals['list_price']==0):
 				del vals['list_price']
-		check=vals['check'] if('check' in vals) else False
 		if('nuevo_costo_facturacion_impuesto' in vals):
 			if(vals['nuevo_costo_facturacion_impuesto']==0):
 				del vals['nuevo_costo_facturacion_impuesto']
+		precio=vals['nuevo_costo_facturacion_impuesto'] if('nuevo_costo_facturacion_impuesto' in vals) else self.nuevo_costo_facturacion_impuesto
+		if 'standard_price' in vals and precio==0:
+			#_logger.info("self.id: " + str(self.id))
+			producto = self.env['product.template'].search([('id', '=', self.product_tmpl_id.id)])
+			#_logger.info("producto: " + str(producto))
+			# actualiza precio de venta
+			coste = vals['standard_price']
+			vals['list_price'] = (coste * producto.x_studio_utilidad_precio_de_venta / 100) + coste
+			producto.list_price = (coste * producto.x_studio_utilidad_precio_de_venta / 100) + coste
+			# actualiza precio minimo
+			vals['x_studio_precio_mnimo'] = (coste * producto.x_studio_utilidad_ / 100) + coste
+			producto.x_studio_precio_mnimo = (coste * producto.x_studio_utilidad_ / 100) + coste
 
+			vals['x_studio_utilidad_precio_de_venta'] = producto.x_studio_utilidad_precio_de_venta
+			vals['x_studio_utilidad_'] = producto.x_studio_utilidad_
+			#_logger.info(
+			#	"standard_price: " + str(coste) +
+			#	" self.x_studio_utilidad_precio_de_venta: " + str(producto.x_studio_utilidad_precio_de_venta) +
+			#	" self.x_studio_utilidad_: " + str(producto.x_studio_utilidad_) +
+			#	" vals: " + str(vals)
+			#)
+		res = super(ProductTemplate, self).write(vals)
+		#_logger.info("res: " + str(res))
+		return res
 
 class StockMove(models.Model):
 	_inherit='stock.move'

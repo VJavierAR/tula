@@ -39,8 +39,8 @@ class Product(models.Model):
 
 class ProductTemplate(models.Model):
 	_inherit='product.template'
-	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
-	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
+	#nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
+	#nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
 
 	# @api.depends('standard_price')
 	# def updateCost(self):
