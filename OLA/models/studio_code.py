@@ -41,13 +41,14 @@ class ProductProduct(models.Model):
 		company_dependent=True,
 		#check_company=True,
 	)
+	"""
 	x_studio_utilidad_precio_de_venta = fields.Float(
 		string='Utilidad precio de venta (%)',
 		store=True,
 		company_dependent=True,
 		check_company=True
 	)
-	"""
+	
 
 	"""
 	@api.depends('standard_price', 'x_studio_utilidad_')
