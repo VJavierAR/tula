@@ -6,6 +6,8 @@ _logger = logging.getLogger(__name__)
 from odoo.exceptions import UserError
 from statistics import mean
 from collections import defaultdict
+from odoo.tools import float_compare, float_round, float_is_zero, OrderedSet
+
 class StockMove(models.Model):
 	_inherit='stock.move'
 	precio_impuesto=fields.Float()
