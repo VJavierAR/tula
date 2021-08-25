@@ -1,0 +1,13 @@
+<odoo>
+    <data noupdate="True">
+        <record id="sequence_requisito_compra" model="ir.sequence">
+            <field name="name">Requisito compra Seq</field>
+            <field name="code">requisito.compra.seq</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">PR</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="kanban.list">
+      <field name="name">kanban list</field>
+      <field name="model">kanban.kanban</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="kanban.action_window">
+      <field name="name">kanban window</field>
+      <field name="res_model">kanban.kanban</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="kanban.action_server">
+      <field name="name">kanban server</field>
+      <field name="model_id" ref="model_kanban_kanban"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="kanban" id="kanban.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="kanban.menu_1" parent="kanban.menu_root"/>
+    <menuitem name="Menu 2" id="kanban.menu_2" parent="kanban.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="kanban.menu_1_list" parent="kanban.menu_1"
+              action="kanban.action_window"/>
+    <menuitem name="Server to list" id="kanban" parent="kanban.menu_2"
+              action="kanban.action_server"/>
+-->
+  </data>
+</odoo>

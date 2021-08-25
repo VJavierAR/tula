@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="requisito_compra_linea_view_tree">
+            <field name="name">requisito.compra.linea.tree</field>
+            <field name="model">requisito.compra.linea</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="requisito_compra_rel"/>
+                    <field name="fecha_de_solicitud"/>
+                    <field name="product_id"/>
+                    <field name="name"/>
+                    <field name="punto_reorden"/>
+                    <field name="saldo_pedido_abierto"/>
+                    <field name="precio_usd"/>
+                    <field name="unidad_de_medidad"/>
+                    <field name="state_requisito_compra"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="requisito_compra_linea_action_window">
+          <field name="name">Requisito de Compra Línea</field>
+          <field name="res_model">requisito.compra.linea</field>
+          <field name="view_mode">tree,form,kanban</field>
+          <field name="view_id" ref="requisito_compra_linea_view_tree"/>
+        </record>
+
+        <menuitem id="requisito_compra_linea"
+                  name="Requisito de Compra Línea"
+                  parent="kanban_root"
+                  sequence="1"
+                  action="requisito_compra_linea_action_window"
+                  />
+
+
+
+    </data>
+</odoo>
