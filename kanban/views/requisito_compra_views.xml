@@ -58,10 +58,7 @@
                         <div class="oe_button_box" name="button_box">
                             <button name="get_lineas" type="object" class="oe_stat_button"
                                     icon="fa-list">
-                                <field string="" name="num_lineas" />
-                                <div class="o_field_widget o_stat_info">
-                                    <span class="o_stat_text">Lineas</span>
-                                </div>
+                                <field string="Líneas" name="num_lineas" widget="statinfo" />
                             </button>
                         </div>
 
