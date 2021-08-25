@@ -46,6 +46,10 @@ class Factura(models.Model):
 					prod['order_id']=orden.id
 					prod['product_uom']=inv.product_uom_id.id
 					prod['date_planned']=inv.date
+					if(self.company_id.price_lst):
+						pro['precio_impuesto']=inv.valorX
+						pro['utilidad_venta']=inv.nueva_utilidad
+						pro['precio_lista']=inv.nuevo_precio
 					p=self.env['purchase.order.line'].create(prod)
 					p.write({'invoice_lines':[(6,0,inv.mapped('id'))]})
 				orden.write({'invoice_ids':[(6,0,self.mapped('id'))]})
@@ -221,116 +225,8 @@ class LinesFactura(models.Model):
 		return result
 					
 
-class Almacen(models.Model):
-	_inherit='stock.warehouse'
-	auto_recepcion=fields.Boolean()
-	stock_visible=fields.Boolean()
-
-
-class Company(models.Model):
-	_inherit='res.company'
-	orden_compra=fields.Boolean()
-	price_lst=fields.Boolean()
-
-class Compra(models.Model):
-	_inherit='purchase.order'
-	check=fields.Boolean(default=False)
-
-	def boton_confirmar(self):
-		self.button_confirm()
-		if(self.picking_type_id.warehouse_id.auto_recepcion):
-			if(self.check==False):
-				for line in self.order_line:
-					line.product_id.write({'nuevo_costo_facturacion_impuesto':0})
-			sta = self.picking_ids.mapped('state')
-			for pi in self.picking_ids.filtered(lambda x:x.state!='cancel'):
-				if pi.state == 'assigned':
-					pi.action_confirm()
-					pi.move_lines._action_assign()
-					pi.action_assign()
-					return pi.button_validate()
-				if pi.state in ('waiting','confirmed'):
-					view = self.env.ref('orden_compra.purchase_order_alerta_view')
-					wiz = self.env['purchase.order.alerta'].create({'mensaje': 'Sin stock disponible'})
-					return {
-						'alerta': True,
-						'name': _('Alerta'),
-						'type': 'ir.actions.act_window',
-						'view_mode': 'form',
-						'res_model': 'purchase.order.alerta',
-						'views': [(view.id, 'form')],
-						'view_id': view.id,
-						'target': 'new',
-						'res_id': wiz.id,
-						'context': self.env.context,
-					}
-class Compra(models.Model):
-	_inherit='purchase.order.line'
-	precio_impuesto=fields.Float()
-	utilidad_venta=fields.Float()
-	precio_lista=fields.Float()
-
-class Compra(models.Model):
-	_inherit='stock.move'
-	precio_impuesto=fields.Float()
-	utilidad_venta=fields.Float()
-	precio_lista=fields.Float()
-
-class AlertaDescuento(models.TransientModel):
-	_name = 'purchase.order.alerta'
-	_description = 'Alerta'
-
-	mensaje = fields.Text(string='Mensaje')
-
-class Product(models.Model):
-	_inherit='product.product'
-	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
-	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
-
-	@api.onchange('standard_price', 'x_studio_utilidad_precio_de_venta')
-	@api.depends_context('force_company')
-	def cambio_precio_de_venta(self):
-		company = self.env.context.get('force_company', False)
-		for rec in self:
-			if(rec.with_context(force_company=self.env.company.id).nuevo_costo_facturacion_impuesto==0):
-				if rec.with_context(force_company=self.env.company.id).standard_price and rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta:
-					rec.list_price = (rec.with_context(force_company=self.env.company.id).standard_price * rec.with_context(force_company=self.env.company.id).x_studio_utilidad_precio_de_venta / 100) + rec.with_context(force_company=self.env.company.id).standard_price
-
-
-
-	# @api.depends('standard_price')
-	# def updateCost(self):
-	# 	for record in self:
-	# 		record.nuevo_costo_facturacion_impuesto=0
-	# 		if(record.id):
-	# 			f=self.env['account.move.line'].search([['credit','=',0],['parent_state','=','posted'],['product_id','=',record.id]],order='date desc',limit=1)
-	# 			record.nuevo_costo_facturacion=f.price_unit
-	# 			record.nuevo_costo_facturacion_impuesto=f.price_unit+f.impuesto
 
 
 
 
 
-
-
-
-
-class Product(models.Model):
-	_inherit='product.template'
-	nuevo_costo_facturacion=fields.Float(default=0,string='Precio Compra',company_dependent=True,check_company=True)
-	nuevo_costo_facturacion_impuesto=fields.Float(default=0,string='Precio Venta+impuesto',company_dependent=True,check_company=True)
-
-	# @api.depends('standard_price')
-	# def updateCost(self):
-	# 	for record in self:
-	# 		record.nuevo_costo_facturacion=0
-	# 		if(record.id):
-	# 			a=[]
-	# 			b=[]
-	# 			for f in record.product_variant_ids:
-	# 				c=f.nuevo_costo_facturacion if(f.nuevo_costo_facturacion!=0) else f.lst_price
-	# 				d=f.nuevo_costo_facturacion_impuesto if(f.nuevo_costo_facturacion_impuesto!=0) else f.lst_price
-	# 				a.append(c)
-	# 				b.append(d)
-	# 			record.nuevo_costo_facturacion=mean(a)
-	# 			record.nuevo_costo_facturacion_impuesto=mean(b)
