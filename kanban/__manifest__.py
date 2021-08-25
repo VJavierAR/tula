@@ -31,7 +31,7 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'data/sequence.xml',
         'views/requisito_compra_linea_views.xml',
         'views/requisito_compra_views.xml',
