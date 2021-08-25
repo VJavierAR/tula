@@ -62,6 +62,10 @@ class ProductProduct(models.Model):
 	def cambio_precio_de_venta(self):
 		self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 	"""
+	def write(self,vals):
+		_logger.info(vals)
+		res=super(ProductProduct,self).write(vals)
+		return res 
 
 	# @api.depends('standard_price', 'x_studio_utilidad_')
 	@api.onchange('standard_price', 'x_studio_utilidad_')
