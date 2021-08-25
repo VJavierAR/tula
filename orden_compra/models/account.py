@@ -47,9 +47,9 @@ class Factura(models.Model):
 					prod['product_uom']=inv.product_uom_id.id
 					prod['date_planned']=inv.date
 					if(self.company_id.price_lst):
-						pro['precio_impuesto']=inv.valorX
-						pro['utilidad_venta']=inv.nueva_utilidad
-						pro['precio_lista']=inv.nuevo_precio
+						prod['precio_impuesto']=inv.valorX
+						prod['utilidad_venta']=inv.nueva_utilidad
+						prod['precio_lista']=inv.nuevo_precio
 					p=self.env['purchase.order.line'].create(prod)
 					p.write({'invoice_lines':[(6,0,inv.mapped('id'))]})
 				orden.write({'invoice_ids':[(6,0,self.mapped('id'))]})
