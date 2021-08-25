@@ -43,8 +43,8 @@ class StockMove(models.Model):
 			# Write the standard price, as SUPERUSER_ID because a warehouse manager may not have the right to write on products
 			d={'standard_price': new_std_price}
 			if(move.purchase_line_id.precio_impuesto!=0 or move.purchase_line_id.precio_lista!=0 or move.purchase_line_id.utilidad_venta!=0):
-				d['precio_impuesto']=move.purchase_line_id.precio_impuesto
-				d['precio_lista']=move.purchase_line_id.precio_lista
-				d['utilidad_venta']=move.purchase_line_id.utilidad_venta
+				d['nuevo_costo_facturacion_impuest']=move.purchase_line_id.precio_impuesto
+				d['lst_price']=move.purchase_line_id.precio_lista
+				d['x_studio_utilidad_precio_de_venta']=move.purchase_line_id.utilidad_venta
 			move.product_id.with_context(force_company=move.company_id.id).sudo().write(d)
 			std_price_update[move.company_id.id, move.product_id.id] = new_std_price
