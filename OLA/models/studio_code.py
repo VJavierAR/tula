@@ -71,7 +71,7 @@ class ProductProduct(models.Model):
 		if('list_price' in vals):
 			if(vals['list_price']==0):
 				del vals['list_price']
-		check=vals['check'] if('check' in vals) else self.check
+		check=vals['check'] if('check' in vals) else False
 		if('nuevo_costo_facturacion_impuesto' in vals):
 			if(vals['nuevo_costo_facturacion_impuesto']==0 and check!=True):
 				del vals['nuevo_costo_facturacion_impuesto']
