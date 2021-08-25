@@ -141,7 +141,7 @@ class RequisitoCompraLinea(models.Model):
         copy=True,
         domain="[('order_partner_id', '=', order_partner_id), ('product_id', '=', product_id)]"
     )
-    p_c_linea_programado = fields.Char(
+    p_c_linea_programado = fields.Text(
         string="1. Pedido Cliente",
         related="p_a_linea_programado.pedido_cliente",
         store=True,
@@ -177,7 +177,7 @@ class RequisitoCompraLinea(models.Model):
         copy=True,
         domain="[('order_partner_id', '=', order_partner_id), ('product_id', '=', product_id)]"
     )
-    p_c_linea_programado_dos = fields.Char(
+    p_c_linea_programado_dos = fields.Text(
         string="2. Pedido Cliente",
         related="p_a_linea_programado.pedido_cliente",
         store=True,
@@ -196,7 +196,7 @@ class RequisitoCompraLinea(models.Model):
         copy=True,
         domain="[('order_partner_id', '=', order_partner_id), ('product_id', '=', product_id)]"
     )
-    p_c_linea_programado_tres = fields.Char(
+    p_c_linea_programado_tres = fields.Text(
         string="3. Pedido Cliente",
         related="p_a_linea_programado.pedido_cliente",
         store=True,
