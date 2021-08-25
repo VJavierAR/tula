@@ -194,6 +194,18 @@ class ProductTemplate(models.Model):
 		self._compute_x_preciominimo()
 		self.cambio_precio_de_venta()
 
+	def write(self, vals):
+		if('x_studio_utilidad_precio_de_venta' in vals):
+			if(vals['x_studio_utilidad_precio_de_venta']==0):
+				del vals['x_studio_utilidad_precio_de_venta']
+		if('list_price' in vals):
+			if(vals['list_price']==0):
+				del vals['list_price']
+		check=vals['check'] if('check' in vals) else False
+		if('nuevo_costo_facturacion_impuesto' in vals):
+			if(vals['nuevo_costo_facturacion_impuesto']==0 and check!=True):
+				del vals['nuevo_costo_facturacion_impuesto']
+
 
 class StockMove(models.Model):
 	_inherit='stock.move'
