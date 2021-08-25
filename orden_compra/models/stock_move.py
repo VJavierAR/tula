@@ -5,7 +5,7 @@ import logging, ast
 _logger = logging.getLogger(__name__)
 from odoo.exceptions import UserError
 from statistics import mean
-
+from collections import defaultdict
 class StockMove(models.Model):
 	_inherit='stock.move'
 	precio_impuesto=fields.Float()
