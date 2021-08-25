@@ -26,7 +26,7 @@
 'account_predictive_bills',
 'account_asset',
 'account_reports',
-'payment',],
+'payment','stock_account',],
 
     # always loaded
     'data': [

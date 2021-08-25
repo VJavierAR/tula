@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_subfamily,product.subfamily,model_product_subfamily,base.group_user,1,1,1,1
+access_product_brand,product.brand,model_product_brand,base.group_user,1,1,1,1
+access_product_supplier,product.supplier,model_product_supplier,base.group_user,1,1,1,1

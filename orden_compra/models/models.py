@@ -35,7 +35,7 @@ class Factura(models.Model):
 				else:
 					self.post()
 			if(tipo=='in_invoice' and self.company_id.orden_compra and self.purchase_id.id==False):
-				orden=self.env['purchase.order'].create({'partner_id':self.partner_id.id,'picking_type_id':self.almacen.in_type_id.id,'check':True if(self.company_id.price_lst) else False})
+				orden=self.env['purchase.order'].create({'partner_id':self.partner_id.id,'picking_type_id':self.almacen.in_type_id.id})
 				for inv in self.invoice_line_ids:
 					prod=dict()
 					prod['product_id']=inv.product_id.id
@@ -234,14 +234,10 @@ class Company(models.Model):
 
 class Compra(models.Model):
 	_inherit='purchase.order'
-	check=fields.Boolean(default=False)
 
 	def boton_confirmar(self):
 		self.button_confirm()
 		if(self.picking_type_id.warehouse_id.auto_recepcion):
-			if(self.check==False):
-				for line in self.order_line:
-					line.product_id.write({'nuevo_costo_facturacion_impuesto':0})
 			sta = self.picking_ids.mapped('state')
 			for pi in self.picking_ids.filtered(lambda x:x.state!='cancel'):
 				if pi.state == 'assigned':

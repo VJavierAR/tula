@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="product_template_tree_view_update">
+            <field name="name">product.template.tree.view.update</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="stock_bodegas" force_save="1"/>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

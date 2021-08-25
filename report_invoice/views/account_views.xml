@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_move_form_inherit" model="ir.ui.view">
+            <field name="name">account.move.form.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_origin']" position="after">
+                    <field name="sale_create_user_id"/>
+                    <field name="sale_purchase_order"/>
+                </xpath>
+                <xpath expr="//field[@name='tax_ids']" position="after">
+                    <field name="price_qty_amount"/>
+                </xpath>
+                <xpath expr="//field[@name='price_subtotal']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='amount_untaxed']" position="attributes">
+                    <attribute name="string">Subtotal</attribute>
+                </xpath>
+                <xpath expr="//field[@name='amount_untaxed']" position="before">
+                    <field name="amount_without_discount_and_tax"/>
+                    <field name="amount_discount"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
