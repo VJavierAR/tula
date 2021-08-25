@@ -35,6 +35,7 @@
         'data/sequence.xml',
         'views/requisito_compra_linea_views.xml',
         'views/requisito_compra_views.xml',
+        'views/requisito_compra_menu.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode

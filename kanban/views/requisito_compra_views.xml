@@ -180,26 +180,5 @@
             </field>
         </record>
 
-
-
-        <!-- Your Action Window Definition -->
-        <record model="ir.actions.act_window" id="requerimiento_action_window">
-          <field name="name">Requerimiento Inventario</field>
-          <field name="res_model">requisito.compra</field>
-          <field name="view_mode">kanban,tree,form</field>
-          <field name="view_id" ref="requisito_compra_view_tree"/>
-        </record>
-
-        <menuitem id="kanban_root"
-                  name="Kanban"
-                  web_icon="kanban, static/description/helpdesk-icon.png"
-                  />
-        <menuitem id="requerimiento_inventario"
-                  name="Requerimiento inventario"
-                  parent="kanban_root"
-                  sequence="0"
-                  action="requerimiento_action_window"
-                  />
-
     </data>
 </odoo>
