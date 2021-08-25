@@ -26,6 +26,7 @@
         'product',
         'stock',
         'purchase',
+        'orden_abierta',
         'mail'
     ],
 
