@@ -63,8 +63,7 @@ class ProductProduct(models.Model):
 	def cambio_precio_de_venta(self):
 		self.list_price = (self.standard_price * self.x_studio_utilidad_precio_de_venta / 100) + self.standard_price
 	"""
-	def write(self,vals):
-		_logger.info(vals)
+	def write(self, vals):
 		if('x_studio_utilidad_precio_de_venta' in vals):
 			if(vals['x_studio_utilidad_precio_de_venta']==0):
 				del vals['x_studio_utilidad_precio_de_venta']
@@ -74,6 +73,37 @@ class ProductProduct(models.Model):
 		if('nuevo_costo_facturacion_impuesto' in vals):
 			if(vals['nuevo_costo_facturacion_impuesto']==0):
 				del vals['nuevo_costo_facturacion_impuesto']
+		precio=vals['nuevo_costo_facturacion_impuesto'] if('nuevo_costo_facturacion_impuesto' in vals) else self.nuevo_costo_facturacion_impuesto
+		if 'standard_price' in vals and precio==0:
+			#_logger.info("self.id: " + str(self.id))
+			producto = self.env['product.template'].search([('id', '=', self.product_tmpl_id.id)])
+			#_logger.info("producto: " + str(producto))
+			# actualiza precio de venta
+			coste = vals['standard_price']
+			vals['list_price'] = (coste * producto.x_studio_utilidad_precio_de_venta / 100) + coste
+			producto.list_price = (coste * producto.x_studio_utilidad_precio_de_venta / 100) + coste
+			# actualiza precio minimo
+			vals['x_studio_precio_mnimo'] = (coste * producto.x_studio_utilidad_ / 100) + coste
+			producto.x_studio_precio_mnimo = (coste * producto.x_studio_utilidad_ / 100) + coste
+
+			vals['x_studio_utilidad_precio_de_venta'] = producto.x_studio_utilidad_precio_de_venta
+			vals['x_studio_utilidad_'] = producto.x_studio_utilidad_
+			#_logger.info(
+			#	"standard_price: " + str(coste) +
+			#	" self.x_studio_utilidad_precio_de_venta: " + str(producto.x_studio_utilidad_precio_de_venta) +
+			#	" self.x_studio_utilidad_: " + str(producto.x_studio_utilidad_) +
+			#	" vals: " + str(vals)
+			#)
+		res = super(ProductProduct, self).write(vals)
+		#_logger.info("res: " + str(res))
+		return res
+
+
+
+
+	def write(self,vals):
+		_logger.info(vals)
+
 		res=super(ProductProduct,self).write(vals)
 		return res 
 
