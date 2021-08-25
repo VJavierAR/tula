@@ -65,6 +65,15 @@ class ProductProduct(models.Model):
 	"""
 	def write(self,vals):
 		_logger.info(vals)
+		if('x_studio_utilidad_precio_de_venta' in vals):
+			if(vals['x_studio_utilidad_precio_de_venta']==0):
+				del vals['x_studio_utilidad_precio_de_venta']
+		if('list_price' in vals):
+			if(vals['list_price']==0):
+				del vals['list_price']
+		if('nuevo_costo_facturacion_impuesto' in vals):
+			if(vals['nuevo_costo_facturacion_impuesto']==0):
+				del vals['nuevo_costo_facturacion_impuesto']
 		res=super(ProductProduct,self).write(vals)
 		return res 
 
