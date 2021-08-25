@@ -177,13 +177,13 @@ class RequisitoCompraLinea(models.Model):
     )
     p_c_linea_programado_dos = fields.Text(
         string="2. Pedido Cliente",
-        related="p_a_linea_programado.pedido_cliente",
+        related="p_a_linea_programado_dos.pedido_cliente",
         store=True,
         copy=True,
     )
     r_linea_programado_dos = fields.Integer(
         string="2. Cantidad restante de PO",
-        related="p_a_linea_programado.cantidad_restante",
+        related="p_a_linea_programado_dos.cantidad_restante",
         store=True,
         copy=True,
     )
@@ -196,13 +196,13 @@ class RequisitoCompraLinea(models.Model):
     )
     p_c_linea_programado_tres = fields.Text(
         string="3. Pedido Cliente",
-        related="p_a_linea_programado.pedido_cliente",
+        related="p_a_linea_programado_tres.pedido_cliente",
         store=True,
         copy=True,
     )
     r_linea_programado_tres = fields.Integer(
         string="3. Cantidad restante de PO",
-        related="p_a_linea_programado.cantidad_restante",
+        related="p_a_linea_programado_tres.cantidad_restante",
         store=True,
         copy=True,
     )
