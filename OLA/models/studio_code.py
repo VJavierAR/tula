@@ -203,7 +203,7 @@ class ProductTemplate(models.Model):
 				del vals['list_price']
 		check=vals['check'] if('check' in vals) else False
 		if('nuevo_costo_facturacion_impuesto' in vals):
-			if(vals['nuevo_costo_facturacion_impuesto']==0 and check!=True):
+			if(vals['nuevo_costo_facturacion_impuesto']==0):
 				del vals['nuevo_costo_facturacion_impuesto']
 
 
