@@ -71,13 +71,6 @@ class RequisitoCompraLinea(models.Model):
         store=True,
         copy=True,
     )
-    precio_usd = fields.Float(
-        string="Precio USD",
-        default=0,
-        store=True,
-        copy=True,
-        related="p_a_linea_programado.price_unit"
-    )
     realizado = fields.Boolean(
         string="Realizado",
         default=False,
@@ -157,6 +150,12 @@ class RequisitoCompraLinea(models.Model):
         related="p_a_linea_programado.cantidad_restante",
         store=True,
         copy=True,
+    )
+    precio_usd = fields.Float(
+        string="Precio USD",
+        store=True,
+        copy=True,
+        related="p_a_linea_programado.price_unit"
     )
     cantidad_facturada_l_p = fields.Integer(
         string="A facturar",
