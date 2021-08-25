@@ -126,28 +126,28 @@ class RequisitoCompraLinea(models.Model):
         string="Comentarios",
         store=True,
     )
-    p_a_linea_programado = fields.Many2one(
+    p_a_l_prog = fields.Many2one(
         comodel_name="pedido.abierto.linea",
         string="1. Línea de Pedido Programado",
         store=True,
         copy=True,
         domain="[('order_partner_id', '=', order_partner_id), ('product_id', '=', product_id)]"
     )
-    p_c_linea_programado = fields.Text(
+    p_c_l_prog = fields.Text(
         string="1. Pedido Cliente",
-        related="p_a_linea_programado.pedido_cliente",
+        related="p_a_l_prog.pedido_cliente",
         store=True,
         copy=True,
     )
-    r_linea_programado = fields.Integer(
+    r_l_prog = fields.Integer(
         string="1. Cantidad restante de PO",
-        related="p_a_linea_programado.cantidad_restante",
+        related="p_a_l_prog.cantidad_restante",
         store=True,
         copy=True,
     )
-    saldo_actual_pedido_l_p = fields.Integer(
+    s_a_p_l_p = fields.Integer(
         string="Saldo actual pedido",
-        related="p_a_linea_programado.cantidad_restante",
+        related="p_a_l_prog.cantidad_restante",
         store=True,
         copy=True,
     )
@@ -155,11 +155,11 @@ class RequisitoCompraLinea(models.Model):
         string="Precio USD",
         store=True,
         copy=True,
-        related="p_a_linea_programado.price_unit"
+        related="p_a_l_prog.price_unit"
     )
-    cantidad_facturada_l_p = fields.Integer(
+    cantidad_fac_l_p = fields.Integer(
         string="A facturar",
-        related="p_a_linea_programado.cantidad_facturada",
+        related="p_a_l_prog.cantidad_facturada",
         store=True,
         copy=True,
     )
@@ -168,41 +168,41 @@ class RequisitoCompraLinea(models.Model):
         store=True,
         default=False
     )
-    p_a_linea_programado_dos = fields.Many2one(
+    p_a_l_prog_dos = fields.Many2one(
         comodel_name="pedido.abierto.linea",
         string="2. Línea de Pedido Programado",
         store=True,
         copy=True,
         domain="[('order_partner_id', '=', order_partner_id), ('product_id', '=', product_id)]"
     )
-    p_c_linea_programado_dos = fields.Text(
+    p_c_l_prog_dos = fields.Text(
         string="2. Pedido Cliente",
-        related="p_a_linea_programado_dos.pedido_cliente",
+        related="p_a_l_prog_dos.pedido_cliente",
         store=True,
         copy=True,
     )
-    r_linea_programado_dos = fields.Integer(
+    r_l_prog_dos = fields.Integer(
         string="2. Cantidad restante de PO",
-        related="p_a_linea_programado_dos.cantidad_restante",
+        related="p_a_l_prog_dos.cantidad_restante",
         store=True,
         copy=True,
     )
-    p_a_linea_programado_tres = fields.Many2one(
+    p_a_l_prog_tres = fields.Many2one(
         comodel_name="pedido.abierto.linea",
         string="3. Línea de Pedido Programado",
         store=True,
         copy=True,
         domain="[('order_partner_id', '=', order_partner_id), ('product_id', '=', product_id)]"
     )
-    p_c_linea_programado_tres = fields.Text(
+    p_c_l_prog_tres = fields.Text(
         string="3. Pedido Cliente",
-        related="p_a_linea_programado_tres.pedido_cliente",
+        related="p_a_l_prog_tres.pedido_cliente",
         store=True,
         copy=True,
     )
-    r_linea_programado_tres = fields.Integer(
+    r_l_prog_tres = fields.Integer(
         string="3. Cantidad restante de PO",
-        related="p_a_linea_programado_tres.cantidad_restante",
+        related="p_a_l_prog_tres.cantidad_restante",
         store=True,
         copy=True,
     )
@@ -280,3 +280,19 @@ class RequisitoCompraLinea(models.Model):
             self.realizado = True
         else:
             self.realizado = False
+
+    """
+    @api.onchange('p_a_linea_programado')
+    def cambia_p_a_linea_programado(self):
+        if self.p_a_linea_programado.id:
+            self.p_c_linea_programado = self.p_a_linea_programado.pedido_cliente  
+        else:
+            self.p_c_linea_programado = ""
+
+    @api.onchange('p_a_linea_programado_dos')
+    def cambia_p_a_linea_programado(self):
+        if self.p_a_linea_programado.id:
+            self.p_c_linea_programado = self.p_a_linea_programado.pedido_cliente
+        else:
+            self.p_c_linea_programado = ""
+    """

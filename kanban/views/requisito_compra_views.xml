@@ -137,28 +137,28 @@
 
                                         <group string="Pedido abierto uno">
                                             <group>
-                                                <field name="p_a_linea_programado" />
-                                                <field name="p_c_linea_programado" />
-                                                <field name="r_linea_programado" />
+                                                <field name="p_a_l_prog" />
+                                                <field name="p_c_l_prog" />
+                                                <field name="r_l_prog" />
                                                 <field name="cancelado" />
                                             </group>
                                             <group>
                                                 <field name="precio_usd" />
-                                                <field name="saldo_actual_pedido_l_p" />
-                                                <field name="cantidad_facturada_l_p" />
+                                                <field name="s_a_p_l_p" />
+                                                <field name="cantidad_fac_l_p" />
                                             </group>
                                         </group>
 
                                         <group>
                                             <group string="Pedido abierto dos">
-                                                <field name="p_a_linea_programado_dos" />
-                                                <field name="p_c_linea_programado_dos" />
-                                                <field name="r_linea_programado_dos" />
+                                                <field name="p_a_l_prog_dos" />
+                                                <field name="p_c_l_prog_dos" />
+                                                <field name="r_l_prog_dos" />
                                             </group>
                                             <group string="Pedido abierto tres">
-                                                <field name="p_a_linea_programado_tres" />
-                                                <field name="p_c_linea_programado_tres" />
-                                                <field name="r_linea_programado_tres" />
+                                                <field name="p_a_l_prog_tres" />
+                                                <field name="p_c_l_prog_tres" />
+                                                <field name="r_l_prog_tres" />
                                             </group>
                                         </group>
 
