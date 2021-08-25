@@ -202,7 +202,7 @@ class RequisitoCompraLinea(models.Model):
     )
     r_l_prog_tres = fields.Integer(
         string="3. Cantidad restante de PO",
-        related="p_a_l_prog_tres.cantidad_restante",
+        # related="p_a_l_prog_tres.cantidad_restante",
         store=True,
         copy=True,
     )
