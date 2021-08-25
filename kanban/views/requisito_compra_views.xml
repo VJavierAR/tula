@@ -91,17 +91,17 @@
                                         <field name="requisito_compra_rel" invisible="1"/>
                                         <field name="product_id" />
                                         <field name="numero_de_parte" />
-                                        <field name="cantidad_inventario" />
-                                        <field name="a_facturar" readonly="1" />
-                                        <field name="cantidad_a_restar_o_sumar" />
-                                        <field name="punto_reorden" />
-                                        <field name="precio_usd" readonly="1"/>
-                                        <field name="realizado" />
-                                        <field name="revisado" />
-                                        <field name="saldo_pedido_abierto" readonly="1"/>
+                                        <field name="cantidad_inventario" force_save="1" />
+                                        <field name="a_facturar" readonly="1" force_save="1"/>
+                                        <field name="cantidad_a_restar_o_sumar" force_save="1" />
+                                        <field name="punto_reorden" force_save="1" />
+                                        <field name="precio_usd" readonly="1" force_save="1"/>
+                                        <field name="realizado" force_save="1"/>
+                                        <field name="revisado" force_save="1"/>
+                                        <field name="saldo_pedido_abierto" readonly="1" force_save="1"/>
                                         <field name="fecha_de_solicitud" invisible="1"/>
-                                        <field name="saldo_actual_pedido_abierto" readonly="1"/>
-                                        <field name="comentarios" />
+                                        <field name="saldo_actual_pedido_abierto" readonly="1" force_save="1"/>
+                                        <field name="comentarios" force_save="1"/>
                                         <field name="company_id" invisible="1"/>
                                     </tree>
                                     <form>
@@ -120,15 +120,15 @@
                                         </group>
                                         <group string="Captura">
                                             <group>
-                                                <field name="cantidad_inventario" />
-                                                <field name="a_facturar" readonly="1"/>
-                                                <field name="cantidad_a_restar_o_sumar" />
-                                                <field name="punto_reorden" />
+                                                <field name="cantidad_inventario" force_save="1" />
+                                                <field name="a_facturar" readonly="1" force_save="1"/>
+                                                <field name="cantidad_a_restar_o_sumar" force_save="1"/>
+                                                <field name="punto_reorden" force_save="1"/>
                                             </group>
                                             <group>
-                                                <field name="comentarios" />
-                                                <field name="realizado" />
-                                                <field name="revisado" />
+                                                <field name="comentarios" force_save="1"/>
+                                                <field name="realizado" force_save="1"/>
+                                                <field name="revisado" force_save="1"/>
                                             </group>
                                         </group>
 
