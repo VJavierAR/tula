@@ -92,7 +92,8 @@ class RequisitoCompra(models.Model):
         comodel_name="requisito.compra.linea",
         inverse_name="requisito_compra_rel",
         string="Lineas de requisito de compra",
-        store=True
+        store=True,
+        copy=True,
     )
     company_id = fields.Many2one(
         comodel_name='res.company',
