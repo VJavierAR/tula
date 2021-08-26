@@ -80,7 +80,7 @@ class Crm_l(models.Model):
                     record['name']=nombre
                     record['expected_revenue']=float(value)
                     record['contact_name']=Nombre
-                    record['phone']=telefono
+                    #record['phone']=telefono
                     #record['email_from']=correo
                     #record['email_cc']=correo
                     record['correo_conexis']=correo
@@ -139,7 +139,7 @@ class Crm_l(models.Model):
                     record['name']=name.replace('\t','')
                     record['expected_revenue']=float(price)
                     record['contact_name']=nombre.replace('\t','')
-                    record['phone']=telefono.replace('\t','')
+                    #record['phone']=telefono.replace('\t','')
                     record['telefono']=telefono.replace('\t','')
                     record['contacto']=nombre.replace('\t','')
                     #record['mobile']=telefono.replace('\t','')

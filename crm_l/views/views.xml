@@ -23,7 +23,7 @@
                     <field name="no_referencia" string="Número de Acto Público" groups='crm_l.group_crm_licitacion'/>
                     <field name="no_acto" force_save="1" attrs="{'readonly': 1}" invisible='1'/>
                     <field name="contacto" readonly='1' attrs="{'invisible': [('contacto', '=', False)]}"/>
-                    <field name="telefono" readonly='1' attrs="{'invisible': [('telefono', '=', False)]}"/>
+                    <field name="telefono" readonly='1' />
                     <field name="website_conexis" readonly='1'
                            attrs="{'invisible': [('website_conexis', '=', False)]}"/>
                     <field name="correo_conexis" readonly='1' attrs="{'invisible': [('website_conexis', '=', False)]}"/>
@@ -31,7 +31,7 @@
                 </xpath>
                 <xpath expr="//field[@name='lost_reason']" position="before">
                     <field name="contacto" readonly='1' attrs="{'invisible': [('contacto', '=', False)]}"/>
-                    <field name="telefono" readonly='1' attrs="{'invisible': [('telefono', '=', False)]}"/>
+                    <field name="telefono" readonly='1' />
                     <field name="website_conexis" readonly='1'
                            attrs="{'invisible': [('website_conexis', '=', False)]}"/>
                     <field name="correo_conexis" readonly='1' attrs="{'invisible': [('website_conexis', '=', False)]}"/>
@@ -46,7 +46,9 @@
                 <xpath expr="//button[@name='action_set_lost']" position="attributes">
                     <attribute name="attrs">{'invisible': 1}</attribute>
                 </xpath>
-
+                <xpath expr="//field[name='partner_id']" position="attributes">
+                    <attribute name="attrs">{'invisible': 1}</attribute>
+                </xpath>
 
             </field>
         </record>
