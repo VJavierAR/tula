@@ -51,19 +51,19 @@ class RequisitoCompra(models.Model):
         required=True
     )
     solicitado_por = fields.Many2one(
-        comodel_name="res.user",
+        comodel_name="res.users",
         string="Solicitado por",
         copy=True,
         store=True
     )
     aprobado_por = fields.Many2one(
-        comodel_name="res.user",
+        comodel_name="res.users",
         string="Aprobado por",
         store=True,
         copy=True,
     )
     realizado_por = fields.Many2one(
-        comodel_name="res.user",
+        comodel_name="res.users",
         string="Realizado por",
         store=True
     )
@@ -126,9 +126,10 @@ class RequisitoCompra(models.Model):
         _logger.info('cambia_a_reiniciar')
 
     def get_num_lineas(self):
-        return self.env['requisito.compra.linea'].search_count([
+        count = self.env['requisito.compra.linea'].search_count([
             ('requisito_compra_rel', '=', self.id)
         ])
+        return count
     
     num_lineas = fields.Integer(
         string="Número de líneas",
