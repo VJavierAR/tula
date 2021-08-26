@@ -107,6 +107,11 @@ class RequisitoCompra(models.Model):
         store=True,
         copy=True,
     )
+    num_lineas = fields.Integer(
+        string="Número de líneas",
+        # default=lambda self: self.get_num_lineas(),
+        compute="_compute_get_num_lineas"
+    )
     
     @api.model
     def create(self, vals):
@@ -131,16 +136,11 @@ class RequisitoCompra(models.Model):
     def cambia_a_reiniciar(self):
         _logger.info('cambia_a_reiniciar')
 
-    def get_num_lineas(self):
-        count = self.env['requisito.compra.linea'].search_count([
-            ('requisito_compra_rel', '=', self.id)
-        ])
-        return count
-    
-    num_lineas = fields.Integer(
-        string="Número de líneas",
-        default=lambda self: self.get_num_lineas()
-    )
+    def _compute_get_num_lineas(self):
+        for rec in self:
+            rec.num_lineas = self.env['requisito.compra.linea'].search_count([
+                ('requisito_compra_rel', '=', rec.id)
+            ])
 
     def get_lineas(self):
         self.ensure_one()
