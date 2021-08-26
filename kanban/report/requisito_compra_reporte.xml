@@ -29,7 +29,7 @@
                     -->
                     <div class="page" style="page-break-after: always;">
                         <div class="oe_structure"/>
-                        
+
                         <h2 class="mt16">
                             <t>
                                 <span>Requerimiento de Inventario</span>
@@ -96,26 +96,26 @@
                                     <tr>
                                         <!-- t-if="not line.display_type" -->
                                         <t >
-                                            <td name="td_codigo_articulo">
+                                            <td name="td_codigo_articulo" class="text-justify">
                                                 <span t-field="line.product_id.display_name"/>
                                             </td>
-                                            <td name="td_cliente_codigo">
+                                            <td name="td_cliente_codigo" class="text-center">
                                                 <span t-field="line.numero_de_parte"/>
                                             </td>
-                                            <td name="td_inventario_fisico">
+                                            <td name="td_inventario_fisico" class="text-center">
                                                 <span t-field="line.cantidad_inventario"/>
                                             </td>
 
-                                            <td name="td_punto_reorden">
+                                            <td name="td_punto_reorden" class="text-center">
                                                 <span t-field="line.punto_reorden"/>
                                             </td>
-                                            <td name="td_pedido_cliente">
+                                            <td name="td_pedido_cliente" class="text-center">
                                                 <span t-field="line.p_c_l_prog"/>
                                             </td>
-                                            <td name="td_saldo_po">
+                                            <td name="td_saldo_po" class="text-center">
                                                 <span t-field="line.saldo_pedido_abierto"/>
                                             </td>
-                                            <td name="td_pedido_cliente_dos">
+                                            <td name="td_pedido_cliente_dos" class="text-center">
                                                 <t t-if="line.p_a_l_prog_dos.id">
                                                     <span t-field="line.p_c_l_prog_dos"/>
                                                 </t>
@@ -123,16 +123,16 @@
                                                     No disponible
                                                 </t>
                                             </td>
-                                            <td name="td_saldo_po_dos">
+                                            <td name="td_saldo_po_dos" class="text-center">
                                                 <span t-field="line.r_l_prog_dos"/>
                                             </td>
-                                            <td name="td_cantidad_a_facturar">
+                                            <td name="td_cantidad_a_facturar" class="text-center">
                                                 <span t-field="line.a_facturar"/>
                                             </td>
-                                            <td name="td_precio_usd">
+                                            <td name="td_precio_usd" class="text-center">
                                                 <span t-field="line.precio_usd"/>
                                             </td>
-                                            <td name="td_comentarios">
+                                            <td name="td_comentarios" class="text-justify">
                                                 <span t-field="line.comentarios"/>
                                             </td>
 
