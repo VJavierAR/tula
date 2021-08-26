@@ -21,10 +21,24 @@
                                         </strong>
 
                                     </div>
-                                    <ul>
-                                        <li><strong>Estado:</strong> <field name="state"/></li>
-                                        <li><strong>Cliente:</strong> <field name="partner_id" display="full"/></li>
-                                    </ul>
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <strong>Estado:</strong>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <field name="state"/>
+                                        </div>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <strong>Cliente:</strong>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <field name="partner_id"  display="full"/>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </t>
