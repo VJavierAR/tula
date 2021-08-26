@@ -5,11 +5,15 @@
             <field name="name">requisito.compra.kanban</field>
             <field name="model">requisito.compra</field>
             <field name="arch" type="xml">
-                <kanban string="Requerimiento inventario" default_group_by="solicitado_por">
+                <kanban
+                        string="Requerimiento inventario"
+                        default_group_by="solicitado_por"
+                        quick_create="0"
+                        >
                     <field name="name" />
-                    <field name="state"/>
+                    <field name="state" readonly="1"/>
                     <field name="partner_id" display="full"/>
-                    <field name="solicitado_por" invisible="1"/>
+                    <field name="solicitado_por" invisible="1" readonly="1"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_card oe_kanban_global_click">
@@ -103,6 +107,7 @@
                                 <field name="origin"/>
                                 <field name="descripcion"/>
                                 <field name="grupo_de_adquisiciones"/>
+                                <field name="fecha_de_solicitud" readonly="1" force_save="1"/>
                                 <field name="company_id" invisible="1"/>
                             </group>
                         </group>
@@ -198,6 +203,13 @@
                         </notebook>
 
                     </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
                 </form>
 
             </field>

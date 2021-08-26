@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_pdf_report_requisito_compra" >
+            <field name="model">pdf.report.requisito.compra</field>
+            <field name="arch" type="xml">
+                <form string="PDF Requisito Compra">
+
+                    <field name="requisito_compra_id"
+                           invisible="1"/>
+                    <field name='pdfReporte'
+                           string=' '
+                           force_save='1'
+                           widget='pdf_viewer'/>
+                    <footer>
+                        <button name="imprimir"
+                                string="Imprimir"
+                                type="object"
+                                class="oe_highlight"/>
+                        <button special="cancel"
+                                string="Cerrar"
+                                class="oe_highlight"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

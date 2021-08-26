@@ -39,6 +39,9 @@
         'views/requisito_compra_views.xml',
         'views/requisito_compra_menu.xml',
         'views/templates.xml',
+        'wizard/pdf_report_view.xml',
+        'report/reportes.xml',
+        'report/requisito_compra_reporte.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

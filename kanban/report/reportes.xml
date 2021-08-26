@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<report id='reporte_de_requisito_de_compra'
+		    string='Reporte requisito de compra'
+		    model='requisito.compra'
+		    report_type='qweb-pdf'
+		    name='kanban.reporte_de_requisito_de_compra'
+		    file='kanban.reporte_de_requisito_de_compra'/>
+
+</odoo>

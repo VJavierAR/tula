@@ -102,6 +102,11 @@ class RequisitoCompra(models.Model):
         index=True,
         default=lambda self: self.env.company
     )
+    fecha_de_solicitud = fields.Date(
+        string="Fecha de solicitud",
+        store=True,
+        copy=True,
+    )
     
     @api.model
     def create(self, vals):
