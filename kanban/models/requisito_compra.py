@@ -154,4 +154,25 @@ class RequisitoCompra(models.Model):
             ],
             'context': "{'create': False}"
         }
+
+    def get_reporte_req_inventario(self):
+        idExternoReporte = 'kanban.reporte_de_requisito_de_compra'
+        pdf = self.env.ref(idExternoReporte).sudo().render_qweb_pdf([self.id])[0]
+        wiz = self.env['pdf.report.requisito.compra'].create({
+            'requisito_compra_id': self.id
+        })
+        wiz.pdfReporte = base64.encodestring(pdf)
+        view = self.env.ref('kanban.view_pdf_report_requisito_compra')
+        return {
+            'name': _('Requerimiento de inventario'),
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'pdf.report.requisito.compra',
+            'views': [(view.id, 'form')],
+            'view_id': view.id,
+            'target': 'new',
+            'res_id': wiz.id,
+            'context': self.env.context,
+        }
     
