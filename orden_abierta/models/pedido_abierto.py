@@ -34,8 +34,8 @@ class PedidoAbierto(models.Model):
         selection=[
             ('borrador', 'borrador'),
             ('abierto', 'abierto'),
-            ('confirmado', 'confirmado'),
-            ('expirado', 'expirado')
+            ('confirmado', 'finalizado'),
+            # ('expirado', 'expirado')
         ],
         string="Estados",
         readonly=True,
@@ -184,6 +184,7 @@ class PedidoAbierto(models.Model):
 
     @api.model
     def create(self, vals):
+        vals['state'] = 'abierto'
         if vals.get('name', _('New')) == _('New'):
             vals['name'] = self.env['ir.sequence'].next_by_code('pedido.abierto.seq') or 'New'
 

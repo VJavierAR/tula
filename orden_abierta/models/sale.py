@@ -14,6 +14,14 @@ import json
 
 _logger = logging.getLogger(__name__)
 
+estados_glob = [
+            ('draft', 'Borrador'),
+            ('sent', 'Presupuesto enviado'),
+            ('sale', 'Pedido de venta'),
+            ('cancel', 'Cancelada'),
+            ('orden abierta', 'orden abierta')
+        ]
+
 
 class SaleOrderOrdenAbierta(models.Model):
     _inherit = 'sale.order'
@@ -22,10 +30,12 @@ class SaleOrderOrdenAbierta(models.Model):
     es_orden_abierta = fields.Boolean(
         string="¿Es orden abierta?"
     )
+
+    def _default_state(self):
+        return estados_glob
+
     state = fields.Selection(
-        selection_add=[
-            ('orden abierta', 'orden abierta')
-        ]
+        selection=lambda self: self._default_state(),
     )
     pedido_abierto_origen = fields.Many2one(
         comodel_name="pedido.abierto",

@@ -78,7 +78,7 @@
                         <notebook>
                             <page string="Lineas de pedido" name="order_lines">
                                 <field name="lineas_pedido"
-                                       context="{'default_order_partner_id': partner_id, 'default_creado_desde_pedido_abierto': True}"
+                                       context="{'default_order_partner_id': partner_id, 'default_creado_desde_pedido_abierto': True, 'default_pedido_cliente': pedido_cliente}"
                                 >
                                     <tree class="slae_line_edit" editable="bottom">
 

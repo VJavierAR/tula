@@ -135,11 +135,10 @@ class ProductProduct(models.Model):
             rec.cantidad_pedidos=sum(self.env['pedido.abierto.linea'].search([['product_id','=',rec.id],['linea_confirmada','=',True],['cantidad_restante','!=',0]]).mapped('cantidad_restante'))
             rec.cantidad_disponible=rec.qty_available-rec.cantidad_pedidos-rec.en_transito
             """
-            rec.cantidad_pedidos = sum(self.env['pedido.abierto.linea'].search([
+            rec.cantidad_pedidos = sum(self.env['sale.order.line'].search([
                 ['product_id', '=', rec.id],
-                ['linea_confirmada', '=', True],
-                ['cantidad_restante', '!=', 0]
-            ]).mapped('cantidad_restante'))
+                ['order_id.state', 'in', ('sale')]
+            ]).mapped('product_uom_qty'))
             rec.cantidad_disponible = rec.qty_available - rec.cantidad_pedidos
             rec.en_transito = rec.virtual_available - rec.qty_available
 
