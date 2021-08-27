@@ -33,6 +33,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/templates.xml',
+        'views/res_partner_views.xml',
         'views/sale_order_line.xml',
         'views/product_template.xml',
         'views/sale_order_directa.xml',
