@@ -267,7 +267,11 @@ class PedidoAbiertoLinea(models.Model):
         for linea in vals:
             if 'product_uom_qty' in linea:
                 linea['cantidad_restante'] = linea['product_uom_qty']
-                linea['cantidad_pedida'] = linea['product_uom_qty']
+                lineas_directas = self.env['sale.order.line'].search([
+                    ('order_id.state', 'in', ['draft', 'sent']),
+                    ('product_id', '=', self.product_id.id)
+                ]).mapped('product_uom_qty')
+                linea['cantidad_pedida'] = sum(lineas_directas)
 
         result = super(PedidoAbiertoLinea, self).create(vals)
         return result
