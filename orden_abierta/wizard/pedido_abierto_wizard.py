@@ -29,13 +29,13 @@ class PedidoAbiertoWizard(models.TransientModel):
         default=False
     )
 
-    @api.depends('lineas_pedidos.product_uom_qty')
+    @api.depends('lineas_pedidos.cantidad_pedida_wizard')
     def _compute_valida_cantidad_pedida(self):
         for rec in self:
             generoMensaje = False
             if len(rec.lineas_pedidos.ids) > 0:
                 for linea in rec.lineas_pedidos:
-                    cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
+                    cantidad_sobrante = linea.cantidad_restante - linea.cantidad_pedida_wizard
                     if cantidad_sobrante < 0:
                         msg = "Cantidad pedida excede la cantidad restante, favor de validar."
                         rec.alerta_text = msg
@@ -62,7 +62,7 @@ class PedidoAbiertoWizard(models.TransientModel):
         id_sale_directa = sale_directa.id
 
         for linea in self.lineas_pedidos:
-            linea.cantidad_restante = linea.cantidad_restante - linea.product_uom_qty
+            # linea.cantidad_restante = linea.cantidad_restante - linea.product_uom_qty
             # linea.cantidad_entregada = linea.cantidad_entregada + linea.product_uom_qty
 
             linea_sale_order_line = self.env['sale.order.line'].create({
@@ -80,7 +80,7 @@ class PedidoAbiertoWizard(models.TransientModel):
                 'cantidad_facturada': linea.cantidad_facturada,
                 'cantidad_entregada': linea.cantidad_entregada,
                 'cantidad_restante': linea.cantidad_restante,
-                'product_uom_qty': linea.product_uom_qty,
+                'product_uom_qty': linea.cantidad_pedida_wizard,
                 'es_de_sale_order': True,
             })
 

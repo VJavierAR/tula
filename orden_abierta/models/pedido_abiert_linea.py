@@ -212,11 +212,33 @@ class PedidoAbiertoLinea(models.Model):
         copy=True,
         store=True
     )
+
+    @api.depends('cantidad_pedida')
+    def _compute_cantidad_pedida_wizard(self):
+        for rec in self:
+            rec.cantidad_pedida_wizard = rec.product_uom_qty
+
+    @api.depends('linea_relacionada')
+    def _compute_cantidad_pedida(self):
+        for rec in self:
+            if len(rec.linea_relacionada) > 0:
+                lineas_directas_qty = rec.linea_relacionada.mapped('product_uom_qty')
+                rec.cantidad_pedida = sum(lineas_directas_qty)
+            else:
+                rec.cantidad_pedida = 0
+
     cantidad_pedida = fields.Integer(
         string="Cantidad pedida",
         default=0,
         copy=True,
-        store=True
+        store=True,
+        compute="_compute_cantidad_pedida"
+    )
+    cantidad_pedida_wizard = fields.Float(
+        string="Cantidad original",
+        store=True,
+        readonly=False,
+        compute="_compute_cantidad_pedida_wizard"
     )
     cantidad_facturada = fields.Integer(
         string="Cantidad facturada",
@@ -232,11 +254,17 @@ class PedidoAbiertoLinea(models.Model):
         store=True,
         compute="_compute_cantidad_entregada_and_cantidad_facturada"
     )
+
+    @api.depends('linea_relacionada')
+    def _compute_cantidad_restante(self):
+        for rec in self:
+            rec.cantidad_restante = rec.product_uom_qty - rec.cantidad_pedida
     cantidad_restante = fields.Integer(
         string="Cantidad restante",
         default=0,
         copy=True,
-        store=True
+        store=True,
+        compute="_compute_cantidad_restante"
     )
     es_de_sale_order = fields.Boolean(
         string="Es de sale order",
@@ -267,11 +295,7 @@ class PedidoAbiertoLinea(models.Model):
         for linea in vals:
             if 'product_uom_qty' in linea:
                 linea['cantidad_restante'] = linea['product_uom_qty']
-                lineas_directas = self.env['sale.order.line'].search([
-                    ('order_id.state', 'in', ['draft', 'sent']),
-                    ('product_id', '=', self.product_id.id)
-                ]).mapped('product_uom_qty')
-                linea['cantidad_pedida'] = sum(lineas_directas)
+
 
         result = super(PedidoAbiertoLinea, self).create(vals)
         return result

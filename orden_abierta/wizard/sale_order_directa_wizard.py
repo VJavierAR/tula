@@ -33,13 +33,13 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         default=False
     )
 
-    @api.depends('order_line_ids.product_uom_qty')
+    @api.depends('order_line_ids.cantidad_pedida_wizard')
     def _compute_valida_cantidad_pedida(self):
         for rec in self:
             generoMensaje = False
             if len(rec.order_line_ids.ids) > 0:
                 for linea in rec.order_line_ids:
-                    cantidad_sobrante = linea.cantidad_restante - linea.product_uom_qty
+                    cantidad_sobrante = linea.cantidad_restante - linea.cantidad_pedida_wizard
                     if cantidad_sobrante < 0:
                         msg = "Cantidad pedida excede la cantidad restante, favor de validar."
                         rec.alerta_text = msg
@@ -87,7 +87,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
         name_pedidos_abiertos = []
         ids_pedidos_abiertos = []
         for linea in self.order_line_ids:
-            linea.cantidad_restante = linea.cantidad_restante - linea.product_uom_qty
+            # linea.cantidad_restante = linea.cantidad_restante - linea.product_uom_qty
             # linea.cantidad_entregada = linea.cantidad_entregada + linea.product_uom_qty
 
             # linea_duplicada = linea.dup_line_to_order(order_id=id_sale_directa)
@@ -106,7 +106,7 @@ class OrdenAbiertaToDirecta(models.TransientModel):
                 'cantidad_facturada': linea.cantidad_facturada,
                 'cantidad_entregada': linea.cantidad_entregada,
                 'cantidad_restante': linea.cantidad_restante,
-                'product_uom_qty': linea.product_uom_qty,
+                'product_uom_qty': linea.cantidad_pedida_wizard,
                 'es_de_sale_order': True,
             })
 

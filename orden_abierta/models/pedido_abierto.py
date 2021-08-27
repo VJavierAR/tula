@@ -220,6 +220,7 @@ class PedidoAbierto(models.Model):
 
     # @api.model
     def write(self, vals):
+        """
         if 'lineas_pedido' in vals:
             for linea in vals.get('lineas_pedido'):
                 linea_full = self.env['pedido.abierto.linea'].search([
@@ -228,7 +229,7 @@ class PedidoAbierto(models.Model):
                 if linea_full.cantidad_restante == linea_full.cantidad_pedida:
                     linea[2]['cantidad_restante'] = linea[2]['product_uom_qty']
                     linea[2]['cantidad_pedida'] = linea[2]['product_uom_qty']
-
+        """
         result = super(PedidoAbierto, self).write(vals)
         return result
 
