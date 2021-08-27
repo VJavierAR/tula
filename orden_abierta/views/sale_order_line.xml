@@ -7,9 +7,11 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
 
+                <!--
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]" position="attributes">
                     <attribute name="class">slae_line_edit</attribute>
                 </xpath>
+                -->
 
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_template_id']" position="after">
                     <field name="default_code_product" readonly="1" optional="show"/>
@@ -22,13 +24,10 @@
                     <field name="cantidad_reservada" force_save="1" optional="show" readonly="1" invisible="1"/>
                     <field name="order_partner_id" invisible="1"/>
                     <field name="order_id" invisible="1"/>
-
-                </xpath>
-
-                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='price_subtotal']" position="after">
                     <field name="confirma_venta_directa" force_save="1" optional="show" invisible="1"/>
                     <field name="linea_confirmada" force_save="1" optional="show" readonly="1" invisible="1"/>
                 </xpath>
+
 
 
 
@@ -45,7 +44,7 @@
                 </xpath>
 
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']" position="attributes">
-                    <attribute name="context">{'default_order_partner_id': partner_id}</attribute>
+                    <attribute name="context">{'default_order_partner_id': partner_id, 'default_pedido_cliente': pedido_cliente}</attribute>
                 </xpath>
 
                 <xpath expr="//field[@name='validity_date']" position="before">
@@ -56,6 +55,7 @@
                 </xpath>
 
                 <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <field name="horario_de_entrega" />
                     <field name="pedido_cliente" />
                 </xpath>
 

@@ -51,6 +51,10 @@ class SaleOrderOrdenAbierta(models.Model):
         default=False,
         store=True
     )
+    horario_de_entrega = fields.Datetime(
+        string="Horario de entrega",
+        related="partner_id.horario_de_entrega"
+    )
     """
     reservas = fields.One2many(
         comodel_name='sale.order.reservas',
@@ -58,6 +62,32 @@ class SaleOrderOrdenAbierta(models.Model):
         string='Reservas'
     )
     """
+
+    @api.depends('order_line', 'order_line.price_total', 'order_line.price_unit', 'order_line.product_uom_qty',
+                 'order_line.product_id')
+    def _amount_all(self):
+        _logger.info("\n\nCambio sale order line")
+        """
+        Compute the total amounts of the SO.
+        """
+        for order in self:
+            amount_untaxed = amount_tax = 0.0
+            for line in order.order_line:
+                amount_untaxed += line.price_subtotal
+                amount_tax += line.price_tax
+
+            _logger.info("\n\namount_untaxed: " + str(amount_untaxed))
+            _logger.info("\n\namount_tax: " + str(amount_tax))
+            order.update({
+                'amount_untaxed': amount_untaxed,
+                'amount_tax': amount_tax,
+                'amount_total': amount_untaxed + amount_tax,
+            })
+
+    amount_untaxed = fields.Monetary(string='Base imponible', store=True, readonly=True, compute='_amount_all',
+                                     tracking=5)
+    amount_tax = fields.Monetary(string='Impuestos', store=True, readonly=True, compute='_amount_all')
+    amount_total = fields.Monetary(string='Total', store=True, readonly=True, compute='_amount_all', tracking=4)
 
     @api.model
     def create(self, vals):
@@ -82,12 +112,18 @@ class SaleOrderOrdenAbierta(models.Model):
             })
         self.action_cancel()
 
-
     @api.onchange('pedido_cliente')
     def actualiza_pedido_cliente_en_lienas(self):
-        if self.pedido_cliente and self.order_line.ids:
+        # if rec.pedido_cliente and len(rec.order_line.ids) > 0:
+        for linea in self.order_line:
+            linea.pedido_cliente = self.pedido_cliente
+
+    @api.onchange('order_line')
+    def cambia_order_line(self):
+        if self.pedido_cliente:
             for linea in self.order_line:
-                linea.pedido_cliente = self.pedido_cliente
+                linea.update({'pedido_cliente': self.pedido_cliente})
+
 
     def conf(self):
         self.action_confirm()
