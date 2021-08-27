@@ -6,6 +6,7 @@ from odoo.exceptions import UserError, RedirectWarning
 from odoo import exceptions, _
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from odoo.tools.misc import formatLang, get_lang
 import logging, ast
 import pytz
 import base64
@@ -336,11 +337,95 @@ class PedidoAbiertoLinea(models.Model):
             # 'context': {'default_lineas_pedidos': [(6, 0, self.lineas_pedido.ids)]},
         }
 
+    def _get_display_price(self, product):
+        # TO DO: move me in master/saas-16 on sale.order
+        # awa: don't know if it's still the case since we need the "product_no_variant_attribute_value_ids" field now
+        # to be able to compute the full price
+
+        # it is possible that a no_variant attribute is still in a variant if
+        # the type of the attribute has been changed after creation.
+        """
+        no_variant_attributes_price_extra = [
+            ptav.price_extra for ptav in self.product_no_variant_attribute_value_ids.filtered(
+                lambda ptav:
+                ptav.price_extra and
+                ptav not in product.product_template_attribute_value_ids
+            )
+        ]
+        if no_variant_attributes_price_extra:
+            product = product.with_context(
+                no_variant_attributes_price_extra=tuple(no_variant_attributes_price_extra)
+            )
+        """
+
+        if self.pedido_abierto_rel.pricelist_id.discount_policy == 'with_discount':
+            return product.with_context(pricelist=self.pedido_abierto_rel.pricelist_id.id, uom=self.product_uom.id).price
+        product_context = dict(self.env.context, partner_id=self.pedido_abierto_rel.partner_id.id, date=self.pedido_abierto_rel.create_date,
+                               uom=self.product_uom.id)
+
+        final_price, rule_id = self.pedido_abierto_rel.pricelist_id.with_context(product_context).get_product_price_rule(
+            product or self.product_id, self.product_uom_qty or 1.0, self.pedido_abierto_rel.partner_id)
+        base_price, currency = self.with_context(product_context)._get_real_price_currency(product, rule_id,
+                                                                                           self.product_uom_qty,
+                                                                                           self.product_uom,
+                                                                                           self.pedido_abierto_rel.pricelist_id.id)
+        if currency != self.pedido_abierto_rel.pricelist_id.currency_id:
+            base_price = currency._convert(
+                base_price, self.pedido_abierto_rel.pricelist_id.currency_id,
+                self.pedido_abierto_rel.company_id or self.env.company, self.pedido_abierto_rel.create_date or fields.Date.today())
+        # negative discounts (= surcharge) are included in the display price
+        return max(base_price, final_price)
+
     @api.onchange('product_id', 'product_uom_qty')
     def cambia_producto(self):
         if self.product_id.id:
             # self.product_uom
             self.price_unit = self.product_id.lst_price
+
+            # Calcula price_unit
+
+            vals = {}
+            if not self.product_uom or (self.product_id.uom_id.id != self.product_uom.id):
+                self.product_uom = self.product_id.uom_id
+                self.product_uom_qty = self.product_uom_qty or 1.0
+
+            product = self.product_id.with_context(
+                lang=get_lang(self.env, self.pedido_abierto_rel.partner_id.lang).code,
+                partner=self.pedido_abierto_rel.partner_id,
+                quantity=self.product_uom_qty,
+                date=self.pedido_abierto_rel.create_date,
+                pricelist=self.pedido_abierto_rel.pricelist_id.id,
+                uom=self.product_uom.id
+            )
+
+            # vals.update(name=self.get_sale_order_line_multiline_description_sale(product))
+
+            # self._compute_tax_id()
+
+            if self.pedido_abierto_rel.pricelist_id and self.pedido_abierto_rel.partner_id:
+                self.price_unit = self.env['account.tax']._fix_tax_included_price_company(
+                    self._get_display_price(product), product.taxes_id, self.tax_id, self.company_id)
+            # self.update(vals)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             if len(self.product_id.taxes_id.ids) > 0:
                 self.tax_id = [(6, 0, self.product_id.taxes_id.ids)]
 
