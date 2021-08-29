@@ -38,6 +38,7 @@
         'views/requisito_compra_linea_views.xml',
         'views/requisito_compra_views.xml',
         'views/requisito_compra_menu.xml',
+        'views/requisito_compra_transportista_view.xml',
         'views/templates.xml',
         'wizard/pdf_report_view.xml',
         'report/reportes.xml',

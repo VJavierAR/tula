@@ -1,0 +1,242 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="requisito_compra_transportista_view_kanban">
+            <field name="name">requisito.compra.transportista.kanban</field>
+            <field name="model">requisito.compra</field>
+            <field name="arch" type="xml">
+                <kanban
+                        string="Requerimiento inventario"
+                        default_group_by="solicitado_por"
+                        quick_create="0"
+                        >
+                    <field name="name" />
+                    <field name="state" readonly="1"/>
+                    <field name="partner_id" display="full"/>
+                    <field name="solicitado_por" invisible="1" readonly="1"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_card_content">
+                                    <div class="o_kanban_details">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <strong>Estado:</strong>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <field name="state"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            <strong>Cliente:</strong>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <field name="partner_id"  display="full"/>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+
+        <record model="ir.ui.view" id="requisito_compra_transportista_view_tree">
+            <field name="name">requisito.compra.transportista.tree</field>
+            <field name="model">requisito.compra</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="id"/>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="create_date" string="Creado el"/>
+                    <field name="solicitado_por" string="Requerido por"/>
+                    <field name="realizado_por" />
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="requisito_compra_transportista_view_form">
+            <field name="name">requisito.compra.transportista.form</field>
+            <field name="model">requisito.compra</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="cambia_a_por_aprobar"
+                                string="Pedir aprobación"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'borrador')]}"/>
+                        <button name="cambia_a_aprobado"
+                                string="Aprobar"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', 'in', ['borrador', 'aprobado', 'rechazado', 'realizado'])]}"/>
+                        <button name="cambia_a_realizado"
+                                string="Realizar"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', 'in', ['borrador', 'por_ser_aprobado', 'rechazado', 'realizado'])]}"/>
+                        <button name="cambia_a_rechazado"
+                                string="Rechazado"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', 'in', ['borrador', 'aprobado', 'rechazado', 'realizado'])]}"/>
+                        <button name="cambia_a_reiniciar"
+                                string="Reiniciar"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'realizado')]}"/>
+
+                        <button name="get_reporte_req_inventario" string="Requerimiento Inventario Reporte" type="object" />
+
+                        <field name="state" widget="statusbar" readonly="1"/>
+                    </header>
+                    <sheet>
+
+                        <div class="oe_button_box" name="button_box">
+                            <button name="get_lineas" type="object" class="oe_stat_button"
+                                    icon="fa-list">
+                                <field string="Líneas" name="num_lineas" widget="statinfo" />
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="solicitado_por"/>
+                                <field name="aprobado_por"/>
+                                <field name="realizado_por"/>
+                                <field name="create_date" string="Fecha de creación"/>
+                                <field name="tipo_de_albaran"/>
+                            </group>
+                            <group>
+                                <field name="origin"/>
+                                <field name="descripcion"/>
+                                <field name="grupo_de_adquisiciones"/>
+                                <field name="fecha_de_solicitud" readonly="1" force_save="1"/>
+                                <field name="company_id" invisible="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Productos" name="order_lines">
+                                <field name="lineas_pedido" context="{'default_order_partner_id': partner_id}">
+                                    <tree editable="bottom">
+                                        <field name="requisito_compra_rel" invisible="1"/>
+                                        <field name="product_id" />
+                                        <field name="numero_de_parte" readonly="1" force_save="1"/>
+                                        <field name="cantidad_inventario" force_save="1" />
+                                        <field name="a_facturar" readonly="1" force_save="1"/>
+                                        <field name="cantidad_a_restar_o_sumar" force_save="1" />
+                                        <field name="punto_reorden" force_save="1" />
+                                        <field name="precio_usd" readonly="1" force_save="1"/>
+                                        <field name="realizado" force_save="1"/>
+                                        <field name="revisado" force_save="1"/>
+                                        <field name="saldo_pedido_abierto" readonly="1" force_save="1"/>
+                                        <field name="fecha_de_solicitud" invisible="1"/>
+                                        <field name="saldo_actual_pedido_abierto" readonly="1" force_save="1"/>
+                                        <field name="comentarios" force_save="1"/>
+                                        <field name="company_id" invisible="1"/>
+                                    </tree>
+                                    <form>
+                                        <group string="Información">
+                                            <group>
+                                                <field name="product_id" />
+                                                <field name="numero_de_parte" readonly="1" force_save="1"/>
+                                                <field name="name" />
+                                                <field name="company_id" invisible="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="order_partner_id" readonly="1" force_save="1"/>
+                                                <field name="unidad_de_medidad" />
+                                                <field name="fecha_de_solicitud" invisible="1"/>
+                                            </group>
+                                        </group>
+                                        <group string="Captura">
+                                            <group>
+                                                <field name="cantidad_inventario" force_save="1" />
+                                                <field name="a_facturar" readonly="1" force_save="1"/>
+                                                <field name="cantidad_a_restar_o_sumar" force_save="1"/>
+                                                <field name="punto_reorden" force_save="1"/>
+                                            </group>
+                                            <group>
+                                                <field name="comentarios" force_save="1"/>
+                                                <field name="realizado" force_save="1"/>
+                                                <field name="revisado" force_save="1"/>
+                                            </group>
+                                        </group>
+
+                                        <group string="Pedido abierto uno">
+                                            <group>
+                                                <field name="p_a_l_prog" />
+                                                <field name="p_c_l_prog" readonly="1" force_save="1"/>
+                                                <field name="r_l_prog" readonly="1" force_save="1"/>
+                                                <field name="cancelado" />
+                                            </group>
+                                            <group>
+                                                <field name="precio_usd" readonly="1" force_save="1"/>
+                                                <field name="s_a_p_l_p" readonly="1" force_save="1"/>
+                                                <field name="cantidad_fac_l_p" readonly="1" force_save="1"/>
+                                            </group>
+                                        </group>
+
+                                        <group>
+                                            <group string="Pedido abierto dos">
+                                                <field name="p_a_l_prog_dos" />
+                                                <field name="p_c_l_prog_dos" readonly="1" force_save="1"/>
+                                                <field name="r_l_prog_dos" readonly="1" force_save="1"/>
+                                            </group>
+                                            <group string="Pedido abierto tres">
+                                                <field name="p_a_l_prog_tres" />
+                                                <field name="p_c_l_prog_tres" readonly="1" force_save="1"/>
+                                                <field name="r_l_prog_tres" readonly="1" force_save="1"/>
+                                            </group>
+                                        </group>
+
+                                        <group string="Seguimiento">
+                                            <group >
+                                                <field name="cantidad_pendiente_de_recibir" />
+                                                <field name="cantidad_cancelada" />
+                                            </group>
+                                            <group>
+                                                <field name="cantidad_realizada" />
+                                            </group>
+                                        </group>
+
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+
+                </form>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

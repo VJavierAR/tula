@@ -1,6 +1,7 @@
 <odoo>
     <data>
 
+        <!-- ventas -->
         <!-- Your Action Window Definition -->
         <record model="ir.actions.act_window" id="requerimiento_action_window">
           <field name="name">Requerimiento Inventario</field>
@@ -30,9 +31,27 @@
 
         <menuitem id="requisito_compra_linea"
                   name="Requisito de Compra Línea"
+                  parent="requerimiento_inventario"
+                  sequence="0"
+                  action="requisito_compra_linea_action_window"
+                  />
+
+        <!-- transportista -->
+        <record model="ir.actions.act_window" id="requerimiento_transportista_action_window">
+            <field name="name">Requerimiento Inventario Transportista</field>
+            <field name="res_model">requisito.compra</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('requisito_compra_transportista_view_kanban')}),
+    	    (0, 0, {'view_mode': 'tree', 'view_id': ref('requisito_compra_transportista_view_tree')}),
+    	    (0, 0, {'view_mode': 'form', 'view_id': ref('requisito_compra_transportista_view_form')})]"/>
+        </record>
+
+        <menuitem id="requerimiento_inventario_transportista"
+                  name="Requerimiento inventario transportista"
                   parent="kanban_root"
                   sequence="1"
-                  action="requisito_compra_linea_action_window"
+                  action="requerimiento_transportista_action_window"
                   />
 
     </data>
