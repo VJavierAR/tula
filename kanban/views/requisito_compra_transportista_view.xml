@@ -148,10 +148,10 @@
                                         <field name="punto_reorden" force_save="1" />
                                         <field name="precio_usd" readonly="1" force_save="1" invisible="1"/>
                                         <field name="realizado" force_save="1"/>
-                                        <field name="revisado" force_save="1"/>
-                                        <field name="saldo_pedido_abierto" readonly="1" force_save="1"/>
+                                        <field name="revisado" force_save="1" invisible="1"/>
+                                        <field name="saldo_pedido_abierto" readonly="1" force_save="1" invisible="1"/>
                                         <field name="fecha_de_solicitud" invisible="1"/>
-                                        <field name="saldo_actual_pedido_abierto" readonly="1" force_save="1"/>
+                                        <field name="saldo_actual_pedido_abierto" readonly="1" force_save="1" invisible="1"/>
                                         <field name="comentarios" force_save="1"/>
                                         <field name="company_id" invisible="1"/>
                                     </tree>
