@@ -35,7 +35,7 @@
 
         <menuitem id="requerimiento_inventario"
                   name="Requerimiento inventario"
-                  parent="kanban_root"
+                  parent="requerimiento_inventario"
                   sequence="0"
                   action="requerimiento_action_window"
         />
