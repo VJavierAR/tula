@@ -145,7 +145,7 @@
                                         <field name="cantidad_inventario" force_save="1" />
                                         <field name="a_facturar" readonly="1" force_save="1"/>
                                         <field name="cantidad_a_restar_o_sumar" force_save="1" />
-                                        <field name="punto_reorden" force_save="1" />
+                                        <field name="punto_reorden" force_save="1" readonly="1" />
                                         <field name="precio_usd" readonly="1" force_save="1" invisible="1"/>
                                         <field name="realizado" force_save="1"/>
                                         <field name="revisado" force_save="1" invisible="1"/>
