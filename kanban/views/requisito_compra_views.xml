@@ -138,10 +138,10 @@
                         <notebook>
                             <page string="Productos" name="order_lines">
                                 <field name="lineas_pedido">
-                                    <tree editable="bottom">
+                                    <tree> <!-- editable="bottom" -->
                                         <field name="requisito_compra_rel" invisible="1"/>
                                         <field name="product_id" />
-                                        <field name="numero_de_parte" />
+                                        <field name="numero_de_parte" readonly="1" force_save="1"/>
                                         <field name="cantidad_inventario" force_save="1" />
                                         <field name="a_facturar" readonly="1" force_save="1"/>
                                         <field name="cantidad_a_restar_o_sumar" force_save="1" />
