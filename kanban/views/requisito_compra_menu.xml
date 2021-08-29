@@ -30,18 +30,18 @@
                   name="Requerimiento inventario"
                   parent="kanban_root"
                   sequence="0"
-                  action="requerimiento_action_window"
+
         />
 
         <menuitem id="requerimiento_inventario"
                   name="Requerimiento inventario"
-                  parent="requerimiento_inventario"
+                  parent="requerimiento_inventario_menu"
                   sequence="0"
                   action="requerimiento_action_window"
         />
         <menuitem id="requisito_compra_linea"
                   name="Requisito de Compra Línea"
-                  parent="requerimiento_inventario"
+                  parent="requerimiento_inventario_menu"
                   sequence="1"
                   action="requisito_compra_linea_action_window"
         />
@@ -61,6 +61,7 @@
                   name="Requerimiento inventario transportista"
                   parent="kanban_root"
                   sequence="1"
+                  groups="kanban.group_requerimiento_inventario_transportista"
                   action="requerimiento_transportista_action_window"
         />
 

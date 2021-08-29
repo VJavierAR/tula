@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_requisito_compra_linea,access_requisito_compra_linea,model_requisito_compra_linea,,1,1,1,1
 access_requisito_compra,access_requisito_compra,model_requisito_compra,,1,1,1,1
+access_requisito_compra_transportista,access_requisito_compra,model_requisito_compra,kanban.group_requerimiento_inventario_transportista,1,1,1,1
