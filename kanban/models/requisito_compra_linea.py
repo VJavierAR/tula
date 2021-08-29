@@ -94,11 +94,18 @@ class RequisitoCompraLinea(models.Model):
         store=True,
         copy=True,
     )
+
+    @api.depends('a_facturar')
+    def _compute_saldo_actual_pedido_abierto(self):
+        for rec in self:
+            rec.saldo_actual_pedido_abierto = rec.saldo_pedido_abierto - rec.a_facturar
+
     saldo_actual_pedido_abierto = fields.Integer(
         string="Saldo actual PO",
         default=0,
         store=True,
         copy=True,
+        compute="_compute_saldo_actual_pedido_abierto"
     )
 
     # Campos en form
@@ -267,6 +274,7 @@ class RequisitoCompraLinea(models.Model):
                 self.unidad_de_medidad = self.product_id.uom_po_id.name
 
             # Obtiene saldo pedido abierto
+            """
             cantidad_pa_uno = 0
             if self.p_a_l_prog.id:
                 cantidad_pa_uno = self.p_a_l_prog.product_uom_qty
@@ -278,13 +286,13 @@ class RequisitoCompraLinea(models.Model):
                 cantidad_pa_tres = self.p_a_l_prog_tres.product_uom_qty
             saldo_pa = cantidad_pa_uno + cantidad_pa_dos + cantidad_pa_tres
             self.saldo_pedido_abierto = saldo_pa
+            """
 
-            # Obtener saldo actual
             qty_restante = self.env['pedido.abierto.linea'].search([
                 ('product_id', '=', self.product_id.id),
                 ('order_partner_id', '=', self.order_partner_id.id)
             ]).mapped('cantidad_restante')
-            self.saldo_actual_pedido_abierto = sum(qty_restante)
+            self.saldo_pedido_abierto = sum(qty_restante)
 
     @api.onchange('cantidad_inventario')
     def actualiza_cantidad_a_facturar(self):

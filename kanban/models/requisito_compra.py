@@ -150,7 +150,7 @@ class RequisitoCompra(models.Model):
                 ('product_id', '=', rec.product_id.id),
                 ('order_partner_id', '=', rec.order_partner_id.id)
             ]).mapped('cantidad_restante')
-            rec.saldo_actual_pedido_abierto = sum(qty_restante)
+            rec.saldo_pedido_abierto = sum(qty_restante)
 
     def get_lineas(self):
         self.ensure_one()
