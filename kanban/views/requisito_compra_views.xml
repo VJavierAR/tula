@@ -92,12 +92,12 @@
                                 string="Rechazado"
                                 type="object"
                                 class="btn-primary"
-                                attrs="{'invisible': [('state', 'in', ['aprobado', 'rechazado', 'realizado'])]}"/>
+                                attrs="{'invisible': [('state', 'in', ['borrador', 'aprobado', 'rechazado', 'realizado'])]}"/>
                         <button name="cambia_a_reiniciar"
                                 string="Reiniciar"
                                 type="object"
                                 class="btn-primary"
-                                attrs="{'invisible': [('state', 'in', ['borrador', 'por_ser_aprobado', 'aprobado', 'rechazado'])]}"/>
+                                attrs="{'invisible': [('state', '!=', 'realizado')]}"/>
 
                         <button name="get_reporte_req_inventario" string="Requerimiento Inventario Reporte" type="object" />
 
