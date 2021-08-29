@@ -137,6 +137,13 @@
 
                         <notebook>
                             <page string="Productos" name="order_lines">
+                                <group>
+                                    <group>
+                                        <button name="actualiza_saldo_actual_po"
+                                                string="Actualizar saldo actual PO"
+                                                type="object" />
+                                    </group>
+                                </group>
                                 <field name="lineas_pedido" context="{'default_order_partner_id': partner_id}">
                                     <tree editable="bottom">
                                         <field name="requisito_compra_rel" invisible="1"/>

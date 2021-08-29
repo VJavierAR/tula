@@ -144,6 +144,14 @@ class RequisitoCompra(models.Model):
                 ('requisito_compra_rel', '=', rec.id)
             ])
 
+    def actualiza_saldo_actual_po(self):
+        for rec in self.lineas_pedido:
+            qty_restante = self.env['pedido.abierto.linea'].search([
+                ('product_id', '=', rec.product_id.id),
+                ('order_partner_id', '=', rec.order_partner_id.id)
+            ]).mapped('cantidad_restante')
+            rec.saldo_actual_pedido_abierto = sum(qty_restante)
+
     def get_lineas(self):
         self.ensure_one()
         return {
