@@ -122,16 +122,16 @@ class RequisitoCompra(models.Model):
         return result
 
     def cambia_a_por_aprobar(self):
-        _logger.info('cambia_a_por_aprobar')
+        self.state = 'por_ser_aprobado'
         
     def cambia_a_aprobado(self):
-        _logger.info('cambia_a_aprobado')
-    
+        self.state = 'aprobado'
+
     def cambia_a_rechazado(self):
-        _logger.info('cambia_a_rechazado')
+        self.state = 'rechazado'
     
     def cambia_a_realizado(self):
-        _logger.info('cambia_a_realizado')
+        self.state = 'realizado'
     
     def cambia_a_reiniciar(self):
         _logger.info('cambia_a_reiniciar')

@@ -73,11 +73,31 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="cambia_a_por_aprobar" string="Pedir aprobación" type="object" class="btn-primary"/>
-                        <button name="cambia_a_aprobado" string="Aprobar" type="object" class="btn-primary"/>
-                        <button name="cambia_a_realizado" string="Realizar" type="object" class="btn-primary"/>
-                        <button name="cambia_a_rechazado" string="Rechazado" type="object" class="btn-primary"/>
-                        <button name="cambia_a_reiniciar" string="Reiniciar" type="object" class="btn-primary"/>
+                        <button name="cambia_a_por_aprobar"
+                                string="Pedir aprobación"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', '!=', 'borrador')]}"/>
+                        <button name="cambia_a_aprobado"
+                                string="Aprobar"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', 'in', ['borrador', 'aprobado', 'rechazado', 'realizado'])]}"/>
+                        <button name="cambia_a_realizado"
+                                string="Realizar"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', 'in', ['borrador', 'por_ser_aprobado', 'rechazado', 'realizado'])]}"/>
+                        <button name="cambia_a_rechazado"
+                                string="Rechazado"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', 'in', ['aprobado', 'rechazado', 'realizado'])]}"/>
+                        <button name="cambia_a_reiniciar"
+                                string="Reiniciar"
+                                type="object"
+                                class="btn-primary"
+                                attrs="{'invisible': [('state', 'in', ['borrador', 'por_ser_aprobado', 'aprobado', 'rechazado'])]}"/>
 
                         <button name="get_reporte_req_inventario" string="Requerimiento Inventario Reporte" type="object" />
 
