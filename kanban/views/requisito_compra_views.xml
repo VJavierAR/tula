@@ -138,7 +138,7 @@
                         <notebook>
                             <page string="Productos" name="order_lines">
                                 <field name="lineas_pedido" context="{'default_order_partner_id': partner_id}">
-                                    <tree> <!-- editable="bottom" -->
+                                    <tree decoration-warning="a_facturar &gt; saldo_actual_pedido_abierto" >
                                         <field name="requisito_compra_rel" invisible="1"/>
                                         <field name="product_id" />
                                         <field name="numero_de_parte" readonly="1" force_save="1"/>
