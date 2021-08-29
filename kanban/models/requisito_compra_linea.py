@@ -286,10 +286,9 @@ class RequisitoCompraLinea(models.Model):
             saldo_pa = cantidad_pa_uno + cantidad_pa_dos + cantidad_pa_tres
             self.saldo_pedido_abierto = saldo_pa
 
-    @api.onchange('cantidad_a_restar_o_sumar', 'cantidad_inventario')
+    @api.onchange('cantidad_inventario')
     def actualiza_cantidad_a_facturar(self):
         cantidad_solicitada = self.punto_reorden - self.cantidad_inventario
-        cantidad_solicitada += self.cantidad_a_restar_o_sumar
         self.a_facturar = cantidad_solicitada
 
     @api.onchange('product_id', 'cantidad_inventario')
