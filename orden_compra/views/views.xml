@@ -1014,7 +1014,7 @@
                                       <field name='stock_total' readonly="1" force_save="1"/>
                         </xpath>
       <xpath expr="//field[@name='journal_id']" position="after">
-          <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['check','=',True],['otro','=',False]]}"/>
+          <field name="almacen" attrs="{'invisible': [['type','!=','in_invoice']],'required': [['check','=',True],['otro','=',False],['type','=','in_invoice']]}"/>
             <field name='check' invisible='1'/>
             <field name='otro' invisible='1'/>
             <field name='orden_compra' invisible='1'/>
