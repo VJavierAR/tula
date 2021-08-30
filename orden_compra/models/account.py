@@ -12,12 +12,18 @@ class Factura(models.Model):
 	orden_compra=fields.Many2one('purchase.order')
 	check=fields.Boolean(related='company_id.orden_compra')
 	otro=fields.Boolean(compute='checkSa')
+	checkAlmacen=fields.Boolean()
+
 
 	@api.depends('check')
 	def checkSa(self):
 		for record in self:
 			record.otro='default_purchase_id' in self.env.context
-
+			if(check.almacen==False):
+				if(self.type=='in_invoice'):
+					self.almacen=self.env['stock.warehouse'].search([],limit=1,order='id asc').id
+					self.checkAlmacen=True
+					
 	def action_post(self):
 		if self.filtered(lambda x: x.journal_id.post_at == 'bank_rec').mapped('line_ids.payment_id').filtered(lambda x: x.state != 'reconciled'):
 			raise UserError(_("A payment journal entry generated in a journal configured to post entries only when payments are reconciled with a bank statement cannot be manually posted. Those will be posted automatically after performing the bank reconciliation."))
