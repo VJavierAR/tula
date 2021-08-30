@@ -46,9 +46,11 @@
                 <xpath expr="//button[@name='action_set_lost']" position="attributes">
                     <attribute name="attrs">{'invisible': 1}</attribute>
                 </xpath>
+                <!--
                 <xpath expr="//field[name='partner_id']" position="attributes">
                     <attribute name="attrs">{'invisible': 1}</attribute>
                 </xpath>
+                -->
 
             </field>
         </record>
