@@ -41,6 +41,8 @@ class stock(models.Model):
         for rec in self:
             if rec.sale_id.id:
                 rec.urgencia = rec.sale_id.urgencia
+            else:
+                rec.urgencia="Mostrador"
             #     if(rec.sale_id.urgencia=='Urgente'):
             #         rec.priority='2'
             #     else:
