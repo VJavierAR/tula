@@ -30,7 +30,7 @@ class stock(models.Model):
     #state = fields.Selection(selection_add=[('printed', 'Impreso')])
     user_print_id = fields.Many2one(comodel_name="res.users", string="Usuario que imprimió", tracking=True,track_visibility='onchange', copy=False, required=False)
     user_validate_id = fields.Many2one(comodel_name="res.users", string="Usuario que validó", tracking=True,track_visibility='onchange' ,copy=False, required=False)
-    urgencia = fields.Selection(selection=[("Mostrador":"Mostrador"),("Pasan":"Pasan"),("Encomienda":"Encomienda"),("Ruta":"Ruta"),("No Alistar":"No Alistar")], string="Urgencia", compute="_compute_urgencia")
+    urgencia = fields.Selection(selection=[("Mostrador","Mostrador"),("Pasan","Pasan"),("Encomienda","Encomienda"),("Ruta","Ruta"),("No Alistar","No Alistar")], string="Urgencia", compute="_compute_urgencia")
     registro=fields.One2many('registro.operation','rel_id')
     #_order = "urgencia desc,scheduled_date asc"
     _order = "priority desc, scheduled_date asc, id desc"

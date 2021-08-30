@@ -82,7 +82,7 @@ class sale(models.Model):
 	arreglo2=fields.Char()
 	productos_sugeridos = fields.One2many('product.suggested','rel_id')
 	arreglo = fields.Char(default='[]')
-	urgencia = fields.Selection(selection=[("Mostrador":"Mostrador"),("Pasan":"Pasan"),("Encomienda":"Encomienda"),("Ruta":"Ruta"),("No Alistar":"No Alistar")], string="Urgencia")
+	urgencia = fields.Selection(selection=[("Mostrador","Mostrador"),("Pasan","Pasan"),("Encomienda","Encomienda"),("Ruta","Ruta"),("No Alistar","No Alistar")], string="Urgencia")
 	state = fields.Selection(
 		[
 			('draft', 'Quotation'),
