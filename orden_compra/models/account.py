@@ -19,7 +19,7 @@ class Factura(models.Model):
 	def checkSa(self):
 		for record in self:
 			record.otro='default_purchase_id' in self.env.context
-			if(check.almacen==False):
+			if(self.checkAlmacen==False):
 				if(self.type=='in_invoice'):
 					if(self.almacen.id==False):
 						self.almacen=self.env['stock.warehouse'].search([],limit=1,order='id asc').id
