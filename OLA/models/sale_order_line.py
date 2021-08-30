@@ -4,7 +4,7 @@ from odoo import exceptions
 from odoo.exceptions import AccessDenied
 import logging, ast
 _logger = logging.getLogger(__name__)
-
+from odoo.exceptions import UserError
 
 class saleOr(models.Model):
 	_inherit='sale.order.line'
@@ -177,5 +177,4 @@ class saleOr(models.Model):
 					genero_alertas = True
 
 		if genero_alertas:
-			raise AccessDenied(
-				_(message))
+			raise UserError(_(message))
