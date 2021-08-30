@@ -78,17 +78,19 @@ class Factura(models.Model):
 		if(tipo=='in_invoice' and self.company_id.orden_compra):
 			if(self.orden_compra.mapped('id')!=[]):
 				orden=self.orden_compra
-				self.write({'invoice_origin':'','orden_compra':False})
+				orden.write({'invoice_ids':[(5,0,0)]})
 				if(orden.picking_type_id.warehouse_id.auto_recepcion):
 					for pi in self.orden_compra.picking_ids:
 						rp=self.env['stock.return.picking'].create({'picking_id':pi.id})
 						rp._onchange_picking_id()
 						for wizard in rp:
 							new_picking_id, pick_type_id = wizard._create_returns()
-						new_picking_id.action_confirm()
-						new_picking_id.move_lines._action_assign()
-						new_picking_id.action_assign()
-						return new_picking_id.button_validate()
+						p=self.env['stock.picking'].browse(new_picking_id)
+						p.action_confirm()
+						p.move_lines._action_assign()
+						p.action_assign()
+						return p.button_validate()
+					self.write({'invoice_origin':'','orden_compra':False})
 				else:
 					self.write({'invoice_origin':''})
 					for pi in self.orden_compra.picking_ids:
