@@ -99,7 +99,10 @@
                                 class="btn-primary"
                                 attrs="{'invisible': [('state', '!=', 'realizado')]}"/>
 
-                        <button name="get_reporte_req_inventario" string="Requerimiento Inventario Reporte" type="object" />
+                        <button name="get_reporte_req_inventario"
+                                string="Requerimiento Inventario Reporte"
+                                type="object"
+                                attrs="{'invisible': [('state', 'in', ['borrador', 'por_ser_aprobado',])]}"/>
 
                         <field name="state" widget="statusbar" readonly="1"/>
                     </header>
