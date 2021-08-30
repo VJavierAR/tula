@@ -77,11 +77,24 @@ class Factura(models.Model):
 		tipo=self.type
 		if(tipo=='in_invoice' and self.company_id.orden_compra):
 			if(self.orden_compra.mapped('id')!=[]):
-				self.write({'invoice_origin':''})
-				for pi in self.orden_compra.picking_ids:
-					pi.unlink()
-				self.orden_compra.write({'state': 'cancel'})
-				self.orden_compra.unlink()
+				orden=self.orden_compra
+				self.write({'invoice_origin':'','orden_compra':''})
+				if(orden.picking_type_id.warehouse_id.auto_recepcion):
+					for pi in self.orden_compra.picking_ids:
+						rp=self.env['stock.return.picking'].create({'picking_id':pi.id})
+						rp._onchange_picking_id()
+						for wizard in rp:
+							new_picking_id, pick_type_id = wizard._create_returns()
+						new_picking_id.action_confirm()
+						new_picking_id.move_lines._action_assign()
+						new_picking_id.action_assign()
+						return new_picking_id.button_validate()
+				else:
+					self.write({'invoice_origin':''})
+					for pi in self.orden_compra.picking_ids:
+						pi.unlink()
+					self.orden_compra.write({'state': 'cancel'})
+					self.orden_compra.unlink()
 	
 	def action_view_purchase(self):
 		action = self.env.ref('purchase.purchase_form_action').read()[0]
