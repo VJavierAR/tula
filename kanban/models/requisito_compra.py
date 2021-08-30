@@ -123,9 +123,11 @@ class RequisitoCompra(models.Model):
 
     def cambia_a_por_aprobar(self):
         self.state = 'por_ser_aprobado'
+        self.solicitado_por = self.env.user.id
         
     def cambia_a_aprobado(self):
         self.state = 'aprobado'
+        self.aprobado_por = self.env.user.id
         for line in self.lineas_pedido:
             linea.a_facturar += line.cantidad_a_restar_o_sumar
 
