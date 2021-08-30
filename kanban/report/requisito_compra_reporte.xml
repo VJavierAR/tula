@@ -69,13 +69,15 @@
                                     <th name="th_cliente_codigo" class="text-left">Cliente código</th>
                                     <th name="th_inventario_fisico" class="text-left">Inventario físico</th>
                                     <th name="th_punto_reorden" class="text-left">Punto reorden</th>
+                                    <!--
                                     <th name="th_pedido_cliente" class="text-left">Pedido cliente</th>
                                     <th name="th_saldo_po" class="text-right">Saldo PO</th>
                                     <th name="th_pedido_cliente_dos" class="text-right">Pedido cliente</th>
                                     <th name="th_saldo_po_dos" class="text-right">Saldo PO</th>
+                                    -->
                                     <th name="th_cantidad_a_facturar" class="text-right">Cant. a facturar</th>
                                     <th name="th_precio_usd" class="text-right">Precio USD</th>
-                                    <th name="th_comentarios" class="text-right">Comentarios</th>
+                                    <th name="th_comentarios" class="text-right" colspan="2">Comentarios</th>
 
                                 </tr>
                             </thead>
@@ -105,10 +107,11 @@
                                             <td name="td_inventario_fisico" class="text-center">
                                                 <span t-field="line.cantidad_inventario"/>
                                             </td>
-
                                             <td name="td_punto_reorden" class="text-center">
                                                 <span t-field="line.punto_reorden"/>
                                             </td>
+
+                                            <!--
                                             <td name="td_pedido_cliente" class="text-center">
                                                 <span t-field="line.p_c_l_prog"/>
                                             </td>
@@ -126,20 +129,63 @@
                                             <td name="td_saldo_po_dos" class="text-center">
                                                 <span t-field="line.r_l_prog_dos"/>
                                             </td>
+                                            -->
+
                                             <td name="td_cantidad_a_facturar" class="text-center">
                                                 <span t-field="line.a_facturar"/>
                                             </td>
                                             <td name="td_precio_usd" class="text-center">
                                                 <span t-field="line.precio_usd"/>
                                             </td>
-                                            <td name="td_comentarios" class="text-justify">
+                                            <td colspan="2" name="td_comentarios" class="text-justify">
                                                 <span t-field="line.comentarios"/>
                                             </td>
 
                                         </t>
-
                                     </tr>
+                                    <tr style="border-top-style: none;">
+                                        <!-- pedido abierto uno -->
+                                        <td colspan="1" style="border-top-style: none;"></td>
+                                        <td colspan="2" style="border-top-style: none;">
+                                            <p>
+                                                <strong>Pedido cliente: </strong>
+                                                <span t-field="line.p_c_l_prog"/>
+                                            </p>
+                                            <p>
+                                                <strong>Saldo PO: </strong>
+                                                <span t-field="line.saldo_pedido_abierto"/>
+                                            </p>
+                                        </td>
 
+                                        <!-- pedido abierto dos -->
+                                        <td colspan="2" style="border-top-style: none;">
+                                            <t t-if="line.p_a_l_prog_dos.id">
+                                                <p>
+                                                    <strong>Pedido cliente: </strong>
+                                                    <span t-field="line.p_c_l_prog_dos"/>
+                                                </p>
+                                                <p>
+                                                    <strong>Saldo PO: </strong>
+                                                    <span t-field="line.r_l_prog_dos"/>
+                                                </p>
+                                            </t>
+                                        </td>
+
+                                        <!-- pedido abierto tres -->
+                                        <td colspan="2" style="border-top-style: none;">
+                                            <t t-if="line.p_a_l_prog_tres.id">
+                                                <p>
+                                                    <strong>Pedido cliente: </strong>
+                                                    <span t-field="line.p_c_l_prog_tres"/>
+                                                </p>
+                                                <p>
+                                                    <strong>Saldo PO: </strong>
+                                                    <span t-field="line.r_l_prog_tres"/>
+                                                </p>
+                                            </t>
+                                        </td>
+                                        <td colspan="1" style="border-top-style: none;"></td>
+                                    </tr>
 
                                 </t>
                             </tbody>

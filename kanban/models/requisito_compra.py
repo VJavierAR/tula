@@ -128,8 +128,8 @@ class RequisitoCompra(models.Model):
     def cambia_a_aprobado(self):
         self.state = 'aprobado'
         self.aprobado_por = self.env.user.id
-        for line in self.lineas_pedido:
-            linea.a_facturar += line.cantidad_a_restar_o_sumar
+        for linea in self.lineas_pedido:
+            linea.a_facturar += linea.cantidad_a_restar_o_sumar
 
     def cambia_a_rechazado(self):
         self.state = 'rechazado'
