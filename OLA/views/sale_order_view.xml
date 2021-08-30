@@ -297,6 +297,10 @@
                     <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['cancel', 'done', 'sale'])] }</attribute>
                 </xpath>
 
+                <xpath expr="//button[@name='action_cancel']" position="attributes">
+                    <attributes name="states">draft,sent,sale,auto,auto limite de credito,auto todo</attributes>
+                </xpath>
+
                 <!--
                 <xpath expr="//button[@name='conf']" position="after">
                     <button string="Confirmar excediendo límite de crédito"
