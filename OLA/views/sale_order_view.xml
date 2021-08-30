@@ -371,6 +371,7 @@
                 <br/>
                 <p>Se genero la solicitud ${object.name} con un descuento no permitido</p>
                 <br/>
+                <a href="/web#id=${object.id}&amp;model=sale.order&amp;view_type=form" class="btn btn-alpha" data-original-title="" title="" aria-describedby="tooltip68646" target="_blank">Solicitud</a>
                  ]]>
            </field>
        </record>
