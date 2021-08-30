@@ -33,5 +33,5 @@ class ProductTemplate(models.Model):
                     x.location_id.mostrar_stock is True
             )
             for data in stock:
-                info += str(data.location_id.display_name) + ": " + str(data.quantity) + "\n"
+                info += str(data.quantity) + "\n"
             rec['stock_bodegas'] = info
