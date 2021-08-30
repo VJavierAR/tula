@@ -155,7 +155,7 @@ class saleOr(models.Model):
 		if self.price_unit and self.product_id.id:
 			if(self.product_uom_qty<1):
 				calculo=self.x_studio_precio_mnimo/self.product_uom_qty
-				if(self.price_unit<calculo):
+				if(self.price_subtotal<calculo):
 					title = title + "Precio minímo de venta. | "
 					message = message + """El producto: """ + str(
 						self.product_id.display_name) + """ esta rebasando su precio minímo de venta.\nPrecio: """ + str(
