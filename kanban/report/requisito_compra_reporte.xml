@@ -97,7 +97,7 @@
                                         <!-- t-if="not line.display_type" -->
                                         <t >
                                             <td name="td_codigo_articulo" class="text-justify">
-                                                <span t-field="line.product_id.display_name"/>
+                                                <span t-field="line.product_id.default_code"/>
                                             </td>
                                             <td name="td_cliente_codigo" class="text-center">
                                                 <span t-field="line.numero_de_parte"/>
