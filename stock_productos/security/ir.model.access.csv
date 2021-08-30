@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_stock_productos_stock_productos,stock_productos.stock_productos,model_stock_productos_stock_productos,base.group_user,1,1,1,1
