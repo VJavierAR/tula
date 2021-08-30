@@ -78,7 +78,7 @@ class Factura(models.Model):
 		if(tipo=='in_invoice' and self.company_id.orden_compra):
 			if(self.orden_compra.mapped('id')!=[]):
 				orden=self.orden_compra
-				self.write({'invoice_origin':'','orden_compra':''})
+				self.write({'invoice_origin':'','orden_compra':False})
 				if(orden.picking_type_id.warehouse_id.auto_recepcion):
 					for pi in self.orden_compra.picking_ids:
 						rp=self.env['stock.return.picking'].create({'picking_id':pi.id})
