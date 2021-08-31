@@ -12,18 +12,18 @@ class Factura(models.Model):
 	orden_compra=fields.Many2one('purchase.order')
 	check=fields.Boolean(related='company_id.orden_compra')
 	otro=fields.Boolean(compute='checkSa')
-	#checkAlmacen=fields.Boolean()
+	checkAlmacen=fields.Boolean()
 
 
 	@api.depends('check')
 	def checkSa(self):
 		for record in self:
 			record.otro='default_purchase_id' in self.env.context
-			# if(self.checkAlmacen==False):
-			# 	if(self.type=='in_invoice'):
-			# 		if(self.almacen.id==False):
-			# 			self.almacen=self.env['stock.warehouse'].search([],limit=1,order='id asc').id
-			# 			self.checkAlmacen=True
+			if(self.checkAlmacen==False):
+				if(self.type=='in_invoice'):
+					if(self.almacen.id==False):
+						self.almacen=self.env['stock.warehouse'].search([],limit=1,order='id asc').id
+						self.checkAlmacen=True
 
 	def action_post(self):
 		if self.filtered(lambda x: x.journal_id.post_at == 'bank_rec').mapped('line_ids.payment_id').filtered(lambda x: x.state != 'reconciled'):
@@ -36,8 +36,12 @@ class Factura(models.Model):
 			if(tipo!='in_invoice'):
 				self.post()
 			if(tipo=='in_invoice'):
-				produ=self.invoice_line_ids.mapped('product_id')
-				if(len(self.invoice_line_ids)!=len(produ)):
+				#primera version no permite duplicidad en productos
+				#produ=self.invoice_line_ids.mapped('product_id')
+				#if(len(self.invoice_line_ids)!=len(produ)):
+				#Solo valida que tengan informacion el product_id
+				produ=self.invoice_line_ids.filtered(lambda x:x.product_id.id==False)
+				if(len(produ)>0):
 					raise UserError(_('Faltan productos en las lineas de Factura'))
 				else:
 					self.post()
