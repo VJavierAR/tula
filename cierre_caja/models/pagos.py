@@ -30,7 +30,6 @@ class AccountPayment(models.Model):
             elif (cierre_obj.name - timedelta(hours=6)).date() != (datetime.now() - timedelta(hours=6)).date():
                 raise UserError('La caja abierta no es de hoy, debe primero cerrar la caja abierta y luego abrir una nueva.')
 
-
     @api.model_create_multi
     def create(self, vals_list):
         conf_usuario = self.env["cierre.conf"].search([('user_id', '=', self.env.user.id)], limit=1)
