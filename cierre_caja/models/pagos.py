@@ -46,7 +46,7 @@ class AccountPayment(models.Model):
         payment_type=vals['payment_type'] if('payment_type' in vals) else self.payment_type
         partner_type=vals['partner_type'] if('partner_type' in vals) else self.partner_type
         bandera=vals['bandera'] if('bandera' in vals) else False
-        if conf_usuario and payment_type != 'transfer' and bandera==True:
+        if conf_usuario and payment_type != 'transfer' and bandera==False:
             if 'journal_id' in vals:
                 if payment_type in ('inbound', 'outbound') and partner_type == 'customer':
                     self.validar_caja(vals['journal_id'], conf_usuario)
