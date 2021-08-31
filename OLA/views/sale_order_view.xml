@@ -297,8 +297,8 @@
                     <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['cancel', 'done', 'sale'])] }</attribute>
                 </xpath>
 
-                <xpath expr="//button[@name='action_cancel']" position="attributes">
-                    <attributes name="states">draft,sent,sale,auto,auto limite de credito,auto todo</attributes>
+                <xpath expr="//button[@name='action_cancel']" position="after">
+                    <button name="action_cancel" states="auto,auto limite de credito,auto todo" type="object" string="Cancel"/>
                 </xpath>
 
                 <!--
