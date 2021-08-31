@@ -15,9 +15,9 @@ class AccountPayment(models.Model):
     cierre_id = fields.Many2one('cierre.caja')
     incluir = fields.Boolean('Incluir', default=False)
     tipo_pago=fields.Selection([('Contado','Contado'),('Credito','Credito')],default='Credito')
-    monto_moneda=fields.Float('Monto',default=0)
+    monto_moneda=fields.Float(compute='actulizaMonneda',string='Monto',default=0)
 
-    @api.onchange('currency_id')
+    @api.depends('partner_id')
     def actulizaMonneda(self):
         for rec in self:
             rec.monto_moneda=rec.amount if(rec.payment_type!='outbound') else -rec.amount
