@@ -22,7 +22,7 @@ class Factura(models.Model):
 			if(self.checkAlmacen==False):
 				if(self.type=='in_invoice'):
 					if(self.almacen.id==False):
-						self.almacen=self.env['stock.warehouse'].search([],limit=1,order='id asc').id
+						self.almacen=self.company_id.almacen_default.id if(self.company_id.almacen_default.id) else self.env['stock.warehouse'].search([],limit=1,order='id asc').id
 						self.checkAlmacen=True
 
 	def action_post(self):

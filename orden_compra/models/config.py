@@ -24,3 +24,4 @@ class Company(models.Model):
 	_inherit='res.company'
 	orden_compra=fields.Boolean()
 	price_lst=fields.Boolean()
+	almacen_default=fields.Many2one('stock.warehouse')
