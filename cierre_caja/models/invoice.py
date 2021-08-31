@@ -212,26 +212,20 @@ class Cierre(models.Model):
             #inicio_dia = hoy.replace(hour=0, minute=0, second=0)
             cierre_dia = fields.Datetime.now()
 
-            pagos = payment_env.search(
-                [('create_date', '>=', cierre.name), ('create_date', '<=', cierre_dia), ('create_uid', '=', cierre.user_id.id), ('state', 'not in', ('draft', 'cancelled')), ('partner_type', '=', 'customer'), ('payment_type', 'in', ('inbound', 'outbound')),('journal_id.quitar_diario','=',False)])
-            for p in pagos.filtered(lambda x:x.monto_moneda==0):
-                p.actulizaMonneda()
+            pagos = payment_env.search([('create_date', '>=', cierre.name), ('create_date', '<=', cierre_dia), ('create_uid', '=', cierre.user_id.id), ('state', 'not in', ('draft', 'cancelled')), ('partner_type', '=', 'customer'), ('payment_type', 'in', ('inbound', 'outbound')),('journal_id.quitar_diario','=',False)])
+            #for p in pagos.filtered(lambda x:x.monto_moneda==0):
+            #    p.actulizaMonneda()
             #pagos |= payment_env.search(
             #    [('create_date', '>=', '2020-08-10 00:00:00'), ('create_date', '<=', inicio_dia), ('create_uid', '=', cierre.user_id.id), ('incluir', '=', True)])
             #pagos_hoy_olvidados = payment_env.search(
             #    [('create_date', '>=', '2020-08-10 00:00:00'), ('create_date', '<=', inicio_dia), ('create_uid', '=', cierre.user_id.id), ('incluir', '=', False)])
             if pagos:
                 todos_pagos = pagos
-                #m=payment_env.search([['cierre_id','=',cierre.id]])
-                #if(len(m)>0):
-                #    for mi in m:
-                #        mi.write({'cierre_id':False,'incluir':False})
                 #todos_pagos |= pagos_hoy_olvidados
-                for todos in todos_pagos:
-                    todos.write({'cierre_id': cierre.id, 'incluir': False})
-                for p in pagos:
-                    p.write({'incluir': True})
-                #cierre.write({'pagos_hoy': pagos,}) # 'pagos_hoy_olvidados': pagos_hoy_olvidados})
+                todos_pagos.write({'cierre_id': cierre.id, 'incluir': False,'bandera':True})
+                pagos.write({'incluir': True,'bandera':True})
+
+                cierre.write({'pagos_hoy': pagos,}) # 'pagos_hoy_olvidados': pagos_hoy_olvidados})
 
     def dummy_bottom(self):
 

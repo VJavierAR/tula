@@ -6,6 +6,7 @@ _logger = logging.getLogger(__name__)
 
 class AccountPayment(models.Model):
     _inherit = "account.payment"
+    bandera=fields.Boolean(default=False)
 
     # @api.onchange('journal_id')
     # def checkPago(self):
@@ -44,7 +45,8 @@ class AccountPayment(models.Model):
         #payment_type = vals.get('payment_type', self[0].payment_type)
         payment_type=vals['payment_type'] if('payment_type' in vals) else self.payment_type
         partner_type=vals['partner_type'] if('partner_type' in vals) else self.partner_type
-        if conf_usuario and payment_type != 'transfer':
+        bandera=vals['bandera'] if('bandera' in vals) else False
+        if conf_usuario and payment_type != 'transfer' and bandera==True:
             if 'journal_id' in vals:
                 if payment_type in ('inbound', 'outbound') and partner_type == 'customer':
                     self.validar_caja(vals['journal_id'], conf_usuario)
