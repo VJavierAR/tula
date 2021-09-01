@@ -50,7 +50,7 @@
         </record>
 
 
-
+<!--hola  a todos-->
         <record model="ir.ui.view" id="requisito_compra_view_tree">
             <field name="name">requisito.compra.tree</field>
             <field name="model">requisito.compra</field>
