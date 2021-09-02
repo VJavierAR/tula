@@ -13,6 +13,18 @@
                 </xpath>
                 -->
 
+                <xpath expr="//form[1]/header[1]/field[@name='state']" position="attributes">
+                    <attribute name="statusbar_visible">borrador_pedido_abierto,draft,sent,sale</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_quotation_send']" position="attributes">
+                    <attribute name="states">draft,borrador_pedido_abierto</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_quotation_send']" position="attributes">
+                    <attribute name="states">draft,borrador_pedido_abierto</attribute>
+                </xpath>
+
+
+
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='product_template_id']" position="after">
                     <field name="default_code_product" readonly="1" optional="show"/>
                     <field name="codigo_cliente" readonly="1" optional="show" force_save="1"/>
@@ -37,10 +49,12 @@
 
                 <xpath expr="//button[@name='action_confirm']" position="attributes">
                     <attribute name="name">conf</attribute>
+                    <attribute name="attrs">{'invisible': [('state', 'not in', ['draft', 'borrador_pedido_abierto'])]}</attribute>
                 </xpath>
 
                 <xpath expr="//button[@name='action_cancel']" position="attributes">
                     <attribute name="name">cancelar</attribute>
+                    <attribute name="states">draft,sent,sale,borrador_pedido_abierto</attribute>
                 </xpath>
 
                 <xpath expr="//form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']" position="attributes">
