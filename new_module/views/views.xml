@@ -15,16 +15,16 @@
 
 
     <!-- actions opening views on models -->
-<!--
+
     <record model="ir.actions.act_window" id="new_module.action_window">
       <field name="name">new_module window</field>
       <field name="res_model">new_module.new_module</field>
       <field name="view_mode">tree,form</field>
     </record>
--->
+
 
     <!-- server action to the one above -->
-<!--
+
     <record model="ir.actions.server" id="new_module.action_server">
       <field name="name">new_module server</field>
       <field name="model_id" ref="model_new_module_new_module"/>
@@ -37,23 +37,22 @@
         }
       </field>
     </record>
--->
 
     <!-- Top menu item -->
-<!--
+
     <menuitem name="new_module" id="new_module.menu_root"/>
--->
+
     <!-- menu categories -->
-<!--
+
     <menuitem name="Menu 1" id="new_module.menu_1" parent="new_module.menu_root"/>
     <menuitem name="Menu 2" id="new_module.menu_2" parent="new_module.menu_root"/>
--->
+
     <!-- actions -->
-<!--
+
     <menuitem name="List" id="new_module.menu_1_list" parent="new_module.menu_1"
               action="new_module.action_window"/>
     <menuitem name="Server to list" id="new_module" parent="new_module.menu_2"
               action="new_module.action_server"/>
--->
+
   </data>
 </odoo>
