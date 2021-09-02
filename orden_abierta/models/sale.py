@@ -35,7 +35,8 @@ class SaleOrderOrdenAbierta(models.Model):
         return estados_glob
 
     state = fields.Selection(
-        selection=lambda self: self._default_state(),
+        # selection=lambda self: self._default_state(),
+        selection_add=[('borrador_pedido_abierto', 'Borrador')]
     )
     pedido_abierto_origen = fields.Many2one(
         comodel_name="pedido.abierto",

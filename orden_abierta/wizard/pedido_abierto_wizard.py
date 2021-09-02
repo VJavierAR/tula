@@ -57,7 +57,8 @@ class PedidoAbiertoWizard(models.TransientModel):
             # 'picking_policy': self.order_line_ids[0].order_id.picking_policy,
         })
         sale_directa.write({
-            'pedido_abierto_origen': self.pedido_abierto_id
+            'pedido_abierto_origen': self.pedido_abierto_id,
+            'state': 'borrador_pedido_abierto'
         })
         id_sale_directa = sale_directa.id
 
