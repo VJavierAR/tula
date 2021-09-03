@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_new_module_new_module,access_new_module_new_module,model_new_module_new_module,base.group_user,1,0,0,0 
+access_new_module_autor,access_new_module_autor, access_new_module_autor,model_new_module_autor,base.group_user,1,0,0,0
+access_new_module_books,access_new_module_books, access_new_module_books,model_new_module_books,base.group_user,1,0,0,0
