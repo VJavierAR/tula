@@ -13,6 +13,18 @@
       </field>
     </record>
 
+    <!--vista lista de Autor> 
+    <record model="ir.ui.view" id="new_module.autor.list">
+      <field name="name">new_module.autor list</field>
+      <field name="model">new_module.autor</field>
+      <field name="arch" type="xml"> 
+        <tree>
+          <field name="nombre"/>
+          <field name="apellido_paterno"/>
+          <field name="apellido_materno"/>
+        </tree>
+      </field>
+    </record-->
 
     <!-- actions opening views on models -->
 
@@ -22,6 +34,12 @@
       <field name="view_mode">tree,form</field>
     </record>
 
+      <!--action window para autor>
+    <record id="new_module_autor_action" model='new_module.autor.act_window'>
+            <field name="name">Autores</field>
+            <field name="res_model">new_module.autor</field>
+            <field name="view_mode">tree,form</field>
+    </record-->
 
     <!-- server action to the one above -->
 
@@ -45,14 +63,14 @@
     <!-- menu categories -->
 
     <menuitem name="Menu 1" id="new_module.menu_1" parent="new_module.menu_root"/>
-    <menuitem name="Menu 2" id="new_module.menu_2" parent="new_module.menu_root"/>
+    <menuitem name="Autor" id="new_module.menu_2" parent="new_module.menu_root"/>
 
     <!-- actions -->
 
     <menuitem name="List" id="new_module.menu_1_list" parent="new_module.menu_1"
               action="new_module.action_window"/>
-    <menuitem name="Server to list" id="new_module" parent="new_module.menu_2"
-              action="new_module.action_server"/>
+    <menuitem name="Server to list" id="new_module.menu_2_list" parent="new_module.menu_2"
+              action="new_module_autor_action"/>
 
   </data>
 </odoo>
