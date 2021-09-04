@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="new_module_autor_action" model='new_module.autor.act_window'>
+            <field name="name">Autores</field>
+            <field name="res_model">new_module.autor</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+        <!--Custom form view: creo que es el formulario donde se dan de alta el registro-->
+        <record id="new_module_autor_view_form" model="ir.ui.view">
+            <field name="name">Autores form</field>
+            <field name="model">new_module.autor</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="nombre"/>
+                        <field name="apellido_paterno"/>
+                        <field name="apellido_materno"/>
+                    </group>
+                </form>
+            </field>
+            <!--Vista lista-->
+        </record>
+        <record id="new_module_autor_view_tree" model="ir.ui.view">
+
+            <field name="name">New_module Autor List</field>
+            <field name="model">new_module.autor</field>
+            <field name="arch" type="xml">
+               <tree>
+                    <field name="nombre"/>
+                    <field name="apellido_paterno"/>
+                    <field name="apellido_materno"/>
+               </tree> 
+            </field>
+            
+        </record>
+        <!--Custom Seach option-->
+        <record id="new_module_autor_view_search" model="ir.ui.view">
+
+            <field name="name">New_module Autor Search</field>
+            <field name="model">new_module.autor</field>
+            <field name="arch" type="xml">
+               <search>
+                    <field name="nombre"/>
+                    <field name="apellido_paterno"/>
+                    <field name="apellido_materno"/>
+               </search> 
+            </field>
+            
+        </record>
+    </data>
+</odoo>
