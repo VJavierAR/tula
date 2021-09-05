@@ -1,5 +1,5 @@
 from odoo import models, fields
-
+#comentario de control
 class LibraryBook(models.Model)
     _name = 'library.book'
 
