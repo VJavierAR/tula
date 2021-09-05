@@ -1,6 +1,6 @@
 from odoo import models, fields
 #comentario de control
-class LibraryBook(models.Model)
+class LibraryBook(models.Model):
     _name = 'library.book'
 
     name = fields.Char('Title', required=True)
