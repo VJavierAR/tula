@@ -1,60 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
-	<!-- Declarando el action_window -->
-	<record id='library_book_action' model='ir.actions.act_window'>  <!--el id es el id del esta action window-->
-		<field name="name">Library Books</field>					 <!-- El nombre del action window-->
-		<field name="res_model">library.book</field>                <!--El modelo al que hace referencia-->
-	</record>
-	<!-- Agregando menus-->
-	<menuitem name="Mi libreria" id="library_menu_root"/>
-	<menuitem name="Libros" id="library_book_menu" parent="library_menu_root" action="library_book_action">
+    <!--data>
+        <record id='library_book_action' model='ir.actions.act_window'>  
+            <field name="name">Library Books</field>					
+            <field name="res_model">library.book</field> 
+            <field name="view_mode">tree,form</field> 
+        </record>
+        <menuitem name="Mi libreria" id="library_menu_root"/>
+        <menuitem name="Libros" id="library_book_menu" parent="library_menu_root" action="library_book_action"/>
 
-	<!--Form-->
-	<record id="library_book_view_form" model="ir.ui.view">
-		<field name="name">Library Books Form</field>
-		<field name="res_model">library.book</field>                
-		<field name="arch" type="xml">
-			<form>
-				<group>
-					<group>
-						<field name="name"/>
-						<field name="authors_ids" widget="many2many_tags"/>
-						
-					</group>
-					<group>
-						<field name="date_release"/>
-					</group>
-				</group>
-			</form>
-		</field>
-	</record>
-	<!--vista lista-->
-	<record id="library_book_view_tree" model="ir.ui.view">
-		<field name="name">Library Books List</field>
-		<field name="res_model">library.book</field>                
-		<field name="arch" type="xml">
-			<tree>
-				<field name="name"/>
-				<field name="authors_ids"/> 
-				<field name="date_release"/>
-			</tree>
-		</field>
-	</record>
+        <record id="library_book_view_form" model="ir.ui.view">
+            <field name="name">Library Books Form</field>
+            <field name="model">library.book</field>                
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="authors_ids" widget="many2many_tags"/>
 
-	<!--vista search-->
-	<record id="library_book_view_tree" model="ir.ui.view">
-		<field name="name">Library Books Search </field>
-		<field name="res_model">library.book</field>                
-		<field name="arch" type="xml">
-			<search>
-				<field name="name"/>
-				<field name="authors_ids"/> 
-				<field name="No authors"
-						string="without_author"
-						domain="[('author_ids','=','False')]"/>
-			</search>
-		</field>
-	</record>
-	
+                        </group>
+                        <group>
+                            <field name="date_release"/>
+                        </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="library_book_view_tree" model="ir.ui.view">
+            <field name="name">Library Books List</field>
+            <field name="model">library.book</field>                
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date_release"/> 
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="library_book_view_search" model="ir.ui.view">
+            <field name="name">Library Books Search </field>
+            <field name="model">library.book</field>                
+            <filter name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="authors_ids"/> 
+                    <field string="No authors" name="without_author" domain="[('author_ids','=',False)]"/>
+                </search>
+            </filter>
+        </record>
+    </data-->
 </odoo>
+
