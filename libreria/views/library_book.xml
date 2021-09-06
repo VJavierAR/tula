@@ -7,7 +7,7 @@
             <field name="res_model">library.book</field> 
             <field name="view_mode">tree,form</field> 
         </record>
-		<menuitem name="Libreria" id="libreria_icon_app" web_icon="library.book,static/description/icon.png" sequence="1"/>
+		<menuitem name="Libreria" id="libreria_icon_app" web_icon="library_book,static/description/icon.png" sequence="1"/>
         <menuitem name="Mi libreria" id="library_menu_root"/>
         <menuitem name="Libros" id="library_book_menu" parent="library_menu_root" action="library_book_action"/>
 
