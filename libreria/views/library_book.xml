@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <odoo>
-    <!--data>
+    <data>
         <record id='library_book_action' model='ir.actions.act_window'>  
             <field name="name">Library Books</field>					
             <field name="res_model">library.book</field> 
@@ -51,6 +51,6 @@
                 </search>
             </filter>
         </record>
-    </data-->
+    </data>
 </odoo>
 
