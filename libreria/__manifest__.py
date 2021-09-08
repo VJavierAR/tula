@@ -34,5 +34,4 @@
         'demo/demo.xml',
     ],
     'application': True,
-    'images':'static/description/icon.png'
 }
