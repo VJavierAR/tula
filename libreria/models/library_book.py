@@ -12,7 +12,7 @@ class LibraryBook(models.Model):
     _rec_name = 'short_name'
     
     name = fields.Char('Titulo', required=True)
-    short_name = fields.Char('Titulo corto', required=True)
+    short_name = fields.Char('Titulo corto', required=True, translate=True, index=True)
     date_release = fields.Date('Fecha de lanzamiento')
     notes = fields.Char('Notas internas')
     #Selection al parecer mandas un arreglo de tuplas con el nombre del valor y el string para mostrar
@@ -21,14 +21,19 @@ class LibraryBook(models.Model):
         [('draft','No disponible'),
         ('available','Disponible'),
         ('lost','Perdido')],
-        'Estatus')
-    description = fields.Html('Descripción')
+        'Estatus',default="draft")
+    description = fields.Html('Descripción', sanitize=True, strip_style=False)
     cover = fields.Binary('Portada')
     out_of_print = fields.Boolean('Agotado')
     date_updated = fields.Datetime('Ultima actualización')
-    pages = fields.Integer('Número de páginas')
-    reader_rating = fields.Float('Calificación promedio del lector', digits=(14,4))
+
+    pages = fields.Integer('Número de páginas',
+            groups='base.group_user',
+            states={'lost':[('readonly',True)]},
+            help='Total de páginas del libro', company_dependent=False)
     
+    reader_rating = fields.Float('Calificación promedio del lector', digits=(14,4))
+
     author_ids = fields.Many2many(
         'res.partner',
         string='Authors'
