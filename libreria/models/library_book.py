@@ -11,9 +11,24 @@ class LibraryBook(models.Model):
     #por default odoo genera el display name usando el _rec_name
     _rec_name = 'short_name'
     
-    name = fields.Char('Title', required=True)
-    short_name = fields.Char('Short Title', required=True)
-    date_release = fields.Date('Release Date')
+    name = fields.Char('Titulo', required=True)
+    short_name = fields.Char('Titulo corto', required=True)
+    date_release = fields.Date('Fecha de lanzamiento')
+    notes = fields.Char('Notas internas')
+    #Selection al parecer mandas un arreglo de tuplas con el nombre del valor y el string para mostrar
+    # 'State' al final es como aparecer el nombre del campo
+    state = fields.Selection(
+        [('draft','No disponible'),
+        ('available','Disponible'),
+        ('lost','Perdido')],
+        'Estatus')
+    description = fields.Html('Descripción')
+    cover = fields.Binary('Portada')
+    out_of_print = fields.Boolean('Agotado')
+    date_updated = fields.Datetime('Ultima actualización')
+    pages = fields.Integer('Número de páginas')
+    reader_rating = fields.Float('Calificación promedio del lector', digits=(14,4))
+    
     author_ids = fields.Many2many(
         'res.partner',
         string='Authors'
