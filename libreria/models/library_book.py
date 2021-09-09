@@ -36,8 +36,10 @@ class LibraryBook(models.Model):
     #En configuracion settins en Decimal presicion se agrego la entrada Book Price y aqui se hace uso de ella
     # pero si no exite va a saltar un error
     cost_price = fields.Float(
-        'Costo', digits='Book Price',
-        digits=dp.get_precision('Book Price')
+        'Costo', digits='Book Price'
+    )
+    retail_price = fields.Monetary('Retail Price',
+    #opcional currency_field='currency_id',
     )
     author_ids = fields.Many2many(
         'res.partner',
