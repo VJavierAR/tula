@@ -26,14 +26,19 @@ class LibraryBook(models.Model):
     cover = fields.Binary('Portada')
     out_of_print = fields.Boolean('Agotado')
     date_updated = fields.Datetime('Ultima actualización')
-
+    #si el valor del campo state=los este registro se volvera read only
     pages = fields.Integer('Número de páginas',
             groups='base.group_user',
             states={'lost':[('readonly',True)]},
             help='Total de páginas del libro', company_dependent=False)
     
     reader_rating = fields.Float('Calificación promedio del lector', digits=(14,4))
-
+    #En configuracion settins en Decimal presicion se agrego la entrada Book Price y aqui se hace uso de ella
+    # pero si no exite va a saltar un error
+    cost_price = fields.Float(
+        'Costo', digits='Book Price',
+        digits=dp.get_precision('Book Price')
+    )
     author_ids = fields.Many2many(
         'res.partner',
         string='Authors'
