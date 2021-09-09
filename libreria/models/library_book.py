@@ -8,6 +8,7 @@ class LibraryBook(models.Model):
     _order = 'date_release desc, name'
     # se usara en lugar de name como registro insignia de la clase 
     #aqui le indicamos a odoo que short_name sera el nombre que se use cuando se invoque el metodo get_name()
+    #por default odoo genera el display name usando el _rec_name
     _rec_name = 'short_name'
     
     name = fields.Char('Title', required=True)
