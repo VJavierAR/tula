@@ -38,6 +38,9 @@ class LibraryBook(models.Model):
     cost_price = fields.Float(
         'Costo', digits='Book Price'
     )
+    currency_id = fields.Many2one(
+        'res_currency', string='Currency'
+    )
     retail_price = fields.Monetary('Retail Price',
     #opcional currency_field='currency_id',
     )
