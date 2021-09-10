@@ -56,6 +56,8 @@ class LibraryBook(models.Model):
         context={},
         domain=[]
     )
+    #many2many
+    
     #En general get_name() usa _rec_name para generar el display name.
     #Pero se puede sobre escribir para generar nuestra propia version del display name
     def get_name(self):

@@ -2,3 +2,4 @@
 
 from . import models
 from . import library_book
+from . import ResPartner
