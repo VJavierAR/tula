@@ -39,14 +39,22 @@ class LibraryBook(models.Model):
         'Costo', digits='Book Price'
     )
     currency_id = fields.Many2one(
-        'res_currency', string='Currency'
+        'res.currency', string='Currency',default=33
     )
     retail_price = fields.Monetary('Retail Price',
-    #opcional currency_field='currency_id',
+         currency_field='currency_id'
     )
     author_ids = fields.Many2many(
         'res.partner',
         string='Authors'
+    )
+    # many2one
+    editorial_id = fields.Many2one(
+        'res.partner',string='Editorial',
+        #opcional:
+        ondelete='set null',
+        context={},
+        domain=[]
     )
     #En general get_name() usa _rec_name para generar el display name.
     #Pero se puede sobre escribir para generar nuestra propia version del display name
