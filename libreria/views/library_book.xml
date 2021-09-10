@@ -84,7 +84,6 @@
         -->
 		<menuitem name="Libreria" id="library_menu_root" web_icon="library.book,static/description/icon.png" sequence="1"/>
         <menuitem name="Libros" id="library_book_menu" parent="library_menu_root" action="library_book_action"/>
-        <menuitem name="Categorias" id="library_book_category_menu" parent="library_menu_root" action="library_book_categ_action"/>
 
         
     </data>
