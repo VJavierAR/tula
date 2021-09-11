@@ -2,7 +2,7 @@ from odoo import  models, fields
 #from odoo.exceptions import ValidationError
 
 
-#comentario de control
+#comentario de control2
 class LibraryBook(models.Model):
     _name = 'library.book'
     _description='Library book'
