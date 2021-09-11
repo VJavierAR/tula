@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, models, fields
 from odoo.exceptions import ValidationError
 
 
@@ -16,7 +16,7 @@ class LibraryBook(models.Model):
 
     #Constrains a nivel de base de datos, basicamente son las soportadas por Postgress
     #Se meten en un arreglo de ternas o tuplas de 3 elementos whatever
-    _sql_constrains = [
+    _sql_constraints = [
         ('name_uniq','UNIQUE (name)','El titulo del libro debe ser unico'),
         ('paginas_positivas','CHECK(pages>0)','Número de páginas debe ser positivo')
 
@@ -84,7 +84,7 @@ class LibraryBook(models.Model):
     #Constrain a nivel server, osea con codigo python
     #Aqui se valida que la fecha de publicación sea en el pasado
     @api.constrain('date_release')
-    def _check_release_date(self):
+    def _check_date_release(self):
         for record in self:
             #si tiene fecha de publicación se verifica que el release_date sea menor al dia de hoy
             if record.date_release and record.date_release > fields.Date.today():
