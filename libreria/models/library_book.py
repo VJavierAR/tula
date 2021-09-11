@@ -1,4 +1,7 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+
+
 #comentario de control
 class LibraryBook(models.Model):
     _name = 'library.book'
@@ -10,7 +13,14 @@ class LibraryBook(models.Model):
     #aqui le indicamos a odoo que short_name sera el nombre que se use cuando se invoque el metodo get_name()
     #por default odoo genera el display name usando el _rec_name
     _rec_name = 'short_name'
-    
+
+    #Constrains a nivel de base de datos, basicamente son las soportadas por Postgress
+    #Se meten en un arreglo de ternas o tuplas de 3 elementos whatever
+    _sql_constrains = [
+        ('name_uniq','UNIQUE (name)','El titulo del libro debe ser unico'),
+        ('paginas_positivas','CHECK(pages>0)','Número de páginas debe ser positivo')
+
+    ] 
     name = fields.Char('Titulo', required=True)
     short_name = fields.Char('Titulo corto', required=True, translate=True, index=True)
     date_release = fields.Date('Fecha de lanzamiento')
@@ -71,5 +81,12 @@ class LibraryBook(models.Model):
             result.append((record.id,rec_name))
         return result
 
-
+    #Constrain a nivel server, osea con codigo python
+    #Aqui se valida que la fecha de publicación sea en el pasado
+    @api.constrain('date_release')
+    def _check_release_date(self):
+        for record in self:
+            #si tiene fecha de publicación se verifica que el release_date sea menor al dia de hoy
+            if record.date_release and record.date_release > fields.Date.today():
+                raise models.ValidationError('La fecha de publicación debe ser en el pasado')
         
