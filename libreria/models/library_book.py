@@ -1,5 +1,5 @@
-from odoo import api, models, fields
-from odoo.exceptions import ValidationError
+from odoo import  models, fields
+#from odoo.exceptions import ValidationError
 
 
 #comentario de control
@@ -16,11 +16,11 @@ class LibraryBook(models.Model):
 
     #Constrains a nivel de base de datos, basicamente son las soportadas por Postgress
     #Se meten en un arreglo de ternas o tuplas de 3 elementos whatever
-    _sql_constraints = [
-        ('name_uniq','UNIQUE (name)','El titulo del libro debe ser unico'),
-        ('paginas_positivas','CHECK(pages>0)','Número de páginas debe ser positivo')
+    #_sql_constraints = [
+    #    ('name_uniq','UNIQUE (name)','El titulo del libro debe ser unico'),
+    #    ('paginas_positivas','CHECK(pages>0)','Número de páginas debe ser positivo')
 
-    ] 
+    #] 
     name = fields.Char('Titulo', required=True)
     short_name = fields.Char('Titulo corto', required=True, translate=True, index=True)
     date_release = fields.Date('Fecha de lanzamiento')
@@ -83,10 +83,10 @@ class LibraryBook(models.Model):
 
     #Constrain a nivel server, osea con codigo python
     #Aqui se valida que la fecha de publicación sea en el pasado
-    @api.constrain('date_release')
-    def _check_date_release(self):
-        for record in self:
-            #si tiene fecha de publicación se verifica que el release_date sea menor al dia de hoy
-            if record.date_release and record.date_release > fields.Date.today():
-                raise models.ValidationError('La fecha de publicación debe ser en el pasado')
+    #@api.constrain('date_release')
+    #def _check_date_release(self):
+    #    for record in self:
+    #        #si tiene fecha de publicación se verifica que el release_date sea menor al dia de hoy
+    #        if record.date_release and record.date_release > fields.Date.today():
+    #            raise models.ValidationError('La fecha de publicación debe ser en el pasado')
         
