@@ -83,8 +83,8 @@ class LibraryBook(models.Model):
     # related  fields son campos computados, usando la bnadera related_sudo
     # se pueden salar los access rights del usuario activo. 
     publisher_city = fields.Char(
-        'publiser City',
-        related='publisher_id.city',
+        'Editorial ubicación',
+        related='editorial_id.city',
         readonly=True
     )
     #En general get_name() usa _rec_name para generar el display name.
