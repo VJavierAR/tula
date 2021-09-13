@@ -111,6 +111,7 @@ class LibraryBook(models.Model):
                 book.age_days = delta.days
             else:
                 book.age_days = 0
+    #Inverse permite que un campo computado se editable porque actualiza el campo original que generó el calculo
     #calcula la fecha de lanzamiento apartir del campo age_days
     def _inverse_age(self):
         today = fields.Date.today()
@@ -131,5 +132,14 @@ class LibraryBook(models.Model):
         new_op = operator_map.get(operator,operator)
         return [('date_release',new_op,value_date)]
 
-    
-    
+    #Desde odoo 13 existe un cache global que segun optimiza las consultas
+    #pero si se actualizan campos que usemos como contexto puede que no se actualizen
+    #y que se calculen mal las cosas por eso se usan las anotaciones @api_depends y @api_depends_context
+    """
+    @api_depends('price')
+    @api_depends_context('company_id')
+    def _compute_value(self):
+        company_id = self.env.context.get('company_id')
+        ...
+        #other computation
+    """
