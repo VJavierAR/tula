@@ -1,6 +1,6 @@
 from odoo import  api, models, fields
 from odoo.exceptions import ValidationError
-
+from datetime import timedelta
 
 #comentario de control3
 class LibraryBook(models.Model):
@@ -68,6 +68,15 @@ class LibraryBook(models.Model):
     #Categoria con la trampa para evitar la recursividad
     categoria_id = fields.Many2one('library.book.category') 
 
+    #Campo computado
+    age_days = fields.Float(
+        string='Días desde el lanzamiento',
+        compute='_compute_age',
+        inverse='_inverse_age',
+        search='_search_age',
+        store=False, #opcional
+        compute_sudo=True  #opcional
+    )
     #En general get_name() usa _rec_name para generar el display name.
     #Pero se puede sobre escribir para generar nuestra propia version del display name
     def get_name(self):
@@ -89,3 +98,38 @@ class LibraryBook(models.Model):
             if record.date_release and record.date_release > fields.Date.today():
                 raise models.ValidationError('La fecha de publicación debe ser en el pasado')
         
+    #Metodo del campo computado age_days
+    #Se le mandan los campos que usara en el computo
+    #Calcula el numero de dias,meses y años que han pasado desde la fecha de lanzamiento
+    @api.depends('date_release')
+    def _compute_age(self):
+        today = fields.Date.today()
+        for book in self:
+            if book.date_release:
+                #a delta se le guarda un  Date y cuando se hace delta.days se sustraen solo los dias
+                delta = today - book.date_release
+                book.age_days = delta.days
+            else:
+                book.age_days = 0
+    #calcula la fecha de lanzamiento apartir del campo age_days
+    def _inverse_age(self):
+        today = fields.Date.today()
+        # filtered se lo aplica a un array 
+        for book in self.filtered('date_release'):
+            d = today - timedelta(days=book.age_days)
+            book.date_release = d
+
+    def _search_age(self,operator,value):
+        today = fields.Date.today()
+        value_days = timedelta(days=value)
+        value_date = today - value_days
+        #comvert the operator
+        #libros con age > value tiene una fecha < value_date
+        operator_map = {
+            '>':'<','>=':'<=','<':'>','<=':'>=',
+        }
+        new_op = operator_map.get(operator,operator)
+        return [('date_release',new_op,value_date)]
+
+    
+    
