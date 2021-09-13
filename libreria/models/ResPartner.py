@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api,models, fields
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
@@ -13,4 +13,8 @@ class ResPartner(models.Model):
         string='Libros del autor',
         relation='library_book_res_partner_rel'
     )
-
+    count_books = fields.Integer('Número de libros del autor')
+    @api.depends('authored_book_ids')
+    def compute_count_books(self):
+        for r in self:
+            r.count_books = len(r.autores_book_ids)

@@ -159,10 +159,13 @@ class LibraryBook(models.Model):
     #Relaciones dinamicas
     @api.model
     def _referencable_models(self):
-        models = self.env['ir.model'].search(['fields_id.name','=','message_ids'])
+        # AQui nos traemos todos los modelos que tienen un campo con nombre message_ids
+        models = self.env['ir.model'].search([('field_id.name','=','message_ids')])
+        #de la lista anteriro nos quedamos con un arreglos de tuplas con el [('nombre_modelo','descricion_modelo')]
         return [(x.model,x.name) for x in models]
 
     ref_doc_id = fields.Reference(
         selection='_referencable_models',
         string='Documento de referencia'
+
     )
