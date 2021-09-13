@@ -29,6 +29,7 @@
                             <field name="author_ids"/>
                             <field name="editorial_id"/>
                             <field name="categoria_id"/>
+                            <field name="age_days"/>
     
                         </group>
                         <group>
