@@ -77,6 +77,16 @@ class LibraryBook(models.Model):
         store=False, #opcional
         compute_sudo=True  #opcional
     )
+
+    #Campo relacionado, con el ser usar el operador punto para ver campos de 
+    # otros modelos atravez de la foranykey local usando el operador punto 
+    # related  fields son campos computados, usando la bnadera related_sudo
+    # se pueden salar los access rights del usuario activo. 
+    publisher_city = fields.Char(
+        'publiser City',
+        related='publisher_id.city',
+        readonly=True
+    )
     #En general get_name() usa _rec_name para generar el display name.
     #Pero se puede sobre escribir para generar nuestra propia version del display name
     def get_name(self):
@@ -103,6 +113,7 @@ class LibraryBook(models.Model):
     #Calcula el numero de dias,meses y años que han pasado desde la fecha de lanzamiento
     @api.depends('date_release')
     def _compute_age(self):
+        print("hola _computed_age ----------------")
         today = fields.Date.today()
         for book in self:
             if book.date_release:
@@ -114,6 +125,7 @@ class LibraryBook(models.Model):
     #Inverse permite que un campo computado se editable porque actualiza el campo original que generó el calculo
     #calcula la fecha de lanzamiento apartir del campo age_days
     def _inverse_age(self):
+        print("hola _inverse_age----------------")
         today = fields.Date.today()
         # filtered se lo aplica a un array 
         for book in self.filtered('date_release'):
@@ -121,6 +133,7 @@ class LibraryBook(models.Model):
             book.date_release = d
 
     def _search_age(self,operator,value):
+        print("hola _search_age----------------")
         today = fields.Date.today()
         value_days = timedelta(days=value)
         value_date = today - value_days

@@ -30,6 +30,7 @@
                             <field name="editorial_id"/>
                             <field name="categoria_id"/>
                             <field name="age_days"/>
+                            <field name="publisher_city"/>
     
                         </group>
                         <group>
