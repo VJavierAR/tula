@@ -7,10 +7,10 @@
             <field name="arch" type="xml">
                 <form>
                     <group>
-                        <field name="date_start">
-                        <field name="date_end">
-                        <field name="member_number">
-                        <field name="date_of_bird">
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                        <field name="member_number"/>
+                        <field name="date_of_bird"/>
                     </group>
                 </form>
             </field>
@@ -21,10 +21,10 @@
             <field name="model">library.member</field>                
             <field name="arch" type="xml">
                 <tree>
-                        <field name="date_start">
-                        <field name="date_end">
-                        <field name="member_number">
-                        <field name="date_of_bird">
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                        <field name="member_number"/>
+                        <field name="date_of_bird"/>
 
                 </tree>
             </field>
