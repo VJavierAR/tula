@@ -230,3 +230,7 @@ class LibraryBook(models.Model):
         #Creando el objeto nuevo con sus hijos adentro 
         record = self.env['library.book.category'].create(parent_catategory_val)
         return True
+    
+    def change_release(self):
+        self.ensure_one()
+        self.date_release = fields.Date.today()

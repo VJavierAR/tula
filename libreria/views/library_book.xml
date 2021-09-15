@@ -38,6 +38,7 @@
                             <field name="ref_doc_id"/>
                             <button name="log_all_library_members" string="Log de miembros" type="object"/>
                             <button name="create_category" string="Crear categoria" type="object"/>
+                            <button name="change_release" string="Actualizar fecha de lanzamiento" type="object"/>
 
                         </group>
                         <group>
