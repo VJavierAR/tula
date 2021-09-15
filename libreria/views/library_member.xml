@@ -40,6 +40,7 @@
                     <filter     string="No member" name="without_member" domain="[('partner_id','=',False)]"/>
                 </search>
             </field>
+        </record>
         <record id='library_member_action' model='ir.actions.act_window'>  
             <field name="name">Library member</field>					
             <field name="res_model">library.member</field> 
