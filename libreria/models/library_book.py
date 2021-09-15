@@ -190,7 +190,9 @@ class LibraryBook(models.Model):
     
     def make_available(self):
         self.change_state('available')
+        
     def make_borrowed(self):
         self.change_state('borrowed')
+        
     def make_lost(self):
         self.change_state('lost')
