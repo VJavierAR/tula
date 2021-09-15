@@ -31,24 +31,3 @@ class BookCategory(models.Model):
                 'Error! no puedes crear categorias recursivas'
         )
     
-    def create_category(self):
-
-        new_category = {'name':'Categoria hija 1',
-            'description':'Descripcion de categoria hija 1'
-        }
-
-        new_category2 = {'name':'Categoria hija 2',
-            'description':'Descripcion de categoria hija 2'
-        }
-        
-        parent_cat_value = {
-            'name': 'Categoria padre',
-            'description':'Descripcion de la categoria',
-            'childs_ids': '[
-                (0,0,new_category),
-                (0,0,new_category2),
-                
-            ]'
-        }
-        #Creando el objeto nuevo con sus hijos adentro 
-        record = self.env['library.book.category'].create(parent_cat_value)

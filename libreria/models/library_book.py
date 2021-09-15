@@ -213,3 +213,22 @@ class LibraryBook(models.Model):
         all_members = library_members_model.search([])
         print('ALL MEMBERS:', all_members)
         return True
+
+    def create_category(self):
+        new_category = {'name':'Categoria hija 1','description':'Descripcion de categoria hija 1'}
+        new_category2 = {'name':'Categoria hija 2',
+            'description':'Descripcion de categoria hija 2'
+            }
+    
+        parent_catategory_val = {
+            'name': 'Categoria padre',
+            'description':'Descripcion de la categoria',
+            'childs_ids': [
+                (0,0,new_category),
+                (0,0,new_category2),
+            
+            ]
+        }
+        #Creando el objeto nuevo con sus hijos adentro 
+        record = self.env['library.book.category'].create(parent_catategory_val)
+        return True

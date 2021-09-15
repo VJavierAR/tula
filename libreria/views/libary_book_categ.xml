@@ -25,7 +25,7 @@
                     <group>
                         <field name="name"/>
                         <field name="parent_id"/> 
-                        <button name="parent_cat_value" string="Crear categoria" type="object"/> 
+                         
 
                     </group>
                     <group>
