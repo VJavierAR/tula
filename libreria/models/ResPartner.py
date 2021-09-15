@@ -13,7 +13,7 @@ class ResPartner(models.Model):
         string='Libros del autor',
         relation='library_book_res_partner_rel'
     )
-    count_books = fields.Integer('Número de libros del autor')
+    count_books = fields.Integer('Número de libros del autor',compute='_compute_count_books')
     @api.depends('autores_book_ids')
     def compute_count_books(self):
         for r in self:
