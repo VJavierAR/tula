@@ -11,7 +11,7 @@ class ResPartner(models.Model):
     autores_book_ids = fields.Many2many(
         'library.book',
         string='Libros del autor',
-        relation='library_book_res_partner_rel'
+       # relation='library_book_res_partner_rel'
     )
     count_books = fields.Integer('Número de libros del autor',compute='_compute_count_books')
     @api.depends('autores_book_ids')
