@@ -27,9 +27,10 @@ class LibraryBook(models.Model):
     #Selection al parecer mandas un arreglo de tuplas con el nombre del valor y el string para mostrar
     # 'State' al final es como aparecer el nombre del campo
     state = fields.Selection(
-        [('draft','No disponible'),
-        ('available','Disponible'),
-        ('lost','Perdido')],
+        [('draft','Unavailable'),
+        ('available','Availablae'),
+        ('borrowed','Borrowed'),
+        ('lost','Lost')],
         'Estatus',default="draft")
     description = fields.Html('Descripción', sanitize=True, strip_style=False)
     cover = fields.Binary('Portada')
@@ -169,3 +170,27 @@ class LibraryBook(models.Model):
         string='Documento de referencia'
 
     )
+
+    @api.model
+    def is_allowed_transition(self, old_state,new_state):
+        allowed = [('draft','available'),
+        ('available','borrowed'),
+        ('borrowed','available'),
+        ('available','lost'),
+        ('borrowed','lost'),
+        ('lost','available')]
+        return (old_state,new_state) in allowed
+    
+    def change_state(self, new_state):
+        for book in self:
+            if book.is_allowed_transition(book.state,new_state):
+                book.state= new_state
+            else:
+                continue
+    
+    def make_available(self):
+        self.change_state('available')
+    def make_borrowed(self):
+        self.change_state('borrowed')
+    def make_lost(self):
+        self.change_state('lost')

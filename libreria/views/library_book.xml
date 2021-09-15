@@ -13,7 +13,11 @@
                             <field name="name"/>
                             <field name="author_ids" widget="many2many_tags"/>
 
-                            <field name="state"/>
+                            <button name="make_available" string="Cambiar a disponible" type="objet">
+                            <button name="make_borrowed" string="Cambiar a borrador" type="objet">
+                            <button name="make_lost" string="Cambiar a perdido" type="objet">
+                            
+                            <field name="state" widget="statusbar"/>
                             <field name="pages"/>
                             <field name="notes"/>
                         </group>
@@ -32,10 +36,12 @@
                             <field name="age_days"/>
                             <field name="publisher_city"/>
                             <field name="ref_doc_id"/>
-    
+
                         </group>
                         <group>
                             <field name="description"/>
+                        </group>
+                        <group>
                         </group>
                     </group>
                 </form>
