@@ -28,7 +28,8 @@
         #'views/views.xml',
         'views/library_book.xml',
         'views/templates.xml',
-        'views/libary_book_categ.xml'
+        'views/libary_book_categ.xml',
+        'views/library_member.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

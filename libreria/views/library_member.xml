@@ -1,0 +1,50 @@
+<odoo>
+    <data>
+
+        <record id="library_member_view_form" model="ir.ui.view">
+            <field name="name">Library Member</field>
+            <field name="model">library.member</field>                
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="date_start">
+                        <field name="date_end">
+                        <field name="member_number">
+                        <field name="date_of_bird">
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="library_member_view_tree" model="ir.ui.view">
+            <field name="name">Library Member List</field>
+            <field name="model">library.member</field>                
+            <field name="arch" type="xml">
+                <tree>
+                        <field name="date_start">
+                        <field name="date_end">
+                        <field name="member_number">
+                        <field name="date_of_bird">
+
+                </tree>
+            </field>
+        </record>
+        <!--ERRRROOR-->
+        <record id="library_member_view_search" model="ir.ui.view">
+            <field name="name">Library Member Search</field>
+            <field name="model">library.member</field>                
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="partner_id"/> 
+                    <filter     string="No member" name="without_member" domain="[('partner_id','=',False)]"/>
+                </search>
+            </field>
+        <record id='library_member_action' model='ir.actions.act_window'>  
+            <field name="name">Library member</field>					
+            <field name="res_model">library.member</field> 
+            <field name="view_mode">tree,form</field> 
+        </record>
+        <menuitem name="Miembros" id="library_member_menu" parent="library_menu_root" action="library_member_action"/>
+    </data>
+</odoo> 
