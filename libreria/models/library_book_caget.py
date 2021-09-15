@@ -4,6 +4,7 @@ from odoo import models,fields, api
 #odoo provee una forma de optimizar las consultas a estos modelos por medio del uso de una gerarquia parent_id y child_id
 class BookCategory(models.Model):
     _name = 'library.book.category'
+    _description='library.book.category'
     #Campos de activacion de la herarquia optimizada de odoo
     _parent_store =  True
     _parent_name = 'parent_id'

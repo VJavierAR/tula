@@ -170,7 +170,7 @@ class LibraryBook(models.Model):
         string='Documento de referencia'
 
     )
-
+    #comentario de control
     @api.model
     def is_allowed_transition(self, old_state,new_state):
         allowed = [('draft','available'),
@@ -193,6 +193,6 @@ class LibraryBook(models.Model):
         
     def make_borrowed(self):
         self.change_state('borrowed')
-        
+
     def make_lost(self):
         self.change_state('lost')
