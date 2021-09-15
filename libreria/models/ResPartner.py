@@ -14,7 +14,7 @@ class ResPartner(models.Model):
         relation='library_book_res_partner_rel'
     )
     count_books = fields.Integer('Número de libros del autor')
-    @api.depends('authored_book_ids')
+    @api.depends('autores_book_ids')
     def compute_count_books(self):
         for r in self:
             r.count_books = len(r.autores_book_ids)
