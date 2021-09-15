@@ -1,6 +1,8 @@
 from odoo import  api, models, fields
 from odoo.exceptions import ValidationError
 from datetime import timedelta
+from odoo.exceptions import UserError
+from odoo.tools.translate import _
 
 #comentario de control3
 class LibraryBook(models.Model):
@@ -170,7 +172,9 @@ class LibraryBook(models.Model):
         string='Documento de referencia'
 
     )
-    #comentario de control
+    #@api.model es un decorador que se usa en metodos donde no importa el contenido de 
+    # de los registros, al parecer es donde no se hara recorridos del estilo 
+    #for algo in self:, @api.model es similar a @classmethod de python
     @api.model
     def is_allowed_transition(self, old_state,new_state):
         allowed = [('draft','available'),
@@ -186,8 +190,9 @@ class LibraryBook(models.Model):
             if book.is_allowed_transition(book.state,new_state):
                 book.state= new_state
             else:
-                continue
-    
+               msg = _('El cambio de estado de %s a %s no esta permitido')  % (book.state, new_state)
+               raise UserError(msg)
+           
     def make_available(self):
         self.change_state('available')
         

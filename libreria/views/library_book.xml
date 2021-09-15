@@ -13,7 +13,7 @@
                             <field name="name"/>
                             <field name="author_ids" widget="many2many_tags"/>
 
-                            <!button name="make_available" string="Cambiar a disponible" type="object"/>
+                            <button name="make_available" string="Cambiar a disponible" type="object"/>
                             <button name="make_borrowed" string="Cambiar a borrador" type="object"/>
                             <button name="make_lost" string="Cambiar a perdido" type="object"/>
                             
