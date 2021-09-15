@@ -201,3 +201,15 @@ class LibraryBook(models.Model):
 
     def make_lost(self):
         self.change_state('lost')
+    
+    #Obteniendo un recordset vasio de otro modelo
+    def log_all_library_members(self):
+        
+        #trayendose el modelo de members
+        library_members_model = self.env['library.member']
+
+        #Trayendose el recordset de members
+        #con el podremos usar los metodos de members y ver sus datos
+        all_members = library_members_model.search([])
+        print('ALL MEMBERS:', all_members)
+        return True

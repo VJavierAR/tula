@@ -36,6 +36,7 @@
                             <field name="age_days"/>
                             <field name="publisher_city"/>
                             <field name="ref_doc_id"/>
+                            <button name="log_all_library_members" string="Log de miembros" type="object"/>
 
                         </group>
                         <group>
