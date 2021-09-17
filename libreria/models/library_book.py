@@ -214,6 +214,7 @@ class LibraryBook(models.Model):
         print('ALL MEMBERS:', all_members)
         return True
 
+    #Crea un nuevo registro en este caso una nueva categoria
     def create_category(self):
         new_category = {'name':'Categoria hija 1','description':'Descripcion de categoria hija 1'}
         new_category2 = {'name':'Categoria hija 2','description':'Descripcion de categoria hija 2'}
@@ -231,6 +232,36 @@ class LibraryBook(models.Model):
         record = self.env['library.book.category'].create(parent_catategory_val)
         return True
     
+    #Actualiza un registro en este caso el campo date_release
     def change_release(self):
         self.ensure_one()
         self.date_release = fields.Date.today()
+        # Tambien se puede hacer asi pero hay que asegurarse que solo se esta afectando
+        # a un registro 
+        """
+        self.update({
+            'date_release': fields.Datetime.now(),
+            'another_field': 'value'
+            ...
+            })
+        """
+    #Search method, se usa la not acion polaca para el dominio 
+    def find_book(self):
+        domain = [
+            '|',
+                '&', ('name','ilike','Titulo'),
+                    ('category_id.name','ilike','Categoria'),
+                '&',('name','ilike','Titulo 2'),
+                    ('category_id.name','ilike','Categoria 2')
+        
+        ]  
+        books = self.search(domain) 
+        print(books) 
+
+    @api.model
+    def books_with_multiple_authors(self, all_books):
+        def predicate(book):
+            if len(book.author.ids) > 1:
+                return True
+        print(predicate)
+        return all_books.filter(predicate) 
