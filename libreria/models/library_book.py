@@ -80,7 +80,7 @@ class LibraryBook(models.Model):
         store=False, #opcional
         compute_sudo=True  #opcional
     )
-
+    console= fields.Text('Console')
     #Campo relacionado, con el ser usar el operador punto para ver campos de 
     # otros modelos atravez de la foranykey local usando el operador punto 
     # related  fields son campos computados, usando la bnadera related_sudo
@@ -265,3 +265,11 @@ class LibraryBook(models.Model):
                 return True
         print(predicate)
         return all_books.filter(predicate) 
+
+    @api.model
+    def get_author_names(self,books):
+
+        author_names = books.mapped('author_ids.name')
+        print(author_names)
+        self.console = author_names
+        return books.mapped('author_names')

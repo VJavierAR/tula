@@ -16,6 +16,7 @@
                             <button name="make_available" string="Cambiar a disponible" type="object"/>
                             <button name="make_borrowed" string="Cambiar a borrador" type="object"/>
                             <button name="make_lost" string="Cambiar a perdido" type="object"/>
+                            <button name="get_author_names" string="OBTENER NOMBRE DE AUTORES" type="object"/>
                             
                             <field name="state" widget="statusbar"/>
                             <field name="pages"/>
@@ -39,6 +40,8 @@
                             <button name="log_all_library_members" string="Log de miembros" type="object"/>
                             <button name="create_category" string="Crear categoria" type="object"/>
                             <button name="change_release" string="Actualizar fecha de lanzamiento" type="object"/>
+
+                            <field name="console"/>
 
                         </group>
                         <group>
