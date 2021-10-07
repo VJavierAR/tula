@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_requirement_and_proposal_requirement_and_proposal,requirement_and_proposal.requirement_and_proposal,model_requirement_and_proposal_requirement_and_proposal,base.group_user,1,1,1,1
