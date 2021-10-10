@@ -71,7 +71,7 @@ class ProposalPurchase(models.Model):
     rel_id = fields.Many2one('client.requirement')
 
 
-class WizardProposal(models.TransientMode):
+class WizardProposal(models.TransientModel):
     _name = 'wizard.proposal'
     _description = 'Asistente de Propuesta'
     name = fields.Char()
