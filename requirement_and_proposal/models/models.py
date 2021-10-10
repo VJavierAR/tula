@@ -21,7 +21,7 @@ class RequirementProposal(models.Model):
     lines_proposal = fields.One2many('proposal.purchase', 'rel_id')
 
     def view_purchase_proposal(self):
-        action = self.env.ref('proposal_purchase_action_window').read()[0]
+        action = self.env.ref('requirement_and_proposal.proposal_purchase_action_window').read()[0]
         #form_view = [(self.env.ref('proposal_purchase_list').id, 'tree')]
         lines = self.lines_proposal.mapped('id')
         if lines != []:
@@ -31,7 +31,7 @@ class RequirementProposal(models.Model):
         return action
 
     def create_purchase_proposal(self):
-        view = self.env.ref('wizard_proposal_form')
+        view = self.env.ref('requirement_and_proposal.wizard_proposal_form')
         wiz = self.env['wizard.proposal'].create({'rel_id': self.id})
         return {
         'name': _('Propuesta'),
@@ -44,9 +44,10 @@ class RequirementProposal(models.Model):
         'res_id': wiz.id,
         'context': self.env.context}
 
-    def create(self, vals):
-        vals['name'] = self.env['ir.sequence'].next_by_code('requirement.seq')
-        r = super(RequirementProposal, self).create(vals)
+    def create(self, vals_list):
+        for vals in vals_list:
+            vals['name'] = self.env['ir.sequence'].next_by_code('requirement.seq')
+        r = super(RequirementProposal, self).create(vals_list)
         return r
 
 class ProductState(models.Model):
