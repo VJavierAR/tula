@@ -58,6 +58,12 @@ class ProductState(models.Model):
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     lines_requirements = fields.One2many('client.requirement', 'order_id')
+    lines_proposal = fields.Many2many('proposal.purchase', compute='read_proposal_lines')
+
+    def read_proposal_lines(self):
+        for record in self:
+            record.lines_proposal = [(6, 0, record.lines_requirements.mapped('lines_proposal.id'))]
+
 
 
 class ProposalPurchase(models.Model):
