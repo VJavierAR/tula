@@ -43,7 +43,7 @@
                               <field name="estado_cliente" />
                               <field name="estado" />
                               <button name="create_purchase_proposal" string="Crear Propuesta" type="object" class="btn-primary"/>
-                              <button name="view_purchase_proposal" string="Ver propuestas" type="object" states="draft,sent" class="btn-primary"/>
+                              <button name="view_purchase_proposal" string="Ver propuestas" type="object" class="btn-primary"/>
                           </tree>
                       </field>
                   </page>
