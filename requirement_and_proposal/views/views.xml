@@ -1,28 +1,25 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="requirement_and_proposal.list">
-      <field name="name">requirement_and_proposal list</field>
-      <field name="model">requirement_and_proposal.requirement_and_proposal</field>
+    <record model="ir.ui.view" id="proposal_purchase_list">
+      <field name="name">proposal.purchase.list</field>
+      <field name="model">proposal.purchase</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="product_id"/>
+          <field name="cantidad"/>
+          <field name="costo"/>
+          <field name="proveedor"/>
+          <field name="condicion"/>
         </tree>
       </field>
     </record>
--->
 
-    <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="requirement_and_proposal.action_window">
-      <field name="name">requirement_and_proposal window</field>
-      <field name="res_model">requirement_and_proposal.requirement_and_proposal</field>
+    <record model="ir.actions.act_window" id="proposal_purchase_action_window">
+      <field name="name">proposal.purchase.window</field>
+      <field name="res_model">proposal.purchase</field>
       <field name="view_mode">tree,form</field>
     </record>
--->
 
     <!-- server action to the one above -->
 <!--
@@ -40,21 +37,33 @@
     </record>
 -->
 
-    <!-- Top menu item -->
-<!--
-    <menuitem name="requirement_and_proposal" id="requirement_and_proposal.menu_root"/>
--->
-    <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="requirement_and_proposal.menu_1" parent="requirement_and_proposal.menu_root"/>
-    <menuitem name="Menu 2" id="requirement_and_proposal.menu_2" parent="requirement_and_proposal.menu_root"/>
--->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="requirement_and_proposal.menu_1_list" parent="requirement_and_proposal.menu_1"
-              action="requirement_and_proposal.action_window"/>
-    <menuitem name="Server to list" id="requirement_and_proposal" parent="requirement_and_proposal.menu_2"
-              action="requirement_and_proposal.action_server"/>
--->
+            <record id="wizard_proposal_form" model="ir.ui.view">
+            <field name="name">wizard.proposal.form</field>
+            <field name="model">wizard.proposal</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                      <field name="detalle" readony="1"/>
+                      <field name="rel_id" invisible="1"/>
+                    </group>
+                  <group>
+                    <group>
+                      <field name="product_id"></field>
+                      <field name="cantidad"></field>
+                      <field name="costo"></field>
+                    </group>
+                    <group>
+                      <field name="proveedor"></field>
+                      <field name="condicion"></field>
+                    </group>
+                  </group>
+                    <footer>
+                        <button string="Aceptar" name="confirm" type="object" class="send_and_print btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
   </data>
 </odoo>
