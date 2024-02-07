@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_client_requirement,client.requirement,model_client_requirement,base.group_user,1,1,1,1
+access_product_state,product.state,model_product_state,base.group_user,1,1,1,1
+access_proposal_purchase,proposal.purchase,model_proposal_purchase,base.group_user,1,1,1,1
+access_wizard_proposal,wizard.proposal,model_wizard_proposal,base.group_user,1,1,1,1

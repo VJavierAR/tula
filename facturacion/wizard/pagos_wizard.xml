@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report" model="ir.actions.act_window">
+        <field name="name">Tramite</field>
+        <field name="res_model">account.correo</field>
+        <!--<field name="view_type">form</field>-->
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+
+    </record>
+    <record id="view_report_form" model="ir.ui.view">
+        <field name="model">account.correo</field>
+        <field name="arch" type="xml">
+            <form string="Choose The Details">
+
+
+                <field name="date_from" invisible="1"/>
+                <field name="subject" attrs="{'invisible': [['alerta_check', '=', True]]}"/>
+                <field name="date_to" attrs="{'invisible': [['alerta_check', '=', True]]}"/>
+
+                <field name="body" widget="html" attrs="{'invisible': [['alerta_check', '=', True]]}"/>
+                <group col="4" attrs="{'invisible': [['alerta_check', '=', True]]}">
+                    <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1"
+                           colspan="2"/>
+
+                    <!--<field name="template_id" options="{'no_create': True}" context="{'default_model': model, 'default_body_html': body, 'default_subject': subject}"/>-->
+                </group>
+
+                <group>
+                    <field name="alerta_check" readonly="1" invisible="1" force_save="1"/>
+                    <field name="alerta" readonly="1" attrs="{'invisible': [['alerta_check', '=', False]]}"/>
+                </group>
+
+                <footer>
+                    <button name="mensaje" string="mandar " type="object" class="oe_highlight" attrs="{'invisible': [['alerta_check', '=', True]]}"/>
+
+                    <button string="Cancelar" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,33 @@
+/*
+.slae_line_edit [data-id="existencias"] {
+    width: 250px !important;
+}
+
+
+.o_list_view .o_column_sortable [data-name="existencias"]{
+    width: 500px !important;
+}
+*/
+
+
+.slae_line_edit [data-name="existencias"] {
+    width: 190px !important;
+}
+.slae_line_edit [data-name="product_id"] {
+    width: 300px !important;
+}
+.slae_line_edit [data-name="name"] {
+    width: 300px !important;
+}
+.slae_line_edit [data-name="product_uom_qty"] {
+    width: 93px !important;
+}
+.slae_line_edit [data-name="product_uom"] {
+    width: 83px !important;
+}
+.slae_line_edit [data-name="x_value1_id"] {
+    width: 151px !important;
+}
+.slae_line_edit [data-name="tax_id"] {
+    width: 151px !important;
+}

@@ -1,0 +1,115 @@
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="proposal_purchase_list">
+      <field name="name">proposal.purchase.list</field>
+      <field name="model">proposal.purchase</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="product_id"/>
+          <field name="cantidad"/>
+          <field name="costo"/>
+          <field name="proveedor"/>
+          <field name="condicion"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="proposal_purchase_action_window">
+      <field name="name">proposal.purchase.window</field>
+      <field name="res_model">proposal.purchase</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+      <record model="ir.ui.view" id="inherit_proposal_sale_order">
+            <field name="name">proposal.order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+              <xpath expr="//page[@name='order_lines']" position="after">
+                  <page string="Requerimientos del Cliente">
+                      <field name="lines_requirements">
+                          <tree  editable="bottom">
+                              <field name="name" readony="1"/>
+                              <field name="descripcion" />
+                              <field name="marca" />
+                              <field name="modelo" />
+                              <field name="cantidad" />
+                              <field name="presupuesto" />
+                              <field name="proveedor" />
+                              <field name="condicion" />
+                              <field name="completo" />
+                              <field name="estado_cliente" />
+                              <field name="estado" />
+                              <button name="create_purchase_proposal" string="Crear Propuesta" type="object" class="btn-primary"/>
+                              <button name="view_purchase_proposal" string="Ver propuestas" type="object" class="btn-primary"/>
+                          </tree>
+                      </field>
+                  </page>
+                  <page string="Propuestas de Compra">
+                      <field name="lines_proposal"></field>
+
+                  </page>
+              </xpath>
+            </field>
+        </record>
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="requirement_and_proposal.action_server">
+      <field name="name">requirement_and_proposal server</field>
+      <field name="model_id" ref="model_requirement_and_proposal_requirement_and_proposal"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+            <record id="wizard_proposal_form" model="ir.ui.view">
+            <field name="name">wizard.proposal.form</field>
+            <field name="model">wizard.proposal</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                      <field name="detalle" readony="1" widget="html"/>
+                      <field name="rel_id" invisible="1"/>
+                    </group>
+                  <group>
+                    <group>
+                      <field name="product_id"></field>
+                      <field name="cantidad"></field>
+                      <field name="costo"></field>
+                    </group>
+                    <group>
+                      <field name="proveedor"></field>
+                      <field name="condicion"></field>
+                    </group>
+                  </group>
+                    <footer>
+                        <button string="Aceptar" name="confirm" type="object" class="send_and_print btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+  </data>
+    <data noupdate="1">
+        <record id="seq_requirement_name" model="ir.sequence" >
+            <field name="name">Name requiement</field>
+            <field name="code">requirement.seq</field>
+            <field name="active">True</field>
+            <field name="prefix">COT-</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">3</field>
+        </record>
+    </data>
+</odoo>
